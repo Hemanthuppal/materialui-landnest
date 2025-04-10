@@ -1,32 +1,22 @@
-import ButtonExample from './ButtonExample';
-import TypographyExample from './TypographyExample';
-import FormExample from './FormExample';
-import CardExample from './CardExample';
-import AppBarExample from './AppBarExample';
-import { Container, Box } from '@mui/material';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-export default function App() {
+import Dashboard from './bharath/Dashboard';
+import Details_Page from './sharvani/Details_Page';
+import Vendor_Registration from './maniteja/Vendor_Registration';
+import Property_Map from './Sritajana/Property_Map';
+
+function App() {
   return (
-    <Container maxWidth="md">
-      <Box sx={{ my: 4 }}>
-        <AppBarExample />
-      </Box>
-      
-      <Box sx={{ my: 4 }}>
-        <TypographyExample />
-      </Box>
-      
-      <Box sx={{ my: 4 }}>
-        <ButtonExample />
-      </Box>
-      
-      <Box sx={{ my: 4 }}>
-        <FormExample />
-      </Box>
-      
-      <Box sx={{ my: 4 }}>
-        <CardExample />
-      </Box>
-    </Container>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/details" element={<Details_Page />} />
+        <Route path="/vendor" element={<Vendor_Registration />} />
+        <Route path="/propertymap" element={<Property_Map />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+export default App;
