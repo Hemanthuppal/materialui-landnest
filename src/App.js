@@ -9,6 +9,7 @@ import Lease_map from './Rajesh/Lease_map';
 import Lease_detail from './Rajesh/Lease_details';
 import MobilePropertyUI from './tharun/MobileProperyUI';
 import InteriorServices from './bharath/Interior_service';
+import RentForm from './maniteja/Rent_form';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/lease_detail" element={<Lease_detail />} />
         <Route path="/mobileproperty" element={<MobilePropertyUI />} />
         <Route path="/interior_service" element={<InteriorServices />} />
+        <Route path="/rent" element={<RentForm />} />
       </Routes>
     </BrowserRouter>
   );
