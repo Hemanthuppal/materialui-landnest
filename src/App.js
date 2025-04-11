@@ -5,6 +5,9 @@ import Dashboard from './bharath/Dashboard';
 import Details_Page from './sharvani/Details_Page';
 import Vendor_Registration from './maniteja/Vendor_Registration';
 import Property_Map from './Sritajana/Property_Map';
+import PostYourBestDeal from './maniteja/Form-PostYourBestDeal';
+import LeaseForm from './maniteja/Form-Lease';
+import SellYourProperty from './maniteja/Form-SellYourProperty';
 
 function App() {
   return (
@@ -12,7 +15,10 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/details" element={<Details_Page />} />
-        <Route path="/vendor" element={<Vendor_Registration />} />
+        <Route path="/vendor-form" element={<Vendor_Registration />} />
+        <Route path="/sellyourproperty-form" element={<SellYourProperty />} />
+        <Route path="/lease-form" element={<LeaseForm />} />
+        <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
         <Route path="/propertymap" element={<Property_Map />} />
       </Routes>
     </BrowserRouter>

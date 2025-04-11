@@ -41,7 +41,7 @@ const BlueButton = styled(Button)({
     '&:hover': { backgroundColor: '#3399ff' },
 });
 
-const VendorRegister = () => {
+const SellYourProperty = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const autocompleteRef = useRef(null);
@@ -80,42 +80,31 @@ const VendorRegister = () => {
         <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    Vendor Registration
+                    Sell Your Property
                 </Typography>
 
                 <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
-                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Category</Typography>
+                    {/* <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Category</Typography> */}
                     <FormControl fullWidth sx={{ mb: 3 }}>
                         <InputLabel id="category-label">Select Category</InputLabel>
-                        <Select labelId="category-label" label="Select Category" defaultValue="Plumbing">
-                            <MenuItem value="Plumbing">Plumbing</MenuItem>
+                        <Select labelId="category-label" label="Select Category" defaultValue="Commercial land/plot">
+                            <MenuItem value="Commercial land/plot">Commercial land/plot</MenuItem>
                             <MenuItem value="Electrical">Electrical</MenuItem>
                             <MenuItem value="Carpentry">Carpentry</MenuItem>
                         </Select>
                     </FormControl>
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Name
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Mobile
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Email
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Site Area" variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Facing Direction" variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Price in Rs" variant="outlined" sx={{ mb: 2 }} />
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Address
-                    </Typography>
                     <Autocomplete
                         onLoad={ref => (autocompleteRef.current = ref)}
                         onPlaceChanged={onPlaceChanged}
                     >
                         <TextField
                             fullWidth
+                            label="Location"
                             variant="outlined"
                             value={address}
                             onChange={e => setAddress(e.target.value)}
@@ -133,59 +122,14 @@ const VendorRegister = () => {
                         <Marker position={location} />
                     </GoogleMap>
 
-                    {/* <Typography variant="subtitle1" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-                        Work Experience
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Road Width" variant="outlined" sx={{ mt: 3, mb: 2 }} />
+                    <TextField fullWidth label="Posted by" variant="outlined" sx={{ mb: 2 }} />
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Profile photo</Typography>
-                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
-                        Upload Image
-                        <VisuallyHiddenInput type="file" />
-                    </Button>
-
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Previous worked photos</Typography>
+                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Uploaded Images</Typography>
                     <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
                         Upload Image
                         <VisuallyHiddenInput type="file" multiple />
-                    </Button> */}
-                    <Typography variant="subtitle1" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-                        Work Experience
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Profile Photo
-                    </Typography>
-                    <Box sx={{ mb: 2 }}>
-                        <Button
-                            component="label"
-                            variant="outlined"
-                            startIcon={<CloudUploadIcon />}
-                            fullWidth
-                            sx={{ justifyContent: 'flex-start', pl: 2 }}
-                        >
-                            Upload Profile Photo
-                            <VisuallyHiddenInput type="file" />
-                        </Button>
-                    </Box>
-
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Previous Worked Photos
-                    </Typography>
-                    <Box sx={{ mb: 3 }}>
-                        <Button
-                            component="label"
-                            variant="outlined"
-                            startIcon={<CloudUploadIcon />}
-                            fullWidth
-                            sx={{ justifyContent: 'flex-start', pl: 2 }}
-                        >
-                            Upload Previous Photos
-                            <VisuallyHiddenInput type="file" multiple />
-                        </Button>
-                    </Box>
-
+                    </Button>
 
                     <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                     <TextField fullWidth variant="outlined" multiline rows={4} />
@@ -200,6 +144,6 @@ const VendorRegister = () => {
     );
 };
 
-export default VendorRegister;
+export default SellYourProperty;
 
 
