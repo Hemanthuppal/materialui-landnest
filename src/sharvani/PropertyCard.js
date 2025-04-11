@@ -57,28 +57,86 @@ const PropertyCard = () => {
           <Button size="small" variant="contained" color="success" startIcon={<Call />}>Call</Button>
         </Box>
         <Divider sx={{ my: 2 }} />
-        <Grid container spacing={1} textAlign="center">
-          <Grid item xs={4}>
-            <Box sx={{ p: 2, height: '80%', boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography variant="body2" color="text.secondary">Facing</Typography>
-              <Typography variant="body2" fontWeight="bold">East</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Box sx={{ p: 2, height: '80%', boxShadow: 2, borderRadius: 2, cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography variant="body2" color="text.secondary">Area (40*40)</Typography>
-              <Typography variant="body2" fontWeight="bold" color="primary" sx={{ textDecoration: 'underline' }}>1600 sq ft</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Box sx={{ p: 2, height: '80%', boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography variant="body2" color="text.secondary">
-                <LocationOn fontSize="small" color="action" /> Listed by
-              </Typography>
-              <Typography variant="body2" fontWeight="bold">Owner/Agent</Typography>
-            </Box>
-          </Grid>
-        </Grid>
+        <Grid
+  container
+  columnSpacing={1} // small horizontal gap between items
+  textAlign="center"
+  alignItems="stretch"
+  wrap="nowrap"
+>
+  <Grid item xs>
+    <Box
+      sx={{
+        p: 1,
+        height: '100%',
+        mr:0,
+        width: '87%',
+        boxShadow: 2,
+        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant="body2" color="text.secondary">Facing</Typography>
+      <Typography variant="body2" fontWeight="bold">East</Typography>
+    </Box>
+  </Grid>
+
+  <Grid item xs>
+    <Box
+      sx={{
+        p: 1,
+        height: '100%',
+        width: '100%',
+        boxShadow: 2,
+        mr:1,
+        borderRadius: 2,
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant="body2" color="text.secondary">Area (40×40)</Typography>
+      <Typography
+        variant="body2"
+        fontWeight="bold"
+        color="primary"
+        sx={{ textDecoration: 'underline' }}
+      >
+        1600 sq ft
+      </Typography>
+    </Box>
+  </Grid>
+
+  <Grid item xs>
+    <Box
+      sx={{
+        p: 1,
+        height: '100%',
+        width: '100%',
+        ml: 1,
+        boxShadow: 2,
+        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant="body2" color="text.secondary" display="flex" alignItems="center" gap={0.5}>
+        <LocationOn fontSize="small" color="action" /> Listed by
+      </Typography>
+      <Typography variant="body2" fontWeight="bold">Owner/Agent</Typography>
+    </Box>
+  </Grid>
+</Grid>
+
+
+
       </CardContent>
     </Card>
   );

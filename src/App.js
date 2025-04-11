@@ -8,6 +8,12 @@ import Property_Map from './Sritajana/Property_Map';
 import PostYourBestDeal from './maniteja/Form-PostYourBestDeal';
 import LeaseForm from './maniteja/Form-Lease';
 import SellYourProperty from './maniteja/Form-SellYourProperty';
+import Lease_map from './Rajesh/Lease_map';
+import Lease_detail from './Rajesh/Lease_details';
+import MobilePropertyUI from './tharun/MobileProperyUI';
+import InteriorServices from './bharath/Interior_service';
+import RentForm from './maniteja/Rent_form';
+
 
 function App() {
   return (
@@ -20,6 +26,11 @@ function App() {
         <Route path="/lease-form" element={<LeaseForm />} />
         <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
         <Route path="/propertymap" element={<Property_Map />} />
+        <Route path="/lease_map" element={<Lease_map />} />
+        <Route path="/lease_detail" element={<Lease_detail />} />
+        <Route path="/mobileproperty" element={<MobilePropertyUI />} />
+        <Route path="/interior_service" element={<InteriorServices />} />
+        <Route path="/rent" element={<RentForm />} />
       </Routes>
     </BrowserRouter>
   );

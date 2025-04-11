@@ -17,9 +17,9 @@ import {
   Call,
   LocationOn
 } from '@mui/icons-material';
-import buildingImage from '../Images/house.jpeg';
-import buildingImage2 from '../Images/house1.jpg';
-import BottomNavbar from './BottomNavbar'; // ✅ Import the navbar
+import buildingImage from '../Images/duplex-house.webp'; // First image
+import buildingImage2 from '../Images/Leasebuilding.png'; // Second image
+import BottomNavbar from '../sharvani/BottomNavbar'; // ✅ Import the navbar
 
 const PropertyCard = () => {
   return (
@@ -53,7 +53,7 @@ const PropertyCard = () => {
 
             <CardContent>
               <Typography variant="subtitle1" fontWeight="bold">
-                Plot For Rent in Btm Layout 2nd Stage
+                Plot For Lease in Btm Layout 2nd Stage
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 16th Main Road, BTM layout 2nd...
@@ -71,56 +71,75 @@ const PropertyCard = () => {
               <Divider sx={{ my: 2 }} />
               <Grid container columnSpacing={1} textAlign="center" alignItems="stretch" wrap="nowrap">
                 <Grid item xs>
-                  <Box sx={{
-                    p: 1,
-                    height: '100%',
-                    ml: 2,
-                    width: '87%',
-                    boxShadow: 2,
-                    borderRadius: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                  <Box
+                    sx={{
+                      p: 1,
+                      height: '100%',
+                      ml: 2,
+                      width: '87%',
+                      boxShadow: 2,
+                      borderRadius: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Typography variant="body2" color="text.secondary">Facing</Typography>
                     <Typography variant="body2" fontWeight="bold">East</Typography>
                   </Box>
                 </Grid>
+
                 <Grid item xs>
-                  <Box sx={{
-                    p: 1,
-                    height: '100%',
-                    width: '100%',
-                    boxShadow: 2,
-                    ml: 2,
-                    borderRadius: 2,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                  <Box
+                    sx={{
+                      p: 1,
+                      height: '100%',
+                      width: '100%',
+                      boxShadow: 2,
+                      ml: 2,
+                      borderRadius: 2,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Typography variant="body2" color="text.secondary">Area (40×40)</Typography>
-                    <Typography variant="body2" fontWeight="bold" color="primary" sx={{ textDecoration: 'underline' }}>
+                    <Typography
+                      variant="body2"
+                      fontWeight="bold"
+                      color="primary"
+                      sx={{ textDecoration: 'underline' }}
+                    >
                       1600 sq ft
                     </Typography>
                   </Box>
                 </Grid>
+
                 <Grid item xs>
-                  <Box sx={{
-                    p: 1,
-                    height: '100%',
-                    width: '100%',
-                    ml: 3,
-                    boxShadow: 2,
-                    borderRadius: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                    <Typography variant="body2" color="text.secondary" display="flex" alignItems="center" gap={0.5}>
+                  <Box
+                    sx={{
+                      p: 1,
+                      height: '100%',
+                      width: '100%',
+                      ml: 3,
+                      boxShadow: 2,
+                      borderRadius: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      display="flex"
+                      alignItems="center"
+                      gap={0.5}
+                    >
                       <LocationOn fontSize="small" color="action" /> Listed by
                     </Typography>
                     <Typography variant="body2" fontWeight="bold">Owner/Agent</Typography>
@@ -132,7 +151,7 @@ const PropertyCard = () => {
         );
       })}
 
-      <BottomNavbar /> {/* ✅ Bottom navbar called here */}
+      <BottomNavbar /> {/* ✅ Bottom navbar added here */}
     </>
   );
 };
