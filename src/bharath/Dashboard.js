@@ -28,6 +28,8 @@ import {
   Handyman as RenovationsIcon
 
 } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+
 
 const Dashboard = () => {
   const cards = [
@@ -300,6 +302,7 @@ const Dashboard = () => {
                 {/* First row - single card (New Building Construction) */}
                 <Grid item xs={12}>
                   <Box display="flex" justifyContent="flex-start">
+                  <Link to="/constructions" style={{ textDecoration: 'none', cursor:'pointer' }}>
                     <Card sx={{
                       height: '100px',
                       width: "370px",
@@ -338,6 +341,8 @@ const Dashboard = () => {
                         </IconButton>
                       </CardContent>
                     </Card>
+                    </Link>
+
                   </Box>
                 </Grid>
 
