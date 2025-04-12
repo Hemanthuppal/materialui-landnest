@@ -25,18 +25,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: 20,
-  backgroundColor: alpha(theme.palette.common.white, 0.9),
-  marginLeft: 0,
+  borderRadius: 25,
+  backgroundColor: alpha(theme.palette.common.white, 0.95),
   width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
+  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 1),
+  padding: theme.spacing(0, 2),
   height: '100%',
   position: 'absolute',
   pointerEvents: 'none',
@@ -47,43 +43,50 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: '#424242',
   width: '100%',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(0.8, 0.8, 0.8, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(2)})`,
+    padding: '8px 8px 8px 40px',
     fontSize: '0.9rem',
     width: '100%',
   },
 }));
 
 const Sidebar = styled(Box)(({ theme }) => ({
-  width: '50px',
-  backgroundColor: '#f8f9fa',
+  width: '60px',
+  backgroundColor: '#f0f2f5',
   height: '100%',
-  padding: theme.spacing(1, 0),
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: theme.spacing(2),
-  borderRight: '2px solid #e3e3e3',
+  borderRight: '2px solid #2196f3',
+  position: 'relative',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '2px',
+    height: '100%',
+    background: 'linear-gradient(to bottom, #2196f3 70%, transparent)',
+  },
 }));
 
 const CategoryCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1.5),
-  borderRadius: 12,
-  marginBottom: theme.spacing(1.5),
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+  padding: theme.spacing(2),
+  borderRadius: 16,
+  marginBottom: theme.spacing(2),
+  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
 }));
 
 const ImageCard = styled(Paper)(({ theme }) => ({
   position: 'relative',
-  borderRadius: 12,
+  borderRadius: 16,
   overflow: 'hidden',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  height: '140px',
   '& img': {
     width: '100%',
-    height: '120px',
+    height: '100%',
     objectFit: 'cover',
   },
   '& .overlay': {
@@ -91,78 +94,94 @@ const ImageCard = styled(Paper)(({ theme }) => ({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: '#fff',
-    padding: theme.spacing(0.8),
+    padding: '8px 12px',
     fontSize: '0.9rem',
     fontWeight: 500,
   },
 }));
 
+// Custom styled bottom navigation icons with 3D gold effect
+const StyledBottomNavIcon = styled(Box)(({ theme }) => ({
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  background: 'linear-gradient(145deg, #FFD700, #FFA500)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxShadow: '2px 2px 5px rgba(0,0,0,0.2), -2px -2px 5px rgba(255,255,255,0.5)',
+  '& svg': {
+    fontSize: '1.2rem',
+    color: '#fff',
+  },
+}));
+
 function App() {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
-      <AppBar position="static" sx={{ bgcolor: 'white', boxShadow: 'none' }}>
-        <Toolbar sx={{ minHeight: '56px !important', px: 1 }}>
-          <IconButton edge="start" sx={{ mr: 1 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: '430px', margin: '0 auto', bgcolor: '#fff' }}>
+      <AppBar position="static" sx={{ bgcolor: 'white', boxShadow: 'none', pt: 1 }}>
+        <Toolbar sx={{ minHeight: '48px !important', px: 2, gap: 1 }}>
+          <IconButton edge="start" sx={{ p: 0 }}>
             <Avatar 
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=32&h=32&q=80"
-              sx={{ width: 32, height: 32 }}
+              sx={{ width: 36, height: 36 }}
             />
           </IconButton>
-          <Search sx={{ flex: 1, mx: 1 }}>
+          <Search>
             <SearchIconWrapper>
               <SearchIcon sx={{ fontSize: '1.2rem' }} />
             </SearchIconWrapper>
             <StyledInputBase placeholder="Search…" />
           </Search>
           <IconButton size="small">
-            <FavoriteBorderIcon sx={{ fontSize: '1.2rem', color: '#757575' }} />
+            <FavoriteBorderIcon sx={{ fontSize: '1.3rem', color: '#757575' }} />
           </IconButton>
           <IconButton size="small">
-            <NotificationsNoneIcon sx={{ fontSize: '1.2rem', color: '#757575' }} />
+            <NotificationsNoneIcon sx={{ fontSize: '1.3rem', color: '#757575' }} />
           </IconButton>
           <IconButton size="small">
-            <ChatBubbleOutlineIcon sx={{ fontSize: '1.2rem', color: '#757575' }} />
+            <ChatBubbleOutlineIcon sx={{ fontSize: '1.3rem', color: '#757575' }} />
           </IconButton>
         </Toolbar>
       </AppBar>
 
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Sidebar>
-          <Typography sx={{ fontSize: '0.75rem', color: '#424242', mb: 1 }}>New</Typography>
-          <Typography 
-            sx={{ 
+          <Box sx={{ py: 2, display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+            <Typography sx={{ fontSize: '0.75rem', color: '#424242' }}>New</Typography>
+            <Typography sx={{ 
               writingMode: 'vertical-rl', 
               transform: 'rotate(180deg)',
               fontSize: '0.75rem',
               color: '#424242',
-              mb: 2
-            }}
-          >
-            Building For Sale
-          </Typography>
-          <Typography sx={{ fontSize: '0.75rem', color: '#424242', mb: 1 }}>Quick Deals</Typography>
-          <Typography 
-            sx={{ 
+              letterSpacing: '0.5px',
+              whiteSpace: 'nowrap'
+            }}>
+              Building For Sale
+            </Typography>
+            <Typography sx={{ fontSize: '0.75rem', color: '#424242' }}>Quick Deals</Typography>
+            <Typography sx={{ 
               writingMode: 'vertical-rl', 
               transform: 'rotate(180deg)',
               fontSize: '0.75rem',
               color: '#424242',
-              mb: 2
-            }}
-          >
-            Hot Properties
-          </Typography>
-          <Typography sx={{ fontSize: '0.75rem', color: '#424242' }}>Best Deals</Typography>
+              letterSpacing: '0.5px',
+              whiteSpace: 'nowrap'
+            }}>
+              Hot Properties
+            </Typography>
+            <Typography sx={{ fontSize: '0.75rem', color: '#424242' }}>Best Deals</Typography>
+          </Box>
         </Sidebar>
 
-        <Box sx={{ flex: 1, p: 1.5, overflow: 'auto' }}>
-          <Typography variant="h6" sx={{ fontSize: '1.1rem', fontWeight: 600, mb: 1.5, color: '#424242' }}>
+        <Box sx={{ flex: 1, p: 2, overflow: 'auto' }}>
+          <Typography sx={{ fontSize: '1.1rem', fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
             Looking for
           </Typography>
 
-          <Grid container spacing={1} sx={{ mb: 2 }}>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid item xs={6}>
               <ImageCard>
                 <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Buy" />
@@ -184,20 +203,20 @@ function App() {
           </Grid>
 
           <CategoryCard>
-            <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#424242' }}>
+            <Typography sx={{ fontSize: '1rem', fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
               Constructions
             </Typography>
-            <ImageCard>
+            <ImageCard sx={{ height: '160px' }}>
               <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="New Building Construction" />
               <div className="overlay">New Building Construction</div>
             </ImageCard>
           </CategoryCard>
 
           <CategoryCard>
-            <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#424242' }}>
+            <Typography sx={{ fontSize: '1rem', fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
               Interiors
             </Typography>
-            <Grid container spacing={1.5}>
+            <Grid container spacing={2}>
               <Grid item xs={6}>
                 <ImageCard>
                   <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Interiors" />
@@ -214,7 +233,7 @@ function App() {
           </CategoryCard>
 
           <CategoryCard sx={{ bgcolor: '#fffde7', boxShadow: 'none' }}>
-            <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#424242' }}>
+            <Typography sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
               Home service
             </Typography>
             <Typography sx={{ fontSize: '0.9rem', color: '#616161' }}>
@@ -224,46 +243,64 @@ function App() {
         </Box>
       </Box>
 
-      <BottomNavigation
-        showLabels
-        sx={{
-          borderTop: '1px solid #e0e0e0',
-          height: '60px',
-          '& .MuiBottomNavigationAction-root': {
-            minWidth: 'auto',
-            padding: '6px 0',
-            color: '#757575',
-          },
-          '& .MuiBottomNavigationAction-label': {
-            fontSize: '0.7rem',
-          },
-        }}
-      >
-        <BottomNavigationAction 
-          label="Home" 
-          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />} 
-        />
-        <BottomNavigationAction 
-          label="Construction & Interiors" 
-          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Post"
-          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-          sx={{ 
-            '& .MuiSvgIcon-root': { color: '#2196f3' },
-            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
+      <Paper elevation={3} sx={{ mt: 'auto' }}>
+        <BottomNavigation
+          showLabels
+          sx={{
+            height: 65,
+            '& .MuiBottomNavigationAction-root': {
+              minWidth: 'auto',
+              padding: '6px 0',
+              color: '#757575',
+            },
+            '& .MuiBottomNavigationAction-label': {
+              fontSize: '0.65rem',
+              marginTop: '4px',
+            },
           }}
-        />
-        <BottomNavigationAction 
-          label="Home Services" 
-          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction 
-          label="Profile" 
-          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-      </BottomNavigation>
+        >
+          <BottomNavigationAction 
+            label="Home" 
+            icon={
+              <StyledBottomNavIcon>
+                <HomeIcon />
+              </StyledBottomNavIcon>
+            } 
+          />
+          <BottomNavigationAction 
+            label="Construction & Interiors" 
+            icon={
+              <StyledBottomNavIcon>
+                <BuildIcon />
+              </StyledBottomNavIcon>
+            }
+          />
+          <BottomNavigationAction
+            label="Post"
+            icon={
+              <StyledBottomNavIcon sx={{ background: 'linear-gradient(145deg, #2196f3, #1976d2)' }}>
+                <AddIcon />
+              </StyledBottomNavIcon>
+            }
+          />
+          <BottomNavigationAction 
+            label="Home Services" 
+            icon={
+              <StyledBottomNavIcon>
+                <CleaningServicesIcon />
+              </StyledBottomNavIcon>
+            }
+          />
+          <BottomNavigationAction 
+            label="Profile" 
+            icon={
+              <StyledBottomNavIcon>
+                <AccountCircleIcon />
+              </StyledBottomNavIcon>
+            }
+          />
+        </BottomNavigation>
+      </Paper>
     </Box>
   );
 }

@@ -1,0 +1,52 @@
+{
+  "vendors": [
+    {
+      "id": "8ebf",
+      "companyName": "hello",
+      "contactPerson": "990090909",
+      "email": "uppalahemanth4@gmail.com",
+      "phone": "9090909009",
+      "address": "kjjkkjd",
+      "businessType": "Manufacturer",
+      "registrationDate": "2025-04-11",
+      "status": "pending"
+    },
+    {
+      "id": "7b1f",
+      "companyName": "good",
+      "contactPerson": "kjskk",
+      "email": "kjkj@gmail.com",
+      "phone": "kjk",
+      "address": "kj",
+      "businessType": "Supplier",
+      "registrationDate": "2025-04-11",
+      "status": "pending"
+    },
+    {
+      "id": "df23",
+      "registrationDate": "2025-04-11",
+      "status": "pending"
+    },
+    {
+      "id": "8860",
+      "companyName": "Reed Hammond Co",
+      "contactPerson": "Dolor exercitation e",
+      "email": "xociraf@mailinator.com",
+      "phone": "+1 (435) 201-8774",
+      "address": "Consequatur digniss",
+      "businessType": "Supplier",
+      "photoURL": "/assets/images/avatars/avatar_25.jpg"
+    },
+    {
+      "id": "0e07",
+      "companyName": "Santos Cobb Plc",
+      "contactPerson": "Iure culpa non lorem",
+      "email": "cocymy@mailinator.com",
+      "phone": "+1 (726) 779-3745",
+      "address": "Aut fugit molestiae",
+      "businessType": "Distributor",
+      "photoURL": "/assets/images/avatars/avatar_8.jpg"
+    }
+  ],
+  "nextId": 1
+}

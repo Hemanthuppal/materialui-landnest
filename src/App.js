@@ -13,6 +13,9 @@ import Lease_detail from './Rajesh/Lease_details';
 import MobilePropertyUI from './tharun/MobileProperyUI';
 import InteriorServices from './bharath/Interior_service';
 import RentForm from './maniteja/Rent_form';
+import Footer from './hemanth/Hemanth';
+import Vendorsample from './hemanth/VendorForm';
+import Vendorsampledata from './hemanth/Vendordata';
 
 
 function App() {
@@ -31,9 +34,13 @@ function App() {
         <Route path="/mobileproperty" element={<MobilePropertyUI />} />
         <Route path="/interior_service" element={<InteriorServices />} />
         <Route path="/rent" element={<RentForm />} />
+        <Route path="/Footer" element={<Footer />} />
+        <Route path="/samplevendor" element={<Vendorsample />} />
+        <Route path="/samplevendordata" element={<Vendorsampledata/>} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+
