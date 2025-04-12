@@ -1,628 +1,271 @@
-
-import { useNavigate } from 'react-router-dom';
-
+import React from 'react';
 import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  InputBase,
   Box,
   Typography,
-  Avatar,
-  Stack,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Badge,
   Grid,
-  Card,
-  CardContent,
-  Button
+  Paper,
+  BottomNavigation,
+  BottomNavigationAction,
+  Avatar,
 } from '@mui/material';
-import {
-  Search as SearchIcon,
-  FavoriteBorder as FavoriteIcon,
-  NotificationsNone as NotificationsIcon,
-  QuestionAnswer as MessengerIcon,
-  Home as BuyIcon,
-  House as RentIcon,
-  Business as LeaseIcon,
-  ArrowForward as ArrowIcon,
-  Construction as ConstructionIcon,
-  DesignServices as InteriorsIcon,
-  Handyman as RenovationsIcon
+import { styled, alpha } from '@mui/material/styles';
+import SearchIcon from '@mui/icons-material/Search';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import HomeIcon from '@mui/icons-material/Home';
+import BuildIcon from '@mui/icons-material/Build';
+import AddIcon from '@mui/icons-material/Add';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-} from '@mui/icons-material';
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: 20,
+  backgroundColor: alpha(theme.palette.common.white, 0.9),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
 
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 1),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#9e9e9e',
+}));
 
-const Dashboard = () => {
-  const navigate = useNavigate();
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: '#424242',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(0.8, 0.8, 0.8, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(2)})`,
+    fontSize: '0.9rem',
+    width: '100%',
+  },
+}));
 
-  const cards = [
-    {
-      title: "Buy",
-      icon: <BuyIcon fontSize="large" />,
-      bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
-    },
-    {
-      title: "Rent",
-      icon: <RentIcon fontSize="large" />,
-      bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
-    },
-    {
-      title: "Lease",
-      icon: <LeaseIcon fontSize="large" />,
-      bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
-    }
-  ];
+const Sidebar = styled(Box)(({ theme }) => ({
+  width: '50px',
+  backgroundColor: '#f8f9fa',
+  height: '100%',
+  padding: theme.spacing(1, 0),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+  borderRight: '2px solid #e3e3e3',
+}));
 
-  const constructionCards = [
-    {
-      title: "New Building Construction",
-      icon: <ConstructionIcon fontSize="large" />,
-      bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
-    },
-    {
-      title: "Interiors",
-      icon: <InteriorsIcon fontSize="large" />,
-      bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
-    },
-    {
-      title: "Renovations",
-      icon: <RenovationsIcon fontSize="large" />,
-      bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1600566752227-513c689ad1e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
-    }
-  ];
+const CategoryCard = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  borderRadius: 12,
+  marginBottom: theme.spacing(1.5),
+  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+}));
 
+const ImageCard = styled(Paper)(({ theme }) => ({
+  position: 'relative',
+  borderRadius: 12,
+  overflow: 'hidden',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+  '& img': {
+    width: '100%',
+    height: '120px',
+    objectFit: 'cover',
+  },
+  '& .overlay': {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    color: '#fff',
+    padding: theme.spacing(0.8),
+    fontSize: '0.9rem',
+    fontWeight: 500,
+  },
+}));
+
+function App() {
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
+      <AppBar position="static" sx={{ bgcolor: 'white', boxShadow: 'none' }}>
+        <Toolbar sx={{ minHeight: '56px !important', px: 1 }}>
+          <IconButton edge="start" sx={{ mr: 1 }}>
+            <Avatar 
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=32&h=32&q=80"
+              sx={{ width: 32, height: 32 }}
+            />
+          </IconButton>
+          <Search sx={{ flex: 1, mx: 1 }}>
+            <SearchIconWrapper>
+              <SearchIcon sx={{ fontSize: '1.2rem' }} />
+            </SearchIconWrapper>
+            <StyledInputBase placeholder="Search…" />
+          </Search>
+          <IconButton size="small">
+            <FavoriteBorderIcon sx={{ fontSize: '1.2rem', color: '#757575' }} />
+          </IconButton>
+          <IconButton size="small">
+            <NotificationsNoneIcon sx={{ fontSize: '1.2rem', color: '#757575' }} />
+          </IconButton>
+          <IconButton size="small">
+            <ChatBubbleOutlineIcon sx={{ fontSize: '1.2rem', color: '#757575' }} />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-      <Box display="flex" height="auto">
-
-        {/* Left Sidebar */}
-        <Box
-          sx={{
-            width: '200px',
-            height: '100vh',
-            bgcolor: 'green',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '20px 0',
-            marginLeft: '10px',
-            marginTop: '10px',
-            boxSizing: 'border-box',
-            borderRight: '1px solid #e0e0e0',
-            borderTopLeftRadius: '40px',
-            borderBottomRightRadius: '40px',
-          }}
-        >
-          {/* Profile Pic */}
-          <Avatar
-            sx={{
-              width: 60,
-              height: 60,
-              mb: 2,
-              bgcolor: 'primary.main'
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <Sidebar>
+          <Typography sx={{ fontSize: '0.75rem', color: '#424242', mb: 1 }}>New</Typography>
+          <Typography 
+            sx={{ 
+              writingMode: 'vertical-rl', 
+              transform: 'rotate(180deg)',
+              fontSize: '0.75rem',
+              color: '#424242',
+              mb: 2
             }}
           >
-            P
-          </Avatar>
-
-          {/* Menu Items */}
-          <Stack spacing={3} alignItems="center">
-            {/* NEW - Horizontal */}
-            <Typography variant="body2" fontWeight="bold" textAlign="center">
-              NEW
-            </Typography>
-
-            {/* Building For Sale - Vertical */}
-            <Typography variant="body2" textAlign="center">
-              Building<br />For sale
-            </Typography>
-
-            {/* Quick Deals - Horizontal */}
-            <Typography variant="body2" textAlign="center">
-              Quick Deals
-            </Typography>
-
-            {/* Hot properties - Vertical */}
-            <Typography variant="body2" textAlign="center">
-              Hot<br />properties
-            </Typography>
-
-            {/* Best Deals - Horizontal */}
-            <Typography variant="body2" textAlign="center">
-              Best Deals
-            </Typography>
-          </Stack>
-        </Box>
-
-        {/* Main Content Area */}
-        <Box flex={1} p={2}>
-          {/* Header with Search and Icons */}
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={4}
+            Building For Sale
+          </Typography>
+          <Typography sx={{ fontSize: '0.75rem', color: '#424242', mb: 1 }}>Quick Deals</Typography>
+          <Typography 
+            sx={{ 
+              writingMode: 'vertical-rl', 
+              transform: 'rotate(180deg)',
+              fontSize: '0.75rem',
+              color: '#424242',
+              mb: 2
+            }}
           >
-            {/* Search Bar */}
-            <TextField
-              variant="outlined"
-              placeholder="Search"
-              size="small"
-              sx={{
-                width: '250px',
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: '20px',
-                }
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            Hot Properties
+          </Typography>
+          <Typography sx={{ fontSize: '0.75rem', color: '#424242' }}>Best Deals</Typography>
+        </Sidebar>
 
-            {/* Icons */}
-            <Box display="flex" gap={2}>
-              <IconButton>
-                <Badge badgeContent={4} color="error">
-                  <FavoriteIcon />
-                </Badge>
-              </IconButton>
+        <Box sx={{ flex: 1, p: 1.5, overflow: 'auto' }}>
+          <Typography variant="h6" sx={{ fontSize: '1.1rem', fontWeight: 600, mb: 1.5, color: '#424242' }}>
+            Looking for
+          </Typography>
 
-              <IconButton>
-                <Badge badgeContent={7} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+          <Grid container spacing={1} sx={{ mb: 2 }}>
+            <Grid item xs={6}>
+              <ImageCard>
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Buy" />
+                <div className="overlay">Buy</div>
+              </ImageCard>
+            </Grid>
+            <Grid item xs={6}>
+              <ImageCard>
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Rent" />
+                <div className="overlay">Rent</div>
+              </ImageCard>
+            </Grid>
+            <Grid item xs={6}>
+              <ImageCard>
+                <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Lease" />
+                <div className="overlay">Lease</div>
+              </ImageCard>
+            </Grid>
+          </Grid>
 
-              <IconButton>
-                <Badge badgeContent={3} color="error">
-                  <MessengerIcon />
-                </Badge>
-              </IconButton>
-            </Box>
-          </Box>
-
-
-
-
-          <Box mb={2}>
-            <Typography variant="h6" align="center" mb={1}>
-              Looking For
+          <CategoryCard>
+            <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#424242' }}>
+              Constructions
             </Typography>
+            <ImageCard>
+              <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="New Building Construction" />
+              <div className="overlay">New Building Construction</div>
+            </ImageCard>
+          </CategoryCard>
 
-            <Card sx={{
-              backgroundColor: '#f5f5f5',
-              borderRadius: '10px',
-              padding: '10px',
-              boxShadow: 'none'
-            }}>
-              <Grid container spacing={3}>
-                {cards.slice(0, 2).map((card, index) => (
-                  <Grid item xs={6} key={index}>
-                    <Card sx={{
-                      height: '100px',
-                      width: '175px',
-                      borderRadius: '12px',
-                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                      background: card.bgImage,
-                      backgroundSize: 'cover',
-                      color: 'white',
-                      display: 'flex',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                        transition: 'transform 0.3s ease'
-                      }
-                    }}>
-                      <CardContent sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        width: '100%'
-                      }}>
-                        <Box sx={{ textAlign: 'left' }}>
-                          {card.icon}
-                          <Typography variant="h6" component="div" mt={1}>
-                            {card.title}
-                          </Typography>
-                        </Box>
-                        <IconButton sx={{
-                          position: 'absolute',
-                          right: 8,
-                          bottom: 8,
-                          color: 'white'
-                        }}>
-                          <ArrowIcon />
-                        </IconButton>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-
-                <Grid item xs={12}>
-                  <Box display="flex" justifyContent="flex-start">
-                    <Card sx={{
-                      height: '100px',
-                      width: '175px',
-                      borderRadius: '12px',
-                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                      background: cards[2].bgImage,
-                      backgroundSize: 'cover',
-                      color: 'white',
-                      display: 'flex',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                        transition: 'transform 0.3s ease'
-                      }
-                    }}>
-                      <CardContent sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        width: '100%'
-                      }}>
-                        <Box sx={{ textAlign: 'left' }}>
-                          {cards[2].icon}
-                          <Typography variant="h6" component="div" mt={1}>
-                            {cards[2].title}
-                          </Typography>
-                        </Box>
-                        <IconButton sx={{
-                          position: 'absolute',
-                          right: 8,
-                          bottom: 8,
-                          color: 'white'
-                        }}>
-                          <ArrowIcon />
-                        </IconButton>
-                      </CardContent>
-                    </Card>
-                  </Box>
-                </Grid>
+          <CategoryCard>
+            <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#424242' }}>
+              Interiors
+            </Typography>
+            <Grid container spacing={1.5}>
+              <Grid item xs={6}>
+                <ImageCard>
+                  <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Interiors" />
+                  <div className="overlay">Interiors</div>
+                </ImageCard>
               </Grid>
-            </Card>
-          </Box>
-
-
-          <Box mb={2}>
-            <Typography variant="h6" align="center" mb={1}>
-              Construction  </Typography>
-
-            <Card sx={{
-              backgroundColor: '#f5f5f5',
-              borderRadius: '10px',
-              padding: '10px',
-              boxShadow: 'none'
-            }}>
-              <Grid container spacing={3}>
-                {/* First row - single card (New Building Construction) */}
-                <Grid item xs={12}>
-                  <Box display="flex" justifyContent="flex-start">
-                  
-                    <Card 
-                     onClick={() => navigate('/constructions')}
-                    sx={{
-                      height: '100px',
-                      width: "370px",
-                      borderRadius: '12px',
-                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                      background: constructionCards[0].bgImage,
-                      backgroundSize: 'cover',
-                      color: 'white',
-                      display: 'flex',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                        transition: 'transform 0.3s ease'
-                      }
-                    }}>
-                      <CardContent sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        width: '100%'
-                      }}>
-                        <Box sx={{ textAlign: 'left' }}>
-                          {constructionCards[0].icon}
-                          <Typography variant="h6" component="div" mt={1}>
-                            {constructionCards[0].title}
-                          </Typography>
-                        </Box>
-                        <IconButton sx={{
-                          position: 'absolute',
-                          right: 8,
-                          bottom: 8,
-                          color: 'white'
-                        }}>
-                          <ArrowIcon />
-                        </IconButton>
-                      </CardContent>
-                    </Card>
-
-                  </Box>
-                </Grid>
-
-                {/* Second row - two cards (Interiors and Renovations) */}
-                {constructionCards.slice(1, 3).map((card, index) => (
-                  <Grid item xs={6} key={index}>
-                    <Card sx={{
-                      height: '100px',
-                      width: '175px',
-                      borderRadius: '12px',
-                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                      background: card.bgImage,
-                      backgroundSize: 'cover',
-                      color: 'white',
-                      display: 'flex',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                        transition: 'transform 0.3s ease'
-                      }
-                    }}>
-                      <CardContent sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        width: '100%'
-                      }}>
-                        <Box sx={{ textAlign: 'left' }}>
-                          {card.icon}
-                          <Typography variant="h6" component="div" mt={1}>
-                            {card.title}
-                          </Typography>
-                        </Box>
-                        <IconButton sx={{
-                          position: 'absolute',
-                          right: 8,
-                          bottom: 8,
-                          color: 'white'
-                        }}>
-                          <ArrowIcon />
-                        </IconButton>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
+              <Grid item xs={6}>
+                <ImageCard>
+                  <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Renovations" />
+                  <div className="overlay">Renovations</div>
+                </ImageCard>
               </Grid>
-            </Card>
-          </Box>
+            </Grid>
+          </CategoryCard>
 
-
-
-          <Box mb={4}>
-
-
-            <Card sx={{
-              backgroundColor: '#f5f5f5',
-              borderRadius: '10px',
-              padding: '10px',
-              boxShadow: 'none',
-              width: '96%'
-            }}>
-              <Card sx={{
-                height: 'auto',
-                width: '98%',
-                borderRadius: '12px',
-                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                background: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-                backgroundSize: 'cover',
-                color: 'white',
-                display: 'flex',
-                cursor: 'pointer',
-                position: 'relative',
-                '&:hover': {
-                  transform: 'scale(1.02)',
-                  transition: 'transform 0.3s ease'
-                }
-              }}>
-                <CardContent sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'left',
-                  alignItems: 'left',
-                  width: '100%',
-                  padding: '20px'
-                }}>
-                  <Typography variant="h5" component="div" align="center" gutterBottom>
-                    Home Services
-                  </Typography>
-
-                  <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'left',
-                    gap: '3px',
-                    mt: 2
-                  }}>
-                    <Typography variant="body1">Painter</Typography>
-                    <Typography variant="body1">Plumber</Typography>
-                    <Typography variant="body1">Electrician etc..</Typography>
-
-                  </Box>
-
-                  <IconButton sx={{
-                    position: 'absolute',
-                    right: 8,
-                    bottom: 8,
-                    color: 'white'
-                  }}>
-                    <ArrowIcon />
-                  </IconButton>
-                </CardContent>
-              </Card>
-            </Card>
-          </Box>
-
-
-
-
+          <CategoryCard sx={{ bgcolor: '#fffde7', boxShadow: 'none' }}>
+            <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 600, mb: 1, color: '#424242' }}>
+              Home service
+            </Typography>
+            <Typography sx={{ fontSize: '0.9rem', color: '#616161' }}>
+              Painting Electrician Plumbing etc..
+            </Typography>
+          </CategoryCard>
         </Box>
       </Box>
 
-{/* 
-      <Box mb={1} sx={{ width: '100%', marginLeft:'10px' }}>
-        <Grid container spacing={1} sx={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          width: '100%',
-          justifyContent: 'space-between',
-          px: 1
-          
-        }}>
-          <Grid item sx={{ flex: '1 0 auto', minWidth: '60px', maxWidth: '80px' }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center'
-            }}>
-              <Card sx={{
-                width: 70,
-                height: 70,
-                borderRadius: '8px',
-                backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-                backgroundSize: 'cover',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  transition: 'transform 0.2s ease'
-                }
-              }} />
-              <Typography variant="caption" mt={1} sx={{
-                fontSize: '1rem',
-                lineHeight: 1.2,
-                wordBreak: 'break-word'
-              }}>Sell Property</Typography>
-            </Box>
-          </Grid>
-
-          <Grid item sx={{ flex: '1 0 auto', minWidth: '60px', maxWidth: '80px' }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center'
-            }}>
-              <Card sx={{
-                width: 70,
-                height: 70,
-                borderRadius: '8px',
-                backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-                backgroundSize: 'cover',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  transition: 'transform 0.2s ease'
-                }
-              }} />
-              <Typography variant="caption" mt={1} sx={{
-                fontSize: '1rem',
-                lineHeight: 1.2,
-                wordBreak: 'break-word'
-              }}>Rent Property</Typography>
-            </Box>
-          </Grid>
-
-          <Grid item sx={{ flex: '1 0 auto', minWidth: '60px', maxWidth: '80px' }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center'
-            }}>
-              <Card sx={{
-                width: 70,
-                height: 70,
-                borderRadius: '8px',
-                backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://images.unsplash.com/photo-1570125909517-53cb21c89ff2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-                backgroundSize: 'cover',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  transition: 'transform 0.2s ease'
-                }
-              }} />
-              <Typography variant="caption" mt={1} sx={{
-                fontSize: '1rem',
-                lineHeight: 1.2,
-                wordBreak: 'break-word'
-              }}>Vendor</Typography>
-            </Box>
-          </Grid>
-
-          <Grid item sx={{ flex: '1 0 auto', minWidth: '60px', maxWidth: '80px' }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center'
-            }}>
-              <Card sx={{
-                width: 70,
-                height: 70,
-                borderRadius: '8px',
-                backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-                backgroundSize: 'cover',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  transition: 'transform 0.2s ease'
-                }
-              }} />
-              <Typography variant="caption" mt={1} sx={{
-                fontSize: '1rem',
-                lineHeight: 1.2,
-                wordBreak: 'break-word'
-              }}>Best Deal</Typography>
-            </Box>
-          </Grid>
-
-          <Grid item sx={{ flex: '1 0 auto', minWidth: '60px', maxWidth: '80px' }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center'
-            }}>
-              <Card sx={{
-                width: 70,
-                height: 70,
-                borderRadius: '8px',
-                backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-                backgroundSize: 'cover',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  transition: 'transform 0.2s ease'
-                }
-              }} />
-              <Typography variant="caption" mt={1} sx={{
-                fontSize: '1rem',
-                lineHeight: 1.2,
-                wordBreak: 'break-word'
-              }}>Lease</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box> */}
-
-
+      <BottomNavigation
+        showLabels
+        sx={{
+          borderTop: '1px solid #e0e0e0',
+          height: '60px',
+          '& .MuiBottomNavigationAction-root': {
+            minWidth: 'auto',
+            padding: '6px 0',
+            color: '#757575',
+          },
+          '& .MuiBottomNavigationAction-label': {
+            fontSize: '0.7rem',
+          },
+        }}
+      >
+        <BottomNavigationAction 
+          label="Home" 
+          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />} 
+        />
+        <BottomNavigationAction 
+          label="Construction & Interiors" 
+          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+        <BottomNavigationAction
+          label="Post"
+          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
+          sx={{ 
+            '& .MuiSvgIcon-root': { color: '#2196f3' },
+            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
+          }}
+        />
+        <BottomNavigationAction 
+          label="Home Services" 
+          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+        <BottomNavigationAction 
+          label="Profile" 
+          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+      </BottomNavigation>
     </Box>
   );
-};
+}
 
-export default Dashboard;
+export default App;
