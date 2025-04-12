@@ -34,6 +34,9 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/details" element={<Details_Page />} />
+        <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
+        <Route path="/lease-form" element={<LeaseForm />} />
+        <Route path="/sellyourproperty-form" element={<SellYourProperty />} />
         <Route path="/vendor" element={<Vendor_Registration />} />
         <Route path="/propertymap" element={<Property_Map />} />
         <Route path="/Savedbuy" element={<Saved_Buy />} />
