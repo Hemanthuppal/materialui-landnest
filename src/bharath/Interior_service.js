@@ -2,15 +2,12 @@ import React from 'react';
 import {
   Box,
   Typography,
-  Grid,
   Button,
   Divider
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import HomeIcon from '@mui/icons-material/Home';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import StoreIcon from '@mui/icons-material/Store';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import BottomNavbar from '../sharvani/BottomNavbar'; // ✅ Import BottomNavbar
 
 const steps = [
   'Your Space',
@@ -26,7 +23,7 @@ const steps = [
 
 const InteriorServices = () => {
   return (
-    <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 10 }}>
+    <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 12 }}>
       {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', p: 2, bgcolor: '#fff' }}>
         <ArrowBackIosIcon sx={{ fontSize: 18, mr: 1 }} />
@@ -52,46 +49,52 @@ const InteriorServices = () => {
         “ONE STOP SOLUTION FOR ALL INTERIOR NEEDS”
       </Typography>
 
-      {/* Step Cards Grid */}
-      <Grid container spacing={2} sx={{ px: 2 }}>
+      {/* Workflow Timeline */}
+      <Box sx={{ px: 3 }}>
         {steps.map((step, i) => (
-          <Grid item xs={4} key={i}>
+          <React.Fragment key={i}>
             <Box
               sx={{
                 bgcolor: '#fff',
-                height: 90,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                p: 1,
+                px: 2,
+                py: 2,
                 borderRadius: 2,
                 boxShadow: 1,
-                fontSize: '0.9rem',
-                fontWeight: 500,
+                fontWeight: 'bold',
+                textAlign: 'center'
               }}
             >
               {step}
             </Box>
-          </Grid>
+            {i !== steps.length - 1 && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
+                <ArrowDownwardIcon sx={{ color: 'gray' }} />
+              </Box>
+            )}
+          </React.Fragment>
         ))}
-      </Grid>
+      </Box>
 
       {/* Celebrate Box */}
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-        <Box sx={{
-          width: 160,
-          height: 160,
-          bgcolor: '#2b8a92',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          textAlign: 'center',
-          fontWeight: 'bold',
-          p: 2
-        }}>
+        <Box
+          sx={{
+            bgcolor: '#2b8a92',
+            color: '#fff',
+            width: 180,
+            height: 180,
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: '0.9rem',
+            p: 2,
+            boxShadow: 2,
+            clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'
+          }}
+        >
           CELEBRATE & ENJOY YOUR SPACE
         </Box>
       </Box>
@@ -122,36 +125,7 @@ const InteriorServices = () => {
       </Box>
 
       {/* Bottom Navigation */}
-      <Box
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          bgcolor: '#fff',
-          borderTop: '1px solid #ccc',
-          display: 'flex',
-          justifyContent: 'space-around',
-          py: 1
-        }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <HomeIcon />
-          <Typography variant="caption">Home</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <FormatListBulletedIcon />
-          <Typography variant="caption">List</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <StoreIcon />
-          <Typography variant="caption">Saves</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <MailOutlineIcon />
-          <Typography variant="caption">Inbox</Typography>
-        </Box>
-      </Box>
+      <BottomNavbar /> {/* ✅ Bottom navbar added here */}
     </Box>
   );
 };
