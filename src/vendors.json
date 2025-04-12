@@ -1,0 +1,20 @@
+[
+    {
+      "category": "Plumbing",
+      "name": "John Doe",
+      "mobile": "1234567890",
+      "email": "john@example.com",
+      "address": "123 Main St, City, Country",
+      "location": {
+        "lat": 18.387449,
+        "lng": 78.803236
+      },
+      "experience": "5 years",
+      "description": "Professional plumbing services",
+      "profilePhoto": "profile.jpg",
+      "workPhotos": [
+        "work1.jpg",
+        "work2.jpg"
+      ]
+    }
+  ]
