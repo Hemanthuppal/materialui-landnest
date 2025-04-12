@@ -9,7 +9,9 @@ import Saved_Buy from './Sritajana/Savedbuy';
 import Constructions from './bharath/Constructions'
 import Interiors from './bharath/Interiors'
 import ExploreConstructionResources from './bharath/ExploreConstructionResources'
-
+import PostYourBestDeal from './maniteja/Form-PostYourBestDeal';
+import LeaseForm from './maniteja/Form-Lease';
+import SellYourProperty from './maniteja/Form-SellYourProperty';
 import Lease_map from './Rajesh/Lease_map';
 import Lease_detail from './Rajesh/Lease_details';
 import MobilePropertyUI from './tharun/MobileProperyUI';
@@ -32,6 +34,9 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/details" element={<Details_Page />} />
+        <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
+        <Route path="/lease-form" element={<LeaseForm />} />
+        <Route path="/sellyourproperty-form" element={<SellYourProperty />} />
         <Route path="/vendor" element={<Vendor_Registration />} />
         <Route path="/propertymap" element={<Property_Map />} />
         <Route path="/Savedbuy" element={<Saved_Buy />} />
