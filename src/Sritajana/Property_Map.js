@@ -26,7 +26,8 @@ import ListIcon from '@mui/icons-material/List';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MailIcon from '@mui/icons-material/Mail';
 import Img from './../Images/image-asset.jpeg';
-import img from './../Images/pexels-photo-439391.jpeg'
+import img from './../Images/pexels-photo-439391.jpeg';
+import Footer from "../hemanth/Hemanth";
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -160,14 +161,15 @@ const Property_Map = () => {
         )}
     
         {/* Bottom Navigation */}
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        {/* <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
           <BottomNavigation showLabels>
             <BottomNavigationAction label="Home" icon={<HomeIcon />} />
             <BottomNavigationAction label="List" icon={<ListIcon />} />
             <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
             <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
           </BottomNavigation>
-        </Paper>
+        </Paper> */}
+        <Footer/>
       </Box>
     );
     
