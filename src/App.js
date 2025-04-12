@@ -9,9 +9,7 @@ import Saved_Buy from './Sritajana/Savedbuy';
 import Constructions from './bharath/Constructions'
 import Interiors from './bharath/Interiors'
 import ExploreConstructionResources from './bharath/ExploreConstructionResources'
-import PostYourBestDeal from './maniteja/Form-PostYourBestDeal';
-import LeaseForm from './maniteja/Form-Lease';
-import SellYourProperty from './maniteja/Form-SellYourProperty';
+
 import Lease_map from './Rajesh/Lease_map';
 import Lease_detail from './Rajesh/Lease_details';
 import MobilePropertyUI from './tharun/MobileProperyUI';
