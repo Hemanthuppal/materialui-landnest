@@ -17,14 +17,11 @@ import Lease_detail from './Rajesh/Lease_details';
 import MobilePropertyUI from './tharun/MobileProperyUI';
 import InteriorServices from './bharath/Interior_service';
 import RentForm from './maniteja/Rent_form';
-<<<<<<< HEAD
 import InteriorConsultationForm from './bharath/Get_started';
-=======
 import Footer from './hemanth/Hemanth';
 import Vendorsample from './hemanth/VendorForm';
 import Vendorsampledata from './hemanth/Vendordata';
 
->>>>>>> 160bed221dc71f3b9e3beae69f5786a0a97ac49f
 
 function App() {
   return (
@@ -49,13 +46,10 @@ function App() {
         <Route path="/mobileproperty" element={<MobilePropertyUI />} />
         <Route path="/interior_service" element={<InteriorServices />} />
         <Route path="/rent" element={<RentForm />} />
-<<<<<<< HEAD
         <Route path="/get-started" element={<InteriorConsultationForm />} />
-=======
         <Route path="/Footer" element={<Footer />} />
         <Route path="/samplevendor" element={<Vendorsample />} />
         <Route path="/samplevendordata" element={<Vendorsampledata/>} />
->>>>>>> 160bed221dc71f3b9e3beae69f5786a0a97ac49f
       </Routes>
     </BrowserRouter>
   );
