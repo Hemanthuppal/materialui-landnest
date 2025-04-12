@@ -1,5 +1,6 @@
 
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Typography,
@@ -28,10 +29,11 @@ import {
   Handyman as RenovationsIcon
 
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
 
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   const cards = [
     {
       title: "Buy",
@@ -302,8 +304,10 @@ const Dashboard = () => {
                 {/* First row - single card (New Building Construction) */}
                 <Grid item xs={12}>
                   <Box display="flex" justifyContent="flex-start">
-                  <Link to="/constructions" style={{ textDecoration: 'none', cursor:'pointer' }}>
-                    <Card sx={{
+                  
+                    <Card 
+                     onClick={() => navigate('/constructions')}
+                    sx={{
                       height: '100px',
                       width: "370px",
                       borderRadius: '12px',
@@ -341,7 +345,6 @@ const Dashboard = () => {
                         </IconButton>
                       </CardContent>
                     </Card>
-                    </Link>
 
                   </Box>
                 </Grid>

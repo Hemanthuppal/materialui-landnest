@@ -1,7 +1,10 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Typography, useTheme, useMediaQuery, Card, CardContent, } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Constructions = () => {
+        const navigate = useNavigate();
+
         const theme = useTheme();
         const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -69,9 +72,11 @@ const Constructions = () => {
                                                 </Typography>
                                         </Grid>
                                         <Grid item>
-                                                <Typography variant={isMobile ? "h6" : "h5"} component="div">
-                                                        Interiors
-                                                </Typography>
+                                                <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                        <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                                                                Interiors
+                                                        </Typography>
+                                                </Link>
                                         </Grid>
                                 </Grid>
                         </Box>
@@ -80,12 +85,14 @@ const Constructions = () => {
                                 backgroundColor: 'rgba(173, 216, 230, 0.3)',
                                 padding: isMobile ? 1 : 2,
                                 marginY: 4,
-                                width: '100%'
+                                width: '104%'
                         }}>
                                 {/* Header row */}
                                 <Grid container justifyContent="space-between" alignItems="center" sx={{ marginBottom: 2 }}>
                                         <Grid item>
-                                                <Typography variant={isMobile ? "body1" : "body1"} fontWeight="bold">
+                                                <Typography
+                                                  onClick={() => navigate('/explore-construction-resources')}
+                                                variant={isMobile ? "body1" : "body1"} fontWeight="bold">
                                                         Explore Constructions Resources
                                                 </Typography>
                                         </Grid>
@@ -238,10 +245,8 @@ const Constructions = () => {
                                 Our Construction Process
                         </Typography>
 
-                      
 
 
-      
 
                 </>
         );
