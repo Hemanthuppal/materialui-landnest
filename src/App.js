@@ -21,6 +21,11 @@ import InteriorConsultationForm from './bharath/Get_started';
 import Footer from './hemanth/Hemanth';
 import Vendorsample from './hemanth/VendorForm';
 import Vendorsampledata from './hemanth/Vendordata';
+import TwodPlansInterior from './bharath/TwodPlansInterior';
+import ThreedPlansInterior from './bharath/ThreedPlansInterior';
+import Elevations from './bharath/Elevations';
+import Packages from './bharath/Packages'
+import HowItWorks from './bharath/HowItWorks'
 
 
 function App() {
@@ -34,6 +39,12 @@ function App() {
         <Route path="/Savedbuy" element={<Saved_Buy />} />
         <Route path="/constructions" element={<Constructions />} />
         <Route path="/interiors" element={<Interiors />} />
+        <Route path="/explore-construction-resources" element={<ExploreConstructionResources />} />
+        <Route path="/two-d-plane-interior" element={<TwodPlansInterior />} />
+        <Route path="/three-d-plane-interior" element={<ThreedPlansInterior />} />
+        <Route path="/elevations" element={<Elevations />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
 
 
 
