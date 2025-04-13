@@ -26,6 +26,7 @@ import ThreedPlansInterior from './bharath/ThreedPlansInterior';
 import Elevations from './bharath/Elevations';
 import Packages from './bharath/Packages'
 import HowItWorks from './bharath/HowItWorks'
+import Lease_discription from './Rajesh/Lease_description';
 
 
 function App() {
@@ -52,8 +53,13 @@ function App() {
 
 
         <Route path="/lease_map" element={<Lease_map />} />
-        <Route path="/lease_detail" element={<Lease_detail />} />
+        <Route path="/lease_details" element={<Lease_detail />} />
+        <Route path="/lease_description/:id" element={<Lease_discription />} />
+        <Route path="/lease_description/:id" element={<Lease_discription />} />
+
+
         <Route path="/mobileproperty" element={<MobilePropertyUI />} />
+        <Route path="/lease_discription" element={<Lease_discription />} />
         
         <Route path="/rent" element={<RentForm />} />
         <Route path="/get-started" element={<InteriorConsultationForm />} />

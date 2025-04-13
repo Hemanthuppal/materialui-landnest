@@ -284,7 +284,7 @@ const InteriorServicesEnhanced = () => {
               height: 200,
               backgroundColor: '#438b98',
               clipPath:
-                'polygon(50% 0%, 61% 18%, 85% 15%, 74% 35%, 98% 50%, 74% 65%, 85% 85%, 61% 82%, 50% 100%, 39% 82%, 15% 85%, 26% 65%, 2% 50%, 26% 35%, 15% 15%, 39% 18%)',
+                'polygon(50% 0%, 58% 15%, 69% 10%, 70% 25%, 83% 20%, 80% 35%, 93% 35%, 85% 50%, 93% 65%, 80% 65%, 83% 80%, 70% 75%, 69% 90%, 58% 85%, 50% 100%, 42% 85%, 31% 90%, 30% 75%, 17% 80%, 20% 65%, 7% 65%, 15% 50%, 7% 35%, 20% 35%, 17% 20%, 30% 25%, 31% 10%, 42% 15%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -359,6 +359,3 @@ const InteriorServicesEnhanced = () => {
 };
 
 export default InteriorServicesEnhanced;
-
-
-
