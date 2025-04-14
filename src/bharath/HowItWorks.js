@@ -144,6 +144,7 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { keyframes } from '@mui/system';
 import BottomNavbar from '../sharvani/BottomNavbar';
+import { useNavigate } from 'react-router-dom';
 
 // Steps for flowchart
 const steps = [
@@ -172,6 +173,8 @@ const fadeIn = keyframes`
 
 const InteriorServicesEnhanced = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
 
   return (
     <>
@@ -210,13 +213,14 @@ const InteriorServicesEnhanced = () => {
           <Box
             sx={{
               position: 'absolute',
-              top: 0,
+              top: 32,
               bottom: 0,
-              left: 30,
+              left: 45,
               width: '4px',
               bgcolor: '#cfd8dc',
               borderRadius: 2,
-              mx: 'auto'
+              mx: 'auto',
+              height:'90%'
             }}
           />
           {steps.map((step, index) => (
@@ -331,6 +335,8 @@ const InteriorServicesEnhanced = () => {
             <Button
               fullWidth
               variant="contained"
+              onClick={() => navigate('/get-started')} // Add this onClick handler
+
               sx={{
                 bgcolor: 'red',
                 fontWeight: 'bold',

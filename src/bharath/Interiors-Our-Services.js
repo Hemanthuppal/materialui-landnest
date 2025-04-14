@@ -1,10 +1,12 @@
 import React from 'react';
 import { Box, Typography, Button, Container, Grid, Card, CardContent, useTheme, useMediaQuery  } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Interiors = () => {
      const theme = useTheme();
           const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+          const navigate = useNavigate();
 
 
           const cards = [
@@ -50,9 +52,12 @@ const Interiors = () => {
     <Container sx={{ padding: 1, backgroundColor:"lightgray" }}>
       {/* Services Row */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="body1">Our services</Typography>
-        <Typography variant="body1">Portfolio</Typography>
-        <Typography variant="body1">How it works?</Typography>
+        <Typography
+         variant="body1">Our services</Typography>
+        <Typography
+         variant="body1">Portfolio</Typography>
+        <Typography   onClick={() => navigate('/how-it-works')}  sx={{ cursor: 'pointer' }}
+         variant="body1">How it works?</Typography>
       </Box>
 
       {/* Full-width Image with Overlay Text & Button */}

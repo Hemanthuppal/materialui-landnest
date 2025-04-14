@@ -7,7 +7,7 @@ import Vendor_Registration from './maniteja/Vendor_Registration';
 import Property_Map from './Sritajana/Property_Map';
 import Saved_Buy from './Sritajana/Savedbuy';
 import Constructions from './bharath/Constructions'
-import Interiors from './bharath/Interiors'
+import Interiors from './bharath/Interiors-Our-Services'
 import ExploreConstructionResources from './bharath/ExploreConstructionResources'
 import PostYourBestDeal from './maniteja/Form-PostYourBestDeal';
 import LeaseForm from './maniteja/Form-Lease';

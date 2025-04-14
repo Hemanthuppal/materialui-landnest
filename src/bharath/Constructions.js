@@ -12,27 +12,37 @@ const Constructions = () => {
                 {
                         title: "Floor Plans 2D",
                         description: "Professional 2D plans with Detailed Measurements.",
-                        bgImage: 'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+                        bgImage: 'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+                        path: "/two-d-plane-interior" 
+
                 },
                 {
                         title: "Floor Plans 3D",
                         description: "Professional 3D plans with Detailed Measurements.",
-                        bgImage: 'url(https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+                        bgImage: 'url(https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+                        path: "/three-d-plane-interior" 
+
                 },
                 {
                         title: "Elevations",
                         description: "Detailed Exterior Views and facade designs.",
-                        bgImage: 'url(https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+                        bgImage: 'url(https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+                        path: "/elevations" 
+
                 },
                 {
                         title: "Our Construction Packages",
                         description: "Complete construction document sets.",
-                        bgImage: 'url(https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+                        bgImage: 'url(https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+                        path: "/packages" 
+
                 },
                 {
                         title: "Quotations",
                         description: "Detailed cost estimates and proposals.",
                         bgImage: 'url(https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+                      
+
                 }
         ];
 
@@ -106,7 +116,9 @@ const Constructions = () => {
                                 {/* Cards section */}
                                 <Box sx={{ width: '100%' }}>
                                         {cards.map((card, index) => (
-                                                <Card key={index} sx={{
+                                                <Card key={index}
+                                                onClick={() => navigate(card.path)} // Navigate on click
+                                                sx={{
                                                         backgroundImage: `${card.bgImage}`,
                                                         backgroundSize: 'cover',
                                                         backgroundPosition: 'center',
