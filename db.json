@@ -46,6 +46,16 @@
       "address": "Aut fugit molestiae",
       "businessType": "Distributor",
       "photoURL": "/assets/images/avatars/avatar_8.jpg"
+    },
+    {
+      "id": "5c3a",
+      "companyName": "sharvani",
+      "contactPerson": "1111111111",
+      "email": "sharvani@gmail.com",
+      "phone": "222222222",
+      "address": "karimanagr",
+      "businessType": "Manufacturer",
+      "photoURL": "/assets/images/avatars/avatar_1.jpg"
     }
   ],
   "nextId": 1
