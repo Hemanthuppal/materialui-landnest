@@ -6,7 +6,7 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
+const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual key
 
 const containerStyle = {
     width: '100%',
@@ -35,18 +35,32 @@ const RedButton = styled(Button)({
     color: 'white',
     '&:hover': { backgroundColor: '#cc0000' },
 });
-const BlueButton = styled(Button)({
-    backgroundColor: '#4da6ff',
+const GreenButton = styled(Button)({
+    backgroundColor: 'green',
     color: 'white',
-    '&:hover': { backgroundColor: '#3399ff' },
+    '&:hover': { backgroundColor: '#008000' },
 });
+
+const categoryFields = {
+    '1BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    '2BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    '3BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    '4+ BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    'plot/land': ['Facing', 'Price',  'Approx Area'],
+    'duplex house': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    'commercial land': ['Facing', 'Price',  'Approx Area'],
+    'commercial building/space': ['Facing', 'Price', 'Parking', 'Approx Area','No.of floors'],
+    'villa': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    'pg-school-office': ['Facing', 'Price', 'Parking', 'Approx Area','No.of floors','Rooms-Count'],
+    'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Approx Area','No.of floors'],
+};
 
 const LeaseForm = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
     const autocompleteRef = useRef(null);
 
-    // Handles when a place is selected from the dropdown
     const onPlaceChanged = () => {
         const place = autocompleteRef.current.getPlace();
         if (place && place.geometry) {
@@ -59,8 +73,7 @@ const LeaseForm = () => {
         }
     };
 
-    // Fallback: Geocode manual address input
-    const geocodeAddress = async () => {
+    const geocodeAddress = () => {
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode({ address }, (results, status) => {
             if (status === 'OK' && results[0]) {
@@ -78,73 +91,87 @@ const LeaseForm = () => {
 
     return (
         <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
-            <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
-                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    Lease Your Property
-                </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 10, maxWidth: 'md', mx: 'auto' }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                        Rent Property Form
+                    </Typography>
 
-                <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
-                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Category</Typography>
-                    <FormControl fullWidth sx={{ mb: 3 }}>
-                        <InputLabel id="category-label">Select Category</InputLabel>
-                        <Select labelId="category-label" label="Select Category" defaultValue="1BHK">
-                            <MenuItem value="1BHK">1BHK</MenuItem>
-                            <MenuItem value="2BHK">2BHK</MenuItem>
-                            <MenuItem value="3BHK">3BHK</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
+                        {/* Category Dropdown */}
+                        <FormControl fullWidth sx={{ mb: 3 }}>
+                            <InputLabel id="category-label">Select Category</InputLabel>
+                            <Select
+                                labelId="category-label"
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                label="Select Category"
+                            >
+                                {Object.keys(categoryFields).map((cat) => (
+                                    <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-                    <TextField fullWidth label="Main Door Facing" variant="outlined" sx={{ mb: 2 }} />
-                    <TextField fullWidth label="Lease per Year" variant="outlined" sx={{ mb: 2 }} />
-                    <TextField fullWidth label="Advance Payment" variant="outlined" sx={{ mb: 2 }} />
+                        {/* Dynamic Fields */}
+                        {selectedCategory &&
+                            categoryFields[selectedCategory].map((label) => (
+                                <TextField
+                                    key={label}
+                                    fullWidth
+                                    label={label}
+                                    variant="outlined"
+                                    sx={{ mb: 2 }}
+                                />
+                            ))}
 
-                    <Autocomplete
-                        onLoad={ref => (autocompleteRef.current = ref)}
-                        onPlaceChanged={onPlaceChanged}
-                    >
-                        <TextField
-                            fullWidth
-                            label="Location"
-                            variant="outlined"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                            onBlur={geocodeAddress}
-                            sx={{ mb: 2 }}
-                        />
-                    </Autocomplete>
+                        {/* Location + Map */}
+                        <Autocomplete
+                            onLoad={(ref) => (autocompleteRef.current = ref)}
+                            onPlaceChanged={onPlaceChanged}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Location"
+                                variant="outlined"
+                                value={address}
+                                onChange={e => setAddress(e.target.value)}
+                                onBlur={geocodeAddress}
+                                sx={{ mb: 2 }}
+                            />
+                        </Autocomplete>
 
-                    {/* Map with marker */}
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={location}
-                        zoom={15}
-                    >
-                        <Marker position={location} />
-                    </GoogleMap>
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={location}
+                            zoom={15}
+                        >
+                            <Marker position={location} />
+                        </GoogleMap>
 
-                    <TextField fullWidth label="Parking" variant="outlined" sx={{ mt: 3, mb: 2 }} />
-                    <TextField fullWidth label="Approx Area" variant="outlined" sx={{ mb: 2 }} />
-                    <TextField fullWidth label="Posted by" variant="outlined" sx={{ mb: 2 }} />
+                        {/* Upload Section */}
+                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
+                            Upload Images
+                        </Typography>
+                        <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
+                            Upload Image
+                            <VisuallyHiddenInput type="file" multiple />
+                        </Button>
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Upload Images</Typography>
-                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
-                        Upload Image
-                        <VisuallyHiddenInput type="file" multiple />
-                    </Button>
+                        {/* Description */}
+                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
+                        <TextField fullWidth variant="outlined" multiline rows={4} />
+                    </Paper>
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
-                    <TextField fullWidth variant="outlined" multiline rows={4} />
-                </Paper>
-
-                <Stack direction="row" spacing={2} justifyContent="center">
-                    <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Cancel</RedButton>
-                    <BlueButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>SUBMIT</BlueButton>
-                </Stack>
+                    {/* Action Buttons */}
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                        <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Cancel</RedButton>
+                        <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Submit</GreenButton>
+                    </Stack>
+                </Box>
             </Box>
         </LoadScript>
     );
 };
 
-export default LeaseForm;
-
-
+export default LeaseForm ;
