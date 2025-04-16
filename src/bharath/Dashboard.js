@@ -207,7 +207,7 @@ function App() {
       justifyContent: 'center',
       alignItems: 'center',
       height: '100px',
-      borderTopLeftRadius: '45px',
+      borderTopLeftRadius: '35px',
       boxShadow: `
         inset 0 2px 4px rgba(255,255,255,0.05),
         0 2px 5px rgba(0,0,0,0.2)
