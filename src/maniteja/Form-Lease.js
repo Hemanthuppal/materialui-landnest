@@ -58,7 +58,7 @@ const categoryFields = {
 const LeaseForm = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('1BHK');
     const autocompleteRef = useRef(null);
 
     const onPlaceChanged = () => {
@@ -94,7 +94,7 @@ const LeaseForm = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                 <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 10, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Rent Property Form
+                        Lease Property Form
                     </Typography>
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>

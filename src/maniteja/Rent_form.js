@@ -216,7 +216,7 @@ const categoryFields = {
 const RentForm = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('1BHK');
     const autocompleteRef = useRef(null);
 
     const onPlaceChanged = () => {
