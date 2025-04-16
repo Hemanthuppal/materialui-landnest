@@ -159,7 +159,7 @@
 // export default PropertyCard;
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -183,9 +183,11 @@ import {
 import buildingImage from '../Images/duplex-house.webp';
 import buildingImage2 from '../Images/Leasebuilding.png';
 import BottomNavbar from '../sharvani/BottomNavbar';
+import CustomSearchBar from './CustomSearchBar'; // ✅ Adjust path if needed
 
 const PropertyCard = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const propertyData = [
     {
@@ -214,13 +216,25 @@ const PropertyCard = () => {
     }
   ];
 
+  const filteredProperties = propertyData.filter((property) =>
+    property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    property.location.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const handleCardClick = (property) => {
     navigate(`/lease_description/${property.id}`, { state: property });
   };
 
   return (
     <>
-      {propertyData.map((property) => (
+      {/* ✳ Search bar like the image */}
+      <CustomSearchBar
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
+      {/* Property Cards */}
+      {filteredProperties.map((property) => (
         <Card
           key={property.id}
           sx={{
@@ -228,12 +242,12 @@ const PropertyCard = () => {
             borderRadius: 4,
             bgcolor: '#ffffff',
             boxShadow: 3,
-            transition: 'transform 0.2s ease-in-out',
+            mx: 2,
+            transition: 'transform 0.2s',
             '&:hover': {
               transform: 'scale(1.015)',
               boxShadow: 6
-            },
-            mx: 2
+            }
           }}
           onClick={() => handleCardClick(property)}
         >
@@ -346,6 +360,7 @@ const PropertyCard = () => {
           </CardContent>
         </Card>
       ))}
+
       <BottomNavbar />
     </>
   );
