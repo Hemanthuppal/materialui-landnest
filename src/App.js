@@ -29,6 +29,7 @@ import HowItWorks from './bharath/HowItWorks'
 import Lease_discription from './Rajesh/Lease_description';
 import Rent_Property_Map from './sharvani/Rent_Propertymap';
 import Rent_description from './sharvani/Rent_description';
+import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
 
 
@@ -37,6 +38,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/forms" element={<Forms/>} />
         <Route path="/details" element={<Details_Page />} />
         <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
         <Route path="/lease-form" element={<LeaseForm />} />
