@@ -30,6 +30,7 @@ import Lease_discription from './Rajesh/Lease_description';
 import Rent_Property_Map from './sharvani/Rent_Propertymap';
 import Rent_description from './sharvani/Rent_description';
 import LeaseSave from './Rajesh/LeaseSave';
+import RentSaves from './sharvani/Rent_Saves';
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
         <Route path="/samplevendordata" element={<Vendorsampledata/>} />
         <Route path="/rent-description" element={<Rent_description/>} />
         <Route path="/rent-propertymap" element={<Rent_Property_Map/>} />
+        <Route path="/rent-saves" element={<RentSaves/>} />
       </Routes>
     </BrowserRouter>
   );

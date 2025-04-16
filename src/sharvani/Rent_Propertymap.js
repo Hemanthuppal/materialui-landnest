@@ -74,7 +74,7 @@ const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState();
 
   const handleCardClick = () => {
     navigate('/rent-description');
