@@ -27,8 +27,6 @@ import Elevations from './bharath/Elevations';
 import Packages from './bharath/Packages'
 import HowItWorks from './bharath/HowItWorks'
 import Lease_discription from './Rajesh/Lease_description';
-import Rent_Property_Map from './sharvani/Rent_Propertymap';
-import Rent_description from './sharvani/Rent_description';
 
 
 function App() {
@@ -68,8 +66,6 @@ function App() {
         <Route path="/Footer" element={<Footer />} />
         <Route path="/samplevendor" element={<Vendorsample />} />
         <Route path="/samplevendordata" element={<Vendorsampledata/>} />
-        <Route path="/rent-description" element={<Rent_description/>} />
-        <Route path="/rent-propertymap" element={<Rent_Property_Map/>} />
       </Routes>
     </BrowserRouter>
   );

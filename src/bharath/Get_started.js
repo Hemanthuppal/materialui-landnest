@@ -14,9 +14,16 @@ import {
   useMediaQuery,
   useTheme,
   Grid,
+   IconButton
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 
 function InteriorConsultationForm() {
+      const navigate = useNavigate();
+  
   const [tabValue, setTabValue] = React.useState(1); // Highlight "Interior"
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -26,6 +33,17 @@ function InteriorConsultationForm() {
   };
 
   return (
+
+    
+    <>
+     <Box display="flex" alignItems="center" padding="10px">
+          <IconButton onClick={() => navigate('/how-it-works')}>
+            <ArrowBackIosIcon />
+          </IconButton>
+        
+        </Box>
+
+
     <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 } }}>
         {/* Top Tabs: Constructions / Interior */}
@@ -111,6 +129,8 @@ function InteriorConsultationForm() {
         </Box>
       </Paper>
     </Container>
+
+    </>
   );
 }
 

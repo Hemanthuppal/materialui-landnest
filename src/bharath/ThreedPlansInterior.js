@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Card, CardMedia, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardMedia, CardContent, Typography, IconButton } from '@mui/material';
 import pic1 from './Images/3d-pic1.jpg';
 import pic2 from './Images/3d-pic2.jpg';
-
+import { useNavigate } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 const data = [
   {
     id: 1,
@@ -57,10 +58,27 @@ const chunkArray = (array, chunkSize) => {
 };
 
 const ThreedPlansInterior = () => {
+    const navigate = useNavigate();
+  
   const rows = chunkArray(data, 2); // Split data into groups of 2
 
   return (
-    <Box display="flex" flexDirection="column" gap={1} marginTop="10px">
+
+      <>
+ <Box display="flex" alignItems="center" padding="10px">
+        <IconButton onClick={() => navigate('/constructions')}>
+          <ArrowBackIosIcon />
+        </IconButton>
+        <Typography
+          align="center"
+          flex={1}
+          fontWeight="bold"
+          fontSize="25px"
+        >
+          3D Plans Interior
+        </Typography>
+      </Box> 
+         <Box display="flex" flexDirection="column" gap={1} marginTop="10px">
       {rows.map((row, rowIndex) => (
         <Box
           key={rowIndex}
@@ -91,6 +109,8 @@ const ThreedPlansInterior = () => {
         </Box>
       ))}
     </Box>
+
+    </>
   );
 };
 
