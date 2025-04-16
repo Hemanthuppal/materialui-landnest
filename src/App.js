@@ -59,7 +59,7 @@ function App() {
         <Route path="/lease_details" element={<Lease_detail />} />
         <Route path="/lease_description/:id" element={<Lease_discription />} />
         <Route path="/mobileproperty" element={<MobilePropertyUI />} />
-        <Route path="/lease_discription" element={<Lease_discription />} />
+        <Route path="/lease-description" element={<Lease_discription />} />
         <Route path="/lease_save" element={<LeaseSave />} />
         
         <Route path="/rent" element={<RentForm />} />
