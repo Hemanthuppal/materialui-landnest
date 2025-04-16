@@ -139,7 +139,9 @@ import {
   Typography,
   Button,
   Paper,
-  useTheme
+  useTheme,
+  IconButton
+
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { keyframes } from '@mui/system';
@@ -178,11 +180,17 @@ const InteriorServicesEnhanced = () => {
 
   return (
     <>
+
+<Box display="flex" alignItems="center" padding="10px">
+          <IconButton onClick={() => navigate('/interiors')}>
+            <ArrowBackIosIcon />
+          </IconButton>
+        
+        </Box>
       {/* Main Container */}
       <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 12 }}>
         {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'center', p: 2, bgcolor: '#fff' }}>
-          <ArrowBackIosIcon sx={{ fontSize: 18, mr: 1 }} />
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             How it works
           </Typography>

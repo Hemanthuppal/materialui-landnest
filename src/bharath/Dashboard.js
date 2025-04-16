@@ -11,6 +11,9 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Avatar,
+  Card,
+  CardContent,
+  CardMedia
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
@@ -22,7 +25,15 @@ import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {
 
+  Home as BuyIcon,
+  House as RentIcon,
+  Business as LeaseIcon,
+  ArrowForward as ArrowIcon,
+
+
+} from '@mui/icons-material';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
@@ -99,13 +110,33 @@ const ImageCard = styled(Paper)(({ theme }) => ({
   },
 }));
 
+
+const cards = [
+  {
+    title: "Buy",
+    icon: <BuyIcon fontSize="large" />,
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+  },
+  {
+    title: "Rent",
+    icon: <RentIcon fontSize="large" />,
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+  },
+  {
+    title: "Lease",
+    icon: <LeaseIcon fontSize="large" />,
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+  }
+];
+
+
 function App() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
       <AppBar position="static" sx={{ bgcolor: 'white', boxShadow: 'none' }}>
         <Toolbar sx={{ minHeight: '56px !important', px: 1 }}>
           <IconButton edge="start" sx={{ mr: 1 }}>
-            <Avatar 
+            <Avatar
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=32&h=32&q=80"
               sx={{ width: 32, height: 32 }}
             />
@@ -131,9 +162,9 @@ function App() {
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Sidebar>
           <Typography sx={{ fontSize: '0.75rem', color: '#424242', mb: 1 }}>New</Typography>
-          <Typography 
-            sx={{ 
-              writingMode: 'vertical-rl', 
+          <Typography
+            sx={{
+              writingMode: 'vertical-rl',
               transform: 'rotate(180deg)',
               fontSize: '0.75rem',
               color: '#424242',
@@ -143,9 +174,9 @@ function App() {
             Building For Sale
           </Typography>
           <Typography sx={{ fontSize: '0.75rem', color: '#424242', mb: 1 }}>Quick Deals</Typography>
-          <Typography 
-            sx={{ 
-              writingMode: 'vertical-rl', 
+          <Typography
+            sx={{
+              writingMode: 'vertical-rl',
               transform: 'rotate(180deg)',
               fontSize: '0.75rem',
               color: '#424242',
@@ -157,7 +188,7 @@ function App() {
           <Typography sx={{ fontSize: '0.75rem', color: '#424242' }}>Best Deals</Typography>
         </Sidebar>
 
-        <Box sx={{ flex: 1, p: 1.5, overflow: 'auto' }}>
+        {/* <Box sx={{ flex: 1, p: 1.5, overflow: 'auto' }}>
           <Typography variant="h6" sx={{ fontSize: '1.1rem', fontWeight: 600, mb: 1.5, color: '#424242' }}>
             Looking for
           </Typography>
@@ -221,8 +252,1306 @@ function App() {
               Painting Electrician Plumbing etc..
             </Typography>
           </CategoryCard>
+        </Box> */}
+
+
+
+        <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
+
+          <Box mb={2}>
+            <Typography variant="h6" align="center" mb={1}>
+              Looking For
+            </Typography>
+
+            <Card sx={{
+              backgroundColor: 'gray',
+              borderRadius: '10px',
+              padding: '5px',
+              boxShadow: 'none'
+            }}>
+              <Grid container spacing={2}>
+                {cards.slice(0, 2).map((card, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Card sx={{
+                      height: '100px',
+                      width: '140px',
+                      borderRadius: '12px',
+                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                      background: card.bgImage,
+                      backgroundSize: 'cover',
+                      color: 'white',
+                      display: 'flex',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      '&:hover': {
+                        transform: 'scale(1.02)',
+                        transition: 'transform 0.3s ease'
+                      }
+                    }}>
+                      <CardContent sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                      }}>
+                        <Box sx={{ textAlign: 'left' }}>
+                          {card.icon}
+                          <Typography variant="h6" component="div" mt={1}>
+                            {card.title}
+                          </Typography>
+                        </Box>
+                        <IconButton sx={{
+                          position: 'absolute',
+                          right: 8,
+                          bottom: 8,
+                          color: 'white'
+                        }}>
+                          <ArrowIcon />
+                        </IconButton>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+
+                <Grid item xs={12}>
+                  <Box display="flex" justifyContent="flex-start">
+                    <Card sx={{
+                      height: '100px',
+                      width: '140px',
+                      borderRadius: '12px',
+                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                      background: cards[2].bgImage,
+                      backgroundSize: 'cover',
+                      color: 'white',
+                      display: 'flex',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      '&:hover': {
+                        transform: 'scale(1.02)',
+                        transition: 'transform 0.3s ease'
+                      }
+                    }}>
+                      <CardContent sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                      }}>
+                        <Box sx={{ textAlign: 'left' }}>
+                          {cards[2].icon}
+                          <Typography variant="h6" component="div" mt={1}>
+                            {cards[2].title}
+                          </Typography>
+                        </Box>
+                        <IconButton sx={{
+                          position: 'absolute',
+                          right: 8,
+                          bottom: 8,
+                          color: 'white'
+                        }}>
+                          <ArrowIcon />
+                        </IconButton>
+                      </CardContent>
+                    </Card>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Card>
+          </Box>
+
+
+
+
+          {/* <Box mb={2}>
+            <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
+              Constructions
+            </Typography>
+
+            <Card sx={{
+              backgroundColor: 'gray',
+              borderRadius: '10px',
+              paddingBottom: '30px',
+              boxShadow: 'none'
+            }}>
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="flex-start">
+                  <Card sx={{
+                    height: '180px',
+                    width: '100%',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    background: cards[2].bgImage,
+                    backgroundSize: 'cover',
+                    color: 'white',
+                    display: 'flex',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      transition: 'transform 0.3s ease'
+                    }
+                  }}>
+                    <CardContent sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      width: '100%'
+                    }}>
+                      <Box sx={{ textAlign: 'left' }}>
+                        <Typography variant="h6" component="div" mt={1}>
+                          {cards[2].title}
+                        </Typography>
+                      </Box>
+                      <IconButton sx={{
+                        position: 'absolute',
+                        right: 8,
+                        bottom: 8,
+                        color: 'white'
+                      }}>
+                        <ArrowIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Grid>
+            </Card>
+          </Box> */}
+
+
+
+          <Box mb={2}>
+            <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
+              Constructions
+            </Typography>
+
+            <Card sx={{
+              backgroundColor: 'gray',
+              // borderRadius: '40px 0 0 40px',
+              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '40px',
+              paddingBottom: '30px',
+              boxShadow: 'none'
+            }}>
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="flex-start">
+                  <Card sx={{
+                    height: '150px',
+                    width: '100%',
+                    borderBottomRightRadius: '40px',
+                    borderTopLeftRadius: '40px', 
+                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    background: cards[2].bgImage,
+                    backgroundSize: 'cover',
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      transition: 'transform 0.3s ease'
+                    }
+                  }}>
+                    {/* Image section - takes up most of the card */}
+                    <Box sx={{
+                      height: '70%',
+                      background: cards[2].bgImage,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+
+                    {/* Bottom section with title and arrow */}
+                    <CardContent sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '30%',
+                      padding: '8px 16px',
+                      boxSizing: 'border-box'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="body1" fontWeight='bold' component="div" ml={1}>
+New Building Construction                     </Typography>
+                      </Box>
+                      <IconButton sx={{ color: 'white' }}>
+                        <ArrowIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Grid>
+            </Card>
+          </Box>
+
+          <Box mb={2}>
+           
+            <Card sx={{
+              backgroundColor: 'gray',
+              // borderRadius: '40px 0 0 40px',
+              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '40px',
+              paddingBottom: '30px',
+              boxShadow: 'none'
+            }}>
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="flex-start">
+                  <Card sx={{
+                    height: '150px',
+                    width: '100%',
+                    borderBottomRightRadius: '40px',
+                    borderTopLeftRadius: '40px', 
+                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    background: cards[2].bgImage,
+                    backgroundSize: 'cover',
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      transition: 'transform 0.3s ease'
+                    }
+                  }}>
+                    {/* Image section - takes up most of the card */}
+                    <Box sx={{
+                      height: '70%',
+                      background: cards[2].bgImage,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+
+                    {/* Bottom section with title and arrow */}
+                    <CardContent sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '30%',
+                      padding: '8px 16px',
+                      boxSizing: 'border-box'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="body1" fontWeight='bold' component="div" ml={1}>
+Interiors                        </Typography>
+                      </Box>
+                      <IconButton sx={{ color: 'white' }}>
+                        <ArrowIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Grid>
+            </Card>
+          </Box>
+          <Box mb={2}>
+           
+
+            <Card sx={{
+              backgroundColor: 'gray',
+              // borderRadius: '40px 0 0 40px',
+              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '40px',
+              paddingBottom: '30px',
+              boxShadow: 'none'
+            }}>
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="flex-start">
+                  <Card sx={{
+                    height: '150px',
+                    width: '100%',
+                    borderBottomRightRadius: '40px',
+                    borderTopLeftRadius: '40px', 
+                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    background: cards[2].bgImage,
+                    backgroundSize: 'cover',
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      transition: 'transform 0.3s ease'
+                    }
+                  }}>
+                    {/* Image section - takes up most of the card */}
+                    <Box sx={{
+                      height: '70%',
+                      background: cards[2].bgImage,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+
+                    {/* Bottom section with title and arrow */}
+                    <CardContent sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '30%',
+                      padding: '8px 16px',
+                      boxSizing: 'border-box'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                          Renovations
+                        </Typography>
+                      </Box>
+                      <IconButton sx={{ color: 'white' }}>
+                        <ArrowIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Grid>
+            </Card>
+          </Box>
+
+
+
+          
+          <Box mb={2}>
+            <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
+              Home Services
+            </Typography>
+
+            <Card sx={{
+              backgroundColor: 'gray',
+              // borderRadius: '40px 0 0 40px',
+              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '40px',
+              paddingBottom: '30px',
+              boxShadow: 'none'
+            }}>
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="flex-start">
+                  <Card sx={{
+                    height: '150px',
+                    width: '100%',
+                    borderBottomRightRadius: '40px',
+                    borderTopLeftRadius: '40px', 
+                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    background: cards[2].bgImage,
+                    backgroundSize: 'cover',
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      transition: 'transform 0.3s ease'
+                    }
+                  }}>
+                    {/* Image section - takes up most of the card */}
+                    <Box sx={{
+                      height: '70%',
+                      background: cards[2].bgImage,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+
+                    {/* Bottom section with title and arrow */}
+                    <CardContent sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '30%',
+                      padding: '8px 16px',
+                      boxSizing: 'border-box'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="body1" fontWeight='bold' component="div" ml={1}>
+Painting
+                        </Typography>
+                      </Box>
+                      <IconButton sx={{ color: 'white' }}>
+                        <ArrowIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Grid>
+            </Card>
+          </Box>
+
+
+          <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Electrical
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Tiles & Granite Repair Works
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Plumbing
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Carpenter
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         AC Installation & Repair
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Aliminum Fabrication & Repair
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         UPVC fabrication & Repair
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Gas Pipeline installation & Repair
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Steel Fabrications 
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Home Clean
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+Toilet & Kitchen Cleaning                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Sofa & Curtain Installatio & Cleaning
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Homemaid
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+         <Box mb={2}>
+           <Card sx={{
+             backgroundColor: 'gray',
+             // borderRadius: '40px 0 0 40px',
+             borderBottomRightRadius: '40px',
+             borderTopLeftRadius: '40px',
+             paddingBottom: '30px',
+             boxShadow: 'none'
+           }}>
+             <Grid item xs={12}>
+               <Box display="flex" justifyContent="flex-start">
+                 <Card sx={{
+                   height: '150px',
+                   width: '100%',
+                   borderBottomRightRadius: '40px',
+                   borderTopLeftRadius: '40px', 
+                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                   background: cards[2].bgImage,
+                   backgroundSize: 'cover',
+                   color: 'white',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   cursor: 'pointer',
+                   position: 'relative',
+                   '&:hover': {
+                     transform: 'scale(1.02)',
+                     transition: 'transform 0.3s ease'
+                   }
+                 }}>
+                   {/* Image section - takes up most of the card */}
+                   <Box sx={{
+                     height: '70%',
+                     background: cards[2].bgImage,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center'
+                   }} />
+
+                   {/* Bottom section with title and arrow */}
+                   <CardContent sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '30%',
+                     padding: '8px 16px',
+                     boxSizing: 'border-box'
+                   }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                       <Typography variant="body1"  fontWeight='bold' component="div" ml={1}>
+                         Gardener
+                       </Typography>
+                     </Box>
+                     <IconButton sx={{ color: 'white' }}>
+                       <ArrowIcon />
+                     </IconButton>
+                   </CardContent>
+                 </Card>
+               </Box>
+             </Grid>
+           </Card>
+         </Box>
+
+
         </Box>
+
+
+
+
+
       </Box>
+
+
+
+
 
       <BottomNavigation
         showLabels
@@ -239,28 +1568,28 @@ function App() {
           },
         }}
       >
-        <BottomNavigationAction 
-          label="Home" 
-          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />} 
+        <BottomNavigationAction
+          label="Home"
+          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
         />
-        <BottomNavigationAction 
-          label="Construction & Interiors" 
+        <BottomNavigationAction
+          label="Construction & Interiors"
           icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
         />
         <BottomNavigationAction
           label="Post"
           icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-          sx={{ 
+          sx={{
             '& .MuiSvgIcon-root': { color: '#2196f3' },
             '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
           }}
         />
-        <BottomNavigationAction 
-          label="Home Services" 
+        <BottomNavigationAction
+          label="Home Services"
           icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
         />
-        <BottomNavigationAction 
-          label="Profile" 
+        <BottomNavigationAction
+          label="Profile"
           icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
         />
       </BottomNavigation>
