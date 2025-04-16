@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
-  Drawer, 
-  List, 
-  ListItem, 
-  ListItemIcon, 
-  ListItemText, 
-  Grid, 
-  Card, 
-  CardMedia, 
-  CardContent, 
+import {
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Card,
+  CardMedia,
+  CardContent,
   Typography,
-  Divider
+  Divider,
+  useMediaQuery
 } from '@mui/material';
 import {
   Kitchen as KitchenIcon,
@@ -19,11 +19,24 @@ import {
   Bathtub as BathroomIcon,
   DoorFront as DoorsIcon
 } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
+
+const chunkArray = (array, chunkSize) => {
+  const result = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    result.push(array.slice(i, i + chunkSize));
+  }
+  return result;
+};
 
 const ExploreConstructionResources = () => {
   const [activeCategory, setActiveCategory] = useState('kitchen');
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // Realistic construction images (4 items per category, 2 rows of 2)
+  const drawerWidth = 80;
+
   const categories = {
     kitchen: [
       { id: 1, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
@@ -51,17 +64,13 @@ const ExploreConstructionResources = () => {
     ]
   };
 
-  const drawerWidth = '15%';
+  const rows = chunkArray(categories[activeCategory], 2);
 
   return (
-    <Box sx={{ 
-      display: 'flex',
-      height: '100vh',
-      width: '100vw',
-      overflow: 'hidden'
-    }}>
-      {/* Slim Sidebar - 20% width */}
+    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
       <Drawer
+        variant="permanent"
+        anchor="left"
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -69,41 +78,32 @@ const ExploreConstructionResources = () => {
             width: drawerWidth,
             boxSizing: 'border-box',
             backgroundColor: '#f5f5f5',
+            borderRight: 'none',
           },
         }}
-        variant="permanent"
-        anchor="left"
       >
         <List dense sx={{ p: 0 }}>
-          {[
-            { id: 'kitchen', icon: <KitchenIcon fontSize="small" />, label: 'Kitchen' },
-            { id: 'structure', icon: <StructureIcon fontSize="small" />, label: 'Structure' },
-            { id: 'bathroom', icon: <BathroomIcon fontSize="small" />, label: 'Bathroom' },
-            { id: 'doors', icon: <DoorsIcon fontSize="small" />, label: 'Doors' },
+          {[{ id: 'kitchen', icon: <KitchenIcon />, label: 'Kitchen' },
+            { id: 'structure', icon: <StructureIcon />, label: 'Structure' },
+            { id: 'bathroom', icon: <BathroomIcon />, label: 'Bathroom' },
+            { id: 'doors', icon: <DoorsIcon />, label: 'Doors' }
           ].map((item) => (
             <React.Fragment key={item.id}>
-              <ListItem 
-                button 
+              <ListItem
+                button
                 selected={activeCategory === item.id}
                 onClick={() => setActiveCategory(item.id)}
                 sx={{
                   py: 1.5,
                   '&.Mui-selected': {
-                    backgroundColor: 'primary.main',
+                    backgroundColor: '#00C4B4',
                     color: 'white',
-                    '& .MuiListItemIcon-root': {
-                      color: 'white',
-                    }
-                  }
+                    '& .MuiListItemIcon-root': { color: 'white' },
+                  },
                 }}
               >
-                <ListItemIcon sx={{ minWidth: 'auto', mr: 1 }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText 
-                  primary={item.label} 
-                  primaryTypographyProps={{ fontSize: '0.8rem' }} 
-                />
+                <ListItemIcon sx={{ minWidth: 'auto', mr: 1 }}>{item.icon}</ListItemIcon>
+                {!isMobile && <ListItemText primary={item.label} sx={{ ml: 1 }} />}
               </ListItem>
               <Divider />
             </React.Fragment>
@@ -111,48 +111,53 @@ const ExploreConstructionResources = () => {
         </List>
       </Drawer>
 
-      {/* Main content - 80% width with 2 cards per row */}
-      <Box 
-        component="main" 
-        sx={{ 
-          flexGrow: 1, 
-          p: 1,
-          width: `calc(100% - ${drawerWidth})`,
+      {/* Main content */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 2,
           overflowY: 'auto',
-          height: '100vh'
+          bgcolor: '#fff',
         }}
       >
-        <Grid container spacing={1.5}>
-          {categories[activeCategory].map((item) => (
-            <Grid item xs={6} key={item.id} sx={{ display: 'flex' }}>
-              <Card sx={{ 
-                flex: 1,
-                borderRadius: 1,
-                boxShadow: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                '&:hover': {
-                  boxShadow: 4
-                }
-              }}>
-                <CardMedia
-                  component="img"
-                  image={item.imageUrl}
-                  alt={item.title}
-                  sx={{ 
-                    height: 120,
-                    objectFit: 'cover'
+        <Typography variant="h6" align="center" sx={{ mb: 2, fontWeight: 500, color: '#1a237e' }}>
+          Explore Construction Resources
+        </Typography>
+
+        <Box display="flex" flexDirection="column" gap={2}>
+          {rows.map((row, rowIndex) => (
+            <Box key={rowIndex} display="flex" gap={2} padding={1}>
+              {row.map((item) => (
+                <Card
+                  key={item.id}
+                  onClick={() => setSelectedItemId(item.id)}
+                  sx={{
+                    width: '100%',
+                    borderRadius: 2,
+                    boxShadow: selectedItemId === item.id ? 6 : 2,
+                    border: selectedItemId === item.id ? '2px solid #00C4B4' : '1px solid #ddd',
+                    cursor: 'pointer',
+                    transition: '0.2s',
+                    overflow: 'hidden',
                   }}
-                />
-                <CardContent sx={{ p: 1, flexGrow: 1 }}>
-                  <Typography variant="subtitle2" fontWeight="medium" align="center">
-                    {item.title}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+                >
+                  <CardMedia
+                    component="img"
+                    image={item.imageUrl}
+                    alt={item.title}
+                    sx={{ height: 100, objectFit: 'cover' }}
+                  />
+                  <CardContent sx={{ p: 1 }}>
+                    <Typography variant="body2" align="center" fontWeight="500">
+                      {item.title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Box>
     </Box>
   );
