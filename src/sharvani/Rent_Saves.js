@@ -6,20 +6,22 @@ import {
   CardContent,
   Typography,
   IconButton,
+  CardActions,
   Paper,
   BottomNavigation,
-  BottomNavigationAction
+  BottomNavigationAction,
+  Tooltip
 } from '@mui/material';
 import {
-  ArrowBackIosNew,
-  Search as SearchIcon,
-  Tune as TuneIcon,
-  Favorite as FavoriteIcon,
-  List as ListIcon,
   Home as HomeIcon,
-  Mail as MailIcon
+  List as ListIcon,
+  Favorite as FavoriteIcon,
+  Mail as MailIcon,
+  Share as ShareIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import CustomSearchBar from '../Rajesh/CustomSearchBar';
 
 const RentSaves = () => {
   const [saved, setSaved] = useState([]);
@@ -41,44 +43,32 @@ const RentSaves = () => {
     if (newValue === 3) navigate('/inbox');
   };
 
+  const handleRemove = (id) => {
+    const updated = saved.filter((item) => item.id !== id);
+    setSaved(updated);
+    localStorage.setItem('savedRent', JSON.stringify(updated));
+  };
+
+  const handleShare = (property) => {
+    const shareText = `Check out this property: ${property.title}, located at ${property.location}`;
+    if (navigator.share) {
+      navigator.share({
+        title: property.title,
+        text: shareText,
+        url: window.location.href
+      });
+    } else {
+      alert("Sharing is not supported on this browser.");
+    }
+  };
+
+  const handleCardClick = (id) => {
+    navigate(`/rent-description`);
+  };
+
   return (
     <>
-      {/* Searchbar and Back */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor: '#e0e0e0',
-          borderRadius: '10px',
-          py: 1.2,
-          px: 1,
-          mb: 2,
-          mx: 2,
-          mt: 2
-        }}
-      >
-        <IconButton onClick={() => navigate(-1)}>
-          <ArrowBackIosNew sx={{ fontSize: 20 }} />
-        </IconButton>
-        <Box
-          sx={{
-            flexGrow: 1,
-            backgroundColor: '#fff',
-            borderRadius: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            px: 2,
-            height: 40,
-            mx: 1
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }} />
-          <SearchIcon sx={{ fontSize: 20, color: '#666' }} />
-        </Box>
-        <IconButton>
-          <TuneIcon sx={{ fontSize: 20 }} />
-        </IconButton>
-      </Box>
+      <CustomSearchBar />
 
       <Box sx={{ pb: 10 }}>
         {saved.length === 0 ? (
@@ -87,20 +77,36 @@ const RentSaves = () => {
           </Typography>
         ) : (
           saved.map((property) => (
-            <Card key={property.id} sx={{ mb: 2, mx: 2 }}>
-              <CardMedia component="img" height="180" image={property.image} />
-              <CardContent>
+            <Card key={property.id} sx={{ mb: 2, mx: 2, cursor: 'pointer' }}>
+              <CardMedia
+                component="img"
+                height="180"
+                image={property.image}
+                onClick={() => handleCardClick(property.id)}
+              />
+              <CardContent onClick={() => handleCardClick(property.id)}>
                 <Typography variant="h6">{property.title}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   {property.location}
                 </Typography>
               </CardContent>
+              <CardActions>
+                <Tooltip title="Share">
+                  <IconButton onClick={() => handleShare(property)}>
+                    <ShareIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Remove">
+                  <IconButton onClick={() => handleRemove(property.id)}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Tooltip>
+              </CardActions>
             </Card>
           ))
         )}
       </Box>
 
-      {/* Bottom Nav */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />

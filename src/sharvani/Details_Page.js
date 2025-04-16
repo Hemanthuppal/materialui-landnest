@@ -1,3 +1,4 @@
+// PropertyCard.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,13 +18,12 @@ import {
 } from '@mui/material';
 import {
   FavoriteBorder,
+  Favorite,
   Share,
   ThumbUpAltOutlined,
+  ThumbUpAlt,
   Call,
   LocationOn,
-  Search as SearchIcon,
-  Tune as TuneIcon,
-  ArrowBackIosNew as ArrowBackIosNewIcon,
   Home as HomeIcon,
   List as ListIcon,
   Favorite as FavoriteIcon,
@@ -31,10 +31,18 @@ import {
 } from '@mui/icons-material';
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
+import CustomSearchBar from './../Rajesh/CustomSearchBar';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [saved, setSaved] = useState(() => {
+    const stored = localStorage.getItem('savedRent');
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const [likedCards, setLikedCards] = useState({}); // 🔵 Per-card like state
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,72 +79,50 @@ const PropertyCard = () => {
     }
   ];
 
-  const handleCardClick = (property) => {
-    navigate(`/rent-description`);
+  const toggleSave = (property) => {
+    const isSaved = saved.find((p) => p.id === property.id);
+    let updated;
+
+    if (isSaved) {
+      updated = saved.filter((p) => p.id !== property.id);
+    } else {
+      updated = [...saved, property];
+    }
+
+    setSaved(updated);
+    localStorage.setItem('savedRent', JSON.stringify(updated));
+  };
+
+  const isSaved = (property) => saved.some((p) => p.id === property.id);
+
+  const filteredProperties = propertyData.filter((property) =>
+    property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    property.location.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const toggleLike = (id) => {
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
   };
 
   return (
     <>
-      {/* Back + Styled Search Bar */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor: '#e0e0e0',
-          borderRadius: '10px',
-          py: 1.2,
-          px: 1,
-          mb: 2,
-          mx: 2,
-          mt: 2
-        }}
-      >
-        {/* Back Icon */}
-        <IconButton onClick={() => navigate(-1)}>
-          <ArrowBackIosNewIcon sx={{ fontSize: 20 }} />
-        </IconButton>
+      <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
 
-        {/* Search Box */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            backgroundColor: '#fff',
-            borderRadius: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            px: 2,
-            height: 40,
-            mx: 1
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }} />
-          <SearchIcon sx={{ fontSize: 20, color: '#666' }} />
-        </Box>
-
-        {/* Filter Icon */}
-        <IconButton>
-          <TuneIcon sx={{ fontSize: 20 }} />
-        </IconButton>
-      </Box>
-
-      {/* Property Cards */}
-      <Box sx={{ pb: 10 }}>
-        {propertyData.map((property) => (
+      <Box sx={{ pb: 10 }}> {/* 🔵 Padding Bottom to avoid overlap */}
+        {filteredProperties.map((property) => (
           <Card
             key={property.id}
             sx={{
               mb: 4,
+              mx: 2,
               borderRadius: 4,
-              bgcolor: '#ffffff',
               boxShadow: 3,
               transition: 'transform 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'scale(1.015)',
-                boxShadow: 6
-              },
-              mx: 2
+              '&:hover': { transform: 'scale(1.015)', boxShadow: 6 }
             }}
-            onClick={() => handleCardClick(property)}
           >
             <Box position="relative">
               <CardMedia
@@ -148,8 +134,11 @@ const PropertyCard = () => {
               />
               <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 1 }}>
                 <Tooltip title="Add to Wishlist">
-                  <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
-                    <FavoriteBorder />
+                  <IconButton
+                    sx={{ bgcolor: 'white', boxShadow: 1 }}
+                    onClick={() => toggleSave(property)}
+                  >
+                    {isSaved(property) ? <Favorite color="error" /> : <FavoriteBorder />}
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Share">
@@ -160,8 +149,15 @@ const PropertyCard = () => {
               </Box>
               <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
                 <Tooltip title="Like">
-                  <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
-                    <ThumbUpAltOutlined />
+                  <IconButton
+                    sx={{
+                      bgcolor: 'white',
+                      boxShadow: 1,
+                      color: likedCards[property.id] ? 'blue' : 'default'
+                    }}
+                    onClick={() => toggleLike(property.id)}
+                  >
+                    {likedCards[property.id] ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -203,44 +199,23 @@ const PropertyCard = () => {
 
               <Divider sx={{ my: 2 }} />
 
-              <Grid
-                container
-                sx={{
-                  border: '1px solid #e0e0e0',
-                  borderRadius: 2,
-                  overflow: 'hidden'
-                }}
-              >
+              <Grid container sx={{ border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
                 <Grid item xs={4}>
                   <Box sx={{ borderRight: '1px solid #e0e0e0', p: 1.5, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">
-                      Facing
-                    </Typography>
-                    <Typography variant="body2" fontWeight="bold">
-                      {property.facing}
-                    </Typography>
+                    <Typography variant="caption" color="text.secondary">Facing</Typography>
+                    <Typography variant="body2" fontWeight="bold">{property.facing}</Typography>
                   </Box>
                 </Grid>
-
                 <Grid item xs={4}>
                   <Box sx={{ borderRight: '1px solid #e0e0e0', p: 1.5, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">
-                      Area ({property.dimensions})
-                    </Typography>
-                    <Typography variant="body2" fontWeight="bold">
-                      {property.area}
-                    </Typography>
+                    <Typography variant="caption" color="text.secondary">Area ({property.dimensions})</Typography>
+                    <Typography variant="body2" fontWeight="bold">{property.area}</Typography>
                   </Box>
                 </Grid>
-
                 <Grid item xs={4}>
                   <Box sx={{ p: 1.5, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">
-                      Listed By
-                    </Typography>
-                    <Typography variant="body2" fontWeight="bold">
-                      {property.listedBy}
-                    </Typography>
+                    <Typography variant="caption" color="text.secondary">Listed By</Typography>
+                    <Typography variant="body2" fontWeight="bold">{property.listedBy}</Typography>
                   </Box>
                 </Grid>
               </Grid>
@@ -249,7 +224,6 @@ const PropertyCard = () => {
         ))}
       </Box>
 
-      {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />

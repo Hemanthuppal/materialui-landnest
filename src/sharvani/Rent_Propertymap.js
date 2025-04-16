@@ -37,6 +37,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
+import CustomSearchBar from '../Rajesh/CustomSearchBar';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -115,11 +116,12 @@ const Rent_Property_Map = () => {
 
   return (
     <Box sx={{ p: 2, pb: 7, maxWidth: 480, mx: "auto" }}>
+      <CustomSearchBar/>
       <Card elevation={4} sx={{ p: 2 }}>
         
         {/* Back + Search Bar */}
 {/* Back + Styled Search Bar with exact icons */}
-<Box
+{/* <Box
  sx={{
   display: 'flex',
   alignItems: 'center',
@@ -132,12 +134,12 @@ const Rent_Property_Map = () => {
 
 >
   {/* Back Arrow Icon */}
-  <IconButton onClick={() => navigate(-1)}>
+  {/* <IconButton onClick={() => navigate(-1)}>
     <ArrowBackIosNewIcon sx={{ fontSize: 20 }} />
-  </IconButton>
+  </IconButton> */}
 
   {/* Search Box */}
-  <Box
+  {/* <Box
     sx={{
       flexGrow: 1,
       backgroundColor: '#fff',
@@ -151,13 +153,13 @@ const Rent_Property_Map = () => {
   >
     <Box sx={{ flexGrow: 1 }} />
     <SearchIcon sx={{ fontSize: 20, color: '#666' }} />
-  </Box>
+  </Box> */}
 
   {/* Filter Icon */}
-  <IconButton>
+  {/* <IconButton>
     <TuneIcon sx={{ fontSize: 20 }} />
   </IconButton>
-</Box>
+</Box>  */}
 
 
 
