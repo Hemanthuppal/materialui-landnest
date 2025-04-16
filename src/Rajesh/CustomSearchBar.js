@@ -1,8 +1,11 @@
 import React from 'react';
-import { ArrowBack, Search, Tune } from '@mui/icons-material';
+import {  Search, Tune } from '@mui/icons-material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Box, IconButton, InputBase, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const CustomSearchBar = ({ value, onChange }) => {
+  const navigate = useNavigate();
   return (
     <Paper
       component="form"
@@ -18,8 +21,8 @@ const CustomSearchBar = ({ value, onChange }) => {
         my: 2
       }}
     >
-      <IconButton>
-        <ArrowBack />
+      <IconButton onClick={() => navigate(-1)}>
+        <ArrowBackIosNewIcon />
       </IconButton>
       <InputBase
         sx={{ ml: 1, flex: 1 }}
