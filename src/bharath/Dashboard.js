@@ -446,7 +446,7 @@ function App() {
         <AppBar
   position="fixed" // Fixed at top
   sx={{
-    bgcolor: 'white',
+    bgcolor: 'rgb(235, 233, 230)',
     boxShadow: 'none',
     height: '50px',
     width: '85%',
@@ -462,7 +462,7 @@ function App() {
       <StyledInputBase placeholder="Search…" />
     </Search>
     <IconButton size="small">
-      <FavoriteBorderIcon sx={{ fontSize: '1rem', color: '#757575' }} />
+      <FavoriteBorderIcon sx={{ fontSize: '1rem', color: ' #757575' }} />
     </IconButton>
     <IconButton size="small">
       <NotificationsNoneIcon sx={{ fontSize: '1rem', color: '#757575' }} />
