@@ -31,6 +31,7 @@ import Rent_Property_Map from './sharvani/Rent_Propertymap';
 import Rent_description from './sharvani/Rent_description';
 import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
+import RentSaves from './sharvani/Rent_Saves';
 
 
 function App() {
@@ -61,7 +62,7 @@ function App() {
         <Route path="/lease_details" element={<Lease_detail />} />
         <Route path="/lease_description/:id" element={<Lease_discription />} />
         <Route path="/mobileproperty" element={<MobilePropertyUI />} />
-        <Route path="/lease_discription" element={<Lease_discription />} />
+        <Route path="/lease-description" element={<Lease_discription />} />
         <Route path="/lease_save" element={<LeaseSave />} />
         
         <Route path="/rent-form" element={<RentForm />} />
@@ -71,6 +72,7 @@ function App() {
         <Route path="/samplevendordata" element={<Vendorsampledata/>} />
         <Route path="/rent-description" element={<Rent_description/>} />
         <Route path="/rent-propertymap" element={<Rent_Property_Map/>} />
+        <Route path="/rent-saves" element={<RentSaves/>} />
       </Routes>
     </BrowserRouter>
   );

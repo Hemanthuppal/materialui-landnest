@@ -1,7 +1,13 @@
 import React from 'react';
-import { Box, Card, CardMedia, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardMedia, CardContent, Typography,   IconButton,  Grid,
+  useMediaQuery,   useTheme,
+  
+} from '@mui/material';
 import pic1 from './Images/3d-pic1.jpg';
 import pic2 from './Images/3d-pic2.jpg';
+import { useNavigate } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Link } from 'react-router-dom';
 
 const data = [
   {
@@ -57,10 +63,59 @@ const chunkArray = (array, chunkSize) => {
 };
 
 const ThreedPlansInterior = () => {
+    const navigate = useNavigate();
+      const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
   const rows = chunkArray(data, 2); // Split data into groups of 2
 
   return (
-    <Box display="flex" flexDirection="column" gap={1} marginTop="10px">
+
+      <>
+ <Box display="flex" alignItems="center" padding="10px">
+        <IconButton onClick={() => navigate('/constructions')}>
+          <ArrowBackIosIcon />
+        </IconButton>
+      
+      </Box> 
+
+
+       <Box sx={{
+                backgroundColor: '#e6f2ff',  // Light blue color
+                padding: isMobile ? 2 : 2,
+                borderRadius: 1,
+                // Optional: adds slight rounded corners
+              }}>
+                <Grid container justifyContent="space-between" alignItems="center">
+                  <Grid item>
+                    <Link to="/constructions" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                        Constructions
+                      </Typography>
+                    </Link>
+      
+                  </Grid>
+                  <Grid item>
+                    <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                        Interiors
+                      </Typography>
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+
+
+
+      <Typography
+          align="center"
+          flex={1}
+          fontWeight="bold"
+          fontSize="25px"
+        >
+          3D Plans Interior
+        </Typography>
+         <Box display="flex" flexDirection="column" gap={1} marginTop="10px">
       {rows.map((row, rowIndex) => (
         <Box
           key={rowIndex}
@@ -91,6 +146,8 @@ const ThreedPlansInterior = () => {
         </Box>
       ))}
     </Box>
+
+    </>
   );
 };
 

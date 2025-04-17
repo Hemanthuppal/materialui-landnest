@@ -14,9 +14,17 @@ import {
   useMediaQuery,
   useTheme,
   Grid,
+   IconButton
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 
 function InteriorConsultationForm() {
+      const navigate = useNavigate();
+  
   const [tabValue, setTabValue] = React.useState(1); // Highlight "Interior"
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -26,6 +34,43 @@ function InteriorConsultationForm() {
   };
 
   return (
+
+    
+    <>
+     <Box display="flex" alignItems="center" padding="10px">
+          <IconButton onClick={() => navigate('/how-it-works')}>
+            <ArrowBackIosIcon />
+          </IconButton>
+        
+        </Box>
+
+        <Box sx={{
+          backgroundColor: '#e6f2ff',  // Light blue color
+          padding: isMobile ? 2 : 2,
+          borderRadius: 1,
+          // Optional: adds slight rounded corners
+        }}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Link to="/constructions" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                  Constructions
+                </Typography>
+              </Link>
+
+            </Grid>
+            <Grid item>
+              <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                  Interiors
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+
+
+
     <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 } }}>
         {/* Top Tabs: Constructions / Interior */}
@@ -111,6 +156,8 @@ function InteriorConsultationForm() {
         </Box>
       </Paper>
     </Container>
+
+    </>
   );
 }
 

@@ -139,12 +139,17 @@ import {
   Typography,
   Button,
   Paper,
-  useTheme
+  useTheme,
+  IconButton,
+  Grid,
+  useMediaQuery,
+
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { keyframes } from '@mui/system';
 import BottomNavbar from '../sharvani/BottomNavbar';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Steps for flowchart
 const steps = [
@@ -174,25 +179,54 @@ const fadeIn = keyframes`
 const InteriorServicesEnhanced = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
 
   return (
     <>
+
+      <Box display="flex" alignItems="center" padding="10px">
+        <IconButton onClick={() => navigate('/interiors')}>
+          <ArrowBackIosIcon />
+        </IconButton>
+
+      </Box>
       {/* Main Container */}
       <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 12 }}>
-        {/* Header */}
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 2, bgcolor: '#fff' }}>
-          <ArrowBackIosIcon sx={{ fontSize: 18, mr: 1 }} />
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            How it works
-          </Typography>
+
+
+        <Box sx={{
+          backgroundColor: '#e6f2ff',  // Light blue color
+          padding: isMobile ? 2 : 2,
+          borderRadius: 1,
+          // Optional: adds slight rounded corners
+        }}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Link to="/constructions" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                  Constructions
+                </Typography>
+              </Link>
+
+            </Grid>
+            <Grid item>
+              <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                  Interiors
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
 
+
         {/* Navigation Tabs */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-around', p: 1, bgcolor: '#fff' }}>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', p: 1, bgcolor: '#fff' }}>
           <Typography>Constructions</Typography>
           <Typography sx={{ color: 'green', fontWeight: 'bold' }}>Interior</Typography>
-        </Box>
+        </Box> */}
         <Box sx={{ display: 'flex', justifyContent: 'space-around', p: 1, bgcolor: '#fff' }}>
           <Typography>Our Services</Typography>
           <Typography>Portfolio</Typography>
@@ -220,7 +254,7 @@ const InteriorServicesEnhanced = () => {
               bgcolor: '#cfd8dc',
               borderRadius: 2,
               mx: 'auto',
-              height:'90%'
+              height: '90%'
             }}
           />
           {steps.map((step, index) => (
