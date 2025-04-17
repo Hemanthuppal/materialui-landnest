@@ -129,7 +129,8 @@ const HomeService = () => {
 
         {/* Floating Worker Card */}
         {selectedWorker && (
-          <Card
+          <Card 
+          onClick={() => navigate('/work-details')}
             sx={{
               position: 'absolute',
               bottom: 90,
