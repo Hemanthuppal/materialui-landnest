@@ -109,8 +109,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Login = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState('admin@gmail.com');
-  const [password, setPassword] = useState('admin@123');
+  const [email, setEmail] = useState('user@gmail.com');
+  const [password, setPassword] = useState('user@123');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -119,39 +119,40 @@ const Login = ({ setIsAuthenticated }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
+       navigate('/dashboard');
 
     // Hardcoded admin credentials
     const adminCredentials = {
-      email: 'admin@gmail.com',
-      password: 'admin@123'
+      email: 'user@gmail.com',
+      password: 'user@123'
     };
 
     // Check if logging in as admin
-    if (email === adminCredentials.email && password === adminCredentials.password) {
-      setIsAuthenticated(true);
-      if (rememberMe) {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('rememberMe', 'true');
-      }
-      navigate('/dashboard');
-      return;
-    }
+//     if (email === adminCredentials.email && password === adminCredentials.password) {
+//       setIsAuthenticated(true);
+//       if (rememberMe) {
+//         localStorage.setItem('isAuthenticated', 'true');
+//         localStorage.setItem('rememberMe', 'true');
+//       }
+//       navigate('/dashboard');
+//       return;
+//     }
 
     // Check regular users from localStorage
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.email === email && u.password === password);
+//     const users = JSON.parse(localStorage.getItem('users')) || [];
+//     const user = users.find(u => u.email === email && u.password === password);
 
-    if (user) {
-      setIsAuthenticated(true);
-      if (rememberMe) {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        localStorage.setItem('rememberMe', 'true');
-      }
-      navigate('/dashboard');
-    } else {
-      setError('Invalid email or password');
-    }
+//     if (user) {
+//       setIsAuthenticated(true);
+//       if (rememberMe) {
+//         localStorage.setItem('isAuthenticated', 'true');
+//         localStorage.setItem('currentUser', JSON.stringify(user));
+//         localStorage.setItem('rememberMe', 'true');
+//       }
+//       navigate('/dashboard');
+//     } else {
+//       setError('Invalid email or password');
+//     }
   };
 
   return (

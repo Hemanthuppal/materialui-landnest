@@ -46,7 +46,7 @@ function App() {
     <BrowserRouter>
       <Routes>
       {/* Auth routes */}
-      <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+      {/* <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/register" element={<Register />} />
         
       <Route 
@@ -54,12 +54,13 @@ function App() {
           element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
         />
 
-         {/* Protected routes */}
          <Route 
           path="/dashboard" 
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
-        />
-      
+        /> */}
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/forms" element={<Forms/>} />
         <Route path="/details" element={<Details_Page />} />
