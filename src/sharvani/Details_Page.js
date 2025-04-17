@@ -123,7 +123,15 @@ const PropertyCard = () => {
               transition: 'transform 0.2s ease-in-out',
               '&:hover': { transform: 'scale(1.015)', boxShadow: 6 }
             }}
+            onClick={(e) => {
+              // Prevent navigation if the user clicked on a button or icon
+              const isButtonClick = e.target.closest('button') || e.target.closest('svg');
+              if (!isButtonClick) {
+                navigate('/rent-description', { state: { property } });
+              }
+            }}
           >
+             
             <Box position="relative">
               <CardMedia
                 component="img"
@@ -199,26 +207,28 @@ const PropertyCard = () => {
 
               <Divider sx={{ my: 2 }} />
 
-              <Grid container sx={{ border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
-                <Grid item xs={4}>
-                  <Box sx={{ borderRight: '1px solid #e0e0e0', p: 1.5, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">Facing</Typography>
-                    <Typography variant="body2" fontWeight="bold">{property.facing}</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ borderRight: '1px solid #e0e0e0', p: 1.5, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">Area ({property.dimensions})</Typography>
-                    <Typography variant="body2" fontWeight="bold">{property.area}</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ p: 1.5, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">Listed By</Typography>
-                    <Typography variant="body2" fontWeight="bold">{property.listedBy}</Typography>
-                  </Box>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+  {[ 
+    { label: 'Facing', value: property.facing },
+    { label: `Area (${property.dimensions})`, value: property.area },
+    { label: 'Listed By', value: property.listedBy }
+  ].map((item, index) => (
+    <Box
+      key={index}
+      sx={{
+        flex: 1,
+        p: 1.5,
+        textAlign: 'center',
+        borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+      }}
+    >
+      <Typography variant="caption" color="text.secondary">{item.label}</Typography>
+      <Typography variant="body2" fontWeight="bold">{item.value}</Typography>
+    </Box>
+  ))}
+</Box>
+
+
             </CardContent>
           </Card>
         ))}
