@@ -53,7 +53,7 @@ function App() {
         <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
         <Route path="/lease-form" element={<LeaseForm />} />
         <Route path="/sellyourproperty-form" element={<SellYourProperty />} />
-        <Route path="/vendor" element={<Vendor_Registration />} />
+        <Route path="/vendor-form" element={<Vendor_Registration />} />
         <Route path="/propertymap" element={<Property_Map />} />
         <Route path="/Savedbuy" element={<Saved_Buy />} />
         <Route path="/constructions" element={<Constructions />} />
@@ -74,7 +74,7 @@ function App() {
         <Route path="/lease-description" element={<Lease_discription />} />
         <Route path="/lease_save" element={<LeaseSave />} />
         
-        <Route path="/rent" element={<RentForm />} />
+        <Route path="/rent-form" element={<RentForm />} />
         <Route path="/get-started" element={<InteriorConsultationForm />} />
         <Route path="/Footer" element={<Footer />} />
         <Route path="/samplevendor" element={<Vendorsample />} />

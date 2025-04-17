@@ -5,6 +5,9 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import SearchBar from './FormsSearchBar';
+import FormsBottomNavbar from './FormsBottomNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -35,16 +38,18 @@ const RedButton = styled(Button)({
     color: 'white',
     '&:hover': { backgroundColor: '#cc0000' },
 });
-const BlueButton = styled(Button)({
-    backgroundColor: '#4da6ff',
+
+const GreenButton = styled(Button)({
+    backgroundColor: 'green',
     color: 'white',
-    '&:hover': { backgroundColor: '#3399ff' },
+    '&:hover': { backgroundColor: '#008000' },
 });
 
 const VendorRegister = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const autocompleteRef = useRef(null);
+    const navigate = useNavigate();
 
     // Handles when a place is selected from the dropdown
     const onPlaceChanged = () => {
@@ -76,15 +81,32 @@ const VendorRegister = () => {
         });
     };
 
+    const handleBackClick = () => {
+        navigate(-1);
+    };
+
+    const handleSearchClick = () => {
+        console.log('Search icon clicked');
+    };
+
+    const handleFilterClick = () => {
+        console.log('Filter icon clicked');
+    };
+
     return (
         <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
+            <SearchBar
+                onBackClick={handleBackClick}
+                onSearchClick={handleSearchClick}
+                onFilterClick={handleFilterClick}
+            />
             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                     Vendor Registration
                 </Typography>
 
                 <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
-                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Category</Typography>
+                    {/* <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Category</Typography> */}
                     <FormControl fullWidth sx={{ mb: 3 }}>
                         <InputLabel id="category-label">Select Category</InputLabel>
                         <Select labelId="category-label" label="Select Category" defaultValue="Plumbing">
@@ -94,22 +116,11 @@ const VendorRegister = () => {
                         </Select>
                     </FormControl>
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Name
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Mobile
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Email
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Name" variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Mobile" variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Email" variant="outlined" sx={{ mb: 2 }} />
+                    <TextField fullWidth label="Address" variant="outlined" sx={{ mb: 2 }} />
 
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Address
-                    </Typography>
                     <Autocomplete
                         onLoad={ref => (autocompleteRef.current = ref)}
                         onPlaceChanged={onPlaceChanged}
@@ -132,70 +143,41 @@ const VendorRegister = () => {
                     >
                         <Marker position={location} />
                     </GoogleMap>
+                   
+                    <TextField fullWidth label="Work Experience" variant="outlined" sx={{ mb: 2, mt:3}} />
 
-                    {/* <Typography variant="subtitle1" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-                        Work Experience
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Profile photo</Typography>
-                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
-                        Upload Image
-                        <VisuallyHiddenInput type="file" />
-                    </Button>
-
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Previous worked photos</Typography>
-                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
-                        Upload Image
-                        <VisuallyHiddenInput type="file" multiple />
-                    </Button> */}
-                    <Typography variant="subtitle1" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-                        Work Experience
-                    </Typography>
-                    <TextField fullWidth variant="outlined" sx={{ mb: 2 }} />
-
+                    {/* Upload Section */}
                     <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Profile Photo
                     </Typography>
-                    <Box sx={{ mb: 2 }}>
-                        <Button
-                            component="label"
-                            variant="outlined"
-                            startIcon={<CloudUploadIcon />}
-                            fullWidth
-                            sx={{ justifyContent: 'flex-start', pl: 2 }}
-                        >
-                            Upload Profile Photo
-                            <VisuallyHiddenInput type="file" />
-                        </Button>
-                    </Box>
+                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
+                        Upload Profile Photo
+                        <VisuallyHiddenInput type="file" multiple />
+                    </Button>
 
                     <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Previous Worked Photos
                     </Typography>
-                    <Box sx={{ mb: 3 }}>
-                        <Button
-                            component="label"
-                            variant="outlined"
-                            startIcon={<CloudUploadIcon />}
-                            fullWidth
-                            sx={{ justifyContent: 'flex-start', pl: 2 }}
-                        >
-                            Upload Previous Photos
-                            <VisuallyHiddenInput type="file" multiple />
-                        </Button>
-                    </Box>
+                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
+                        Upload Previous Photos
+                        <VisuallyHiddenInput type="file" multiple />
+                    </Button>
 
 
                     <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                     <TextField fullWidth variant="outlined" multiline rows={4} />
+                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                        <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            Cancel
+                        </RedButton>
+                        <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            Submit
+                        </GreenButton>
+                    </Stack>
                 </Paper>
-
-                <Stack direction="row" spacing={2} justifyContent="center">
-                    <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Cancel</RedButton>
-                    <BlueButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>SUBMIT</BlueButton>
-                </Stack>
+                <Box sx={{ height: '70px' }} />
             </Box>
+            <FormsBottomNavbar />
         </LoadScript>
     );
 };
