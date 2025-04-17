@@ -444,162 +444,167 @@ function App() {
 
         <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
         <AppBar
-        position="relative"
-        sx={{
-          bgcolor: 'white',
-          boxShadow: 'none',
-          height: '50px',
-          width: 'calc(100% - 0px)',
-          ml: '0px',
-          zIndex: 1,
-        }}
-      >
-        <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
-          <Search sx={{ flex: 1, mx: 1 }}>
-            <SearchIconWrapper>
-              <SearchIcon sx={{ fontSize: '1rem' }} />
-            </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" />
-          </Search>
-          <IconButton size="small">
-            <FavoriteBorderIcon sx={{ fontSize: '1rem', color: '#757575' }} />
-          </IconButton>
-          <IconButton size="small">
-            <NotificationsNoneIcon sx={{ fontSize: '1rem', color: '#757575' }} />
-          </IconButton>
-          <IconButton size="small">
-            <ChatBubbleOutlineIcon sx={{ fontSize: '1rem', color: '#757575' }} />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      <Box 
-  mb={2} 
-  backgroundColor="#e7dbc9" 
-  borderRadius="10px" 
-  sx={{ display: { xs: 'block', sm: 'none' } }} // 👈 Only show on mobile
+  position="fixed" // Fixed at top
+  sx={{
+    bgcolor: 'white',
+    boxShadow: 'none',
+    height: '50px',
+    width: '85%',
+    ml:"65",
+    zIndex: 1201, // ensure it stays above other elements
+  }}
 >
-  <Typography variant="h6" align="center" mb={1}>
-    Looking For
-  </Typography>
+  <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
+    <Search sx={{ flex: 1, mx: 1 }}>
+      <SearchIconWrapper>
+        <SearchIcon sx={{ fontSize: '1rem' }} />
+      </SearchIconWrapper>
+      <StyledInputBase placeholder="Search…" />
+    </Search>
+    <IconButton size="small">
+      <FavoriteBorderIcon sx={{ fontSize: '1rem', color: '#757575' }} />
+    </IconButton>
+    <IconButton size="small">
+      <NotificationsNoneIcon sx={{ fontSize: '1rem', color: '#757575' }} />
+    </IconButton>
+    <IconButton size="small">
+      <ChatBubbleOutlineIcon sx={{ fontSize: '1rem', color: '#757575' }} />
+    </IconButton>
+  </Toolbar>
+</AppBar>
 
-  <Card
-    sx={{
-      backgroundColor: '#e7dbc9',
-      borderRadius: '10px',
-      padding: '5px',
-      boxShadow: 'none'
-    }}
+{/* Add spacing to avoid content going under the AppBar */}
+<Box sx={{ mt: '60px' }}>
+  <Box
+    mb={2}
+    backgroundColor="#e7dbc9"
+    borderRadius="10px"
+    sx={{ display: { xs: 'block', sm: 'none' } }}
   >
-    <Grid container spacing={2}>
-      {/* First Row: 2 Cards */}
-      {cards.slice(0, 2).map((card, index) => (
+    <Typography variant="h6" align="center" mb={1}>
+      Looking For
+    </Typography>
 
-        <Grid item xs={6} key={index} display="flex" justifyContent="center">
-          <Card
-           onClick={() => card.path && navigate(card.path)}
-            sx={{
-              height: '100px',
-              width: '140px',
-              borderRadius: '12px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
-              background: card.bgImage,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              color: 'white',
-              display: 'flex',
-              cursor: 'pointer',
-              position: 'relative',
-              '&:hover': {
-                transform: 'scale(1.02)',
-                transition: 'transform 0.3s ease'
-              }
-            }}
-          >
-            <CardContent
+    <Card
+      sx={{
+        backgroundColor: '#e7dbc9',
+        borderRadius: '10px',
+        padding: '5px',
+        boxShadow: 'none'
+      }}
+    >
+      <Grid container spacing={2}>
+        {/* First Row: 2 Cards */}
+        {cards.slice(0, 2).map((card, index) => (
+          <Grid item xs={6} key={index} display="flex" justifyContent="center">
+            <Card
+              onClick={() => card.path && navigate(card.path)}
               sx={{
+                height: '100px',
+                width: '140px',
+                borderRadius: '12px',
+                boxShadow:
+                  '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
+                background: card.bgImage,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                color: 'white',
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                width: '100%',
-                p: 1
+                cursor: 'pointer',
+                position: 'relative',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease'
+                }
               }}
             >
-              <Box sx={{ textAlign: 'left' }}>
-                {card.icon}
-                <Typography variant="h6" component="div" mt={1}>
-                  {card.title}
-                </Typography>
-              </Box>
-              <IconButton
+              <CardContent
                 sx={{
-                  position: 'absolute',
-                  right: 8,
-                  bottom: 8,
-                  color: 'white'
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  p: 1
                 }}
               >
-                <ArrowIcon />
-              </IconButton>
-            </CardContent>
-          </Card>
+                <Box sx={{ textAlign: 'left' }}>
+                  {card.icon}
+                  <Typography variant="h6" component="div" mt={1}>
+                    {card.title}
+                  </Typography>
+                </Box>
+                <IconButton
+                  sx={{
+                    position: 'absolute',
+                    right: 8,
+                    bottom: 8,
+                    color: 'white'
+                  }}
+                >
+                  <ArrowIcon />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+
+        {/* Second Row: Centered Third Card */}
+        <Grid item xs={12} display="flex" justifyContent="center">
+          <Link to="/lease_map" style={{ textDecoration: 'none' }}>
+            <Card
+              sx={{
+                height: '100px',
+                width: '140px',
+                borderRadius: '12px',
+                boxShadow:
+                  '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
+                background: cards[2].bgImage,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                color: 'white',
+                display: 'flex',
+                cursor: 'pointer',
+                position: 'relative',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease'
+                }
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  p: 1
+                }}
+              >
+                <Box sx={{ textAlign: 'left' }}>
+                  {cards[2].icon}
+                  <Typography variant="h6" component="div" mt={1}>
+                    {cards[2].title}
+                  </Typography>
+                </Box>
+                <IconButton
+                  sx={{
+                    position: 'absolute',
+                    right: 8,
+                    bottom: 8,
+                    color: 'white'
+                  }}
+                >
+                  <ArrowIcon />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Link>
         </Grid>
-      ))}
-
-      {/* Second Row: Centered Third Card */}
-      <Grid item xs={12} display="flex" justifyContent="center">
-        <Link to="/lease_map" style={{ textDecoration: 'none' }}>
-          <Card
-            sx={{
-              height: '100px',
-              width: '140px',
-              borderRadius: '12px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
-              background: cards[2].bgImage,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              color: 'white',
-              display: 'flex',
-              cursor: 'pointer',
-              position: 'relative',
-              '&:hover': {
-                transform: 'scale(1.02)',
-                transition: 'transform 0.3s ease'
-              }
-            }}
-          >
-            <CardContent
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                width: '100%',
-                p: 1
-              }}
-            >
-              <Box sx={{ textAlign: 'left' }}>
-                {cards[2].icon}
-                <Typography variant="h6" component="div" mt={1}>
-                  {cards[2].title}
-                </Typography>
-              </Box>
-              <IconButton
-                sx={{
-                  position: 'absolute',
-                  right: 8,
-                  bottom: 8,
-                  color: 'white'
-                }}
-              >
-                <ArrowIcon />
-              </IconButton>
-            </CardContent>
-          </Card>
-        </Link>
       </Grid>
-    </Grid>
-  </Card>
+    </Card>
+  </Box>
 </Box>
+
 
 
           <Box mb={2}>
