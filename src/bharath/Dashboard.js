@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AppBar,
@@ -142,9 +142,34 @@ const cards = [
 ];
 
 
+
 function App() {
 
   const navigate = useNavigate();
+  const [value, setValue] = useState('home');
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    // Navigate to the corresponding route
+    switch(newValue) {
+      case 'home':
+        navigate('/');
+        break;
+      case 'construction':
+        navigate('/constructions');
+        break;
+      case 'post':
+        navigate('/post');
+        break;
+      case 'services':
+        navigate('/home-service');
+        break;
+      case 'profile':
+        navigate('/profile');
+        break;
+      default:
+        navigate('/');
+    }
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
@@ -241,17 +266,17 @@ function App() {
     {/* "New" Tag */}
     <Box
       sx={{
-        background: 'rgba(255,255,255,0.4)',
+        // background: 'rgba(255,255,255,0.4)',
         borderRadius: '16px',
         px: 1,
         py: 0.5,
-        backdropFilter: 'blur(4px)',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
         transform: 'scale(0.95)',
         transition: 'all 0.3s ease',
         '&:hover': {
           transform: 'scale(1)',
-          background: 'rgba(255,255,255,0.5)'
+          // background: 'rgba(255,255,255,0.5)'
         }
       }}
     >
@@ -273,14 +298,14 @@ function App() {
     {/* Vertical "Building for Sale" */}
     <Box
       sx={{
-        background: 'rgba(255,255,255,0.3)',
+        // background: 'rgba(255,255,255,0.3)',
         borderRadius: '8px',
         px: 0.5,
         py: 1.5,
-        borderLeft: '3px solid rgba(90,77,58,0.3)',
-        borderRight: '3px solid rgba(90,77,58,0.3)',
-        backdropFilter: 'blur(3px)',
-        boxShadow: '0 3px 8px rgba(0,0,0,0.1)'
+        // borderLeft: '3px solid rgba(90,77,58,0.3)',
+        // borderRight: '3px solid rgba(90,77,58,0.3)',
+        // backdropFilter: 'blur(3px)',
+        // boxShadow: '0 3px 8px rgba(0,0,0,0.1)'
       }}
     >
       <Typography
@@ -302,17 +327,17 @@ function App() {
     {/* "Quick Deals" Tag */}
     <Box
       sx={{
-        background: 'rgba(255,255,255,0.4)',
+        // background: 'rgba(255,255,255,0.4)',
         borderRadius: '16px',
         px: 1,
         py: 0.5,
-        backdropFilter: 'blur(4px)',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
         transform: 'scale(0.95)',
         transition: 'all 0.3s ease',
         '&:hover': {
           transform: 'scale(1)',
-          background: 'rgba(255,255,255,0.5)'
+          // background: 'rgba(255,255,255,0.5)'
         }
       }}
     >
@@ -356,14 +381,14 @@ function App() {
     {/* Vertical "Hot Properties" */}
     <Box
       sx={{
-        background: 'rgba(0,0,0,0.25)',
+        // background: 'rgba(0,0,0,0.25)',
         borderRadius: '8px',
         px: 0.5,
         py: 1.5,
-        borderLeft: '3px solid rgba(255,255,255,0.1)',
-        borderRight: '3px solid rgba(255,255,255,0.1)',
-        backdropFilter: 'blur(4px)',
-        boxShadow: '0 3px 10px rgba(0,0,0,0.2)'
+        // borderLeft: '3px solid rgba(255,255,255,0.1)',
+        // borderRight: '3px solid rgba(255,255,255,0.1)',
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 3px 10px rgba(0,0,0,0.2)'
       }}
     >
       <Typography
@@ -385,18 +410,18 @@ function App() {
     {/* "Best Deals" Tag */}
     <Box
       sx={{
-        background: 'rgba(255,255,255,0.15)',
+        // background: 'rgba(255,255,255,0.15)',
         borderRadius: '16px',
         px: 1,
         py: 0.5,
-        backdropFilter: 'blur(4px)',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
         transform: 'scale(0.95)',
         transition: 'all 0.3s ease',
         '&:hover': {
           transform: 'scale(1)',
-          background: 'rgba(255,255,255,0.25)',
-          boxShadow: '0 3px 12px rgba(0,0,0,0.3)'
+          // background: 'rgba(255,255,255,0.25)',
+          // boxShadow: '0 3px 12px rgba(0,0,0,0.3)'
         }
       }}
     >
@@ -1483,45 +1508,52 @@ function App() {
 
 
       <BottomNavigation
-        showLabels
+      value={value}
+      onChange={handleChange}
+      showLabels
+      sx={{
+        borderTop: '1px solid #e0e0e0',
+        height: '60px',
+        '& .MuiBottomNavigationAction-root': {
+          minWidth: 'auto',
+          padding: '6px 0',
+          color: '#757575',
+        },
+        '& .MuiBottomNavigationAction-label': {
+          fontSize: '0.7rem',
+        },
+      }}
+    >
+      <BottomNavigationAction
+        value="home"
+        label="Home"
+        icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+      <BottomNavigationAction
+        value="construction"
+        label="Construction & Interiors"
+        icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+      <BottomNavigationAction
+        value="post"
+        label="Post"
+        icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
         sx={{
-          borderTop: '1px solid #e0e0e0',
-          height: '60px',
-          '& .MuiBottomNavigationAction-root': {
-            minWidth: 'auto',
-            padding: '6px 0',
-            color: '#757575',
-          },
-          '& .MuiBottomNavigationAction-label': {
-            fontSize: '0.7rem',
-          },
+          '& .MuiSvgIcon-root': { color: '#2196f3' },
+          '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
         }}
-      >
-        <BottomNavigationAction
-          label="Home"
-          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Construction & Interiors"
-          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Post"
-          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-          sx={{
-            '& .MuiSvgIcon-root': { color: '#2196f3' },
-            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-          }}
-        />
-        <BottomNavigationAction
-          label="Home Services"
-          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Profile"
-          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-      </BottomNavigation>
+      />
+      <BottomNavigationAction
+        value="services"
+        label="Home Services"
+        icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+      <BottomNavigationAction
+        value="profile"
+        label="Profile"
+        icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+    </BottomNavigation>
     </Box>
   );
 }
