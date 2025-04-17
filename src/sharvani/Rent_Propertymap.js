@@ -1,39 +1,23 @@
-// Rent_Property_Map.js
 import React, { useState } from 'react';
 import {
   Box,
-  TextField,
-  IconButton,
-  InputAdornment,
   Chip,
   Typography,
+  IconButton,
   Card,
   Paper,
   BottomNavigation,
-  BottomNavigationAction,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
+  BottomNavigationAction
 } from '@mui/material';
 
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader
-} from '@react-google-maps/api';
-
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
+
+import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
 import ListIcon from '@mui/icons-material/List';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MailIcon from '@mui/icons-material/Mail';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import TuneIcon from '@mui/icons-material/Tune';
-
 
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
@@ -45,7 +29,6 @@ const rentalTypes = [
   "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
 ];
 
-// Replace with your actual API Key
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
 const properties = [
@@ -73,15 +56,8 @@ const properties = [
 
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const [value, setValue] = useState();
-
-  const handleCardClick = () => {
-    navigate('/rent-description');
-  };
-  
-  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,13 +66,14 @@ const Rent_Property_Map = () => {
     if (newValue === 2) navigate('/rent-saves');
     if (newValue === 3) navigate('/inbox');
   };
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY
   });
 
   const containerStyle = {
     width: '100%',
-    height: '500px'  // ⬆ Increased height
+    height: 'calc(100vh - 240px)' // Adjust height for chips + nav
   };
 
   const center = {
@@ -104,66 +81,12 @@ const Rent_Property_Map = () => {
     lng: 80.9462
   };
 
-  const handleMarkerClick = (property) => {
-    setSelectedProperty(property);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedProperty(null);
-  };
-
   return (
-    <Box sx={{ p: 2, pb: 7, maxWidth: 480, mx: "auto" }}>
-      <CustomSearchBar/>
-      <Card elevation={4} sx={{ p: 2 }}>
-        
-        {/* Back + Search Bar */}
-{/* Back + Styled Search Bar with exact icons */}
-{/* <Box
- sx={{
-  display: 'flex',
-  alignItems: 'center',
-  backgroundColor: '#e0e0e0',
-  borderRadius: '10px',
-  py: 1.2, // top and bottom padding
-  px: 1,   // optional: horizontal padding
-  mb: 2,
-}}
+    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
+      <CustomSearchBar />
 
->
-  {/* Back Arrow Icon */}
-  {/* <IconButton onClick={() => navigate(-1)}>
-    <ArrowBackIosNewIcon sx={{ fontSize: 20 }} />
-  </IconButton> */}
-
-  {/* Search Box */}
-  {/* <Box
-    sx={{
-      flexGrow: 1,
-      backgroundColor: '#fff',
-      borderRadius: '20px',
-      display: 'flex',
-      alignItems: 'center',
-      px: 2,
-      height: 40,
-      mx: 1
-    }}
-  >
-    <Box sx={{ flexGrow: 1 }} />
-    <SearchIcon sx={{ fontSize: 20, color: '#666' }} />
-  </Box> */}
-
-  {/* Filter Icon */}
-  {/* <IconButton>
-    <TuneIcon sx={{ fontSize: 20 }} />
-  </IconButton>
-</Box>  */}
-
-
-
-        {/* Property Rental Types */}
+      {/* Rental Type Chips */}
+      <Box sx={{ p: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
         <Box
           sx={{
@@ -179,53 +102,97 @@ const Rent_Property_Map = () => {
             <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
           ))}
         </Box>
+      </Box>
 
-        {/* Google Map */}
-        {isLoaded ? (
+      {/* Google Map */}
+      {isLoaded ? (
+        <Box sx={{ px: 2, pb: 10 }}> {/* Add padding around map */}
+        <Box sx={{ width: '100%', height: containerStyle.height }}>
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
             zoom={14}
+            options={{
+              gestureHandling: 'greedy',  // allows scroll to zoom
+              zoomControl: true,
+              mapTypeControl: false,
+              streetViewControl: false,
+              fullscreenControl: false
+            }}
+            
           >
             {properties.map(property => (
               <Marker
                 key={property.id}
                 position={{ lat: property.lat, lng: property.lng }}
-                onClick={() => handleMarkerClick(property)}
+                onClick={() => setSelectedProperty(property)}
               />
             ))}
           </GoogleMap>
-        ) : (
-          <Typography>Loading map...</Typography>
-        )}
-      </Card>
+          </Box>
 
-      {/* Modal for Property Details */}
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-        {selectedProperty && (
-          <>
-            <DialogTitle>{selectedProperty.title}</DialogTitle>
-            <DialogContent>
-              <img
-                src={selectedProperty.image}
-                alt={selectedProperty.title}
-                style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 8 }}
-                onClick={handleCardClick}
-              />
-              <Typography variant="body2" sx={{ mt: 2 }}>{selectedProperty.description}</Typography>
-              <Typography variant="body2">{selectedProperty.address}</Typography>
-              <Typography variant="h6" sx={{ mt: 1, color: 'green' }}>{selectedProperty.price}</Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCardClick}>View Details</Button>
-              <Button onClick={handleClose}>Close</Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
+          {/* Property Card Overlay */}
+          {selectedProperty && (
+            <Card
+            
+              elevation={4}
+              sx={{
+                position: 'absolute',
+                bottom: 164,
+                left: 0,
+                right: 0,
+                margin: '0 auto',
+                width: '100%',
+                maxWidth: 480,
+                bgcolor: '#fff',
+                borderRadius: 2,
+                boxShadow: 6,
+                zIndex: 999
+              }}
+              onClick={() => navigate('/rent-description')}
+            >
+              <Box sx={{ position: 'relative', p: 2 }}>
+                <IconButton
+                  size="small"
+                  sx={{ position: 'absolute', top: 8, right: 8 }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ✅ Prevents triggering navigation
+                    setSelectedProperty(null);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <Typography variant="h6" gutterBottom>
+                  {selectedProperty.title}
+                </Typography>
+                <img
+                  src={selectedProperty.image}
+                  alt={selectedProperty.title}
+                  style={{
+                    width: '100%',
+                    height: 180,
+                    objectFit: 'cover',
+                    borderRadius: 8
+                  }}
+                />
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  {selectedProperty.description}
+                </Typography>
+                <Typography variant="body2">{selectedProperty.address}</Typography>
+                <Typography variant="h6" sx={{ mt: 1, color: 'green' }}>
+                  {selectedProperty.price}
+                </Typography>
+               
+              </Box>
+            </Card>
+          )}
+        </Box>
+      ) : (
+        <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
+      )}
 
-          {/* Bottom Navigation */}
-          <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      {/* Bottom Navigation */}
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
           <BottomNavigationAction label="List" icon={<ListIcon />} />

@@ -31,6 +31,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import image from "../Images/Leasebuilding.png"
 import image1 from "../Images/building.jpeg"
+import { useNavigate } from 'react-router-dom';
 
 import {
 
@@ -123,23 +124,28 @@ const cards = [
   {
     title: "Buy",
     icon: <BuyIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    path: "/propertymap"
   },
   {
     title: "Rent",
     icon: <RentIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    path: "/rent-propertymap"
   },
   {
     title: "Lease",
     icon: <LeaseIcon fontSize="large" />,
     bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-    
+
   }
 ];
 
 
 function App() {
+
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
       
@@ -209,10 +215,10 @@ function App() {
     />
   </Box>
 
-  {/* Luxury Middle Section */}
-  <Box
-    sx={{
-      background: `
+          {/* Luxury Middle Section */}
+          <Box
+            sx={{
+              background: `
         linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
         url('https://www.transparenttextures.com/patterns/cream-paper.png')
       `,
@@ -325,10 +331,10 @@ function App() {
     </Box>
   </Box>
 
-  {/* Elegant Bottom Section */}
-  <Box
-    sx={{
-      background: `
+          {/* Elegant Bottom Section */}
+          <Box
+            sx={{
+              background: `
         linear-gradient(145deg, #2a2a2a, #1e1e1e),
         url('https://www.transparenttextures.com/patterns/dark-matter.png')
       `,
@@ -575,892 +581,893 @@ function App() {
             </Typography>
 
             <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top Image Section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              onClick={() => navigate('/constructions')} // Add this line
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top Image Section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom Text + Arrow Section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          New Building Construction
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-             </Card>
+              {/* Bottom Text + Arrow Section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  New Building Construction
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
           </Box>
 
           <Box mb={2}>
-           
-          <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image1})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
 
-      {/* Bottom text and arrow */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Interiors
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-          </Card>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image1})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
+
+              {/* Bottom text and arrow */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Interiors
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
           </Box>
           <Box mb={2}>
-           
 
-          <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Renovations
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
+
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Renovations
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
           </Box>
 
 
 
-          
+
           <Box mb={2}>
             <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
               Home Services
             </Typography>
 
             <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Paintings
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Paintings
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
           </Box>
 
 
           <Box mb={2}>
-          <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Electrical
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Electrical
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
 
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Tiles & Granites Repair Works
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Tiles & Granites Repair Works
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Plumbing
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Plumbing
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Carpenter
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Carpenter
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          AC installation & Repair
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  AC installation & Repair
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
-         <Box mb={2}>
-           
-               <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          <Box mb={2}>
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Gardener
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-              
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Aliminum Fabrication & Repair
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Gardener
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          UPVC Fabrications & Repair
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Gas Pipeline installation & Repair
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Aliminum Fabrication & Repair
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Steel Fabrications
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  UPVC Fabrications & Repair
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Gas Pipeline installation & Repair
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Home Clean
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Steel Fabrications
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Tiolet & Kitchen Cleaning
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Soft & Curtain installation & cleaning
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
-         <Box mb={2}>
-         <Card
-      sx={{
-        backgroundColor: '#d8ccba',
-        borderTopLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        overflow: 'hidden',
-        width: 310,
-        height: 220,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          transition: 'transform 0.3s ease',
-        },
-      }}
-    >
-      {/* Top image section */}
-      <Box
-        sx={{
-          height: '70%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottomRightRadius:"40px",
-        }}
-      />
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Home Clean
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
 
-      {/* Bottom text and arrow section */}
-      <CardContent
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '30%',
-          px: 2,
-          py: 1,
-          backgroundColor: '#d8ccba',
-        }}
-      >
-        <Typography variant="body1" fontWeight="600" color="#333">
-          Homemaid
-        </Typography>
-        <IconButton sx={{ color: '#333' }}>
-          <ArrowForwardIosIcon fontSize="small" />
-        </IconButton>
-      </CardContent>
-    </Card>
-         </Box>
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Tiolet & Kitchen Cleaning
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
+
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Soft & Curtain installation & cleaning
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box mb={2}>
+            <Card
+              sx={{
+                backgroundColor: '#d8ccba',
+                borderTopLeftRadius: '40px',
+                borderBottomRightRadius: '40px',
+                overflow: 'hidden',
+                width: 310,
+                height: 220,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              {/* Top image section */}
+              <Box
+                sx={{
+                  height: '70%',
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderBottomRightRadius: "40px",
+                }}
+              />
+
+              {/* Bottom text and arrow section */}
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '30%',
+                  px: 2,
+                  py: 1,
+                  backgroundColor: '#d8ccba',
+                }}
+              >
+                <Typography variant="body1" fontWeight="600" color="#333">
+                  Homemaid
+                </Typography>
+                <IconButton sx={{ color: '#333' }}>
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </CardContent>
+            </Card>
+          </Box>
 
 
         </Box>

@@ -1,24 +1,93 @@
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Typography, useTheme, useMediaQuery, Card, CardContent,   IconButton
+import {
+        Box, Grid, Typography, useTheme, useMediaQuery, Card, CardContent, IconButton
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
+import React, { useEffect, useState } from 'react';
+import { CardMedia, Container } from '@mui/material';
 
+const steps = [
+        { 
+          title: 'Agreement Sign', 
+          image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Soil Test', 
+          image: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Column Marking', 
+          image: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Column Foundation', 
+          image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Column Plinth', 
+          image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Roof Shuttering', 
+          image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Roof Barbinding', 
+          image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Roof Concrete', 
+          image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Partitions Wall', 
+          image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Flooring', 
+          image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Electrical', 
+          image: 'https://images.unsplash.com/photo-1605170439002-90845e8c0137?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Plumbing', 
+          image: 'https://images.unsplash.com/photo-1600566752225-9f0fc0a76e96?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Fabrication', 
+          image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Doors and Windows', 
+          image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Paintings', 
+          image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+        { 
+          title: 'Handover', 
+          image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        },
+      ];
 
-// Helper to chunk array into rows of 2
-const chunkArray = (arr, size) => {
+const chunkArray = (array, chunkSize) => {
         const result = [];
-        for (let i = 0; i < arr.length; i += size) {
-          result.push(arr.slice(i, i + size));
+        for (let i = 0; i < array.length; i += chunkSize) {
+                result.push(array.slice(i, i + chunkSize));
         }
         return result;
-      };
+};
 const Constructions = () => {
         const navigate = useNavigate();
 
         const theme = useTheme();
         const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+        const [chunkSize, setChunkSize] = useState(2); // default to 2
 
         const cards = [
                 {
@@ -73,29 +142,25 @@ const Constructions = () => {
                 }
         ];
 
-        const processImages = [
-                {
-                  title: 'Agreement Sign',
-                  imageUrl: 'https://cdn.pixabay.com/photo/2017/07/31/11/21/document-2559790_1280.jpg',
-                },
-                {
-                  title: 'Soil Test',
-                  imageUrl: 'https://img.freepik.com/free-photo/agronomist-analyzing-soil-test_1150-16173.jpg',
-                },
-                {
-                  title: 'Planning',
-                  imageUrl: 'https://img.freepik.com/free-photo/close-up-architect-drawing_23-2147792445.jpg',
-                },
-                {
-                  title: 'Construction',
-                  imageUrl: 'https://img.freepik.com/free-photo/building-construction-site-with-cranes_23-2148898290.jpg',
-                },
-              ];
-              
-              const rows = chunkArray(processImages, 2); // Now it works fine
-              
-              
 
+
+
+        useEffect(() => {
+                const updateChunkSize = () => {
+                        const width = window.innerWidth;
+                        if (width >= 350 && width <= 500) {
+                                setChunkSize(2);
+                        } else {
+                                setChunkSize(1); // fallback for smaller or larger widths
+                        }
+                };
+
+                updateChunkSize();
+                window.addEventListener('resize', updateChunkSize);
+                return () => window.removeEventListener('resize', updateChunkSize);
+        }, []);
+
+        const rows = chunkArray(steps, chunkSize);
 
 
         return (
@@ -113,7 +178,7 @@ const Constructions = () => {
                                 backgroundColor: '#e6f2ff',  // Light blue color
                                 padding: isMobile ? 2 : 2,
                                 borderRadius: 1,
-                                width: '100%',
+                                // width: '100%',
                                 // Optional: adds slight rounded corners
                         }}>
                                 <Grid container justifyContent="space-between" alignItems="center">
@@ -134,9 +199,9 @@ const Constructions = () => {
 
                         <Box sx={{
                                 backgroundColor: 'rgba(173, 216, 230, 0.3)',
-                                padding: isMobile ? 1 : 2,
+                                padding: isMobile ? 2 : 2,
                                 marginY: 4,
-                                width: '104%'
+                                // width: '100%'
                         }}>
                                 {/* Header row */}
                                 <Grid container justifyContent="space-between" alignItems="center" sx={{ marginBottom: 2 }}>
@@ -203,10 +268,10 @@ const Constructions = () => {
                         </Box>
 
                         <Box sx={{
-                                width: '100vw',
+                                // width: '100vw',
                                 padding: 2,
                                 marginY: 4,
-                                overflowX: 'auto'
+                                // overflowX: 'auto'
                         }}>
                                 {/* Section Heading */}
                                 <Typography
@@ -301,44 +366,38 @@ const Constructions = () => {
 
 
                         <Box sx={{ px: 2, py: 4 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Our construction process
-      </Typography>
+                                {rows.map((row, rowIndex) => (
+                                        <Box
+                                                key={rowIndex}
+                                                display="flex"
+                                                flexDirection="row"
+                                                gap={2}
+                                                mb={2}
+                                                justifyContent="center"
+                                        >
+                                                {row.map((step, colIndex) => (
+                                                        <Card key={colIndex} sx={{ flex: 1, minWidth: 0 }}>
+                                                                <CardMedia
+                                                                        component="img"
+                                                                        height="160"
+                                                                        image={step.image}
+                                                                        alt={step.title}
+                                                                        sx={{ objectFit: 'cover' }}
+                                                                />
+                                                                <CardContent sx={{ p: 1 }}>
+                                                                        <Typography variant="subtitle2" align="left" fontWeight={500}>
+                                                                                {step.title}
+                                                                        </Typography>
+                                                                </CardContent>
+                                                        </Card>
+                                                ))}
+                                        </Box>
+                                ))}
+                        </Box>
 
-      <Grid container spacing={2}>
-        {rows.map((row, rowIndex) => (
-          <Grid container item spacing={2} key={rowIndex}>
-            {row.map((step, index) => (
-              <Grid item xs={6} key={index}>
-                <Card
-                  sx={{
-                    borderRadius: 3,
-                    boxShadow: 3,
-                    p: 1,
-                    textAlign: 'center',
-                  }}
-                >
-                  <Typography variant="subtitle1" fontWeight="600" gutterBottom>
-                    {step.title}
-                  </Typography>
-                  <Box
-                    component="img"
-                    src={step.imageUrl}
-                    alt={step.title}
-                    sx={{
-                      width: '100%',
-                      height: 100,
-                      objectFit: 'cover',
-                      borderRadius: 2,
-                    }}
-                  />
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+
+
+
 
 
 

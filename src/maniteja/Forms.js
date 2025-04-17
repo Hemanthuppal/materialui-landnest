@@ -9,7 +9,7 @@ import img1 from '../Images/vendorform.jpg';
 const options = [
   { label: "Post Your Property\nwith Landinest", icon: <Home />, vertical: true, path: "/postyourbestdeal-form" },
   { label: "Sell Your Property", icon: <Sell />, path: "/sellyourproperty-form" },
-  { label: "Rent Your Property", icon: <Apartment />, path: "/rent" },
+  { label: "Rent Your Property", icon: <Apartment />, path: "/rent-form" },
   { label: "Lease Your Property", icon: <Work />, path: "/lease-form" },
 ];
 
@@ -122,7 +122,7 @@ const Forms = () => {
         ))}
 
         {/* Vendor Registration Box */}
-        <Box onClick={() => navigate("/vendor")} sx={{ cursor: 'pointer' }}>
+        <Box onClick={() => navigate("/vendor-form")} sx={{ cursor: 'pointer' }}>
           <Paper
             elevation={4}
             sx={{
@@ -162,3 +162,56 @@ const Forms = () => {
 };
 
 export default Forms;
+
+
+
+// import React from "react";
+// import { Box, Typography, Stack } from "@mui/material";
+
+// const cardData = [
+//   { title: "Post Your Property with Landnest" },
+//   { title: "Sell Your Property" },
+//   { title: "Rent Your Property" },
+//   { title: "Lease Your Property" },
+// ];
+
+// const Forms = () => {
+//   return (
+//     <Stack spacing={3} sx={{ p: 3, alignItems: "center" }}>
+//       {cardData.map((card, index) => (
+//         <Box
+//           key={index}
+//           sx={{
+//             width: 360,
+//             height: 80,
+//             position: "relative",
+//             transform: "skewX(-15deg)",
+//             backgroundColor: "#d4c5af",
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center",
+//             boxShadow: 3,
+//             borderRadius: "25px",
+//             overflow: "hidden",
+//           }}
+//         >
+//           {/* Un-skew content inside */}
+//           <Box
+//             sx={{
+//               transform: "skewX(15deg)",
+//               textAlign: "center",
+//               px: 2,
+//             }}
+//           >
+//             <Typography variant="subtitle1" fontWeight="bold">
+//               {card.title}
+//             </Typography>
+//           </Box>
+//         </Box>
+//       ))}
+//     </Stack>
+//   );
+// };
+
+// export default Forms;
+
