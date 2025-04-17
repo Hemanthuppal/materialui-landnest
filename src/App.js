@@ -34,6 +34,10 @@ import LeaseSave from './Rajesh/LeaseSave';
 import RentSaves from './sharvani/Rent_Saves';
 import Login from './auth/Login';
 import Register from './auth/Register';
+import HomeService from "./Tharun/HomeService";
+import WorkerDetails from "./Tharun/WorkerDetails";
+import InboxList from "./Tharun/InboxList";
+import WorkerDetail from "./Tharun/WorkerDetail";
 
 
 function App() {
@@ -62,6 +66,10 @@ function App() {
               <Route path="/register" element={<Register />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/home-service" element={<HomeService />} />
+        <Route path="/work-details" element={<WorkerDetails />} />
+        <Route path="/inboxlist" element={<InboxList />} />
+        <Route path="/work-detail" element={<WorkerDetail />} />
         <Route path="/forms" element={<Forms/>} />
         <Route path="/details" element={<Details_Page />} />
         <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
@@ -84,8 +92,8 @@ function App() {
         <Route path="/lease_map" element={<Lease_map />} />
         <Route path="/lease_details" element={<Lease_detail />} />
         <Route path="/lease_description/:id" element={<Lease_discription />} />
-      
         <Route path="/lease_description" element={<Lease_discription />} />
+        <Route path="/lease-description" element={<Lease_discription />} />
         <Route path="/lease_save" element={<LeaseSave />} />
         
         <Route path="/rent-form" element={<RentForm />} />

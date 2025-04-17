@@ -494,8 +494,10 @@ function App() {
     <Grid container spacing={2}>
       {/* First Row: 2 Cards */}
       {cards.slice(0, 2).map((card, index) => (
+
         <Grid item xs={6} key={index} display="flex" justifyContent="center">
           <Card
+           onClick={() => card.path && navigate(card.path)}
             sx={{
               height: '100px',
               width: '140px',
