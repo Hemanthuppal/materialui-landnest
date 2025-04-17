@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AppBar,
@@ -142,21 +142,316 @@ const cards = [
 ];
 
 
+
 function App() {
 
   const navigate = useNavigate();
+  const [value, setValue] = useState('home');
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    // Navigate to the corresponding route
+    switch(newValue) {
+      case 'home':
+        navigate('/');
+        break;
+      case 'construction':
+        navigate('/constructions');
+        break;
+      case 'post':
+        navigate('/post');
+        break;
+      case 'services':
+        navigate('/home-service');
+        break;
+      case 'profile':
+        navigate('/profile');
+        break;
+      default:
+        navigate('/');
+    }
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
-      <AppBar
-        position="static"
+      
+
+
+
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <Box
+  sx={{
+    width: { xs: '50px', sm: '60px' },
+    height: { xs: '90vh', sm: '85vh' },
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderTopLeftRadius: '40px',
+    borderBottomRightRadius: '40px',
+    marginTop:'10px',
+    
+    boxShadow: `
+      0 10px 30px -5px rgba(0,0,0,0.3),
+      inset 0 -3px 10px rgba(255,255,255,0.05)
+    `,
+    background: 'linear-gradient(145deg, #1e1e1e, #2a2a2a)',
+    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+    '&:hover': {
+      transform: { sm: 'translateY(-4px)' }, // disable hover lift on small devices
+      boxShadow: '0 15px 35px -5px rgba(0,0,0,0.4)',
+    },
+    position: 'relative'
+  }}
+>
+  {/* Premium Profile Section */}
+  <Box
+    sx={{
+      width: '100%',
+      background: 'linear-gradient(145deg,rgb(36, 36, 36),rgb(36, 36, 36))',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: { xs: '60px', sm: '60px' },
+      borderTopLeftRadius: '40px',
+      boxShadow: `
+        inset 0 2px 4px rgba(255,255,255,0.05),
+        0 2px 5px rgba(0,0,0,0.2)
+      `,
+      overflow: 'hidden'
+    }}
+  >
+    <Avatar
+      alt="User"
+      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
+      sx={{
+        width: { xs: 30, sm: 34 },
+        height: { xs: 30, sm: 34 },
+        border: '3px solid rgba(216,204,186,0.7)',
+        boxShadow: `
+          0 3px 10px rgba(0,0,0,0.3),
+          inset 0 0 10px rgba(216,204,186,0.2)
+        `,
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        '&:hover': {
+          transform: { sm: 'scale(1.15) rotate(5deg)' },
+          boxShadow: '0 5px 15px rgba(0,0,0,0.4)'
+        }
+      }}
+    />
+  </Box>
+
+          {/* Luxury Middle Section */}
+          <Box
+            sx={{
+              background: `
+        linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
+        url('https://www.transparenttextures.com/patterns/cream-paper.png')
+      `,
+      width: '100%',
+      flexGrow: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      pt: 2,
+      pb: 2,
+      borderTopLeftRadius: '40px',
+      borderBottomRightRadius: '40px',
+      boxShadow: `
+        inset 0 0 15px rgba(0,0,0,0.1),
+        0 5px 10px rgba(0,0,0,0.1)
+      `
+    }}
+  >
+    {/* "New" Tag */}
+    <Box
+      sx={{
+        // background: 'rgba(255,255,255,0.4)',
+        borderRadius: '16px',
+        px: 1,
+        py: 0.5,
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
+        transform: 'scale(0.95)',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1)',
+          // background: 'rgba(255,255,255,0.5)'
+        }
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: { xs: '0.7rem', sm: '0.8rem' },
+          color: '#5a4d3a',
+          fontWeight: 700,
+          fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+          letterSpacing: '1.2px',
+          textTransform: 'uppercase',
+          textShadow: '0 1px 2px rgba(255,255,255,0.5)'
+        }}
+      >
+        New
+      </Typography>
+    </Box>
+
+    {/* Vertical "Building for Sale" */}
+    <Box
+      sx={{
+        // background: 'rgba(255,255,255,0.3)',
+        borderRadius: '8px',
+        px: 0.5,
+        py: 1.5,
+        // borderLeft: '3px solid rgba(90,77,58,0.3)',
+        // borderRight: '3px solid rgba(90,77,58,0.3)',
+        // backdropFilter: 'blur(3px)',
+        // boxShadow: '0 3px 8px rgba(0,0,0,0.1)'
+      }}
+    >
+      <Typography
+        sx={{
+          writingMode: 'vertical-rl',
+          transform: 'rotate(180deg)',
+          fontSize: { xs: '0.75rem', sm: '0.85rem' },
+          color: '#3a3225',
+          fontWeight: 800,
+          letterSpacing: '1.5px',
+          textShadow: '0 1px 3px rgba(255,255,255,0.5)',
+          py: 0.5
+        }}
+      >
+        Building For Sale
+      </Typography>
+    </Box>
+
+    {/* "Quick Deals" Tag */}
+    <Box
+      sx={{
+        // background: 'rgba(255,255,255,0.4)',
+        borderRadius: '16px',
+        px: 1,
+        py: 0.5,
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
+        transform: 'scale(0.95)',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1)',
+          // background: 'rgba(255,255,255,0.5)'
+        }
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: { xs: '0.7rem', sm: '0.8rem' },
+          color: '#5a4d3a',
+          fontWeight: 700,
+          letterSpacing: '1.2px',
+          textTransform: 'uppercase',
+          textShadow: '0 1px 2px rgba(255,255,255,0.5)'
+        }}
+      >
+        Quick Deals
+      </Typography>
+    </Box>
+  </Box>
+
+          {/* Elegant Bottom Section */}
+          <Box
+            sx={{
+              background: `
+        linear-gradient(145deg, #2a2a2a, #1e1e1e),
+        url('https://www.transparenttextures.com/patterns/dark-matter.png')
+      `,
+      width: '100%',
+      flexGrow: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      py: 2,
+      borderBottomRightRadius: '40px',
+      gap: '40px',
+      boxShadow: `
+        inset 0 0 15px rgba(0,0,0,0.2),
+        0 5px 10px rgba(0,0,0,0.15)
+      `
+    }}
+  >
+    {/* Vertical "Hot Properties" */}
+    <Box
+      sx={{
+        // background: 'rgba(0,0,0,0.25)',
+        borderRadius: '8px',
+        px: 0.5,
+        py: 1.5,
+        // borderLeft: '3px solid rgba(255,255,255,0.1)',
+        // borderRight: '3px solid rgba(255,255,255,0.1)',
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 3px 10px rgba(0,0,0,0.2)'
+      }}
+    >
+      <Typography
+        sx={{
+          writingMode: 'vertical-rl',
+          transform: 'rotate(180deg)',
+          fontSize: { xs: '0.75rem', sm: '0.85rem' },
+          color: '#ffffff',
+          fontWeight: 800,
+          letterSpacing: '1.5px',
+          textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+          py: 0.5
+        }}
+      >
+        Hot Properties
+      </Typography>
+    </Box>
+
+    {/* "Best Deals" Tag */}
+    <Box
+      sx={{
+        // background: 'rgba(255,255,255,0.15)',
+        borderRadius: '16px',
+        px: 1,
+        py: 0.5,
+        // backdropFilter: 'blur(4px)',
+        // boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        transform: 'scale(0.95)',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1)',
+          // background: 'rgba(255,255,255,0.25)',
+          // boxShadow: '0 3px 12px rgba(0,0,0,0.3)'
+        }
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: { xs: '0.7rem', sm: '0.8rem' },
+          color: 'white',
+          fontWeight: 700,
+          letterSpacing: '1.2px',
+          textTransform: 'uppercase',
+          textShadow: '0 1px 3px rgba(0,0,0,0.5)'
+        }}
+      >
+        Best Deals
+      </Typography>
+    </Box>
+  </Box>
+</Box>
+
+
+        <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
+        <AppBar
+        position="relative"
         sx={{
           bgcolor: 'white',
           boxShadow: 'none',
           height: '50px',
-          width: 'calc(100% - 65px)', // leave space for sidebar
-          ml: '65px',                 // shift right to align with sidebar
-          zIndex: 1
+          width: 'calc(100% - 0px)',
+          ml: '0px',
+          zIndex: 1,
         }}
       >
         <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
@@ -164,7 +459,7 @@ function App() {
             <SearchIconWrapper>
               <SearchIcon sx={{ fontSize: '1rem' }} />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" sx={{ fontSize: '0.85rem' }} />
+            <StyledInputBase placeholder="Search…" />
           </Search>
           <IconButton size="small">
             <FavoriteBorderIcon sx={{ fontSize: '1rem', color: '#757575' }} />
@@ -178,381 +473,132 @@ function App() {
         </Toolbar>
       </AppBar>
 
+      <Box 
+  mb={2} 
+  backgroundColor="#e7dbc9" 
+  borderRadius="10px" 
+  sx={{ display: { xs: 'block', sm: 'none' } }} // 👈 Only show on mobile
+>
+  <Typography variant="h6" align="center" mb={1}>
+    Looking For
+  </Typography>
 
-
-      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <Box
-          sx={{
-            width: '60px',
-            height: '85vh',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            overflow: 'hidden',
-            borderTopLeftRadius: '45px',
-            borderBottomRightRadius: '45px',
-            boxShadow: `
-      0 10px 30px -5px rgba(0,0,0,0.3),
-      inset 0 -3px 10px rgba(255,255,255,0.05)
-    `,
-            background: 'linear-gradient(145deg, #1e1e1e, #2a2a2a)',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 15px 35px -5px rgba(0,0,0,0.4)'
-            },
-            position: 'relative'
-          }}
-        >
-          {/* Premium Profile Section */}
-          <Box
+  <Card
+    sx={{
+      backgroundColor: '#e7dbc9',
+      borderRadius: '10px',
+      padding: '5px',
+      boxShadow: 'none'
+    }}
+  >
+    <Grid container spacing={2}>
+      {/* First Row: 2 Cards */}
+      {cards.slice(0, 2).map((card, index) => (
+        <Grid item xs={6} key={index} display="flex" justifyContent="center">
+          <Card
             sx={{
-              width: '100%',
-              background: 'linear-gradient(145deg,rgb(36, 36, 36),rgb(36, 36, 36))',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
               height: '100px',
-              borderTopLeftRadius: '45px',
-              boxShadow: `
-        inset 0 2px 4px rgba(255,255,255,0.05),
-        0 2px 5px rgba(0,0,0,0.2)
-      `,
-              overflow: 'hidden'
-            }}
-          >
-            <Avatar
-              alt="User"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
-              sx={{
-                width: 44,
-                height: 44,
-                border: '3px solid rgba(216,204,186,0.7)',
-                boxShadow: `
-          0 3px 10px rgba(0,0,0,0.3),
-          inset 0 0 10px rgba(216,204,186,0.2)
-        `,
-                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                '&:hover': {
-                  transform: 'scale(1.15) rotate(5deg)',
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.4)'
-                }
-              }}
-            />
-          </Box>
-
-          {/* Luxury Middle Section */}
-          <Box
-            sx={{
-              background: `
-        linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
-        url('https://www.transparenttextures.com/patterns/cream-paper.png')
-      `,
-              width: '100%',
-              flexGrow: 1,
+              width: '140px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
+              background: card.bgImage,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: 'white',
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              pt: 3,
-              pb: 3,
-              borderTopLeftRadius: '45px',
-              borderBottomRightRadius: '45px',
-              boxShadow: `
-        inset 0 0 15px rgba(0,0,0,0.1),
-        0 5px 10px rgba(0,0,0,0.1)
-      `
+              cursor: 'pointer',
+              position: 'relative',
+              '&:hover': {
+                transform: 'scale(1.02)',
+                transition: 'transform 0.3s ease'
+              }
             }}
           >
-            <Box
+            <CardContent
               sx={{
-                background: 'rgba(255,255,255,0.4)',
-                borderRadius: '16px',
-                px: 1.5,
-                py: 1,
-                backdropFilter: 'blur(4px)',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
-                transform: 'scale(0.95)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1)',
-                  background: 'rgba(255,255,255,0.5)'
-                }
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%',
+                p: 1
               }}
             >
-              <Typography sx={{
-                fontSize: '0.8rem',
-                color: '#5a4d3a',
-                fontWeight: 700,
-                fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                textShadow: '0 1px 2px rgba(255,255,255,0.5)'
-              }}>
-                New
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                background: 'rgba(255,255,255,0.3)',
-                borderRadius: '8px',
-                px: 0.5,
-                py: 2,
-                borderLeft: '3px solid rgba(90,77,58,0.3)',
-                borderRight: '3px solid rgba(90,77,58,0.3)',
-                backdropFilter: 'blur(3px)',
-                boxShadow: '0 3px 8px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Typography
+              <Box sx={{ textAlign: 'left' }}>
+                {card.icon}
+                <Typography variant="h6" component="div" mt={1}>
+                  {card.title}
+                </Typography>
+              </Box>
+              <IconButton
                 sx={{
-                  writingMode: 'vertical-rl',
-                  transform: 'rotate(180deg)',
-                  fontSize: '0.85rem',
-                  color: '#3a3225',
-                  fontWeight: 800,
-                  fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-                  letterSpacing: '1.5px',
-                  textShadow: '0 1px 3px rgba(255,255,255,0.5)',
-                  py: 0.5
+                  position: 'absolute',
+                  right: 8,
+                  bottom: 8,
+                  color: 'white'
                 }}
               >
-                Building For Sale
-              </Typography>
-            </Box>
+                <ArrowIcon />
+              </IconButton>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
 
-            <Box
-              sx={{
-                background: 'rgba(255,255,255,0.4)',
-                borderRadius: '16px',
-                px: 1.5,
-                py: 1,
-                backdropFilter: 'blur(4px)',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
-                transform: 'scale(0.95)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1)',
-                  background: 'rgba(255,255,255,0.5)'
-                }
-              }}
-            >
-              <Typography sx={{
-                fontSize: '0.8rem',
-                color: '#5a4d3a',
-                fontWeight: 700,
-                fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                textShadow: '0 1px 2px rgba(255,255,255,0.5)'
-              }}>
-                Quick Deals
-              </Typography>
-            </Box>
-          </Box>
-
-          {/* Elegant Bottom Section */}
-          <Box
+      {/* Second Row: Centered Third Card */}
+      <Grid item xs={12} display="flex" justifyContent="center">
+        <Link to="/lease_map" style={{ textDecoration: 'none' }}>
+          <Card
             sx={{
-              background: `
-        linear-gradient(145deg, #2a2a2a, #1e1e1e),
-        url('https://www.transparenttextures.com/patterns/dark-matter.png')
-      `,
-              width: '100%',
-              flexGrow: 1,
+              height: '100px',
+              width: '140px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
+              background: cards[2].bgImage,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: 'white',
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              py: 3,
-              borderBottomRightRadius: '45px',
-              gap: '45px',
-              boxShadow: `
-        inset 0 0 15px rgba(0,0,0,0.2),
-        0 5px 10px rgba(0,0,0,0.15)
-      `
+              cursor: 'pointer',
+              position: 'relative',
+              '&:hover': {
+                transform: 'scale(1.02)',
+                transition: 'transform 0.3s ease'
+              }
             }}
           >
-            <Box
+            <CardContent
               sx={{
-                background: 'rgba(0,0,0,0.25)',
-                borderRadius: '8px',
-                px: 0.5,
-                py: 2,
-                borderLeft: '3px solid rgba(255,255,255,0.1)',
-                borderRight: '3px solid rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(4px)',
-                boxShadow: '0 3px 10px rgba(0,0,0,0.2)'
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%',
+                p: 1
               }}
             >
-              <Typography
+              <Box sx={{ textAlign: 'left' }}>
+                {cards[2].icon}
+                <Typography variant="h6" component="div" mt={1}>
+                  {cards[2].title}
+                </Typography>
+              </Box>
+              <IconButton
                 sx={{
-                  writingMode: 'vertical-rl',
-                  transform: 'rotate(180deg)',
-                  fontSize: '0.85rem',
-                  color: '#ffffff',
-                  fontWeight: 800,
-                  fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-                  letterSpacing: '1.5px',
-                  textShadow: '0 1px 5px rgba(0,0,0,0.7)',
-                  py: 0.5
+                  position: 'absolute',
+                  right: 8,
+                  bottom: 8,
+                  color: 'white'
                 }}
               >
-                Hot Properties
-              </Typography>
-            </Box>
+                <ArrowIcon />
+              </IconButton>
+            </CardContent>
+          </Card>
+        </Link>
+      </Grid>
+    </Grid>
+  </Card>
+</Box>
 
-            <Box
-              sx={{
-                background: 'rgba(255,255,255,0.15)',
-                borderRadius: '16px',
-                px: 1.5,
-                py: 1,
-                backdropFilter: 'blur(4px)',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                transform: 'scale(0.95)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1)',
-                  background: 'rgba(255,255,255,0.25)',
-                  boxShadow: '0 3px 12px rgba(0,0,0,0.3)'
-                }
-              }}
-            >
-              <Typography sx={{
-                fontSize: '0.8rem',
-                color: 'white',
-                fontWeight: 700,
-                fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                textShadow: '0 1px 3px rgba(0,0,0,0.5)'
-              }}>
-                Best Deals
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
-
-          <Box mb={2} backgroundColor="#e7dbc9" borderRadius='10px'>
-            <Typography variant="h6" align="center" mb={1}>
-              Looking For
-            </Typography>
-
-            <Card sx={{
-              backgroundColor: '#e7dbc9',
-              borderRadius: '10px',
-              padding: '5px',
-              boxShadow: 'none'
-            }}>
-              <Grid container spacing={2}>
-                {cards.slice(0, 2).map((card, index) => (
-                  <Grid item xs={6} key={index}>
-                    <Link to={card.path} style={{ textDecoration: 'none' }}>
-                    <Card sx={{
-                      height: '100px',
-                      width: '140px',
-                      borderRadius: '12px',
-                      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                      background: card.bgImage,
-                      backgroundSize: 'cover',
-                      color: 'white',
-                      display: 'flex',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                        transition: 'transform 0.3s ease'
-                      }
-                    }}>
-                      <CardContent sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        width: '100%'
-                      }}>
-                        <Box sx={{ textAlign: 'left' }}>
-                          {card.icon}
-                          <Typography variant="h6" component="div" mt={1}>
-                            {card.title}
-                          </Typography>
-                        </Box>
-                        <IconButton sx={{
-                          position: 'absolute',
-                          right: 8,
-                          bottom: 8,
-                          color: 'white'
-                        }}>
-                          <ArrowIcon />
-                        </IconButton>
-                      </CardContent>
-                    </Card>
-                    </Link>
-                  </Grid>
-                ))}
-
-                <Grid item xs={12}>
-                  <Box display="flex" justifyContent="flex-start">
-                    <Link to="/lease_map" style={{ textDecoration: 'none' }}>  {/* Link wrapping the Lease card */}
-                      <Card sx={{
-                        height: '100px',
-                        width: '140px',
-                        borderRadius: '12px',
-                        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                        background: cards[2].bgImage,
-                        backgroundSize: 'cover',
-                        color: 'white',
-                        display: 'flex',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        '&:hover': {
-                          transform: 'scale(1.02)',
-                          transition: 'transform 0.3s ease'
-                        }
-                      }}>
-                        <CardContent sx={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          width: '100%'
-                        }}>
-                          <Box sx={{ textAlign: 'left' }}>
-                            {cards[2].icon}
-                            <Typography variant="h6" component="div" mt={1}>
-                              {cards[2].title}
-                            </Typography>
-                          </Box>
-                          <IconButton sx={{
-                            position: 'absolute',
-                            right: 8,
-                            bottom: 8,
-                            color: 'white'
-                          }}>
-                            <ArrowIcon />
-                          </IconButton>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Card>
-          </Box>
 
           <Box mb={2}>
             <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
@@ -1462,45 +1508,52 @@ function App() {
 
 
       <BottomNavigation
-        showLabels
+      value={value}
+      onChange={handleChange}
+      showLabels
+      sx={{
+        borderTop: '1px solid #e0e0e0',
+        height: '60px',
+        '& .MuiBottomNavigationAction-root': {
+          minWidth: 'auto',
+          padding: '6px 0',
+          color: '#757575',
+        },
+        '& .MuiBottomNavigationAction-label': {
+          fontSize: '0.7rem',
+        },
+      }}
+    >
+      <BottomNavigationAction
+        value="home"
+        label="Home"
+        icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+      <BottomNavigationAction
+        value="construction"
+        label="Construction & Interiors"
+        icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+      <BottomNavigationAction
+        value="post"
+        label="Post"
+        icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
         sx={{
-          borderTop: '1px solid #e0e0e0',
-          height: '60px',
-          '& .MuiBottomNavigationAction-root': {
-            minWidth: 'auto',
-            padding: '6px 0',
-            color: '#757575',
-          },
-          '& .MuiBottomNavigationAction-label': {
-            fontSize: '0.7rem',
-          },
+          '& .MuiSvgIcon-root': { color: '#2196f3' },
+          '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
         }}
-      >
-        <BottomNavigationAction
-          label="Home"
-          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Construction & Interiors"
-          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Post"
-          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-          sx={{
-            '& .MuiSvgIcon-root': { color: '#2196f3' },
-            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-          }}
-        />
-        <BottomNavigationAction
-          label="Home Services"
-          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          label="Profile"
-          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-      </BottomNavigation>
+      />
+      <BottomNavigationAction
+        value="services"
+        label="Home Services"
+        icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+      <BottomNavigationAction
+        value="profile"
+        label="Profile"
+        icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+      />
+    </BottomNavigation>
     </Box>
   );
 }

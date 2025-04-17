@@ -6,7 +6,6 @@ import {
   CardContent,
   Typography,
   IconButton,
-  CardActions,
   Paper,
   BottomNavigation,
   BottomNavigationAction,
@@ -17,8 +16,7 @@ import {
   List as ListIcon,
   Favorite as FavoriteIcon,
   Mail as MailIcon,
-  Share as ShareIcon,
-  Delete as DeleteIcon
+  Share as ShareIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
@@ -62,8 +60,11 @@ const RentSaves = () => {
     }
   };
 
-  const handleCardClick = (id) => {
-    navigate(`/rent-description`);
+  const handleCardClick = (e, property) => {
+    const isIconClick = e.target.closest('button');
+    if (!isIconClick) {
+      navigate('/rent-description', { state: { property } });
+    }
   };
 
   return (
@@ -77,36 +78,76 @@ const RentSaves = () => {
           </Typography>
         ) : (
           saved.map((property) => (
-            <Card key={property.id} sx={{ mb: 2, mx: 2, cursor: 'pointer' }}>
+            <Card
+              key={property.id}
+              sx={{
+                mb: 2,
+                mx: 2,
+                borderRadius: 3,
+                boxShadow: 3,
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer'
+              }}
+              onClick={(e) => handleCardClick(e, property)}
+            >
+              {/* Icons over image */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  zIndex: 2,
+                  display: 'flex',
+                  gap: 1
+                }}
+              >
+                <Tooltip title="Share">
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShare(property);
+                    }}
+                    sx={{ backgroundColor: 'white', '&:hover': { backgroundColor: '#f0f0f0' } }}
+                  >
+                    <ShareIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Remove">
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemove(property.id);
+                    }}
+                    sx={{ backgroundColor: 'white', '&:hover': { backgroundColor: '#f0f0f0' } }}
+                  >
+                    <FavoriteIcon color="error" fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+
+              {/* Image */}
               <CardMedia
                 component="img"
                 height="180"
                 image={property.image}
-                onClick={() => handleCardClick(property.id)}
+                alt={property.title}
               />
-              <CardContent onClick={() => handleCardClick(property.id)}>
+
+              {/* Title & location */}
+              <CardContent>
                 <Typography variant="h6">{property.title}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   {property.location}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Tooltip title="Share">
-                  <IconButton onClick={() => handleShare(property)}>
-                    <ShareIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Remove">
-                  <IconButton onClick={() => handleRemove(property.id)}>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </Tooltip>
-              </CardActions>
             </Card>
           ))
         )}
       </Box>
 
+      {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
