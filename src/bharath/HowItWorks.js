@@ -186,11 +186,27 @@ const InteriorServicesEnhanced = () => {
   return (
     <>
 
-      <Box display="flex" alignItems="center" padding="10px">
-        <IconButton onClick={() => navigate('/interiors')}>
+     
+
+
+      <Box display="flex" alignItems="center" p={1} sx={{
+        background: 'white',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1100
+      }}>
+        <IconButton
+          onClick={() => navigate('/interiors')}
+          sx={{
+            color: '#4A00E0',
+            '&:hover': {
+              backgroundColor: 'rgba(74, 0, 224, 0.1)'
+            }
+          }}
+        >
           <ArrowBackIosIcon />
         </IconButton>
-
       </Box>
       {/* Main Container */}
       <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 12 }}>
@@ -200,6 +216,9 @@ const InteriorServicesEnhanced = () => {
           backgroundColor: '#e6f2ff',  // Light blue color
           padding: isMobile ? 2 : 2,
           borderRadius: 1,
+          position: 'sticky',
+          top: 0,
+          zIndex: 1100
           // Optional: adds slight rounded corners
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
