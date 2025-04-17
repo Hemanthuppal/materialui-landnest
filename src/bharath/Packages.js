@@ -118,7 +118,7 @@ const ConstructionPackages = () => {
         background: 'linear-gradient(to bottom, #f8f9fa, #e9ecef)',
         pb: 6
       }}>
-        <Box display="flex" alignItems="center" p={3} sx={{ 
+        <Box display="flex" alignItems="center" p={2} sx={{ 
           background: 'white',
           boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
           position: 'sticky',
@@ -136,7 +136,7 @@ const ConstructionPackages = () => {
           >
             <ArrowBackIosIcon />
           </IconButton>
-          <Typography
+          {/* <Typography
             align="center"
             flex={1}
             fontWeight="700"
@@ -151,7 +151,7 @@ const ConstructionPackages = () => {
             }}
           >
             Construction Packages
-          </Typography>
+          </Typography> */}
         </Box>
 
         <Box sx={{
