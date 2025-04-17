@@ -14,7 +14,7 @@ import LeaseForm from './maniteja/Form-Lease';
 import SellYourProperty from './maniteja/Form-SellYourProperty';
 import Lease_map from './Rajesh/Lease_map';
 import Lease_detail from './Rajesh/Lease_details';
-import MobilePropertyUI from './tharun/MobileProperyUI';
+
 
 import RentForm from './maniteja/Rent_form';
 import InteriorConsultationForm from './bharath/Get_started';
@@ -84,8 +84,8 @@ function App() {
         <Route path="/lease_map" element={<Lease_map />} />
         <Route path="/lease_details" element={<Lease_detail />} />
         <Route path="/lease_description/:id" element={<Lease_discription />} />
-        <Route path="/mobileproperty" element={<MobilePropertyUI />} />
-        <Route path="/lease-description" element={<Lease_discription />} />
+      
+        <Route path="/lease_description" element={<Lease_discription />} />
         <Route path="/lease_save" element={<LeaseSave />} />
         
         <Route path="/rent-form" element={<RentForm />} />

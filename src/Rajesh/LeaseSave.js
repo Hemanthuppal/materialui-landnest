@@ -1,133 +1,205 @@
-// LeaseSave.js
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
   CardContent,
   CardMedia,
   Typography,
-  Grid,
   IconButton,
   Button,
-  Divider
+  Grid,
+  Divider,
+  Tooltip,
+  Paper,
+  BottomNavigation,
+  BottomNavigationAction
 } from '@mui/material';
-import { Call, LocationOn, Delete } from '@mui/icons-material';
+import {
+  Favorite,
+  Share,
+  ThumbUpAltOutlined,
+  ThumbUpAlt,
+  Call,
+  LocationOn,
+  Home as HomeIcon,
+  List as ListIcon,
+  Favorite as FavoriteIcon,
+  Mail as MailIcon
+} from '@mui/icons-material';
+import CustomSearchBar from './CustomSearchBar';
 
 const LeaseSave = () => {
-  const [savedProperties, setSavedProperties] = useState([]);
+  const navigate = useNavigate();
+  const [value, setValue] = useState(2); // set current tab to "Saves"
+  const [saved, setSaved] = useState([]);
+  const [likedCards, setLikedCards] = useState({});
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('leaseFavorites')) || [];
-    setSavedProperties(saved);
+    const savedLeases = localStorage.getItem('savedLease');
+    setSaved(savedLeases ? JSON.parse(savedLeases) : []);
   }, []);
 
-  const handleDelete = (id) => {
-    const updated = savedProperties.filter(item => item.id !== id);
-    localStorage.setItem('leaseFavorites', JSON.stringify(updated));
-    setSavedProperties(updated);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    if (newValue === 0) navigate('/dashboard');
+    if (newValue === 1) navigate('/lease_details');
+    if (newValue === 2) navigate('/lease_save');
+    if (newValue === 3) navigate('/inbox');
+  };
+
+  const toggleLike = (id) => {
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  const removeFromSave = (property) => {
+    const updated = saved.filter((p) => p.id !== property.id);
+    setSaved(updated);
+    localStorage.setItem('savedLease', JSON.stringify(updated));
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h5" mb={3}>
-        Saved Properties
-      </Typography>
+    <>
+     <CustomSearchBar />
+      <Box sx={{ pt: 2, pb: 10 }}>
+        {saved.length === 0 ? (
+          <Typography align="center" variant="h6" sx={{ mt: 5, color: 'text.secondary' }}>
+            No saved lease properties yet.
+          </Typography>
+        ) : (
+          saved.map((property) => (
+            <Card
+              key={property.id}
+              sx={{
+                mb: 4,
+                mx: 2,
+                borderRadius: 4,
+                boxShadow: 3,
+                transition: 'transform 0.2s ease-in-out',
+                '&:hover': { transform: 'scale(1.015)', boxShadow: 6 }
+              }}
+              onClick={(e) => {
+                const isButtonClick = e.target.closest('button') || e.target.closest('svg');
+                if (!isButtonClick) {
+                  navigate('/lease_description', { state: { property } });
+                }
+              }}
+            >
+              <Box position="relative">
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={property.image}
+                  alt="Property"
+                  sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+                />
+                <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 1 }}>
+                  <Tooltip title="Remove from Wishlist">
+                    <IconButton
+                      sx={{ bgcolor: 'white', boxShadow: 1 }}
+                      onClick={() => removeFromSave(property)}
+                    >
+                      <Favorite color="error" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Share">
+                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
+                      <Share />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+                <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
+                  <Tooltip title="Like">
+                    <IconButton
+                      sx={{
+                        bgcolor: 'white',
+                        boxShadow: 1,
+                        color: likedCards[property.id] ? 'blue' : 'default'
+                      }}
+                      onClick={() => toggleLike(property.id)}
+                    >
+                      {likedCards[property.id] ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Box>
 
-      {savedProperties.length === 0 ? (
-        <Typography variant="body1">No saved properties yet.</Typography>
-      ) : (
-        savedProperties.map((property) => (
-          <Card
-            key={property.id}
-            sx={{
-              mb: 4,
-              borderRadius: 4,
-              boxShadow: 3,
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': { transform: 'scale(1.01)' }
-            }}
-          >
-            <CardMedia
-              component="img"
-              height="200"
-              image={property.image}
-              alt="Saved Property"
-            />
-
-            <CardContent>
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="h6" fontWeight="bold">
+              <CardContent sx={{ p: 2.5 }}>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
                   {property.title}
                 </Typography>
-                <IconButton onClick={() => handleDelete(property.id)} color="error">
-                  <Delete />
-                </IconButton>
-              </Box>
-
-              <Typography variant="body2" color="text.secondary" mb={1}>
-                {property.location}
-              </Typography>
-
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Typography variant="subtitle1" color="primary" fontWeight="bold">
-                  {property.price}
+                <Typography variant="body2" color="text.secondary" mb={1}>
+                  {property.location}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Listed on: {property.date}
-                </Typography>
-              </Grid>
 
-              <Box display="flex" alignItems="center" mt={2}>
-                <LocationOn fontSize="small" />
-                <Typography variant="body2" ml={0.5}>
-                  Location Verified
-                </Typography>
-                <Box sx={{ flexGrow: 1 }} />
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="success"
-                  startIcon={<Call />}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Call Now
-                </Button>
-              </Box>
-
-              <Divider sx={{ my: 2 }} />
-
-              <Grid container>
-                <Grid item xs={4} textAlign="center">
-                  <Typography variant="caption" color="text.secondary">
-                    Facing
+                <Grid container justifyContent="space-between" alignItems="center">
+                  <Typography variant="subtitle1" fontWeight="bold" color="primary">
+                    {property.price}
                   </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {property.facing}
+                  <Typography variant="caption" color="text.secondary">
+                    Listed on: {property.date}
                   </Typography>
                 </Grid>
-                <Grid item xs={4} textAlign="center">
-                  <Typography variant="caption" color="text.secondary">
-                    Area ({property.dimensions})
+
+                <Box display="flex" alignItems="center" mt={2}>
+                  <LocationOn fontSize="small" color="action" />
+                  <Typography variant="body2" color="text.primary" ml={0.5}>
+                    Location Verified
                   </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {property.area}
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} textAlign="center">
-                  <Typography variant="caption" color="text.secondary">
-                    Listed By
-                  </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {property.listedBy}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        ))
-      )}
-    </Box>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="success"
+                    startIcon={<Call />}
+                    sx={{ textTransform: 'none' }}
+                  >
+                    Call
+                  </Button>
+                </Box>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+                  {[ 
+                    { label: 'Facing', value: property.facing },
+                    { label: `Area (${property.dimensions})`, value: property.area },
+                    { label: 'Listed By', value: property.listedBy }
+                  ].map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        flex: 1,
+                        p: 1.5,
+                        textAlign: 'center',
+                        borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+                      }}
+                    >
+                      <Typography variant="caption" color="text.secondary">{item.label}</Typography>
+                      <Typography variant="body2" fontWeight="bold">{item.value}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </Box>
+
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation value={value} onChange={handleChange} showLabels>
+          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+          <BottomNavigationAction label="List" icon={<ListIcon />} />
+          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
+        </BottomNavigation>
+      </Paper>
+    </>
   );
 };
 
 export default LeaseSave;
+

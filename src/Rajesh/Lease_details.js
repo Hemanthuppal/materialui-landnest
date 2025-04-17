@@ -171,23 +171,45 @@ import {
   Button,
   Grid,
   Divider,
-  Tooltip
+  Tooltip,
+  Paper,
+  BottomNavigation,
+  BottomNavigationAction
 } from '@mui/material';
 import {
   FavoriteBorder,
+  Favorite,
   Share,
   ThumbUpAltOutlined,
+  ThumbUpAlt,
   Call,
-  LocationOn
+  LocationOn,
+  Home as HomeIcon,
+  List as ListIcon,
+  Favorite as FavoriteIcon,
+  Mail as MailIcon
 } from '@mui/icons-material';
 import buildingImage from '../Images/duplex-house.webp';
 import buildingImage2 from '../Images/Leasebuilding.png';
-import BottomNavbar from '../sharvani/BottomNavbar';
-import CustomSearchBar from './CustomSearchBar'; // ✅ Adjust path if needed
+import CustomSearchBar from './CustomSearchBar';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
+  const [value, setValue] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const [saved, setSaved] = useState(() => {
+    const stored = localStorage.getItem('savedLease');
+    return stored ? JSON.parse(stored) : [];
+  });
+  const [likedCards, setLikedCards] = useState({});
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    if (newValue === 0) navigate('/dashboard');
+    if (newValue === 1) navigate('/lease_details');
+    if (newValue === 2) navigate('/lease_save');
+    if (newValue === 3) navigate('/inbox');
+  };
 
   const propertyData = [
     {
@@ -216,155 +238,164 @@ const PropertyCard = () => {
     }
   ];
 
+  const toggleSave = (property) => {
+    const isSaved = saved.find((p) => p.id === property.id);
+    let updated;
+    if (isSaved) {
+      updated = saved.filter((p) => p.id !== property.id);
+    } else {
+      updated = [...saved, property];
+    }
+    setSaved(updated);
+    localStorage.setItem('savedLease', JSON.stringify(updated));
+  };
+
+  const isSaved = (property) => saved.some((p) => p.id === property.id);
+
+  const toggleLike = (id) => {
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const filteredProperties = propertyData.filter((property) =>
     property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     property.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleCardClick = (property) => {
-    navigate(`/lease_description/${property.id}`, { state: property });
-  };
-
   return (
     <>
-      {/* ✳ Search bar like the image */}
-      <CustomSearchBar
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-
-      {/* Property Cards */}
-      {filteredProperties.map((property) => (
-        <Card
-          key={property.id}
-          sx={{
-            mb: 4,
-            borderRadius: 4,
-            bgcolor: '#ffffff',
-            boxShadow: 3,
-            mx: 2,
-            transition: 'transform 0.2s',
-            '&:hover': {
-              transform: 'scale(1.015)',
-              boxShadow: 6
-            }
-          }}
-          onClick={() => handleCardClick(property)}
-        >
-          <Box position="relative">
-            <CardMedia
-              component="img"
-              height="200"
-              image={property.image}
-              alt="Property"
-              sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-            />
-            <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 1 }}>
-              <Tooltip title="Add to Wishlist">
-                <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
-                  <FavoriteBorder />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Share">
-                <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
-                  <Share />
-                </IconButton>
-              </Tooltip>
-            </Box>
-            <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
-              <Tooltip title="Like">
-                <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
-                  <ThumbUpAltOutlined />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </Box>
-
-          <CardContent sx={{ p: 2.5 }}>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
-              {property.title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" mb={1}>
-              {property.location}
-            </Typography>
-
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Typography variant="subtitle1" fontWeight="bold" color="primary">
-                {property.price}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                Listed on: {property.date}
-              </Typography>
-            </Grid>
-
-            <Box display="flex" alignItems="center" mt={2}>
-              <LocationOn fontSize="small" color="action" />
-              <Typography variant="body2" color="text.primary" ml={0.5}>
-                Location Verified
-              </Typography>
-              <Box sx={{ flexGrow: 1 }} />
-              <Button
-                size="small"
-                variant="outlined"
-                color="success"
-                startIcon={<Call />}
-                sx={{ textTransform: 'none' }}
-              >
-                Call 
-              </Button>
+      <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      <Box sx={{ pb: 10 }}>
+        {filteredProperties.map((property) => (
+          <Card
+            key={property.id}
+            sx={{
+              mb: 4,
+              mx: 2,
+              borderRadius: 4,
+              boxShadow: 3,
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': { transform: 'scale(1.015)', boxShadow: 6 }
+            }}
+            onClick={(e) => {
+              const isButtonClick = e.target.closest('button') || e.target.closest('svg');
+              if (!isButtonClick) {
+                navigate('/lease_description', { state: { property } });
+              }
+            }}
+          >
+            <Box position="relative">
+              <CardMedia
+                component="img"
+                height="200"
+                image={property.image}
+                alt="Property"
+                sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+              />
+              <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 1 }}>
+                <Tooltip title="Add to Wishlist">
+                  <IconButton
+                    sx={{ bgcolor: 'white', boxShadow: 1 }}
+                    onClick={() => toggleSave(property)}
+                  >
+                    {isSaved(property) ? <Favorite color="error" /> : <FavoriteBorder />}
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Share">
+                  <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
+                    <Share />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
+                <Tooltip title="Like">
+                  <IconButton
+                    sx={{
+                      bgcolor: 'white',
+                      boxShadow: 1,
+                      color: likedCards[property.id] ? 'blue' : 'default'
+                    }}
+                    onClick={() => toggleLike(property.id)}
+                  >
+                    {likedCards[property.id] ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
+                  </IconButton>
+                </Tooltip>
+              </Box>
             </Box>
 
-            <Divider sx={{ my: 2 }} />
+            <CardContent sx={{ p: 2.5 }}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                {property.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mb={1}>
+                {property.location}
+              </Typography>
 
-            <Grid
-              container
-              sx={{
-                border: '1px solid #e0e0e0',
-                borderRadius: 2,
-                overflow: 'hidden'
-              }}
-            >
-              <Grid item xs={4}>
-                <Box sx={{ borderRight: '1px solid #e0e0e0', p: 1.5, textAlign: 'center' }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Facing
-                  </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {property.facing}
-                  </Typography>
-                </Box>
+              <Grid container justifyContent="space-between" alignItems="center">
+                <Typography variant="subtitle1" fontWeight="bold" color="primary">
+                  {property.price}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Listed on: {property.date}
+                </Typography>
               </Grid>
 
-              <Grid item xs={4}>
-                <Box sx={{ borderRight: '1px solid #e0e0e0', p: 1.5, textAlign: 'center' }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Area ({property.dimensions})
-                  </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {property.area}
-                  </Typography>
-                </Box>
-              </Grid>
+              <Box display="flex" alignItems="center" mt={2}>
+                <LocationOn fontSize="small" color="action" />
+                <Typography variant="body2" color="text.primary" ml={0.5}>
+                  Location Verified
+                </Typography>
+                <Box sx={{ flexGrow: 1 }} />
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="success"
+                  startIcon={<Call />}
+                  sx={{ textTransform: 'none' }}
+                >
+                  Call
+                </Button>
+              </Box>
 
-              <Grid item xs={4}>
-                <Box sx={{ p: 1.5, textAlign: 'center' }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Listed By
-                  </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {property.listedBy}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      ))}
+              <Divider sx={{ my: 2 }} />
 
-      <BottomNavbar />
+              <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+                {[ 
+                  { label: 'Facing', value: property.facing },
+                  { label: `Area (${property.dimensions})`, value: property.area },
+                  { label: 'Listed By', value: property.listedBy }
+                ].map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      flex: 1,
+                      p: 1.5,
+                      textAlign: 'center',
+                      borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+                    }}
+                  >
+                    <Typography variant="caption" color="text.secondary">{item.label}</Typography>
+                    <Typography variant="body2" fontWeight="bold">{item.value}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation value={value} onChange={handleChange} showLabels>
+          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+          <BottomNavigationAction label="List" icon={<ListIcon />} />
+          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 };
 
 export default PropertyCard;
-

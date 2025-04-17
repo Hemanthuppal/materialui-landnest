@@ -298,127 +298,99 @@
 // export default Lease_map;
 
 // Lease_Property_Map.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
-  TextField,
-  IconButton,
-  InputAdornment,
-  Chip,
   Typography,
-  Card,
+  Chip,
+  IconButton,
   Paper,
   BottomNavigation,
   BottomNavigationAction,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material';
-
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader
-} from '@react-google-maps/api';
-
-import { useNavigate } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import TuneIcon from '@mui/icons-material/Tune';
-import HomeIcon from '@mui/icons-material/Home';
-import ListIcon from '@mui/icons-material/List';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MailIcon from '@mui/icons-material/Mail';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-
+  Card,
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import ListIcon from "@mui/icons-material/List";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import MailIcon from "@mui/icons-material/Mail";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import SearchIcon from "@mui/icons-material/Search";
+import TuneIcon from "@mui/icons-material/Tune";
+import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import leaseImage1 from '../Images/duplex-house.webp';
 import leaseImage2 from '../Images/Leasebuilding.png';
 
 const leaseTypes = [
-  "COMMERCIAL SPACE", "WAREHOUSE", "INDUSTRIAL PLOT",
-  "RESTAURANT SPACE", "FURNISHED OFFICE", "UNFURNISHED OFFICE",
-  "RETAIL SHOP", "SHOWROOM", "OPEN LAND", "GODOWN"
+  "Office",
+  "Retail",
+  "Industrial",
+  "Warehouse",
+  "Land",
+  "Showroom",
 ];
-
-const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
 const leaseProperties = [
   {
     id: 1,
-    title: "Furnished Office Space",
-    description: "5 Rooms • 2 Bathrooms • 2500 Sq.ft",
-    address: "500 Lease Street, Corporate City",
-    price: "₹ 1,00,000/-",
-    lat: 26.8475,
-    lng: 80.9490,
-    image: leaseImage1
+    title: "Modern Office Space",
+    description: "Fully furnished with high-speed internet.",
+    address: "123 Tech Street, Lucknow",
+    price: "₹1,20,000/month",
+    lat: 26.8500,
+    lng: 80.9499,
+    image:leaseImage1,
   },
   {
     id: 2,
-    title: "Warehouse for Lease",
-    description: "Open Space • 5000 Sq.ft",
-    address: "Industrial Area, Sector 9",
-    price: "₹ 80,000/-",
-    lat: 26.8450,
-    lng: 80.9430,
-    image: leaseImage2
-  }
+    title: "Retail Shop in Mall",
+    description: "Perfect for small business.",
+    address: "Wave Mall, Lucknow",
+    price: "₹85,000/month",
+    lat: 26.8520,
+    lng: 80.9420,
+    image:leaseImage2,
+  },
 ];
+
+const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
 const Lease_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const [value, setValue] = useState(0);
-
-  const handleCardClick = () => {
-    navigate('/lease-description');
-  };
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/lease_details');
-    if (newValue === 2) navigate('/lease_saves');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 0) navigate("/dashboard");
+    if (newValue === 1) navigate("/lease_details");
+    if (newValue === 2) navigate("/lease_saves");
+    if (newValue === 3) navigate("/inbox");
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
   const containerStyle = {
-    width: '100%',
-    height: '500px'
+    width: "100%",
+    height: "calc(100vh - 240px)",
   };
 
-  const center = {
-    lat: 26.8467,
-    lng: 80.9462
-  };
-
-  const handleMarkerClick = (property) => {
-    setSelectedProperty(property);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedProperty(null);
-  };
+  const center = { lat: 26.8467, lng: 80.9462 };
 
   return (
-    <Box sx={{ p: 2, pb: 7, maxWidth: 480, mx: "auto" }}>
-      <Card elevation={4} sx={{ p: 2 }}>
-        {/* Back + Styled Search Bar */}
+    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: "relative" }}>
+      {/* Header & Search */}
+      <Box sx={{ px: 2, pt: 2 }}>
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: '#e0e0e0',
-            borderRadius: '10px',
-            py: 1.2,
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#e0e0e0",
+            borderRadius: "10px",
+            py: 1,
             px: 1,
             mb: 2,
           }}
@@ -430,17 +402,17 @@ const Lease_Property_Map = () => {
           <Box
             sx={{
               flexGrow: 1,
-              backgroundColor: '#fff',
-              borderRadius: '20px',
-              display: 'flex',
-              alignItems: 'center',
+              backgroundColor: "#fff",
+              borderRadius: "20px",
+              display: "flex",
+              alignItems: "center",
               px: 2,
               height: 40,
-              mx: 1
+              mx: 1,
             }}
           >
             <Box sx={{ flexGrow: 1 }} />
-            <SearchIcon sx={{ fontSize: 20, color: '#666' }} />
+            <SearchIcon sx={{ fontSize: 20, color: "#666" }} />
           </Box>
 
           <IconButton>
@@ -448,69 +420,112 @@ const Lease_Property_Map = () => {
           </IconButton>
         </Box>
 
-        {/* Lease Types */}
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Lease Property Type</Typography>
+        {/* Lease Type Chips */}
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>
+          Lease Property Type
+        </Typography>
         <Box
           sx={{
-            display: 'flex',
+            display: "flex",
             gap: 1,
-            overflowX: 'auto',
-            whiteSpace: 'nowrap',
+            overflowX: "auto",
+            whiteSpace: "nowrap",
             pb: 1,
-            mb: 2
+            mb: 2,
           }}
         >
           {leaseTypes.map((type, index) => (
             <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
           ))}
         </Box>
+      </Box>
 
-        {/* Google Map */}
-        {isLoaded ? (
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={14}
-          >
-            {leaseProperties.map(property => (
-              <Marker
-                key={property.id}
-                position={{ lat: property.lat, lng: property.lng }}
-                onClick={() => handleMarkerClick(property)}
-              />
-            ))}
-          </GoogleMap>
-        ) : (
-          <Typography>Loading map...</Typography>
-        )}
-      </Card>
+      {/* Map */}
+      {isLoaded ? (
+        <Box sx={{ px: 2, pb: 10 }}>
+          <Box sx={{ width: "100%", height: containerStyle.height }}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={14}
+              options={{
+                gestureHandling: "greedy",
+                zoomControl: true,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+              }}
+            >
+              {leaseProperties.map((property) => (
+                <Marker
+                  key={property.id}
+                  position={{ lat: property.lat, lng: property.lng }}
+                  onClick={() => setSelectedProperty(property)}
+                />
+              ))}
+            </GoogleMap>
+          </Box>
 
-      {/* Modal for Property Details */}
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-        {selectedProperty && (
-          <>
-            <DialogTitle>{selectedProperty.title}</DialogTitle>
-            <DialogContent>
-              <img
-                src={selectedProperty.image}
-                alt={selectedProperty.title}
-                style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 8 }}
-                onClick={handleCardClick}
-              />
-              <Typography variant="body2" sx={{ mt: 2 }}>{selectedProperty.description}</Typography>
-              <Typography variant="body2">{selectedProperty.address}</Typography>
-              <Typography variant="h6" sx={{ mt: 1, color: 'green' }}>{selectedProperty.price}</Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCardClick}>View Details</Button>
-              <Button onClick={handleClose}>Close</Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
+          {/* Property Card Overlay */}
+          {selectedProperty && (
+            <Card
+              elevation={4}
+              sx={{
+                position: "absolute",
+                bottom: 164,
+                left: 0,
+                right: 0,
+                margin: "0 auto",
+                width: "100%",
+                maxWidth: 480,
+                bgcolor: "#fff",
+                borderRadius: 2,
+                boxShadow: 6,
+                zIndex: 999,
+              }}
+              onClick={() => navigate("/lease-description")}
+            >
+              <Box sx={{ position: "relative", p: 2 }}>
+                <IconButton
+                  size="small"
+                  sx={{ position: "absolute", top: 8, right: 8 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedProperty(null);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <Typography variant="h6" gutterBottom>
+                  {selectedProperty.title}
+                </Typography>
+                <img
+                  src={selectedProperty.image}
+                  alt={selectedProperty.title}
+                  style={{
+                    width: "100%",
+                    height: 180,
+                    objectFit: "cover",
+                    borderRadius: 8,
+                  }}
+                />
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  {selectedProperty.description}
+                </Typography>
+                <Typography variant="body2">{selectedProperty.address}</Typography>
+                <Typography variant="h6" sx={{ mt: 1, color: "green" }}>
+                  {selectedProperty.price}
+                </Typography>
+              </Box>
+            </Card>
+          )}
+        </Box>
+      ) : (
+        <Typography sx={{ textAlign: "center" }}>Loading map...</Typography>
+      )}
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
           <BottomNavigationAction label="List" icon={<ListIcon />} />
