@@ -5,6 +5,9 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import SearchBar from './FormsSearchBar';
+import FormsBottomNavbar from './FormsBottomNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual key
 
@@ -46,13 +49,13 @@ const categoryFields = {
     '2BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
     '3BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
     '4+ BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    'plot/land': ['Facing', 'Price',  'Approx Area'],
+    'plot/land': ['Facing', 'Price', 'Approx Area'],
     'duplex house': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    'commercial land': ['Facing', 'Price',  'Approx Area'],
-    'commercial building/space': ['Facing', 'Price', 'Parking', 'Approx Area','No.of floors'],
+    'commercial land': ['Facing', 'Price', 'Approx Area'],
+    'commercial building/space': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
     'villa': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    'pg-school-office': ['Facing', 'Price', 'Parking', 'Approx Area','No.of floors','Rooms-Count'],
-    'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Approx Area','No.of floors'],
+    'pg-school-office': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
+    'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
 };
 
 const LeaseForm = () => {
@@ -60,6 +63,7 @@ const LeaseForm = () => {
     const [address, setAddress] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('1BHK');
     const autocompleteRef = useRef(null);
+    const navigate = useNavigate();
 
     const onPlaceChanged = () => {
         const place = autocompleteRef.current.getPlace();
@@ -89,10 +93,27 @@ const LeaseForm = () => {
         });
     };
 
+    const handleBackClick = () => {
+        navigate(-1);
+    };
+
+    const handleSearchClick = () => {
+        console.log('Search icon clicked');
+    };
+
+    const handleFilterClick = () => {
+        console.log('Filter icon clicked');
+    };
+
     return (
         <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
+            <SearchBar
+                onBackClick={handleBackClick}
+                onSearchClick={handleSearchClick}
+                onFilterClick={handleFilterClick}
+            />
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 10, maxWidth: 'md', mx: 'auto' }}>
+                <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 12, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Lease Property Form
                     </Typography>
@@ -161,17 +182,25 @@ const LeaseForm = () => {
                         {/* Description */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                         <TextField fullWidth variant="outlined" multiline rows={4} />
-                    </Paper>
 
-                    {/* Action Buttons */}
-                    <Stack direction="row" spacing={2} justifyContent="center">
-                        <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Cancel</RedButton>
-                        <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Submit</GreenButton>
-                    </Stack>
+                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                            <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                                Cancel
+                            </RedButton>
+                            <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                                Submit
+                            </GreenButton>
+                        </Stack>
+                    </Paper>
                 </Box>
+
+                {/* Bottom Spacer */}
+                <Box sx={{ height: '70px' }} />
             </Box>
+
+            <FormsBottomNavbar />
         </LoadScript>
     );
 };
 
-export default LeaseForm ;
+export default LeaseForm;

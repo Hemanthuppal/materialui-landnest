@@ -3,9 +3,9 @@ import {
     Box, Typography, TextField, Button, Paper, Stack, styled
 } from '@mui/material';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
-
-// ✅ Import the SearchBar component
 import SearchBar from './FormsSearchBar';
+import FormsBottomNavbar from './FormsBottomNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -25,16 +25,16 @@ const RedButton = styled(Button)({
     color: 'white',
     '&:hover': { backgroundColor: '#cc0000' },
 });
-const BlueButton = styled(Button)({
-    backgroundColor: '#4da6ff',
+const GreenButton = styled(Button)({
+    backgroundColor: 'green',
     color: 'white',
-    '&:hover': { backgroundColor: '#3399ff' },
+    '&:hover': { backgroundColor: '#008000' },
 });
-
 const PostYourBestDeal = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const autocompleteRef = useRef(null);
+    const navigate = useNavigate();
 
     // ✅ Handle selection from Google Places dropdown
     const onPlaceChanged = () => {
@@ -68,7 +68,7 @@ const PostYourBestDeal = () => {
 
     // ✅ Optional callback handlers for SearchBar
     const handleBackClick = () => {
-        console.log('Back clicked');
+        navigate(-1);
     };
 
     const handleSearchClick = () => {
@@ -127,18 +127,19 @@ const PostYourBestDeal = () => {
                         Description
                     </Typography>
                     <TextField fullWidth variant="outlined" multiline rows={4} />
+                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                        <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            Cancel
+                        </RedButton>
+                        <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            Submit
+                        </GreenButton>
+                    </Stack>
                 </Paper>
+                <Box sx={{ height: '70px' }} />
 
-                {/* ✅ Action Buttons */}
-                <Stack direction="row" spacing={2} justifyContent="center">
-                    <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
-                        Cancel
-                    </RedButton>
-                    <BlueButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
-                        SUBMIT
-                    </BlueButton>
-                </Stack>
             </Box>
+            <FormsBottomNavbar />
         </LoadScript>
     );
 };

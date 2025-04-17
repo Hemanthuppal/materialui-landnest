@@ -154,8 +154,12 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import SearchBar from './FormsSearchBar';
+import FormsBottomNavbar from './FormsBottomNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
+
 
 const containerStyle = {
     width: '100%',
@@ -184,10 +188,11 @@ const RedButton = styled(Button)({
     color: 'white',
     '&:hover': { backgroundColor: '#cc0000' },
 });
-const BlueButton = styled(Button)({
-    backgroundColor: '#4da6ff',
+
+const GreenButton = styled(Button)({
+    backgroundColor: 'green',
     color: 'white',
-    '&:hover': { backgroundColor: '#3399ff' },
+    '&:hover': { backgroundColor: '#008000' },
 });
 
 // Define dynamic fields for each category
@@ -201,7 +206,7 @@ const categoryFields = {
     'flat': ['Site Area', 'Facing', 'List', 'Price', 'Bedrooms-count', 'Parking', 'Borewell'],
     'villa': ['Site Area', 'Facing', 'List', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Floors'],
     'commercial building': ['Site Area', 'Facing', 'List', 'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors'],
-    'appartments': ['Site Area', 'Facing', 'List', 'Price', 'Parking', 'Borewell','House-count', '1bhk', '2bhk', '3bhk', '4bhk',],
+    'appartments': ['Site Area', 'Facing', 'List', 'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk',],
     'others': ['Price'],
 };
 
@@ -210,6 +215,7 @@ const SellYourProperty = () => {
     const [address, setAddress] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Commercial land/plot');
     const autocompleteRef = useRef(null);
+    const navigate = useNavigate();
 
     const onPlaceChanged = () => {
         const place = autocompleteRef.current.getPlace();
@@ -239,8 +245,25 @@ const SellYourProperty = () => {
         });
     };
 
+    const handleBackClick = () => {
+        navigate(-1);
+    };
+
+    const handleSearchClick = () => {
+        console.log('Search icon clicked');
+    };
+
+    const handleFilterClick = () => {
+        console.log('Filter icon clicked');
+    };
+
     return (
         <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
+            <SearchBar
+                onBackClick={handleBackClick}
+                onSearchClick={handleSearchClick}
+                onFilterClick={handleFilterClick}
+            />
             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                     Sell Your Property
@@ -272,7 +295,7 @@ const SellYourProperty = () => {
                         />
                     ))}
 
-{/* <TextField fullWidth label="Road Width" variant="outlined" sx={{ mb: 2 }} /> */}
+                    {/* <TextField fullWidth label="Road Width" variant="outlined" sx={{ mb: 2 }} /> */}
 
                     {/* Location search + Autocomplete */}
                     <Autocomplete
@@ -309,15 +332,19 @@ const SellYourProperty = () => {
                     {/* Description */}
                     <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                     <TextField fullWidth variant="outlined" multiline rows={4} />
-
+                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                        <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            Cancel
+                        </RedButton>
+                        <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            Submit
+                        </GreenButton>
+                    </Stack>
                 </Paper>
+                <Box sx={{ height: '70px' }} />
 
-                {/* Buttons */}
-                <Stack direction="row" spacing={2} justifyContent="center">
-                    <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>Cancel</RedButton>
-                    <BlueButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>SUBMIT</BlueButton>
-                </Stack>
             </Box>
+            <FormsBottomNavbar />
         </LoadScript>
     );
 };
