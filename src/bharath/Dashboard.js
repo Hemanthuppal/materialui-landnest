@@ -124,12 +124,14 @@ const cards = [
   {
     title: "Buy",
     icon: <BuyIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    path: "/propertymap"
   },
   {
     title: "Rent",
     icon: <RentIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)"
+    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    path: "/rent-propertymap"
   },
   {
     title: "Lease",
@@ -461,6 +463,7 @@ function App() {
               <Grid container spacing={2}>
                 {cards.slice(0, 2).map((card, index) => (
                   <Grid item xs={6} key={index}>
+                    <Link to={card.path} style={{ textDecoration: 'none' }}>
                     <Card sx={{
                       height: '100px',
                       width: '140px',
@@ -499,6 +502,7 @@ function App() {
                         </IconButton>
                       </CardContent>
                     </Card>
+                    </Link>
                   </Grid>
                 ))}
 

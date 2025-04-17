@@ -3,7 +3,6 @@ import {
     Box, Typography, TextField, Button, Paper, Stack, styled
 } from '@mui/material';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
-
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
