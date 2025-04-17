@@ -33,18 +33,31 @@ import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
 import RentSaves from './sharvani/Rent_Saves';
 import Login from './auth/Login';
+import Register from './auth/Register';
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    // Check localStorage for existing auth
+    localStorage.getItem('isAuthenticated') === 'true'
+  );
 
   return (
     <BrowserRouter>
       <Routes>
+      {/* Auth routes */}
       <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/register" element={<Register />} />
+        
       <Route 
           path="/" 
           element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
+        />
+
+         {/* Protected routes */}
+         <Route 
+          path="/dashboard" 
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
         />
       
         <Route path="/dashboard" element={<Dashboard />} />
