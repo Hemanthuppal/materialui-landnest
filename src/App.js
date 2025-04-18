@@ -88,7 +88,7 @@ function App() {
         <Route path="/work-details" element={<WorkerDetails />} />
         <Route path="/inboxlist" element={<InboxList />} />
         <Route path="/work-detail" element={<WorkerDetail />} />
-        <Route path="/forms" element={<Forms/>} />
+        <Route path="/post" element={<Forms/>} />
         <Route path="/details" element={<Details_Page />} />
         <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
         <Route path="/lease-form" element={<LeaseForm />} />
