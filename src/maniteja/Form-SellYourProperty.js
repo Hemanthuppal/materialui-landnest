@@ -264,6 +264,7 @@ const SellYourProperty = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
+             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px' }}>
             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                     Sell Your Property
@@ -343,6 +344,7 @@ const SellYourProperty = () => {
                 </Paper>
                 <Box sx={{ height: '70px' }} />
 
+            </Box>
             </Box>
             <FormsBottomNavbar />
         </LoadScript>

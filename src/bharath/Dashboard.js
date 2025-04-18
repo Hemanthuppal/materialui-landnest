@@ -180,7 +180,7 @@ function App() {
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Box
           sx={{
-            width: { xs: '50px', sm: '60px' },
+            width: { xs: '17%', sm: '60px' },
             height: { xs: '90vh', sm: '85vh' },
             display: 'flex',
             flexDirection: 'column',
@@ -189,8 +189,8 @@ function App() {
             borderTopLeftRadius: '40px',
             borderBottomRightRadius: '40px',
             // marginTop: '10px',
-            marginTop: '5%',
-    marginLeft: '0.1%',
+            marginTop: '0.5%',
+    marginLeft: '0.5%',
 
             boxShadow: `
       0 10px 30px -5px rgba(0,0,0,0.3),
@@ -451,11 +451,12 @@ function App() {
               bgcolor: 'rgb(235, 233, 230)',
               boxShadow: 'none',
               height: '50px',
-              width: '85%',
+              width: '82%',
               ml: "65",
               zIndex: 1201,
-              marginTop: '4%',
+              // marginTop: '0.5%',
               // marginRight: '0.5%',// ensure it stays above other elements
+              
             }}
           >
             <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
@@ -499,58 +500,59 @@ function App() {
               >
                 <Grid container spacing={2}>
                   {/* First Row: 2 Cards */}
-                  {cards.slice(0, 2).map((card, index) => (
-                    <Grid item xs={6} key={index} display="flex" justifyContent="center">
-                      <Card
-                        onClick={() => card.path && navigate(card.path)}
-                        sx={{
-                          height: '100px',
-                          width: '140px',
-                          borderRadius: '12px',
-                          boxShadow:
-                            '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
-                          background: card.bgImage,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          color: 'white',
-                          display: 'flex',
-                          cursor: 'pointer',
-                          position: 'relative',
-                          '&:hover': {
-                            transform: 'scale(1.02)',
-                            transition: 'transform 0.3s ease'
-                          }
-                        }}
-                      >
-                        <CardContent
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            p: 1
-                          }}
-                        >
-                          <Box sx={{ textAlign: 'left' }}>
-                            {card.icon}
-                            <Typography variant="h6" component="div" mt={1}>
-                              {card.title}
-                            </Typography>
-                          </Box>
-                          <IconButton
-                            sx={{
-                              position: 'absolute',
-                              right: 8,
-                              bottom: 8,
-                              color: 'white'
-                            }}
-                          >
-                            <ArrowIcon />
-                          </IconButton>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))}
+                  
+  {cards.slice(0, 2).map((card, index) => (
+    <Grid item key={index} sx={{ flexWrap: 'nowrap', overflowX: 'auto', py: 1 }}>
+      <Card
+        onClick={() => card.path && navigate(card.path)}
+        sx={{
+          height: '100px',
+          width: '127px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
+          background: card.bgImage,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          color: 'white',
+          display: 'flex',
+          cursor: 'pointer',
+          position: 'relative',
+          '&:hover': {
+            transform: 'scale(1.02)',
+            transition: 'transform 0.3s ease'
+          }
+        }}
+      >
+        <CardContent
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            width: '100%',
+            p: 1
+          }}
+        >
+          <Box sx={{ textAlign: 'left' }}>
+            {card.icon}
+            <Typography variant="h6" component="div" mt={1}>
+              {card.title}
+            </Typography>
+          </Box>
+          <IconButton
+            sx={{
+              position: 'absolute',
+              right: 8,
+              bottom: 8,
+              color: 'white'
+            }}
+          >
+            <ArrowIcon />
+          </IconButton>
+        </CardContent>
+      </Card>
+    </Grid>
+  ))}
+
 
                   {/* Second Row: Centered Third Card */}
                   <Grid item xs={12} display="flex" justifyContent="center">
@@ -558,7 +560,7 @@ function App() {
                       <Card
                         sx={{
                           height: '100px',
-                          width: '140px',
+                          width: '200%',
                           borderRadius: '12px',
                           boxShadow:
                             '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
@@ -623,7 +625,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -674,7 +676,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -724,7 +726,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -780,7 +782,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -830,7 +832,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -880,7 +882,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -929,7 +931,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -978,7 +980,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1027,7 +1029,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1077,7 +1079,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1126,7 +1128,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1174,7 +1176,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1222,7 +1224,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1270,7 +1272,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1319,7 +1321,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1367,7 +1369,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1415,7 +1417,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1463,7 +1465,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
