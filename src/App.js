@@ -27,7 +27,9 @@ import Elevations from './bharath/Elevations';
 import Packages from './bharath/Packages'
 import HowItWorks from './bharath/HowItWorks'
 import Lease_discription from './Rajesh/Lease_description';
+
 import Rent_Property_Map from './sharvani/Rent_Propertymap';
+
 import Rent_description from './sharvani/Rent_description';
 import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
