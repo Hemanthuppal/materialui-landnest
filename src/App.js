@@ -36,11 +36,20 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 
 
+import AdminLogin from './Components/Admin/Login/Login';
+import AdminDashboard from './Components/Admin/Dashboard/Dashboard';
+import AdminUploadProperties from './Components/Admin/AdminUploadedProperties/AdminUploadProperties';
+import AdminTwoDPlans from './Components/Admin/TwoDPlans/TwoDPlans';
+import AdminThreeDPlans from './Components/Admin/ThreeDPlans/ThreeDPlans';
+import AdminPackages from './Components/Admin/Packages/Pakages';
+import AdminExploresConstructions from './Components/Admin/ExploresConstruction/ExploresConstruction';
+import AdminElevation from './Components/Admin/Elevations/Elevations';
+import AdminCustomers from './Components/Admin/Customers/Customers';
+import AdminBestDeals from './Components/Admin/BestDeals/BestDeals';
+
+
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    // Check localStorage for existing auth
-    localStorage.getItem('isAuthenticated') === 'true'
-  );
+
 
   return (
     <BrowserRouter>
@@ -59,7 +68,7 @@ function App() {
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
         /> */}
               <Route path="/" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+     <Route path="/register" element={<Register />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/forms" element={<Forms/>} />
@@ -96,6 +105,19 @@ function App() {
         <Route path="/rent-description" element={<Rent_description/>} />
         <Route path="/rent-propertymap" element={<Rent_Property_Map/>} />
         <Route path="/rent-saves" element={<RentSaves/>} />
+
+
+//AdminDashboard
+        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/adminuploadproperties" element={<AdminUploadProperties />} />
+        <Route path="/admin-2dplans" element={<AdminTwoDPlans />} />
+        <Route path="/admin-3dplans" element={<AdminThreeDPlans />} />
+        <Route path="/admin-packages" element={<AdminPackages />} />
+        <Route path="/admin-explore-constructions" element={<AdminExploresConstructions />} />
+        <Route path="/admin-elevation" element={<AdminElevation />} />
+        <Route path="/admin-customers" element={<AdminCustomers />} />
+        <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
       </Routes>
     </BrowserRouter>
   );
