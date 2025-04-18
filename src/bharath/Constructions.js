@@ -7,6 +7,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import React, { useEffect, useState } from 'react';
 import { CardMedia, Container } from '@mui/material';
+import BottomNavbar from '../sharvani/BottomNavbar';
 
 const steps = [
         {
@@ -416,7 +417,10 @@ const Constructions = () => {
 
 
 
-
+ {/* Bottom Navigation */}
+ <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
+        <BottomNavbar />
+      </Box>
 
 
                 </>
