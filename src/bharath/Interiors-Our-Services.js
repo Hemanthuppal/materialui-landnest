@@ -3,6 +3,7 @@ import { Box, Typography, Button, Container, Grid, Card, CardContent, useTheme, 
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
+import BottomNavbar from '../sharvani/BottomNavbar';
 
 const Interiors = () => {
 
@@ -301,6 +302,10 @@ const Interiors = () => {
           ))}
         </Box>
       </Container>
+
+        <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
+              <BottomNavbar />
+            </Box>
     </>
   );
 }
