@@ -36,14 +36,14 @@ import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 
 import buildingImage from '../Images/house.jpeg';
 
-const Rent_description = () => {
+const Buy_description = () => {
   const navigate = useNavigate();
    const [value, setValue] = useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
+    if (newValue === 1) navigate('/buy-details');
+    if (newValue === 2) navigate('/buy-saves');
     if (newValue === 3) navigate('/inbox');
   };
 
@@ -51,30 +51,24 @@ const Rent_description = () => {
     <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
       {/* Header with Back Button */}
       <Box
-  sx={{
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10, // Ensure it's above other elements
-    bgcolor: 'rgb(49, 48, 49)',
-    color: 'white',
-    p: 2,
-    display: 'flex',
-    alignItems: 'center',
-  }}
->
-  <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
-    <ArrowBackIosNewIcon />
-  </IconButton>
-  <Typography variant="h6" fontWeight="bold">
-    1BHK House For Rent
-  </Typography>
-</Box>
-
+        sx={{
+          bgcolor: 'rgb(49, 48, 49)',
+          color: 'white',
+          p: 2,
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
+          <ArrowBackIosNewIcon />
+        </IconButton>
+        <Typography variant="h6" fontWeight="bold">
+          1BHK House For Buy
+        </Typography>
+      </Box>
 
       {/* Details Card */}
-      <Box sx={{ px: 2, mt: 10 }}>
+      <Box sx={{ px: 2, mt: 3 }}>
         <Card
           sx={{
             borderRadius: '20px',
@@ -101,7 +95,7 @@ const Rent_description = () => {
             <Grid container justifyContent="space-between" alignItems="center" sx={{ pb: 2 }}>
               <Grid item xs={8}>
                 <Typography fontWeight="bold" fontSize="18px">
-                  1BHK House For Rent in Hitec City
+                  1BHK House For Buy in Hitec City
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   NRR Puram, Gowldoddy, Hitec City.
@@ -109,7 +103,7 @@ const Rent_description = () => {
               </Grid>
               <Grid item sx={{ textAlign: 'right' }}>
                 <Typography fontWeight="bold" fontSize="18px" color="rgb(240, 65, 30)">
-                  ₹20,000/month
+                  ₹50,00,000
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   Price from owner
@@ -266,6 +260,6 @@ const Rent_description = () => {
   );
 };
 
-export default Rent_description;
+export default Buy_description;
 
 

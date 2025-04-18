@@ -21,13 +21,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 
-const RentSaves = () => {
+const BuySaves = () => {
   const [saved, setSaved] = useState([]);
   const [value, setValue] = useState(2);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const stored = localStorage.getItem('savedRent');
+    const stored = localStorage.getItem('savedBuy');
     if (stored) {
       setSaved(JSON.parse(stored));
     }
@@ -36,15 +36,15 @@ const RentSaves = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
+    if (newValue === 1) navigate('/buy-details');
+    if (newValue === 2) navigate('/buy-saves');
     if (newValue === 3) navigate('/inbox');
   };
 
   const handleRemove = (id) => {
     const updated = saved.filter((item) => item.id !== id);
     setSaved(updated);
-    localStorage.setItem('savedRent', JSON.stringify(updated));
+    localStorage.setItem('savedBuy', JSON.stringify(updated));
   };
 
   const handleShare = (property) => {
@@ -63,24 +63,14 @@ const RentSaves = () => {
   const handleCardClick = (e, property) => {
     const isIconClick = e.target.closest('button');
     if (!isIconClick) {
-      navigate('/rent-description', { state: { property } });
+      navigate('/buy-description', { state: { property } });
     }
   };
 
   return (
     <>
- <Box
-    sx={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      bgcolor: '#fff', // background to cover content underneath
-      px: 1,
-      py: 1
-    }}
-  >
-    <CustomSearchBar />
-  </Box>
+      <CustomSearchBar />
+
       <Box sx={{ pb: 10 }}>
         {saved.length === 0 ? (
           <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
@@ -170,4 +160,4 @@ const RentSaves = () => {
   );
 };
 
-export default RentSaves;
+export default BuySaves;

@@ -38,7 +38,7 @@ const PropertyCard = () => {
   const [value, setValue] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('savedRent');
+    const stored = localStorage.getItem('savedBuy');
     return stored ? JSON.parse(stored) : [];
   });
 
@@ -47,17 +47,17 @@ const PropertyCard = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
+    if (newValue === 1) navigate('/buy-details');
+    if (newValue === 2) navigate('/buy-saves');
     if (newValue === 3) navigate('/inbox');
   };
 
   const propertyData = [
     {
       id: 1,
-      title: 'Plot For Rent in Btm Layout 2nd Stage',
+      title: 'Plot For Buy in Btm Layout 2nd Stage',
       location: '16th Main Road, BTM layout 2nd...',
-      price: '₹3.25 Cr/m',
+      price: '₹3.25 Cr',
       date: '01-04-2025',
       facing: 'East',
       area: '1600 sq ft',
@@ -67,9 +67,9 @@ const PropertyCard = () => {
     },
     {
       id: 2,
-      title: 'Commercial Plot for Rent near Silk Board',
+      title: 'Commercial Plot for Buy near Silk Board',
       location: 'Silk Board Junction, Bangalore...',
-      price: '₹2.75 Cr/m',
+      price: '₹2.75 Cr',
       date: '02-04-2025',
       facing: 'North',
       area: '1400 sq ft',
@@ -90,7 +90,7 @@ const PropertyCard = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('savedRent', JSON.stringify(updated));
+    localStorage.setItem('savedBuy', JSON.stringify(updated));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -109,19 +109,8 @@ const PropertyCard = () => {
 
   return (
     <>
-      
-  <Box
-    sx={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      bgcolor: '#fff', // background to cover content underneath
-      px: 1,
-      py: 1
-    }}
-  >
-    <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-  </Box>
+      <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+
       <Box sx={{ pb: 10 }}> {/* 🔵 Padding Bottom to avoid overlap */}
         {filteredProperties.map((property) => (
           <Card
@@ -138,7 +127,7 @@ const PropertyCard = () => {
               // Prevent navigation if the user clicked on a button or icon
               const isButtonClick = e.target.closest('button') || e.target.closest('svg');
               if (!isButtonClick) {
-                navigate('/rent-description', { state: { property } });
+                navigate('/buy-description', { state: { property } });
               }
             }}
           >

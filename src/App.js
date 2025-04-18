@@ -40,6 +40,14 @@ import InboxList from "./Tharun/InboxList";
 import WorkerDetail from "./Tharun/WorkerDetail";
 
 
+
+
+import Buy_Property_Map from './Sritajana/Buy_Propertymap';
+import Buy_description from './Sritajana/Buy_description';
+import Buy_Details_Page from './Sritajana/Details_Page';
+import BuySaves from './Sritajana/Buy_Saves';
+
+
 import AdminLogin from './Components/Admin/Login/Login';
 import AdminDashboard from './Components/Admin/Dashboard/Dashboard';
 import AdminUploadProperties from './Components/Admin/AdminUploadedProperties/AdminUploadProperties';
@@ -50,6 +58,7 @@ import AdminExploresConstructions from './Components/Admin/ExploresConstruction/
 import AdminElevation from './Components/Admin/Elevations/Elevations';
 import AdminCustomers from './Components/Admin/Customers/Customers';
 import AdminBestDeals from './Components/Admin/BestDeals/BestDeals';
+
 
 
 function App() {
@@ -113,6 +122,13 @@ function App() {
         <Route path="/rent-description" element={<Rent_description/>} />
         <Route path="/rent-propertymap" element={<Rent_Property_Map/>} />
         <Route path="/rent-saves" element={<RentSaves/>} />
+
+
+        //Buy
+        <Route path="/Buy-propertymap" element={<Buy_Property_Map/>} />
+        <Route path="/Buy-description" element={<Buy_description/>} />
+        <Route path="/Buy-details" element={<Buy_Details_Page />} />
+        <Route path="/Buy-saves" element={<BuySaves/>} />
 
 
 //AdminDashboard
