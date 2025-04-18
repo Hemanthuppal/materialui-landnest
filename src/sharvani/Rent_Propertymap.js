@@ -83,7 +83,19 @@ const Rent_Property_Map = () => {
 
   return (
     <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
-      <CustomSearchBar />
+       {/* Sticky Search Bar */}
+  <Box
+    sx={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000,
+      bgcolor: '#fff', // background to cover content underneath
+      px: 1,
+      py: 1
+    }}
+  >
+    <CustomSearchBar />
+  </Box>
 
       {/* Rental Type Chips */}
       <Box sx={{ p: 2 }}>

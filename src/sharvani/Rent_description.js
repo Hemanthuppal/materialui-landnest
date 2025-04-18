@@ -51,24 +51,30 @@ const Rent_description = () => {
     <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
       {/* Header with Back Button */}
       <Box
-        sx={{
-          bgcolor: 'rgb(49, 48, 49)',
-          color: 'white',
-          p: 2,
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
-          <ArrowBackIosNewIcon />
-        </IconButton>
-        <Typography variant="h6" fontWeight="bold">
-          1BHK House For Rent
-        </Typography>
-      </Box>
+  sx={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10, // Ensure it's above other elements
+    bgcolor: 'rgb(49, 48, 49)',
+    color: 'white',
+    p: 2,
+    display: 'flex',
+    alignItems: 'center',
+  }}
+>
+  <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
+    <ArrowBackIosNewIcon />
+  </IconButton>
+  <Typography variant="h6" fontWeight="bold">
+    1BHK House For Rent
+  </Typography>
+</Box>
+
 
       {/* Details Card */}
-      <Box sx={{ px: 2, mt: 3 }}>
+      <Box sx={{ px: 2, mt: 10 }}>
         <Card
           sx={{
             borderRadius: '20px',

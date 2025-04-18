@@ -109,8 +109,19 @@ const PropertyCard = () => {
 
   return (
     <>
-      <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-
+      
+  <Box
+    sx={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000,
+      bgcolor: '#fff', // background to cover content underneath
+      px: 1,
+      py: 1
+    }}
+  >
+    <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+  </Box>
       <Box sx={{ pb: 10 }}> {/* 🔵 Padding Bottom to avoid overlap */}
         {filteredProperties.map((property) => (
           <Card

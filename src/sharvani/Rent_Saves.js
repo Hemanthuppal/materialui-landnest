@@ -69,8 +69,18 @@ const RentSaves = () => {
 
   return (
     <>
-      <CustomSearchBar />
-
+ <Box
+    sx={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000,
+      bgcolor: '#fff', // background to cover content underneath
+      px: 1,
+      py: 1
+    }}
+  >
+    <CustomSearchBar />
+  </Box>
       <Box sx={{ pb: 10 }}>
         {saved.length === 0 ? (
           <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
