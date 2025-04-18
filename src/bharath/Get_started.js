@@ -258,8 +258,7 @@ function InteriorConsultationForm() {
         {/* Construction/Interior Navigation */}
         <Box sx={{
           backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
-          borderBottom: '1px solid rgba(0,0,0,0.08)'
+          padding: isMobile ? 1 : 1,
         }}>
           <AppBar position="static" color="default" sx={{ boxShadow: 'none', backgroundColor: 'transparent' }}>
             <Tabs
@@ -272,16 +271,18 @@ function InteriorConsultationForm() {
               <Tab 
                 label="Constructions" 
                 sx={{ 
-                  fontSize: isMobile ? '1rem' : '1.25rem',
-                  fontWeight: tabValue === 0 ? 'bold' : 'normal'
+                  fontSize: isMobile ? '1.3rem' : '1.3rem',
+                  fontWeight: tabValue === 0 ? 'bold' : 'bold',
+                  textTransform: 'none' // Add this line
                 }} 
               />
               <Tab
                 label="Interior"
                 sx={{
-                  fontSize: isMobile ? '1rem' : '1.25rem',
+                  fontSize: isMobile ? '1.3rem' : '1.3rem',
                   color: 'green',
                   fontWeight: 'bold',
+                  textTransform: 'none' // Add this line
                 }}
               />
             </Tabs>
