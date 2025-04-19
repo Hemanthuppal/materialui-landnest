@@ -388,7 +388,7 @@ const Lease_description = () => {
     if (newValue === 0) navigate('/dashboard');
     if (newValue === 1) navigate('/lease_details');
     if (newValue === 2) navigate('/lease_save');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 3) navigate('/inboxlist');
   };
   return (
     <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
