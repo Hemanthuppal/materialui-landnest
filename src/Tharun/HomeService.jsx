@@ -95,14 +95,15 @@ const HomeService = () => {
         <Box
           sx={{
             display: 'flex',
-            flexWrap: 'wrap',
             gap: 1,
-            justifyContent: 'center',
+            overflowX: 'auto',
+            whiteSpace: 'nowrap',
+            pb: 1,
             mb: 2
           }}
         >
           {workerTypes.map((type, index) => (
-            <Chip key={index} label={type} variant="outlined" />
+            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
           ))}
         </Box>
       </Box>
@@ -139,7 +140,8 @@ const HomeService = () => {
               borderRadius: 3,
               p: 2,
               backgroundColor: 'white',
-              zIndex: 10
+              zIndex: 10,
+              marginBottom: '42%'
             }}
           >
             <Box sx={{ display: 'flex', gap: 2 }}>
