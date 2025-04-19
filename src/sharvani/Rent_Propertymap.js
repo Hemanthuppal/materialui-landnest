@@ -85,7 +85,9 @@ const Rent_Property_Map = () => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY
+    id: 'google-map-script',
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
   });
 
   const containerStyle = {
