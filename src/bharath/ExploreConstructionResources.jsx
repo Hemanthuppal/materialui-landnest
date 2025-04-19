@@ -23,6 +23,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import BottomNavbar from '../sharvani/BottomNavbar';
 
 const chunkArray = (array, chunkSize) => {
   const result = [];
@@ -205,6 +206,10 @@ const ExploreConstructionResources = () => {
           </Box>
         </Box>
       </Box>
+
+        <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
+                    <BottomNavbar />
+                  </Box>
     </>
   );
 };

@@ -23,7 +23,7 @@ import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 
-const rentalTypes = [
+const BuyalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
   "COMMERCIAL LAND", "COMMERCIAL BUILDING/ Space", "VILLA",
   "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
@@ -37,7 +37,7 @@ const properties = [
     title: "2BHK Apartment",
     description: "2 Beds • 2 Baths • 960 Sq.ft",
     address: "10100 Burnt Store Rd #104",
-    price: "₹ 50,000/-",
+    price: "₹ 50,00,000/-",
     lat: 26.8467,
     lng: 80.9462,
     image: buildingImage
@@ -47,14 +47,14 @@ const properties = [
     title: "3BHK Villa",
     description: "3 Beds • 3 Baths • 1200 Sq.ft",
     address: "202 City Center",
-    price: "₹ 75,000/-",
+    price: "₹ 75,00,000/-",
     lat: 26.8500,
     lng: 80.9500,
     image: buildingImage2
   }
 ];
 
-const Rent_Property_Map = () => {
+const Buy_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
@@ -62,8 +62,8 @@ const Rent_Property_Map = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
+    if (newValue === 1) navigate('/buy-details');
+    if (newValue === 2) navigate('/buy-saves');
     if (newValue === 3) navigate('/inbox');
   };
 
@@ -83,23 +83,11 @@ const Rent_Property_Map = () => {
 
   return (
     <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
-       {/* Sticky Search Bar */}
-  <Box
-    sx={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      bgcolor: '#fff', // background to cover content underneath
-      px: 1,
-      py: 1
-    }}
-  >
-    <CustomSearchBar />
-  </Box>
+      <CustomSearchBar />
 
-      {/* Rental Type Chips */}
+      {/* Buyal Type Chips */}
       <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Type</Typography>
         <Box
           sx={{
             display: 'flex',
@@ -110,7 +98,7 @@ const Rent_Property_Map = () => {
             mb: 2
           }}
         >
-          {rentalTypes.map((type, index) => (
+          {BuyalTypes.map((type, index) => (
             <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
           ))}
         </Box>
@@ -161,7 +149,7 @@ const Rent_Property_Map = () => {
                 boxShadow: 6,
                 zIndex: 999
               }}
-              onClick={() => navigate('/rent-description')}
+              onClick={() => navigate('/buy-description')}
             >
               <Box sx={{ position: 'relative', p: 2 }}>
                 <IconButton
@@ -216,4 +204,4 @@ const Rent_Property_Map = () => {
   );
 };
 
-export default Rent_Property_Map;
+export default Buy_Property_Map;

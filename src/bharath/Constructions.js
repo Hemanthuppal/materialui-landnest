@@ -7,73 +7,74 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import React, { useEffect, useState } from 'react';
 import { CardMedia, Container } from '@mui/material';
+import BottomNavbar from '../sharvani/BottomNavbar';
 
 const steps = [
-        { 
-          title: 'Agreement Sign', 
-          image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Agreement Sign',
+                image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Soil Test', 
-          image: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Soil Test',
+                image: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Column Marking', 
-          image: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Column Marking',
+                image: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Column Foundation', 
-          image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Column Foundation',
+                image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Column Plinth', 
-          image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Column Plinth',
+                image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Roof Shuttering', 
-          image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Roof Shuttering',
+                image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Roof Barbinding', 
-          image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Roof Barbinding',
+                image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Roof Concrete', 
-          image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Roof Concrete',
+                image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Partitions Wall', 
-          image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Partitions Wall',
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Flooring', 
-          image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Flooring',
+                image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Electrical', 
-          image: 'https://images.unsplash.com/photo-1605170439002-90845e8c0137?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Electrical',
+                image: 'https://images.unsplash.com/photo-1605170439002-90845e8c0137?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Plumbing', 
-          image: 'https://images.unsplash.com/photo-1600566752225-9f0fc0a76e96?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Plumbing',
+                image: 'https://images.unsplash.com/photo-1600566752225-9f0fc0a76e96?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Fabrication', 
-          image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Fabrication',
+                image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Doors and Windows', 
-          image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Doors and Windows',
+                image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Paintings', 
-          image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Paintings',
+                image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-        { 
-          title: 'Handover', 
-          image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' 
+        {
+                title: 'Handover',
+                image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
         },
-      ];
+];
 
 const chunkArray = (array, chunkSize) => {
         const result = [];
@@ -166,11 +167,26 @@ const Constructions = () => {
         return (
                 <>
 
-                        <Box display="flex" alignItems="center" padding="10px">
-                                <IconButton onClick={() => navigate('/dashboard')}>
+                       
+
+                        <Box display="flex" alignItems="center" p={1} sx={{
+                                background: 'white',
+                                boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+                                position: 'sticky',
+                                top: 0,
+                                zIndex: 1100
+                        }}>
+                                <IconButton
+                                        onClick={() => navigate('/dashboard')}
+                                        sx={{
+                                                color: '#4A00E0',
+                                                '&:hover': {
+                                                        backgroundColor: 'rgba(74, 0, 224, 0.1)'
+                                                }
+                                        }}
+                                >
                                         <ArrowBackIosIcon />
                                 </IconButton>
-
                         </Box>
 
 
@@ -178,6 +194,9 @@ const Constructions = () => {
                                 backgroundColor: '#e6f2ff',  // Light blue color
                                 padding: isMobile ? 2 : 2,
                                 borderRadius: 1,
+                                position: 'sticky',
+                                top: 0,
+                                zIndex: 1100
                                 // width: '100%',
                                 // Optional: adds slight rounded corners
                         }}>
@@ -398,7 +417,10 @@ const Constructions = () => {
 
 
 
-
+ {/* Bottom Navigation */}
+ <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
+        <BottomNavbar />
+      </Box>
 
 
                 </>
