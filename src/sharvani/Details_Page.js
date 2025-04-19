@@ -122,128 +122,142 @@ const PropertyCard = () => {
   >
     <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
   </Box>
-      <Box sx={{ pb: 10 }}> {/* 🔵 Padding Bottom to avoid overlap */}
-        {filteredProperties.map((property) => (
-          <Card
-            key={property.id}
-            sx={{
-              mb: 4,
-              mx: 2,
-              borderRadius: 4,
-              boxShadow: 3,
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': { transform: 'scale(1.015)', boxShadow: 6 }
-            }}
-            onClick={(e) => {
-              // Prevent navigation if the user clicked on a button or icon
-              const isButtonClick = e.target.closest('button') || e.target.closest('svg');
-              if (!isButtonClick) {
-                navigate('/rent-description', { state: { property } });
-              }
-            }}
-          >
-             
-            <Box position="relative">
-              <CardMedia
-                component="img"
-                height="200"
-                image={property.image}
-                alt="Property"
-                sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-              />
-              <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 1 }}>
-                <Tooltip title="Add to Wishlist">
-                  <IconButton
-                    sx={{ bgcolor: 'white', boxShadow: 1 }}
-                    onClick={() => toggleSave(property)}
-                  >
-                    {isSaved(property) ? <Favorite color="error" /> : <FavoriteBorder />}
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Share">
-                  <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }}>
-                    <Share />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
-                <Tooltip title="Like">
-                  <IconButton
-                    sx={{
-                      bgcolor: 'white',
-                      boxShadow: 1,
-                      color: likedCards[property.id] ? 'blue' : 'default'
-                    }}
-                    onClick={() => toggleLike(property.id)}
-                  >
-                    {likedCards[property.id] ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
-
-            <CardContent sx={{ p: 2.5 }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>
-                {property.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" mb={1}>
-                {property.location}
-              </Typography>
-
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Typography variant="subtitle1" fontWeight="bold" color="primary">
-                  {property.price}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Listed on: {property.date}
-                </Typography>
-              </Grid>
-
-              <Box display="flex" alignItems="center" mt={2}>
-                <LocationOn fontSize="small" color="action" />
-                <Typography variant="body2" color="text.primary" ml={0.5}>
-                  Location Verified
-                </Typography>
-                <Box sx={{ flexGrow: 1 }} />
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="success"
-                  startIcon={<Call />}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Call
-                </Button>
-              </Box>
-
-              <Divider sx={{ my: 2 }} />
-
-              <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
-  {[ 
-    { label: 'Facing', value: property.facing },
-    { label: `Area (${property.dimensions})`, value: property.area },
-    { label: 'Listed By', value: property.listedBy }
-  ].map((item, index) => (
-    <Box
-      key={index}
+  <Box sx={{ pb: 8 }}>
+  {filteredProperties.map((property) => (
+    <Card
+      key={property.id}
       sx={{
-        flex: 1,
-        p: 1.5,
-        textAlign: 'center',
-        borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+        mb: 2,
+        mx: 2,
+        borderRadius: 3,
+        boxShadow: 2,
+        transition: 'transform 0.2s ease-in-out',
+        '&:hover': { transform: 'scale(1.015)', boxShadow: 4 },
+      }}
+      onClick={(e) => {
+        const isButtonClick = e.target.closest('button') || e.target.closest('svg');
+        if (!isButtonClick) {
+          navigate('/rent-description', { state: { property } });
+        }
       }}
     >
-      <Typography variant="caption" color="text.secondary">{item.label}</Typography>
-      <Typography variant="body2" fontWeight="bold">{item.value}</Typography>
-    </Box>
+      <Box position="relative">
+        <CardMedia
+          component="img"
+          image={property.image}
+          alt="Property"
+          sx={{
+            width: '100%',
+            height: '160px',
+            objectFit: 'cover',
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+          }}
+        />
+        <Box sx={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 0.8 }}>
+          <Tooltip title="Add to Wishlist">
+            <IconButton
+              sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}
+              onClick={() => toggleSave(property)}
+            >
+              {isSaved(property) ? <Favorite color="error" /> : <FavoriteBorder />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Share">
+            <IconButton sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}>
+              <Share />
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <Box sx={{ position: 'absolute', bottom: 6, right: 6 }}>
+          <Tooltip title="Like">
+            <IconButton
+              sx={{
+                bgcolor: 'white',
+                boxShadow: 1,
+                color: likedCards[property.id] ? 'blue' : 'default',
+                p: 0.8
+              }}
+              onClick={() => toggleLike(property.id)}
+            >
+              {likedCards[property.id] ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+
+      <CardContent sx={{ p: 1.5 }}>
+        <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
+          {property.title}
+        </Typography>
+        <Typography variant="caption" color="text.secondary" mb={0.3} noWrap>
+          {property.location}
+        </Typography>
+
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Typography variant="body2" fontWeight="bold" color="primary">
+            {property.price}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {property.date}
+          </Typography>
+        </Grid>
+
+        <Box display="flex" alignItems="center" mt={1}>
+          <LocationOn fontSize="small" color="action" />
+          <Typography variant="caption" color="text.primary" ml={0.5}>
+            Location Verified
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button
+            size="small"
+            variant="outlined"
+            color="success"
+            startIcon={<Call />}
+            sx={{ textTransform: 'none', px: 1.2, py: 0.3, fontSize: '0.7rem' }}
+          >
+            Call
+          </Button>
+        </Box>
+
+        <Divider sx={{ my: 1 }} />
+
+        <Box
+          sx={{
+            display: 'flex',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            overflow: 'hidden',
+          }}
+        >
+          {[
+            { label: 'Facing', value: property.facing },
+            { label: `Area (${property.dimensions})`, value: property.area },
+            { label: 'Listed By', value: property.listedBy },
+          ].map((item, index) => (
+            <Box
+              key={index}
+              sx={{
+                flex: 1,
+                p: 1,
+                textAlign: 'center',
+                borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
+              }}
+            >
+              <Typography variant="caption" color="text.secondary" noWrap>
+                {item.label}
+              </Typography>
+              <Typography variant="body2" fontWeight="bold" noWrap>
+                {item.value}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </CardContent>
+    </Card>
   ))}
 </Box>
 
-
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
 
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
