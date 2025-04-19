@@ -4,8 +4,8 @@ import {
     InputLabel, FormControl, Paper, Stack, styled
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
-import SearchBar from './FormsSearchBar';
+import { GoogleMap, useJsApiLoader, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import SearchBar from './FormsSearchBar'; 
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,6 +59,11 @@ const categoryFields = {
 };
 
 const LeaseForm = () => {
+     const { isLoaded } = useJsApiLoader({
+            id: 'google-map-script',
+            googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+            libraries: ['places'],
+        });
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('1BHK');
@@ -66,6 +71,7 @@ const LeaseForm = () => {
     const navigate = useNavigate();
 
     const onPlaceChanged = () => {
+        if (autocompleteRef.current) {
         const place = autocompleteRef.current.getPlace();
         if (place && place.geometry) {
             const newLoc = {
@@ -75,9 +81,11 @@ const LeaseForm = () => {
             setLocation(newLoc);
             setAddress(place.formatted_address);
         }
+    }
     };
 
     const geocodeAddress = () => {
+        if (window.google && window.google.maps) {
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode({ address }, (results, status) => {
             if (status === 'OK' && results[0]) {
@@ -91,6 +99,7 @@ const LeaseForm = () => {
                 alert('Address could not be located. Please check input.');
             }
         });
+    }
     };
 
     const handleBackClick = () => {
@@ -104,9 +113,14 @@ const LeaseForm = () => {
     const handleFilterClick = () => {
         console.log('Filter icon clicked');
     };
+     if (!isLoaded) {
+            return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Typography>Loading Google Maps...</Typography>
+            </Box>;
+        }
 
     return (
-        <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
+        <>
             <SearchBar
                 onBackClick={handleBackClick}
                 onSearchClick={handleSearchClick}
@@ -199,7 +213,7 @@ const LeaseForm = () => {
             </Box>
 
             <FormsBottomNavbar />
-        </LoadScript>
+        </>
     );
 };
 
