@@ -89,7 +89,10 @@ const InteriorServicesEnhanced = () => {
             </Grid>
             <Grid item>
               <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                <Typography variant={isMobile ? "h6" : "h5"} component="div"  sx={{ 
+                    color: 'green',
+                    fontWeight: 'bold'
+                  }}>
                   Interiors
                 </Typography>
               </Link>

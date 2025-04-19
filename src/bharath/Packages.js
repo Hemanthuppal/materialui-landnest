@@ -575,51 +575,55 @@ const ConstructionPackages = () => {
         background: 'linear-gradient(to bottom, #f8f9fa, #e9ecef)',
         pb: 6
       }}>
-        <Box display="flex" alignItems="center" p={1} sx={{
-          background: 'white',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1100
-        }}>
-          <IconButton
-            onClick={() => navigate('/constructions')}
-            sx={{
-              color: '#4A00E0',
-              '&:hover': {
-                backgroundColor: 'rgba(74, 0, 224, 0.1)'
-              }
-            }}
-          >
-            <ArrowBackIosIcon />
-          </IconButton>
-        </Box>
+       {/* Sticky Header Section */}
+       <Box sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1200,
+            bgcolor: 'background.paper',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}>
+            {/* Back Arrow */}
+            <Box display="flex" alignItems="center" p={1} sx={{
+              background: 'white',
+              borderBottom: '1px solid rgba(0,0,0,0.08)'
+            }}>
+              <IconButton
+                onClick={() => navigate('/constructions')}
+                sx={{
+                  color: '#4A00E0',
+                  '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }
+                }}
+              >
+                <ArrowBackIosIcon />
+              </IconButton>
+            </Box>
 
-        <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
-          borderRadius: 1,
-          position: 'sticky',
-          top: 0,
-          zIndex: 1100
-        }}>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Link to="/constructions" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Typography variant={isMobile ? "h6" : "h5"} component="div">
-                  Constructions
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Typography variant={isMobile ? "h6" : "h5"} component="div">
-                  Interiors
-                </Typography>
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
+            {/* Construction/Interior Navigation */}
+            <Box sx={{
+              backgroundColor: '#e6f2ff',
+              padding: isMobile ? 2 : 2,
+              borderBottom: '1px solid rgba(0,0,0,0.08)'
+            }}>
+              <Grid container justifyContent="space-between" alignItems="center">
+                <Grid item>
+                  <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
+                    color: 'green',
+                    fontWeight: 'bold'
+                  }}>
+                    Constructions
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Typography variant={isMobile ? "h6" : "h5"} component="div">
+                      Interiors
+                    </Typography>
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
 
         <Box sx={{
           px: { xs: 2, sm: 4, md: 6 },

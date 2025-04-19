@@ -182,7 +182,7 @@ function App() {
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Box
           sx={{
-            width: { xs: '50px', sm: '60px' },
+            width: { xs: '17%', sm: '60px' },
             height: { xs: '90vh', sm: '85vh' },
             display: 'flex',
             flexDirection: 'column',
@@ -191,8 +191,8 @@ function App() {
             borderTopLeftRadius: '40px',
             borderBottomRightRadius: '40px',
             // marginTop: '10px',
-            marginTop: '5%',
-    marginLeft: '0.1%',
+            marginTop: '0.5%',
+    marginLeft: '0.5%',
 
             boxShadow: `
       0 10px 30px -5px rgba(0,0,0,0.3),
@@ -453,11 +453,12 @@ function App() {
               bgcolor: 'rgb(212, 209, 205)',
               boxShadow: 'none',
               height: '50px',
-              width: '85%',
+              width: '82%',
               ml: "65",
               zIndex: 1201,
-              marginTop: '4%',
-              marginRight: '1%',// ensure it stays above other elements
+              // marginTop: '0.5%',
+              // marginRight: '0.5%',// ensure it stays above other elements
+              
             }}
           >
             <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
@@ -553,6 +554,9 @@ function App() {
                       </Card>
                     </Grid>
                   ))}
+                  
+
+
 
                   {/* Second Row: Centered Third Card */}
                   <Grid item xs={12} display="flex" justifyContent="center">
@@ -560,7 +564,7 @@ function App() {
                       <Card
                         sx={{
                           height: '100px',
-                          width: '140px',
+                          width: '200%',
                           borderRadius: '12px',
                           boxShadow:
                             '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
@@ -625,7 +629,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -676,7 +680,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -726,7 +730,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
