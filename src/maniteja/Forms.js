@@ -100,7 +100,7 @@ const Forms = () => {
                 <Box
                   sx={{
                     width: 40,
-                    height: '100%',
+                    height: '99%',
                     bgcolor: '#343a40',
                     color: '#fff',
                     writingMode: 'vertical-rl',

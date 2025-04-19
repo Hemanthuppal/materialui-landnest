@@ -146,20 +146,18 @@
 
 // export default SellYourProperty;
 
-
 import React, { useState, useRef } from 'react';
 import {
     Box, Typography, TextField, Button, Select, MenuItem,
     InputLabel, FormControl, Paper, Stack, styled
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import { useJsApiLoader, GoogleMap, Marker, Autocomplete } from '@react-google-maps/api';
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
-
 
 const containerStyle = {
     width: '100%',
@@ -211,6 +209,12 @@ const categoryFields = {
 };
 
 const SellYourProperty = () => {
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+        libraries: ['places'],
+    });
+
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Commercial land/plot');
@@ -218,31 +222,35 @@ const SellYourProperty = () => {
     const navigate = useNavigate();
 
     const onPlaceChanged = () => {
-        const place = autocompleteRef.current.getPlace();
-        if (place && place.geometry) {
-            const newLoc = {
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
-            };
-            setLocation(newLoc);
-            setAddress(place.formatted_address);
+        if (autocompleteRef.current) {
+            const place = autocompleteRef.current.getPlace();
+            if (place && place.geometry) {
+                const newLoc = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                };
+                setLocation(newLoc);
+                setAddress(place.formatted_address);
+            }
         }
     };
 
-    const geocodeAddress = async () => {
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ address }, (results, status) => {
-            if (status === 'OK' && results[0]) {
-                const location = results[0].geometry.location;
-                setLocation({
-                    lat: location.lat(),
-                    lng: location.lng(),
-                });
-                setAddress(results[0].formatted_address);
-            } else {
-                alert('Address could not be located. Please check input.');
-            }
-        });
+    const geocodeAddress = () => {
+        if (window.google && window.google.maps) {
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ address }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    const location = results[0].geometry.location;
+                    setLocation({
+                        lat: location.lat(),
+                        lng: location.lng(),
+                    });
+                    setAddress(results[0].formatted_address);
+                } else {
+                    alert('Address could not be located. Please check input.');
+                }
+            });
+        }
     };
 
     const handleBackClick = () => {
@@ -257,100 +265,103 @@ const SellYourProperty = () => {
         console.log('Filter icon clicked');
     };
 
+    if (!isLoaded) {
+        return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Typography>Loading Google Maps...</Typography>
+        </Box>;
+    }
+
     return (
-        <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
+        <>
             <SearchBar
                 onBackClick={handleBackClick}
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px' }}>
-            <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
-                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    Sell Your Property
-                </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '64px' }}>
+                <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                        Sell Your Property
+                    </Typography>
 
-                <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
-                    <FormControl fullWidth sx={{ mb: 3 }}>
-                        <InputLabel id="category-label">Select Category</InputLabel>
-                        <Select
-                            labelId="category-label"
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            label="Select Category"
+                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
+                        <FormControl fullWidth sx={{ mb: 3 }}>
+                            <InputLabel id="category-label">Select Category</InputLabel>
+                            <Select
+                                labelId="category-label"
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                label="Select Category"
+                            >
+                                {Object.keys(categoryFields).map((cat) => (
+                                    <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        {/* Render fields dynamically */}
+                        {categoryFields[selectedCategory].map((label) => (
+                            <TextField
+                                key={label}
+                                fullWidth
+                                label={label}
+                                variant="outlined"
+                                sx={{ mb: 2 }}
+                            />
+                        ))}
+
+                        {/* Location search + Autocomplete */}
+                        <Autocomplete
+                            onLoad={(ref) => (autocompleteRef.current = ref)}
+                            onPlaceChanged={onPlaceChanged}
                         >
-                            {Object.keys(categoryFields).map((cat) => (
-                                <MenuItem key={cat} value={cat}>{cat}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                            <TextField
+                                fullWidth
+                                label="Location"
+                                variant="outlined"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                onBlur={geocodeAddress}
+                                sx={{ mb: 2 }}
+                            />
+                        </Autocomplete>
 
-                    {/* Render fields dynamically */}
-                    {categoryFields[selectedCategory].map((label) => (
-                        <TextField
-                            key={label}
-                            fullWidth
-                            label={label}
-                            variant="outlined"
-                            sx={{ mb: 2 }}
-                        />
-                    ))}
+                        {/* Map with marker */}
+                        <div style={containerStyle}>
+                            <GoogleMap
+                                mapContainerStyle={{ width: '100%', height: '100%' }}
+                                center={location}
+                                zoom={15}
+                            >
+                                <Marker position={location} />
+                            </GoogleMap>
+                        </div>
 
-                    {/* <TextField fullWidth label="Road Width" variant="outlined" sx={{ mb: 2 }} /> */}
+                        {/* Image Upload */}
+                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>Uploaded Images</Typography>
+                        <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
+                            Upload Image
+                            <VisuallyHiddenInput type="file" multiple />
+                        </Button>
 
-                    {/* Location search + Autocomplete */}
-                    <Autocomplete
-                        onLoad={ref => (autocompleteRef.current = ref)}
-                        onPlaceChanged={onPlaceChanged}
-                    >
-                        <TextField
-                            fullWidth
-                            label="Location"
-                            variant="outlined"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                            onBlur={geocodeAddress}
-                            sx={{ mb: 2 }}
-                        />
-                    </Autocomplete>
-
-                    {/* Map with marker */}
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={location}
-                        zoom={15}
-                    >
-                        <Marker position={location} />
-                    </GoogleMap>
-
-                    {/* Image Upload */}
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>Uploaded Images</Typography>
-                    <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
-                        Upload Image
-                        <VisuallyHiddenInput type="file" multiple />
-                    </Button>
-
-                    {/* Description */}
-                    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
-                    <TextField fullWidth variant="outlined" multiline rows={4} />
-                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
-                        <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
-                            Cancel
-                        </RedButton>
-                        <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
-                            Submit
-                        </GreenButton>
-                    </Stack>
-                </Paper>
-                <Box sx={{ height: '70px' }} />
-
-            </Box>
+                        {/* Description */}
+                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
+                        <TextField fullWidth variant="outlined" multiline rows={4} />
+                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                            <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                                Cancel
+                            </RedButton>
+                            <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                                Submit
+                            </GreenButton>
+                        </Stack>
+                    </Paper>
+                    <Box sx={{ height: '70px' }} />
+                </Box>
             </Box>
             <FormsBottomNavbar />
-        </LoadScript>
+        </>
     );
 };
 
 export default SellYourProperty;
-
-
