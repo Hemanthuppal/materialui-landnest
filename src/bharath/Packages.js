@@ -394,7 +394,7 @@
 
 
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -408,18 +408,23 @@ import {
   Fade,
   Grow,
   Grid,
-  useMediaQuery
+  useMediaQuery, BottomNavigation,
+  BottomNavigationAction,   Paper
 } from '@mui/material';
 import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
-import BottomNavbar from '../sharvani/BottomNavbar';
-
+import HomeIcon from '@mui/icons-material/Home';
+import BuildIcon from '@mui/icons-material/Build';
+// import AddIcon from '@mui/icons-material/Add';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const ConstructionPackages = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+   const [value, setValue] = useState('construction');
 
   const [expanded, setExpanded] = React.useState({
     package2000: null,
@@ -504,8 +509,8 @@ const ConstructionPackages = () => {
       id: 'package2500',
       title: 'Basic Package Details',
       price: 'Rs 1850/sqft',
-      color: '#00b09b',
-      gradient: 'linear-gradient(135deg, #00b09b, #96c93d)',
+      color: '', // White text for better contrast
+  gradient: 'linear-gradient(135deg,rgb(108, 71, 63),rgb(63, 60, 60))', // Coffee to black gradient
       sections: [
         { id: 'pkg2500One', title: 'Design & Drawings', content: sectionContent.package2500.design },
         { id: 'pkg2500Two', title: 'Construction Materials', content: sectionContent.package2500.materials },
@@ -525,8 +530,8 @@ const ConstructionPackages = () => {
       id: 'package2000',
       title: 'Premium Package Details',
       price: 'Rs 2000/sqft',
-      color: '#8E2DE2',
-      gradient: 'linear-gradient(135deg, #8E2DE2, #4A00E0)',
+      color: '', // White text for better contrast
+      gradient: 'linear-gradient(135deg,rgb(108, 71, 63),rgb(63, 60, 60))',
       sections: [
         { id: 'pkg2000One', title: 'Design & Drawings', content: sectionContent.package2000.design },
         { id: 'pkg2000Two', title: 'Core Construction Materials', content: sectionContent.package2000.materials },
@@ -546,8 +551,8 @@ const ConstructionPackages = () => {
       id: 'package2300',
       title: 'Construction Package Details',
       price: 'Rs 2300/sqft',
-      color: '#FF416C',
-      gradient: 'linear-gradient(135deg, #FF416C, #FF4B2B)',
+      color: '', // White text for better contrast
+  gradient: 'linear-gradient(135deg,rgb(108, 71, 63),rgb(63, 60, 60))',
       sections: [
         { id: 'pkg2300One', title: 'Design & Drawings', content: sectionContent.package2300.design },
         { id: 'pkg2300Two', title: 'Materials & Construction', content: sectionContent.package2300.materials },
@@ -565,6 +570,31 @@ const ConstructionPackages = () => {
     },
    
   ];
+
+
+  const handleChangebottom = (event, newValue) => {
+    setValue(newValue);
+    // Navigate to the corresponding route
+    switch (newValue) {
+      case 'home':
+        navigate('/dashboard');
+        break;
+      case 'construction':
+        navigate('/constructions');
+        break;
+      case 'post':
+        navigate('/post');
+        break;
+      case 'services':
+        navigate('/home-service');
+        break;
+      case 'profile':
+        navigate('/profile');
+        break;
+      default:
+        navigate('/');
+    }
+  };
 
   return (
 
@@ -607,12 +637,16 @@ const ConstructionPackages = () => {
             }}>
               <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
+                <Link to="/constructions" style={{ textDecoration: 'none', color: 'inherit' }}>
+
                   <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
                     color: 'green',
                     fontWeight: 'bold'
                   }}>
                     Constructions
                   </Typography>
+                  </Link>
+
                 </Grid>
                 <Grid item>
                   <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -730,7 +764,7 @@ const ConstructionPackages = () => {
                         <Typography sx={{
                           fontWeight: 600,
                           color: expanded[pkg.id] === section.id ? pkg.color : '#444',
-                          fontSize: '1rem',
+                          fontSize: '1.2rem',
                           letterSpacing: '0.2px'
                         }}>
                           {section.title}
@@ -765,9 +799,64 @@ const ConstructionPackages = () => {
       </Box>
     </Fade>
 
-    <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
-        <BottomNavbar />
-      </Box>
+    <Paper
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1000,
+            }}
+            elevation={3}
+          >
+            <BottomNavigation
+              value={value}
+              onChange={handleChangebottom}
+              showLabels
+              sx={{
+                borderTop: '1px solid #e0e0e0',
+                height: '60px',
+                '& .MuiBottomNavigationAction-root': {
+                  minWidth: 'auto',
+                  padding: '6px 0',
+                  color: 'black',
+                },
+                '& .MuiBottomNavigationAction-label': {
+                  fontSize: '0.7rem',
+                },
+              }}
+            >
+              <BottomNavigationAction
+                value="home"
+                label="Home"
+                icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="construction"
+                label="Construction & Interiors"
+                icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="post"
+                label="Post"
+                icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
+                sx={{
+                  '& .MuiSvgIcon-root': { color: '#2196f3' },
+                  '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
+                }}
+              />
+              <BottomNavigationAction
+                value="services"
+                label="Home Services"
+                icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="profile"
+                label="Profile"
+                icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+            </BottomNavigation>
+                </Paper>
 
     </>
   );

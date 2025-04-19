@@ -449,12 +449,18 @@
 import { useNavigate } from 'react-router-dom';
 import {
   Box, Grid, Typography, useTheme, useMediaQuery, Card, CardContent, IconButton,
-  CardMedia, Container
+  CardMedia, Container, BottomNavigation,
+  BottomNavigationAction,   Paper
+
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import React, { useEffect, useState } from 'react';
-import BottomNavbar from '../sharvani/BottomNavbar';
+import HomeIcon from '@mui/icons-material/Home';
+import BuildIcon from '@mui/icons-material/Build';
+import AddIcon from '@mui/icons-material/Add';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const steps = [
   { title: 'Agreement Sign', image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
@@ -463,7 +469,7 @@ const steps = [
   { title: 'Column Foundation', image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Column Plinth', image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Roof Shuttering', image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Roof Barbinding', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+  { title: 'Roof Barbending', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Roof Concrete', image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Partitions Wall', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Flooring', image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
@@ -488,6 +494,9 @@ const Constructions = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [chunkSize, setChunkSize] = useState(2);
+  const [value, setValue] = useState('construction');
+
+  
 
   const cards = [
     {
@@ -541,6 +550,31 @@ const Constructions = () => {
     window.addEventListener('resize', updateChunkSize);
     return () => window.removeEventListener('resize', updateChunkSize);
   }, []);
+
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    // Navigate to the corresponding route
+    switch (newValue) {
+      case 'home':
+        navigate('/dashboard');
+        break;
+      case 'construction':
+        navigate('/constructions');
+        break;
+      case 'post':
+        navigate('/post');
+        break;
+      case 'services':
+        navigate('/home-service');
+        break;
+      case 'profile':
+        navigate('/profile');
+        break;
+      default:
+        navigate('/');
+    }
+  };
 
   const rows = chunkArray(steps, chunkSize);
 
@@ -784,7 +818,7 @@ const Constructions = () => {
                     sx={{ objectFit: 'cover' }}
                   />
                   <CardContent sx={{ p: 1 }}>
-                    <Typography variant="subtitle2" align="left" fontWeight={500}>
+                    <Typography variant="subtitle2" align="left" fontWeight={500}> 
                       {step.title}
                     </Typography>
                   </CardContent>
@@ -794,11 +828,65 @@ const Constructions = () => {
           ))}
         </Box>
       </Box>
-
-      {/* Bottom Navigation */}
-      <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
-        <BottomNavbar />
-      </Box>
+      <Paper
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+      }}
+      elevation={3}
+    >
+      <BottomNavigation
+        value={value}
+        onChange={handleChange}
+        showLabels
+        sx={{
+          borderTop: '1px solid #e0e0e0',
+          height: '60px',
+          '& .MuiBottomNavigationAction-root': {
+            minWidth: 'auto',
+            padding: '6px 0',
+            color: 'black',
+          },
+          '& .MuiBottomNavigationAction-label': {
+            fontSize: '0.7rem',
+          },
+        }}
+      >
+        <BottomNavigationAction
+          value="home"
+          label="Home"
+          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+        <BottomNavigationAction
+          value="construction"
+          label="Construction & Interiors"
+          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+        <BottomNavigationAction
+          value="post"
+          label="Post"
+          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
+          sx={{
+            '& .MuiSvgIcon-root': { color: '#2196f3' },
+            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
+          }}
+        />
+        <BottomNavigationAction
+          value="services"
+          label="Home Services"
+          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+        <BottomNavigationAction
+          value="profile"
+          label="Profile"
+          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+        />
+      </BottomNavigation>
+          </Paper>
+      
     </>
   );
 };
