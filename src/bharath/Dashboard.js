@@ -508,7 +508,7 @@ function App() {
                         onClick={() => card.path && navigate(card.path)}
                         sx={{
                           height: '100px',
-                          width: '140px',
+                          width: '127px',
                           borderRadius: '12px',
                           boxShadow:
                             '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
@@ -564,7 +564,7 @@ function App() {
                       <Card
                         sx={{
                           height: '100px',
-                          width: '200%',
+                          width: '127px',
                           borderRadius: '12px',
                           boxShadow:
                             '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
@@ -786,7 +786,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -836,7 +836,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -886,7 +886,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -935,7 +935,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -984,7 +984,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1033,7 +1033,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1083,7 +1083,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1132,7 +1132,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1180,7 +1180,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1228,7 +1228,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 210,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1276,7 +1276,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1325,7 +1325,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1373,7 +1373,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1421,7 +1421,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 210,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -1469,7 +1469,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                 width: "100%",
                 height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {

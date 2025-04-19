@@ -17,6 +17,7 @@ import BuildIcon from '@mui/icons-material/Build';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import PersonIcon from '@mui/icons-material/Person';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const workerDetails = {
   name: 'Kiran',
@@ -66,7 +67,7 @@ const WorkerDetails = () => {
       >
         {/* Back arrow header */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <IconButton onClick={() => navigate('/')} sx={{ mr: 1 }}>
+          <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
             <ArrowBackIcon />
           </IconButton>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -125,24 +126,7 @@ const WorkerDetails = () => {
         </Box>
       </Paper>
 
-      <Paper
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderTop: '1px solid #ccc',
-        }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Construction & Interiors" icon={<BuildIcon />} />
-          <BottomNavigationAction label="Post" icon={<PostAddIcon />} />
-          <BottomNavigationAction label="Home Services" icon={<HomeRepairServiceIcon />} />
-          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-        </BottomNavigation>
-      </Paper>
+     <FormsBottomNavbar />
     </Box>
   );
 };

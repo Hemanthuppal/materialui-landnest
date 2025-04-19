@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { Search, MoreVert, ArrowBack } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 import HomeIcon from "@mui/icons-material/Home";
 import BuildIcon from "@mui/icons-material/Build";
@@ -115,24 +116,7 @@ const InboxList = () => {
         </List>
       </Box>
 
-      <Paper
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderTop: "1px solid #ccc",
-        }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Construction & Interiors" icon={<BuildIcon />} />
-          <BottomNavigationAction label="Post" icon={<PostAddIcon />} />
-          <BottomNavigationAction label="Home Services" icon={<HomeRepairServiceIcon />} />
-          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-        </BottomNavigation>
-      </Paper>
+     <FormsBottomNavbar />
       
     </Box>
     

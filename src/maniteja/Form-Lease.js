@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { GoogleMap, useJsApiLoader, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
-import SearchBar from './FormsSearchBar'; 
+import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,49 +57,51 @@ const categoryFields = {
     'pg-school-office': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
     'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
 };
+const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
 const LeaseForm = () => {
-     const { isLoaded } = useJsApiLoader({
-            id: 'google-map-script',
-            googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-            libraries: ['places'],
-        });
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+        libraries: ['places'],
+    });
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
+    const [formValues, setFormValues] = useState({});
     const [selectedCategory, setSelectedCategory] = useState('1BHK');
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
 
     const onPlaceChanged = () => {
         if (autocompleteRef.current) {
-        const place = autocompleteRef.current.getPlace();
-        if (place && place.geometry) {
-            const newLoc = {
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
-            };
-            setLocation(newLoc);
-            setAddress(place.formatted_address);
+            const place = autocompleteRef.current.getPlace();
+            if (place && place.geometry) {
+                const newLoc = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                };
+                setLocation(newLoc);
+                setAddress(place.formatted_address);
+            }
         }
-    }
     };
 
     const geocodeAddress = () => {
         if (window.google && window.google.maps) {
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ address }, (results, status) => {
-            if (status === 'OK' && results[0]) {
-                const location = results[0].geometry.location;
-                setLocation({
-                    lat: location.lat(),
-                    lng: location.lng(),
-                });
-                setAddress(results[0].formatted_address);
-            } else {
-                alert('Address could not be located. Please check input.');
-            }
-        });
-    }
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ address }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    const location = results[0].geometry.location;
+                    setLocation({
+                        lat: location.lat(),
+                        lng: location.lng(),
+                    });
+                    setAddress(results[0].formatted_address);
+                } else {
+                    alert('Address could not be located. Please check input.');
+                }
+            });
+        }
     };
 
     const handleBackClick = () => {
@@ -113,11 +115,14 @@ const LeaseForm = () => {
     const handleFilterClick = () => {
         console.log('Filter icon clicked');
     };
-     if (!isLoaded) {
-            return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Typography>Loading Google Maps...</Typography>
-            </Box>;
-        }
+    const handleFieldChange = (label, value) => {
+        setFormValues(prev => ({ ...prev, [label]: value }));
+    };
+    if (!isLoaded) {
+        return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Typography>Loading Google Maps...</Typography>
+        </Box>;
+    }
 
     return (
         <>
@@ -126,7 +131,7 @@ const LeaseForm = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '64px' }}>
                 <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 12, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Lease Property Form
@@ -151,13 +156,31 @@ const LeaseForm = () => {
                         {/* Dynamic Fields */}
                         {selectedCategory &&
                             categoryFields[selectedCategory].map((label) => (
-                                <TextField
-                                    key={label}
-                                    fullWidth
-                                    label={label}
-                                    variant="outlined"
-                                    sx={{ mb: 2 }}
-                                />
+                                label === 'Facing' ? (
+                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                        <Select
+                                            labelId={`${label}-label`}
+                                            value={formValues[label] || ''}
+                                            label={label}
+                                            onChange={(e) => handleFieldChange(label, e.target.value)}
+                                        >
+                                            {facingOptions.map(option => (
+                                                <MenuItem key={option} value={option}>{option}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                ) : (
+                                    <TextField
+                                        key={label}
+                                        fullWidth
+                                        label={label}
+                                        variant="outlined"
+                                        sx={{ mb: 2 }}
+                                        value={formValues[label] || ''}
+                                        onChange={(e) => handleFieldChange(label, e.target.value)}
+                                    />
+                                )
                             ))}
 
                         {/* Location + Map */}

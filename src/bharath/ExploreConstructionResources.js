@@ -262,7 +262,8 @@ import {
   Divider,
   useMediaQuery,
   IconButton,
-  Grid
+  Grid, BottomNavigation,
+  BottomNavigationAction,   Paper
 } from '@mui/material';
 import {
   Kitchen as KitchenIcon,
@@ -274,8 +275,11 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
-import BottomNavbar from '../sharvani/BottomNavbar';
-
+import HomeIcon from '@mui/icons-material/Home';
+import BuildIcon from '@mui/icons-material/Build';
+import AddIcon from '@mui/icons-material/Add';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const chunkArray = (array, chunkSize) => {
   const result = [];
   for (let i = 0; i < array.length; i += chunkSize) {
@@ -290,6 +294,8 @@ const ExploreConstructionResources = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
+  const [value, setValue] = useState('construction');
+  
 
   const drawerWidth = 80;
 
@@ -336,6 +342,30 @@ const ExploreConstructionResources = () => {
     ]
   };
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    // Navigate to the corresponding route
+    switch (newValue) {
+      case 'home':
+        navigate('/dashboard');
+        break;
+      case 'construction':
+        navigate('/constructions');
+        break;
+      case 'post':
+        navigate('/post');
+        break;
+      case 'services':
+        navigate('/home-service');
+        break;
+      case 'profile':
+        navigate('/profile');
+        break;
+      default:
+        navigate('/');
+    }
+  };
+
   const rows = chunkArray(categories[activeCategory], 2);
 
   return (
@@ -372,12 +402,15 @@ const ExploreConstructionResources = () => {
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
+            <Link to="/interiors" style={{ textDecoration: 'none' }}>
               <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
                 color: 'green',
                 fontWeight: 'bold'
               }}>
                 Constructions
               </Typography>
+              </Link>
+
             </Grid>
             <Grid item>
               <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -461,10 +494,10 @@ const ExploreConstructionResources = () => {
             overflowY: 'auto',
             bgcolor: '#fff',
             pt: 2,
-            pb: 7
+            pb: 10
           }}
         >
-          <Typography variant="body1" align="center" sx={{ mb: 2, fontWeight: 500, color: '#1a237e' }}>
+          <Typography variant="body1" align="center" sx={{ mb: 2, fontWeight: 500 }}>
             Explore Construction Resources
           </Typography>
 
@@ -504,9 +537,64 @@ const ExploreConstructionResources = () => {
         </Box>
       </Box>
 
-      <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
-        <BottomNavbar />
-      </Box>
+      <Paper
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1000,
+            }}
+            elevation={3}
+          >
+            <BottomNavigation
+              value={value}
+              onChange={handleChange}
+              showLabels
+              sx={{
+                borderTop: '1px solid #e0e0e0',
+                height: '60px',
+                '& .MuiBottomNavigationAction-root': {
+                  minWidth: 'auto',
+                  padding: '6px 0',
+                  color: 'black',
+                },
+                '& .MuiBottomNavigationAction-label': {
+                  fontSize: '0.7rem',
+                },
+              }}
+            >
+              <BottomNavigationAction
+                value="home"
+                label="Home"
+                icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="construction"
+                label="Construction & Interiors"
+                icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="post"
+                label="Post"
+                icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
+                sx={{
+                  '& .MuiSvgIcon-root': { color: '#2196f3' },
+                  '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
+                }}
+              />
+              <BottomNavigationAction
+                value="services"
+                label="Home Services"
+                icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="profile"
+                label="Profile"
+                icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+            </BottomNavigation>
+                </Paper>
     </>
   );
 };

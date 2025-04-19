@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -7,11 +7,16 @@ import {
   useTheme,
   IconButton,
   Grid,
-  useMediaQuery,
+  useMediaQuery, BottomNavigation,
+  BottomNavigationAction
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { keyframes } from '@mui/system';
-import BottomNavbar from '../sharvani/BottomNavbar';
+import HomeIcon from '@mui/icons-material/Home';
+import BuildIcon from '@mui/icons-material/Build';
+import AddIcon from '@mui/icons-material/Add';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -44,6 +49,30 @@ const InteriorServicesEnhanced = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+   const [value, setValue] = useState('construction');
+        const handleChange = (event, newValue) => {
+          setValue(newValue);
+          // Navigate to the corresponding route
+          switch (newValue) {
+            case 'home':
+              navigate('/dashboard');
+              break;
+            case 'construction':
+              navigate('/constructions');
+              break;
+            case 'post':
+              navigate('/post');
+              break;
+            case 'services':
+              navigate('/home-service');
+              break;
+            case 'profile':
+              navigate('/profile');
+              break;
+            default:
+              navigate('/');
+          }
+        };
 
   return (
     <>
@@ -108,7 +137,11 @@ const InteriorServicesEnhanced = () => {
           bgcolor: '#fff',
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
+            <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
+
           <Typography>Our Services</Typography>
+          </Link>
+
           <Typography>Portfolio</Typography>
           <Typography sx={{ color: 'green', fontWeight: 'bold' }}>How it works?</Typography>
         </Box>
@@ -272,10 +305,64 @@ const InteriorServicesEnhanced = () => {
         </Box>
       </Box>
 
-      {/* Bottom Navigation */}
-      <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
-        <BottomNavbar />
-      </Box>
+      <Paper
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1000,
+            }}
+            elevation={3}
+          >
+            <BottomNavigation
+              value={value}
+              onChange={handleChange}
+              showLabels
+              sx={{
+                borderTop: '1px solid #e0e0e0',
+                height: '60px',
+                '& .MuiBottomNavigationAction-root': {
+                  minWidth: 'auto',
+                  padding: '6px 0',
+                  color: 'black',
+                },
+                '& .MuiBottomNavigationAction-label': {
+                  fontSize: '0.7rem',
+                },
+              }}
+            >
+              <BottomNavigationAction
+                value="home"
+                label="Home"
+                icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="construction"
+                label="Construction & Interiors"
+                icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="post"
+                label="Post"
+                icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
+                sx={{
+                  '& .MuiSvgIcon-root': { color: '#2196f3' },
+                  '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
+                }}
+              />
+              <BottomNavigationAction
+                value="services"
+                label="Home Services"
+                icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+              <BottomNavigationAction
+                value="profile"
+                label="Profile"
+                icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+              />
+            </BottomNavigation>
+                </Paper>
     </>
   );
 };
