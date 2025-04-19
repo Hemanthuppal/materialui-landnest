@@ -66,7 +66,7 @@ const WorkerDetails = () => {
       >
         {/* Back arrow header */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <IconButton onClick={() => navigate('/')} sx={{ mr: 1 }}>
+          <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
             <ArrowBackIcon />
           </IconButton>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
