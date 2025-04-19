@@ -13,26 +13,26 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const FormsBottomNavbar = () => {
-  const [value, setValue] = React.useState('home');
+  const [value, setValue] = React.useState('');
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     switch (newValue) {
       case 'home':
-        navigate('/home');
+        navigate('/dashboard');
         break;
       case 'construction':
-        navigate('/construction');
+        navigate('/constructions');
         break;
       case 'post':
         navigate('/post');
         break;
       case 'services':
-        navigate('/services');
+        navigate('/home-service');
         break;
       case 'profile':
-        navigate('/profile');
+        navigate('');
         break;
       default:
         break;

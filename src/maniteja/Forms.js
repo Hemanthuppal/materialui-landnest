@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import img1 from '../Images/vendorform.jpg';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import FormsBottomNavbar from './FormsBottomNavbar';
 
 // Array of form navigation options
 const options = [
@@ -210,7 +211,9 @@ const Forms = () => {
           </Paper>
         </Box>
       </Stack>
+      <FormsBottomNavbar />
     </Box>
+    
   );
 };
 

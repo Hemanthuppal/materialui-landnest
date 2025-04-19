@@ -31,8 +31,27 @@ import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import image from "../Images/Leasebuilding.png"
-import image1 from "../Images/building.jpeg"
+import image from "../Images/construction.jpg";
+import image1 from "../Images/building.jpeg";
+import image2 from "../Images/renovation.png";
+import image3 from "../Images/Painting.png";
+import image4 from "../Images/Electrical.jpg";
+import image5 from "../Images/tilegranites.jpg";
+import image6 from "../Images/Plumber.png";
+import image7 from "../Images/carpenter.jpg";
+import image8 from "../Images/Acrepair.jpg";
+import image9 from "../Images/gardener.jpg";
+import image10 from "../Images/Aluminium.jpg";
+import image11 from "../Images/upvc.jpg";
+import image12 from "../Images/gaspipe.jpg";
+import image13 from "../Images/steel.jpg";
+import image14 from "../Images/homeclean.jpg";
+import image15 from "../Images/toiletkitchen.jpg";
+import image16 from "../Images/sofacurtain.jpg";
+import image17 from "../Images/home.jpg";
+import imagebuy from "../Images/buy.jpg";
+import imagerent from "../Images/rent.jpg";
+import imagelease from "../Images/lease.jpg";
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -126,22 +145,23 @@ const cards = [
   {
     title: "Buy",
     icon: <BuyIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    bgImage: `url(${imagebuy})`,
     path: "/buy-propertymap"
   },
   {
     title: "Rent",
     icon: <RentIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    bgImage: `url(${imagerent})`,
     path: "/rent-propertymap"
   },
   {
     title: "Lease",
     icon: <LeaseIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-
+    bgImage: `url(${imagelease})`,
+    path: "/lease_map"
   }
 ];
+
 
 
 
@@ -743,7 +763,7 @@ function App() {
               <Box
                 sx={{
                   height: '70%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image2})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -799,7 +819,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image3})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -849,7 +869,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image4})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -899,7 +919,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image5})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -948,7 +968,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image6})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -997,7 +1017,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image7})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1046,7 +1066,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image8})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1096,7 +1116,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image9})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1145,7 +1165,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image10})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1193,7 +1213,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image11})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1241,7 +1261,7 @@ function App() {
               <Box
                 sx={{
                   height: '70%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image12})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1289,7 +1309,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image13})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1338,7 +1358,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image14})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1386,7 +1406,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image15})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1434,7 +1454,7 @@ function App() {
               <Box
                 sx={{
                   height: '70%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image16})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1482,7 +1502,7 @@ function App() {
               <Box
                 sx={{
                   height: '75%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image17})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
