@@ -370,7 +370,9 @@ const Lease_Property_Map = () => {
   };
 
   const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
   });
 
   const containerStyle = {
