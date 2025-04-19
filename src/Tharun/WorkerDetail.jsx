@@ -18,6 +18,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const WorkerDetail = () => {
   const navigate = useNavigate();
@@ -78,24 +79,7 @@ const WorkerDetail = () => {
         </CardContent>
       </Card>
 
-      <Paper
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderTop: "1px solid #ccc",
-        }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Construction & Interiors" icon={<BuildIcon />} />
-          <BottomNavigationAction label="Post" icon={<PostAddIcon />} />
-          <BottomNavigationAction label="Home Services" icon={<HomeRepairServiceIcon />} />
-          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-        </BottomNavigation>
-      </Paper>
+       <FormsBottomNavbar />
     </Container>
   );
 };
