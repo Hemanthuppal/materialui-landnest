@@ -89,14 +89,31 @@ const WorkerDetails = () => {
         </Box>
 
         <Box sx={{ mb: 3 }}>
-          <Typography gutterBottom><strong>Name:</strong> {workerDetails.name}</Typography>
-          <Typography gutterBottom><strong>Email ID:</strong> {workerDetails.email}</Typography>
-          <Typography gutterBottom><strong>Mobile:</strong> {workerDetails.mobile}</Typography>
-          <Typography gutterBottom><strong>Address:</strong> {workerDetails.address}</Typography>
-          <Typography gutterBottom><strong>Customer ID:</strong> {workerDetails.customerId}</Typography>
-          <Typography gutterBottom><strong>Category:</strong> {workerDetails.category}</Typography>
-          <Typography gutterBottom><strong>Description:</strong> {workerDetails.description}</Typography>
-        </Box>
+  {[
+    { label: 'Name', value: workerDetails.name },
+    { label: 'Email ID', value: workerDetails.email },
+    { label: 'Mobile', value: workerDetails.mobile },
+    { label: 'Address', value: workerDetails.address },
+    { label: 'Customer ID', value: workerDetails.customerId },
+    { label: 'Category', value: workerDetails.category },
+    { label: 'Description', value: workerDetails.description },
+  ].map((item, index) => (
+    <Box
+      key={index}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        mb: 1,
+        // borderBottom: '1px solid #ddd',
+        pb: 0.5,
+      }}
+    >
+      <Typography fontWeight="bold">{item.label}:</Typography>
+      <Typography>{item.value}</Typography>
+    </Box>
+  ))}
+</Box>
+
 
         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
           Work Photos:
