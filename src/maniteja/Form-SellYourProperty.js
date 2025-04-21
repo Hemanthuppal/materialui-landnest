@@ -267,7 +267,8 @@ const SellYourProperty = () => {
 
                         {/* Buttons */}
                         <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
-                            <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}
+                            onClick={() => navigate(-1)}>
                                 Cancel
                             </RedButton>
                             <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
