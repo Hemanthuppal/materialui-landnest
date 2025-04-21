@@ -31,9 +31,9 @@ const workerDetails = {
 const WorkerDetails = () => {
   const navigate = useNavigate();
 
-  const handleLogoClick = () => {
-    navigate('/inboxlist');
-  };
+  // const handleLogoClick = () => {
+  //   navigate('/inboxlist');
+  // };
 
   return (
     <Box sx={{ bgcolor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
@@ -72,7 +72,7 @@ const WorkerDetails = () => {
           bgcolor: 'rgb(239, 231, 221)',
         }}
       >
-        <Box display="flex" justifyContent="center" onClick={handleLogoClick} sx={{ mb: 3 }}>
+        <Box display="flex" justifyContent="center" sx={{ mb: 3 }}>
           <Avatar
             src="https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg="
             sx={{
