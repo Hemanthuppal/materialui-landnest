@@ -105,14 +105,15 @@ const Forms = () => {
                     bgcolor: '#343a40',
                     color: '#fff',
                     writingMode: 'vertical-rl',
+                     transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
                     textAlign: 'center',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: 12,
                     fontWeight: 600,
-                    borderTopLeftRadius: '40px',
-                    borderBottomLeftRadius: '5px',
+                    borderTopRightRadius: '5px',
+                    borderBottomRightRadius: '40px',
                   }}
                 >
                   {item.leftLabel}
@@ -141,14 +142,15 @@ const Forms = () => {
                     bgcolor: '#343a40',
                     color: '#fff',
                     writingMode: 'vertical-rl',
+                    transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
                     textAlign: 'center',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: 12,
                     fontWeight: 600,
-                    borderBottomRightRadius: '40px',
-                    borderTopRightRadius: '5px', 
+                    borderBottomLeftRadius: '5px',
+                    borderTopLeftRadius: '40px', 
                   }}
                 >
                   {item.rightLabel}
