@@ -38,7 +38,7 @@ const BuySaves = () => {
     if (newValue === 0) navigate('/dashboard');
     if (newValue === 1) navigate('/buy-details');
     if (newValue === 2) navigate('/buy-saves');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 3) navigate('/inboxlist');
   };
 
   const handleRemove = (id) => {
@@ -69,9 +69,23 @@ const BuySaves = () => {
 
   return (
     <>
-      <CustomSearchBar />
+      {/* Fixed Search Bar */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          backgroundColor: 'white',
+          boxShadow: 1,
+        }}
+      >
+        <CustomSearchBar />
+      </Box>
 
-      <Box sx={{ pb: 10 }}>
+      {/* Content Below Search Bar */}
+      <Box sx={{ pt: 10, pb: 10, backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
         {saved.length === 0 ? (
           <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
             No saved properties.
@@ -81,6 +95,7 @@ const BuySaves = () => {
             <Card
               key={property.id}
               sx={{
+                mt: 2, // 🟢 Margin top to avoid touching the search bar
                 mb: 2,
                 mx: 2,
                 borderRadius: 3,

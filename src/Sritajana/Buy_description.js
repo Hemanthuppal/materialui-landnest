@@ -1,5 +1,4 @@
-
-import {React,useState} from 'react';
+import { React, useState } from 'react';
 import {
   Box,
   Typography,
@@ -38,17 +37,17 @@ import buildingImage from '../Images/house.jpeg';
 
 const Buy_description = () => {
   const navigate = useNavigate();
-   const [value, setValue] = useState();
+  const [value, setValue] = useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
     if (newValue === 1) navigate('/buy-details');
     if (newValue === 2) navigate('/buy-saves');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 3) navigate('/inboxlist');
   };
 
   return (
-    <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
+    <Box sx={{ width: '100vw', minHeight: '100vh', backgroundColor: 'rgb(239, 231, 221)', pb: 10 }}>
       {/* Header with Back Button */}
       <Box
         sx={{
@@ -246,20 +245,17 @@ const Buy_description = () => {
         </Card>
       </Box>
 
-      
-       {/* Bottom Navigation */}
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-              <BottomNavigation value={value} onChange={handleChange} showLabels>
-                <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-                <BottomNavigationAction label="List" icon={<ListIcon />} />
-                <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-                <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-              </BottomNavigation>
-            </Paper>
+      {/* Bottom Navigation */}
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation value={value} onChange={handleChange} showLabels>
+          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+          <BottomNavigationAction label="List" icon={<ListIcon />} />
+          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
+        </BottomNavigation>
+      </Paper>
     </Box>
   );
 };
 
 export default Buy_description;
-
-

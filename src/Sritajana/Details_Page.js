@@ -1,4 +1,3 @@
-// PropertyCard.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -42,14 +41,14 @@ const PropertyCard = () => {
     return stored ? JSON.parse(stored) : [];
   });
 
-  const [likedCards, setLikedCards] = useState({}); // 🔵 Per-card like state
+  const [likedCards, setLikedCards] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
     if (newValue === 1) navigate('/buy-details');
     if (newValue === 2) navigate('/buy-saves');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 3) navigate('/inboxlist');
   };
 
   const propertyData = [
@@ -81,13 +80,9 @@ const PropertyCard = () => {
 
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
-    let updated;
-
-    if (isSaved) {
-      updated = saved.filter((p) => p.id !== property.id);
-    } else {
-      updated = [...saved, property];
-    }
+    const updated = isSaved
+      ? saved.filter((p) => p.id !== property.id)
+      : [...saved, property];
 
     setSaved(updated);
     localStorage.setItem('savedBuy', JSON.stringify(updated));
@@ -108,10 +103,27 @@ const PropertyCard = () => {
   };
 
   return (
-    <>
-      <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+    <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh', pb: 10 }}>
+      {/* Fixed Search Bar */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          backgroundColor: 'white',
+          px: 2,
+          pt: 1,
+          pb: 2,
+          boxShadow: 2
+        }}
+      >
+        <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      </Box>
 
-      <Box sx={{ pb: 10 }}> {/* 🔵 Padding Bottom to avoid overlap */}
+      {/* Property Cards with margin top to offset fixed search bar */}
+      <Box sx={{ mt: '120px' }}>
         {filteredProperties.map((property) => (
           <Card
             key={property.id}
@@ -124,14 +136,12 @@ const PropertyCard = () => {
               '&:hover': { transform: 'scale(1.015)', boxShadow: 6 }
             }}
             onClick={(e) => {
-              // Prevent navigation if the user clicked on a button or icon
               const isButtonClick = e.target.closest('button') || e.target.closest('svg');
               if (!isButtonClick) {
                 navigate('/buy-description', { state: { property } });
               }
             }}
           >
-             
             <Box position="relative">
               <CardMedia
                 component="img"
@@ -208,32 +218,30 @@ const PropertyCard = () => {
               <Divider sx={{ my: 2 }} />
 
               <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
-  {[ 
-    { label: 'Facing', value: property.facing },
-    { label: `Area (${property.dimensions})`, value: property.area },
-    { label: 'Listed By', value: property.listedBy }
-  ].map((item, index) => (
-    <Box
-      key={index}
-      sx={{
-        flex: 1,
-        p: 1.5,
-        textAlign: 'center',
-        borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
-      }}
-    >
-      <Typography variant="caption" color="text.secondary">{item.label}</Typography>
-      <Typography variant="body2" fontWeight="bold">{item.value}</Typography>
-    </Box>
-  ))}
-</Box>
-
-
+                {[{ label: 'Facing', value: property.facing },
+                  { label: `Area (${property.dimensions})`, value: property.area },
+                  { label: 'Listed By', value: property.listedBy }
+                ].map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      flex: 1,
+                      p: 1.5,
+                      textAlign: 'center',
+                      borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+                    }}
+                  >
+                    <Typography variant="caption" color="text.secondary">{item.label}</Typography>
+                    <Typography variant="body2" fontWeight="bold">{item.value}</Typography>
+                  </Box>
+                ))}
+              </Box>
             </CardContent>
           </Card>
         ))}
       </Box>
 
+      {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
@@ -242,7 +250,7 @@ const PropertyCard = () => {
           <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
         </BottomNavigation>
       </Paper>
-    </>
+    </Box>
   );
 };
 
