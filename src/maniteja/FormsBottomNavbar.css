@@ -1,0 +1,69 @@
+
+   :root {
+    --primary: #edd1a6; /* Biscuit color */
+    --background: #000; /* Solid black */
+    --glow: rgba(244, 199, 133, 0.5); /* Soft biscuit glow */
+    --icon-default: #bbb;
+    --icon-active: #f1ce99;
+  }
+  
+  .nav-wrapper {
+    position: fixed;
+    bottom: 0; /* Fixed to the very bottom */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 999;
+  }
+  
+  .nav-bar {
+    position: relative;
+    display: flex;
+    background: var(--background);
+    border-radius: 35px;
+    padding: 10px 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 420px;
+    width: 90%;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .nav-item {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    color: var(--icon-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .nav-item.active {
+    color: var(--icon-active);
+  }
+  
+  .nav-item.center {
+    background: var(--primary);
+    color: black; /* Stand out on biscuit color */
+    border-radius: 50%;
+    transform: translateY(-20%);
+    box-shadow: 0 8px 20px var(--glow);
+    font-size: 1.8rem;
+  }
+  
+  .nav-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 50px;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: left 0.3s ease;
+    box-shadow: 0 0 8px var(--glow);
+  }
+  

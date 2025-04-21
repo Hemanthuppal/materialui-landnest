@@ -1,21 +1,34 @@
-import React from 'react';
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
-  Box,
-} from '@mui/material';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import './FormsBottomNavbar.css';
+
+const navItems = [
+  { key: 'home', icon: <HomeIcon />, route: '/dashboard' },
+  { key: 'construction', icon: <BuildIcon />, route: '/constructions' },
+  { key: 'post', icon: <AddCircleIcon />, route: '/post', isCenter: true },
+  { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service' },
+  { key: 'profile', icon: <AccountCircleIcon />, route: '/profile' },
+];
 
 const FormsBottomNavbar = () => {
-  const [value, setValue] = React.useState('');
+  const [active, setActive] = useState('post');
   const navigate = useNavigate();
+  const navRef = useRef(null);
 
+<<<<<<< HEAD
+  useEffect(() => {
+    const current = document.querySelector(`.nav-item[data-key="${active}"]`);
+    const indicator = document.querySelector('.nav-indicator');
+    if (current && indicator) {
+      const { offsetLeft, offsetWidth } = current;
+      indicator.style.left = `${offsetLeft + offsetWidth / 2 - 25}px`;
+=======
   const handleChange = (event, newValue) => {
     setValue(newValue);
     switch (newValue) {
@@ -36,61 +49,31 @@ const FormsBottomNavbar = () => {
         break;
       default:
         break;
+>>>>>>> a167beab2f0f1e0b640922eaac8601e308d63323
     }
+  }, [active]);
+
+  const handleNav = (item) => {
+    setActive(item.key);
+    navigate(item.route);
   };
 
   return (
-    <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-      <Paper elevation={8}>
-        <BottomNavigation
-          value={value}
-          onChange={handleChange}
-          showLabels
-          sx={{
-            borderTop: '1px solid #e0e0e0',
-            height: '60px',
-            '& .MuiBottomNavigationAction-root': {
-              minWidth: 'auto',
-              padding: '6px 0',
-              color: '#757575',
-            },
-            '& .MuiBottomNavigationAction-label': {
-              fontSize: '0.7rem',
-            },
-          }}
-        >
-          <BottomNavigationAction
-            value="home"
-            label="Home"
-            icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="construction"
-            label="Construction & Interiors"
-            icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="post"
-            label="Post"
-            icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-            sx={{
-              '& .MuiSvgIcon-root': { color: '#2196f3' },
-              '& .MuiBottomNavigationAction-label': { color: '#2196f3' },
-            }}
-          />
-          <BottomNavigationAction
-            value="services"
-            label="Home Services"
-            icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="profile"
-            label="Profile"
-            icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-        </BottomNavigation>
-      </Paper>
-    </Box>
+    <div className="nav-wrapper">
+      <div className="nav-bar" ref={navRef}>
+        {navItems.map((item) => (
+          <div
+            key={item.key}
+            data-key={item.key}
+            className={`nav-item ${active === item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
+            onClick={() => handleNav(item)}
+          >
+            {item.icon}
+          </div>
+        ))}
+        <div className="nav-indicator" />
+      </div>
+    </div>
   );
 };
 

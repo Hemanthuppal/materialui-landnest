@@ -64,6 +64,7 @@ import {
 
 } from '@mui/icons-material';
 import { href } from 'react-router-dom';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
@@ -163,8 +164,6 @@ const cards = [
 ];
 
 
-
-
 function App() {
 
   const navigate = useNavigate();
@@ -196,14 +195,11 @@ function App() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
 
-
-
-
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '90vh', sm: '85vh' },
+            height: { xs: '88vh', sm: '78vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -575,9 +571,6 @@ function App() {
                     </Grid>
                   ))}
                   
-
-
-
                   {/* Second Row: Centered Third Card */}
                   <Grid item xs={12} display="flex" justifyContent="center">
                     <Link to="/lease_map" style={{ textDecoration: 'none' }}>
@@ -634,8 +627,6 @@ function App() {
               </Card>
             </Box>
           </Box>
-
-
 
           <Box mb={2}>
             <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
@@ -742,8 +733,6 @@ function App() {
             </Card>
           </Box>
           <Box mb={2}>
-
-
             <Card
               sx={{
                 backgroundColor: '#d8ccba',
@@ -791,9 +780,6 @@ function App() {
               </CardContent>
             </Card>
           </Box>
-
-
-
 
           <Box mb={2}>
             <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
@@ -847,7 +833,6 @@ function App() {
               </CardContent>
             </Card>
           </Box>
-
 
           <Box mb={2}>
             <Card
@@ -1145,6 +1130,7 @@ function App() {
             </Card>
 
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1193,6 +1179,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1241,6 +1228,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1289,6 +1277,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1386,6 +1375,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1434,6 +1424,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1482,6 +1473,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+          
           <Box mb={2}>
             <Card
               sx={{
@@ -1533,64 +1525,10 @@ function App() {
 
 
         </Box>
-
-
-
-
-
       </Box>
 
+      <FormsBottomNavbar />
 
-
-
-
-      <BottomNavigation
-        value={value}
-        onChange={handleChange}
-        showLabels
-        sx={{
-          borderTop: '1px solid #e0e0e0',
-          height: '60px',
-          '& .MuiBottomNavigationAction-root': {
-            minWidth: 'auto',
-            padding: '6px 0',
-            color: 'black',
-          },
-          '& .MuiBottomNavigationAction-label': {
-            fontSize: '0.7rem',
-          },
-        }}
-      >
-        <BottomNavigationAction
-          value="home"
-          label="Home"
-          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          value="construction"
-          label="Construction & Interiors"
-          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          value="post"
-          label="Post"
-          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-          sx={{
-            '& .MuiSvgIcon-root': { color: '#2196f3' },
-            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-          }}
-        />
-        <BottomNavigationAction
-          value="services"
-          label="Home Services"
-          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          value="profile"
-          label="Profile"
-          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-      </BottomNavigation>
     </Box>
   );
 }
