@@ -109,7 +109,7 @@ const HomeService = () => {
       </Box>
 
       {/* Map and Content */}
-      <Box sx={{ position: 'relative', width: '100%', height: '100vh', px: 2, pt: '180px', pb: 10 }}>
+      <Box sx={{ position: 'relative', width: '100%', height: "80vh", px: 2, pt: '180px', pb: 10 }}>
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={{ width: '100%', height: '100%' }}
