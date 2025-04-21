@@ -49,7 +49,7 @@ const InboxList = () => {
       {/* Header */}
       <AppBar position="static" elevation={0} sx={{ bgcolor: 'rgb(239, 231, 221)', color: '#000' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <IconButton edge="start" size="small" onClick={() => navigate('/work-details')}>
+          <IconButton edge="start" size="small" onClick={() => navigate(-1)}>
             <ArrowBackIosNewIcon />
           </IconButton>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
