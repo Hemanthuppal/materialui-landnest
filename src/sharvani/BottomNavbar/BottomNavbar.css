@@ -1,0 +1,12 @@
+.rent-bottomnavbar-paper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* optional: keep it above other content */
+  }
+  
+  .rent-bottomnavbar-navigation {
+    background-color: #ffffff; /* optional: set a background */
+  }
+  
