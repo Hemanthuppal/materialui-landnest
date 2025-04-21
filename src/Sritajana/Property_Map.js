@@ -28,6 +28,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import Img from './../Images/image-asset.jpeg';
 import img from './../Images/pexels-photo-439391.jpeg';
 import Footer from "../hemanth/Hemanth";
+import { useNavigate } from 'react-router-dom';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -64,6 +65,7 @@ const properties = [
 
 const Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const navigate = useNavigate();
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -73,7 +75,7 @@ const Property_Map = () => {
 
   const containerStyle = {
     width: '100%',
-    height: '350px'
+     height: 'calc(100vh - 240px)'
   };
 
   const center = {
@@ -127,7 +129,7 @@ const Property_Map = () => {
           {/* Google Map */}
           {isLoaded ? (
             <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '350px' }}
+              mapContainerStyle={{ width: '100%', height: containerStyle.height}}
               center={center}
               zoom={14}
             >
@@ -152,6 +154,7 @@ const Property_Map = () => {
               height="150"
               image={selectedProperty.image}
               alt={selectedProperty.title}
+              onClick={() => navigate('/rent-description')}
             />
             <CardContent>
               <Typography variant="h6">{selectedProperty.title}</Typography>
@@ -161,6 +164,7 @@ const Property_Map = () => {
             </CardContent>
           </Card>
         )}
+         
     
         {/* Bottom Navigation */}
         {/* <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>

@@ -321,6 +321,8 @@ import { useNavigate } from "react-router-dom";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import leaseImage1 from '../Images/duplex-house.webp';
 import leaseImage2 from '../Images/Leasebuilding.png';
+import CustomSearchBar from './CustomSearchBar';
+import ReUsableCard from '../sharvani/ReUsableCard';
 
 const leaseTypes = [
   "Office",
@@ -334,22 +336,30 @@ const leaseTypes = [
 const leaseProperties = [
   {
     id: 1,
-    title: "Modern Office Space",
-    description: "Fully furnished with high-speed internet.",
-    address: "123 Tech Street, Lucknow",
-    price: "₹1,20,000/month",
-    lat: 26.8500,
-    lng: 80.9499,
+    title: 'Plot For Lease in Btm Layout 2nd Stage',
+    location: '16th Main Road, BTM layout 2nd...',
+    price: '₹3.25 Cr/m',
+    date: '01-04-2025',
+    facing: 'East',
+    area: '1600 sq ft',
+    dimensions: '40×40',
+    listedBy: 'Owner/Agent',
+    lat: 26.8467,
+    lng: 80.9462,
     image:leaseImage1,
   },
   {
     id: 2,
-    title: "Retail Shop in Mall",
-    description: "Perfect for small business.",
-    address: "Wave Mall, Lucknow",
-    price: "₹85,000/month",
-    lat: 26.8520,
-    lng: 80.9420,
+    title: 'Commercial Plot for Lease near Silk Board',
+    location: 'Silk Board Junction, Bangalore...',
+    price: '₹2.75 Cr/m',
+    date: '02-04-2025',
+    facing: 'North',
+    area: '1400 sq ft',
+    dimensions: '35×40',
+    listedBy: 'Builder',
+    lat: 26.8500,
+    lng: 80.9500,
     image:leaseImage2,
   },
 ];
@@ -360,6 +370,12 @@ const Lease_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const [saved, setSaved] = useState(() => {
+        const stored = localStorage.getItem('savedRent');
+        return stored ? JSON.parse(stored) : [];
+      });
+    
+      const [likedCards, setLikedCards] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -368,6 +384,12 @@ const Lease_Property_Map = () => {
     if (newValue === 2) navigate("/lease_save");
     if (newValue === 3) navigate("/inboxlist");
   };
+
+  const rentalTypes = [
+    "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
+    "COMMERCIAL LAND", "COMMERCIAL BUILDING/ Space", "VILLA",
+    "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
+  ];
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -380,154 +402,126 @@ const Lease_Property_Map = () => {
     height: "calc(100vh - 240px)",
   };
 
+  const toggleSave = (property) => {
+    const isSaved = saved.find((p) => p.id === property.id);
+    let updated;
+
+    if (isSaved) {
+      updated = saved.filter((p) => p.id !== property.id);
+    } else {
+      updated = [...saved, property];
+    }
+
+    setSaved(updated);
+    localStorage.setItem('savedRent', JSON.stringify(updated));
+  };
+  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const toggleLike = (id) => {
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const center = { lat: 26.8467, lng: 80.9462 };
 
+  
   return (
-    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: "relative" }}>
-      {/* Header & Search */}
-      <Box sx={{ px: 2, pt: 2 }}>
+    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative', backgroundColor: 'rgb(239, 231, 221)' }}>
+       {/* Sticky Search Bar */}
+  <Box
+    sx={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000,
+      bgcolor: '#fff', // background to cover content underneath
+      px: 1,
+      py: 1,
+      backgroundColor: 'rgb(239, 231, 221)'
+    }}
+  >
+    <CustomSearchBar />
+  </Box>
+
+      {/* Rental Type Chips */}
+      <Box sx={{ p: 2 }}>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Lesae Property Type</Typography>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: "#e0e0e0",
-            borderRadius: "10px",
-            py: 1,
-            px: 1,
-            mb: 2,
-          }}
-        >
-          <IconButton onClick={() => navigate(-1)}>
-            <ArrowBackIosNewIcon sx={{ fontSize: 20 }} />
-          </IconButton>
-
-          <Box
-            sx={{
-              flexGrow: 1,
-              backgroundColor: "#fff",
-              borderRadius: "20px",
-              display: "flex",
-              alignItems: "center",
-              px: 2,
-              height: 40,
-              mx: 1,
-            }}
-          >
-            <Box sx={{ flexGrow: 1 }} />
-            <SearchIcon sx={{ fontSize: 20, color: "#666" }} />
-          </Box>
-
-          <IconButton>
-            <TuneIcon sx={{ fontSize: 20 }} />
-          </IconButton>
-        </Box>
-
-        {/* Lease Type Chips */}
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          Lease Property Type
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
+            display: 'flex',
             gap: 1,
-            overflowX: "auto",
-            whiteSpace: "nowrap",
+            overflowX: 'auto',
+            whiteSpace: 'nowrap',
             pb: 1,
-            mb: 2,
+            mb: 2
           }}
         >
-          {leaseTypes.map((type, index) => (
+          {rentalTypes.map((type, index) => (
             <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
           ))}
         </Box>
       </Box>
 
-      {/* Map */}
+      {/* Google Map */}
       {isLoaded ? (
-        <Box sx={{ px: 2, pb: 10 }}>
-          <Box sx={{ width: "100%", height: containerStyle.height }}>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={14}
-              options={{
-                gestureHandling: "greedy",
-                zoomControl: true,
-                mapTypeControl: false,
-                streetViewControl: false,
-                fullscreenControl: false,
-              }}
-            >
-              {leaseProperties.map((property) => (
-                <Marker
-                  key={property.id}
-                  position={{ lat: property.lat, lng: property.lng }}
-                  onClick={() => setSelectedProperty(property)}
-                />
-              ))}
-            </GoogleMap>
+        <Box sx={{ px: 2, pb: 10 }}> {/* Add padding around map */}
+        <Box sx={{ width: '100%', height: containerStyle.height }}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={14}
+            options={{
+              gestureHandling: 'greedy',  // allows scroll to zoom
+              zoomControl: true,
+              mapTypeControl: false,
+              streetViewControl: false,
+              fullscreenControl: false
+            }}
+            
+          >
+            {leaseProperties.map(property => (
+              <Marker
+                key={property.id}
+                position={{ lat: property.lat, lng: property.lng }}
+                onClick={() => setSelectedProperty(property)}
+              />
+            ))}
+          </GoogleMap>
           </Box>
 
-          {/* Property Card Overlay */}
-          {selectedProperty && (
-            <Card
-              elevation={4}
-              sx={{
-                position: "absolute",
-                bottom: 164,
-                left: 0,
-                right: 0,
-                margin: "0 auto",
-                width: "100%",
-                maxWidth: 480,
-                bgcolor: "#fff",
-                borderRadius: 2,
-                boxShadow: 6,
-                zIndex: 999,
-              }}
-              onClick={() => navigate("/lease-description")}
-            >
-              <Box sx={{ position: "relative", p: 2 }}>
-                <IconButton
-                  size="small"
-                  sx={{ position: "absolute", top: 8, right: 8 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedProperty(null);
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="h6" gutterBottom>
-                  {selectedProperty.title}
-                </Typography>
-                <img
-                  src={selectedProperty.image}
-                  alt={selectedProperty.title}
-                  style={{
-                    width: "100%",
-                    height: 180,
-                    objectFit: "cover",
-                    borderRadius: 8,
-                  }}
-                />
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  {selectedProperty.description}
-                </Typography>
-                <Typography variant="body2">{selectedProperty.address}</Typography>
-                <Typography variant="h6" sx={{ mt: 1, color: "green" }}>
-                  {selectedProperty.price}
-                </Typography>
-              </Box>
-            </Card>
-          )}
+        
+
+{selectedProperty && (
+  <Box sx={{
+    position: 'absolute',
+    bottom: 164,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+    width: '100%',
+    maxWidth: 480,
+    zIndex: 999
+  }}>
+    <ReUsableCard
+  property={selectedProperty}
+  onCardClick={() => navigate('/lease_description', { state: { property: selectedProperty } })}
+  isSaved={isSaved}
+  toggleSave={toggleSave}
+  likedCards={likedCards}
+  toggleLike={toggleLike}
+  onClose={() => setSelectedProperty(null)} // 🔽 add this
+/>
+
+  </Box>
+)}
+
         </Box>
       ) : (
-        <Typography sx={{ textAlign: "center" }}>Loading map...</Typography>
+        <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
       )}
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
           <BottomNavigationAction label="List" icon={<ListIcon />} />

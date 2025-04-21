@@ -399,7 +399,7 @@ const Interiors = () => {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/profile');
+        navigate('/work-detail');
         break;
       default:
         navigate('/');
@@ -413,7 +413,9 @@ const Interiors = () => {
         top: 0,
         zIndex: 1200,
         bgcolor: 'background.paper',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        marginBottom : '20px'
+
       }}>
         {/* Back Arrow */}
         <Box display="flex" alignItems="center" p={1} sx={{
@@ -421,7 +423,7 @@ const Interiors = () => {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/constructions')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }
@@ -433,8 +435,8 @@ const Interiors = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
@@ -457,7 +459,7 @@ const Interiors = () => {
         </Box>
       </Box>
 
-      <Container sx={{ padding: 1, backgroundColor: "lightgray", pb: 10 }}>
+      <Container sx={{ padding: 1, backgroundColor:"#e7dbc9", pb: 10 }}>
         {/* Services Row */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
           <Typography sx={{ color: 'green', fontWeight: 'bold' }} variant="body1">Our services</Typography>
@@ -517,54 +519,59 @@ const Interiors = () => {
           </Button>
         </Box>
 
-        {/* Pricing Buttons */}
-        <Grid container spacing={2} sx={{ mb: 2 }}>
-          <Grid item xs={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{
-                py: 0.8,
-                borderRadius: 30,
-                borderWidth: 2,
-                fontWeight: 'bold',
-              }}
-            >
-              1BHK starting at 1.8L
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{
-                py: 0.8,
-                borderRadius: 30,
-                borderWidth: 2,
-                fontWeight: 'bold',
-              }}
-            >
-              2BHK starting at 2.5L
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{
-                py: 0.8,
-                borderRadius: 30,
-                borderWidth: 2,
-                fontWeight: 'bold',
-              }}
-            >
-              3BHK starting at 3.5L
-            </Button>
-          </Grid>
-        </Grid>
+      {/* Pricing Buttons */}
+<Grid container spacing={2} sx={{ 
+  mb: 2,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center' // This centers the buttons horizontally
+}}>
+  <Grid item xs={12} sx={{ width: isMobile ? '75%' : '100%' }}>
+    <Button
+      fullWidth
+      variant="contained"
+      color="error"
+      sx={{
+        py: 0.8,
+        borderRadius: 30,
+        borderWidth: 2,
+        fontWeight: 'bold',
+      }}
+    >
+      1BHK starting at 1.8L
+    </Button>
+  </Grid>
+  <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%' }}>
+    <Button
+      fullWidth
+      variant="contained"
+      color="error"
+      sx={{
+        py: 0.8,
+        borderRadius: 30,
+        borderWidth: 2,
+        fontWeight: 'bold',
+      }}
+    >
+      2BHK starting at 2.5L
+    </Button>
+  </Grid>
+  <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%' }}>
+    <Button
+      fullWidth
+      variant="contained"
+      color="error"
+      sx={{
+        py: 0.8,
+        borderRadius: 30,
+        borderWidth: 2,
+        fontWeight: 'bold',
+      }}
+    >
+      3BHK starting at 3.5L
+    </Button>
+  </Grid>
+</Grid>
 
         {/* Transformation Button */}
         <Button
@@ -587,7 +594,7 @@ const Interiors = () => {
           fontWeight="bold"
           gutterBottom
           sx={{
-            textAlign: 'left',
+            textAlign: 'center',
             mt: 2,
             mb: 2,
             color: 'primary.main',

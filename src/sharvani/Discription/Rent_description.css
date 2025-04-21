@@ -1,0 +1,129 @@
+.rent-description-container {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding-bottom: 80px;
+  }
+  
+  .rent-description-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: rgb(49, 48, 49);
+    color: white;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .rent-description-back-button {
+    color: white;
+    margin-right: 8px;
+  }
+  
+  .rent-description-content {
+    padding: 16px;
+    margin-top: 80px;
+  }
+  
+  .rent-description-card {
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ffffff 0%, rgb(248, 248, 248) 100%);
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rent-description-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  
+  .rent-description-title-price {
+    padding-bottom: 16px;
+  }
+  
+  .rent-description-basic-info {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ede7f6;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .rent-description-basic-info-item {
+    text-align: center;
+    flex: 1;
+  }
+  
+  .rent-description-label {
+    margin-bottom: 8px;
+  }
+  
+  .rent-description-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .rent-description-chip {
+    background-color: rgb(211, 135, 173) !important;
+    color: rgb(35, 35, 36) !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+  }
+  
+  .rent-description-overview-container {
+    border: 2px solid #424242;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .rent-description-overview-row {
+    display: flex;
+  }
+  
+  .rent-description-overview-col {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+  }
+  
+  .rent-description-border-right {
+    border-right: 1px solid #9e9e9e;
+  }
+  
+  .rent-description-border-bottom {
+    border-bottom: 1px solid #9e9e9e;
+  }
+  
+  .rent-description-icon {
+    color: rgb(50, 47, 52);
+  }
+  
+  .rent-description-final-info {
+    margin-top: 24px;
+    border-top: 1px dashed #d1c4e9;
+    padding-top: 16px;
+  }
+  
+  .rent-description-final-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  
+  .rent-description-final-label {
+    display: flex;
+    align-items: center;
+    color: rgb(52, 50, 53);
+  }
+  

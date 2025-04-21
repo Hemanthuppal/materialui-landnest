@@ -266,8 +266,20 @@ const PropertyCard = () => {
 
   return (
     <>
+    <Box
+        sx={{ 
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          bgcolor: '#fff', // background to cover content underneath
+          px: 1,
+          py: 1,
+          backgroundColor: 'rgb(239, 231, 221)'
+        }}
+      >
       <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-      <Box sx={{ pb: 10 }}>
+      </Box>
+      <Box sx={{ pb: 10, backgroundColor: 'rgb(239, 231, 221)'}}>
         {filteredProperties.map((property) => (
           <Card
             key={property.id}

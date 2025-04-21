@@ -88,7 +88,7 @@ const ThreedPlansInterior = () => {
             navigate('/home-service');
             break;
           case 'profile':
-            navigate('/profile');
+            navigate('/work-detail');
             break;
           default:
             navigate('/');
@@ -111,7 +111,7 @@ const ThreedPlansInterior = () => {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/constructions')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }
@@ -123,8 +123,8 @@ const ThreedPlansInterior = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
@@ -147,18 +147,7 @@ const ThreedPlansInterior = () => {
       </Box>
 
       {/* Page Title */}
-      <Typography
-        variant="h5"
-        align="center"
-        fontWeight="bold"
-        sx={{
-          mt: 3,
-          mb: 2,
-          fontSize: isMobile ? '1.5rem' : '2rem'
-        }}
-      >
-        3D Plans Interior
-      </Typography>
+   
 
       {/* Content Cards */}
       <Box sx={{ 
@@ -167,8 +156,21 @@ const ThreedPlansInterior = () => {
         gap: 2, 
         px: 2,
         pb: 10,
-        mt: 2
+        mt: 2, 
+        backgroundColor: '#e7dbc9',
       }}>
+
+<Typography
+        variant="h5"
+        align="center"
+        fontWeight="bold"
+        sx={{
+          mt: 3,
+          fontSize: isMobile ? '1.5rem' : '2rem'
+        }}
+      >
+        3D Plans Interior
+      </Typography>
         {rows.map((row, rowIndex) => (
           <Box
             key={rowIndex}

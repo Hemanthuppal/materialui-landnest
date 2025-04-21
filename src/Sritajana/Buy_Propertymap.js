@@ -5,10 +5,12 @@ import {
   Typography,
   IconButton,
   Card,
+  Tooltip,
   Paper,
   BottomNavigation,
   BottomNavigationAction
 } from '@mui/material';
+import { Close } from '@mui/icons-material';
 
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
@@ -22,8 +24,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
+import ReUsableCard from './../sharvani/ReUsableCard';
 
-const BuyalTypes = [
+const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
   "COMMERCIAL LAND", "COMMERCIAL BUILDING/ Space", "VILLA",
   "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
@@ -34,37 +37,51 @@ const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 const properties = [
   {
     id: 1,
-    title: "2BHK Apartment",
-    description: "2 Beds • 2 Baths • 960 Sq.ft",
-    address: "10100 Burnt Store Rd #104",
-    price: "₹ 50,00,000/-",
+    title: 'Plot For Buy in Btm Layout 2nd Stage',
+    location: '16th Main Road, BTM layout 2nd...',
+    price: '₹3.25 Cr/m',
+    date: '01-04-2025',
+    facing: 'East',
+    area: '1600 sq ft',
+    dimensions: '40×40',
+    listedBy: 'Owner/Agent',
     lat: 26.8467,
     lng: 80.9462,
     image: buildingImage
   },
   {
     id: 2,
-    title: "3BHK Villa",
-    description: "3 Beds • 3 Baths • 1200 Sq.ft",
-    address: "202 City Center",
-    price: "₹ 75,00,000/-",
+    title: 'Commercial Plot for Buy near Silk Board',
+    location: 'Silk Board Junction, Bangalore...',
+    price: '₹2.75 Cr/m',
+    date: '02-04-2025',
+    facing: 'North',
+    area: '1400 sq ft',
+    dimensions: '35×40',
+    listedBy: 'Builder',
     lat: 26.8500,
     lng: 80.9500,
     image: buildingImage2
   }
 ];
 
-const Buy_Property_Map = () => {
+const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const [saved, setSaved] = useState(() => {
+    const stored = localStorage.getItem('savedRent');
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const [likedCards, setLikedCards] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/buy-details');
-    if (newValue === 2) navigate('/buy-saves');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 1) navigate('/details');
+    if (newValue === 2) navigate('/Buy-saves');
+    if (newValue === 3) navigate('/inboxlist');
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -83,13 +100,57 @@ const Buy_Property_Map = () => {
     lng: 80.9462
   };
 
-  return (
-    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
-      <CustomSearchBar />
+  const toggleSave = (property) => {
+    const isSaved = saved.find((p) => p.id === property.id);
+    let updated;
 
-      {/* Buyal Type Chips */}
+    if (isSaved) {
+      updated = saved.filter((p) => p.id !== property.id);
+    } else {
+      updated = [...saved, property];
+    }
+
+    setSaved(updated);
+    localStorage.setItem('savedRent', JSON.stringify(updated));
+  };
+
+  const isSaved = (property) => saved.some((p) => p.id === property.id);
+
+  const toggleLike = (id) => {
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  return (
+    <Box
+      sx={{
+        pb: 7,
+        maxWidth: 480,
+        mx: "auto",
+        position: 'relative',
+        backgroundColor: 'rgb(239, 231, 221)', // ✅ Your background color
+        minHeight: '100vh'
+      }}
+    >
+      {/* Sticky Search Bar */}
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          bgcolor: '#fff',
+          px: 1,
+          py: 1
+        }}
+      >
+        <CustomSearchBar />
+      </Box>
+
+      {/* Rental Type Chips */}
       <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Type</Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
         <Box
           sx={{
             display: 'flex',
@@ -100,7 +161,7 @@ const Buy_Property_Map = () => {
             mb: 2
           }}
         >
-          {BuyalTypes.map((type, index) => (
+          {rentalTypes.map((type, index) => (
             <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
           ))}
         </Box>
@@ -108,85 +169,51 @@ const Buy_Property_Map = () => {
 
       {/* Google Map */}
       {isLoaded ? (
-        <Box sx={{ px: 2, pb: 10 }}> {/* Add padding around map */}
-        <Box sx={{ width: '100%', height: containerStyle.height }}>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={14}
-            options={{
-              gestureHandling: 'greedy',  // allows scroll to zoom
-              zoomControl: true,
-              mapTypeControl: false,
-              streetViewControl: false,
-              fullscreenControl: false
-            }}
-            
-          >
-            {properties.map(property => (
-              <Marker
-                key={property.id}
-                position={{ lat: property.lat, lng: property.lng }}
-                onClick={() => setSelectedProperty(property)}
-              />
-            ))}
-          </GoogleMap>
+        <Box sx={{ px: 2, pb: 10 }}>
+          <Box sx={{ width: '100%', height: containerStyle.height }}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={14}
+              options={{
+                gestureHandling: 'greedy',
+                zoomControl: true,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false
+              }}
+            >
+              {properties.map(property => (
+                <Marker
+                  key={property.id}
+                  position={{ lat: property.lat, lng: property.lng }}
+                  onClick={() => setSelectedProperty(property)}
+                />
+              ))}
+            </GoogleMap>
           </Box>
 
-          {/* Property Card Overlay */}
           {selectedProperty && (
-            <Card
-            
-              elevation={4}
-              sx={{
-                position: 'absolute',
-                bottom: 164,
-                left: 0,
-                right: 0,
-                margin: '0 auto',
-                width: '100%',
-                maxWidth: 480,
-                bgcolor: '#fff',
-                borderRadius: 2,
-                boxShadow: 6,
-                zIndex: 999
-              }}
-              onClick={() => navigate('/buy-description')}
-            >
-              <Box sx={{ position: 'relative', p: 2 }}>
-                <IconButton
-                  size="small"
-                  sx={{ position: 'absolute', top: 8, right: 8 }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // ✅ Prevents triggering navigation
-                    setSelectedProperty(null);
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="h6" gutterBottom>
-                  {selectedProperty.title}
-                </Typography>
-                <img
-                  src={selectedProperty.image}
-                  alt={selectedProperty.title}
-                  style={{
-                    width: '100%',
-                    height: 180,
-                    objectFit: 'cover',
-                    borderRadius: 8
-                  }}
-                />
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  {selectedProperty.description}
-                </Typography>
-                <Typography variant="body2">{selectedProperty.address}</Typography>
-                <Typography variant="h6" sx={{ mt: 1, color: 'green' }}>
-                  {selectedProperty.price}
-                </Typography>
-               
-              </Box>
-            </Card>
+            <Box sx={{
+              position: 'absolute',
+              bottom: 164,
+              left: 0,
+              right: 0,
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: 480,
+              zIndex: 999
+            }}>
+              <ReUsableCard
+                property={selectedProperty}
+                onCardClick={() => navigate('/Buy-description', { state: { property: selectedProperty } })}
+                isSaved={isSaved}
+                toggleSave={toggleSave}
+                likedCards={likedCards}
+                toggleLike={toggleLike}
+                onClose={() => setSelectedProperty(null)}
+              />
+            </Box>
           )}
         </Box>
       ) : (
@@ -206,4 +233,4 @@ const Buy_Property_Map = () => {
   );
 };
 
-export default Buy_Property_Map;
+export default Rent_Property_Map;

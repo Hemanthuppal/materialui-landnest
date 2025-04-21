@@ -21,12 +21,35 @@ const FormsBottomNavbar = () => {
   const navigate = useNavigate();
   const navRef = useRef(null);
 
+<<<<<<< HEAD
   useEffect(() => {
     const current = document.querySelector(`.nav-item[data-key="${active}"]`);
     const indicator = document.querySelector('.nav-indicator');
     if (current && indicator) {
       const { offsetLeft, offsetWidth } = current;
       indicator.style.left = `${offsetLeft + offsetWidth / 2 - 25}px`;
+=======
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    switch (newValue) {
+      case 'home':
+        navigate('/dashboard');
+        break;
+      case 'construction':
+        navigate('/constructions');
+        break;
+      case 'post':
+        navigate('/post');
+        break;
+      case 'services':
+        navigate('/home-service');
+        break;
+      case 'profile':
+        navigate('/work-detail');
+        break;
+      default:
+        break;
+>>>>>>> a167beab2f0f1e0b640922eaac8601e308d63323
     }
   }, [active]);
 

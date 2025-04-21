@@ -244,7 +244,7 @@ function InteriorConsultationForm() {
             navigate('/home-service');
             break;
           case 'profile':
-            navigate('/profile');
+            navigate('/work-detail');
             break;
           default:
             navigate('/');
@@ -272,7 +272,7 @@ function InteriorConsultationForm() {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/how-it-works')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': {
@@ -286,8 +286,8 @@ function InteriorConsultationForm() {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 1 : 1,
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 1 : 1,
         }}>
           <AppBar position="static" color="default" sx={{ boxShadow: 'none', backgroundColor: 'transparent' }}>
             <Tabs
@@ -321,7 +321,7 @@ function InteriorConsultationForm() {
 
     
 
-            <Box sx={{ 
+            {/* <Box sx={{ 
                     display: 'flex', 
                     justifyContent: 'space-around', 
                     p: 1, 
@@ -339,7 +339,7 @@ function InteriorConsultationForm() {
                     <Typography fontWeight={500} >How it works?</Typography>
                     </Link>
 
-                  </Box>
+                  </Box> */}
 
       {/* Main Content */}
       <Container maxWidth="sm" sx={{ mt: 4, mb: 12 }}>

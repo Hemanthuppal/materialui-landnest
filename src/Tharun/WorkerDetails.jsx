@@ -3,20 +3,11 @@ import {
   Box,
   Typography,
   Avatar,
-  Grid,
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction,
   IconButton,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import HomeIcon from '@mui/icons-material/Home';
-import BuildIcon from '@mui/icons-material/Build';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
-import PersonIcon from '@mui/icons-material/Person';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const workerDetails = {
@@ -40,43 +31,48 @@ const workerDetails = {
 const WorkerDetails = () => {
   const navigate = useNavigate();
 
-  const handleLogoClick = () => {
-    navigate('/inboxlist'); // Navigate to inboxList
-  };
+  // const handleLogoClick = () => {
+  //   navigate('/inboxlist');
+  // };
 
   return (
-    <Box
-      sx={{
-        maxHeight: '100vh',
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        // pt: 4,
-      }}
-    >
-      <Paper
-        elevation={3}
+    <Box sx={{ bgcolor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
+      {/* Fixed Header */}
+      <Box
         sx={{
-          width: '100%',
-          maxWidth: 600,
-          p: 3,
-          borderRadius: 2,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          bgcolor: 'rgb(239, 231, 221)',
+          px: 2,
+          py: 1,
           display: 'flex',
-          flexDirection: 'column',
-          height: '100vh'
+          alignItems: 'center',
+          borderBottom: '1px solid #ccc',
         }}
       >
-        {/* Back arrow header */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
-             <ArrowBackIosNewIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            Worker Details
-          </Typography>
-        </Box>
+        <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
+          <ArrowBackIosNewIcon />
+        </IconButton>
+        <Typography variant="h6" fontWeight="bold">
+          Worker Details
+        </Typography>
+      </Box>
 
-        <Box display="flex" justifyContent="center"  onClick={handleLogoClick}  sx={{ mb: 3 }}>
+      {/* Scrollable Content */}
+      <Box
+        sx={{
+          pt: 8,
+          pb: 8,
+          px: 2,
+          maxWidth: 600,
+          mx: 'auto',
+          bgcolor: 'rgb(239, 231, 221)',
+        }}
+      >
+        <Box display="flex" justifyContent="center" sx={{ mb: 3 }}>
           <Avatar
             src="https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg="
             sx={{
@@ -88,17 +84,33 @@ const WorkerDetails = () => {
           />
         </Box>
 
+        {/* Worker Info */}
         <Box sx={{ mb: 3 }}>
-          <Typography gutterBottom><strong>Name:</strong> {workerDetails.name}</Typography>
-          <Typography gutterBottom><strong>Email ID:</strong> {workerDetails.email}</Typography>
-          <Typography gutterBottom><strong>Mobile:</strong> {workerDetails.mobile}</Typography>
-          <Typography gutterBottom><strong>Address:</strong> {workerDetails.address}</Typography>
-          <Typography gutterBottom><strong>Customer ID:</strong> {workerDetails.customerId}</Typography>
-          <Typography gutterBottom><strong>Category:</strong> {workerDetails.category}</Typography>
-          <Typography gutterBottom><strong>Description:</strong> {workerDetails.description}</Typography>
+          {[
+            { label: 'Name', value: workerDetails.name },
+            { label: 'Email ID', value: workerDetails.email },
+            { label: 'Mobile', value: workerDetails.mobile },
+            { label: 'Address', value: workerDetails.address },
+            { label: 'Customer ID', value: workerDetails.customerId },
+            { label: 'Category', value: workerDetails.category },
+            { label: 'Description', value: workerDetails.description },
+          ].map((item, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                mb: 1,
+              }}
+            >
+              <Typography fontWeight="bold">{item.label}:</Typography>
+              <Typography>{item.value}</Typography>
+            </Box>
+          ))}
         </Box>
 
-        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
+        {/* Work Photos */}
+        <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
           Work Photos:
         </Typography>
         <Box
@@ -106,7 +118,6 @@ const WorkerDetails = () => {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'flex-start',
-            // mt: 2,
           }}
         >
           {workerDetails.photos.map((photo, index) => (
@@ -125,9 +136,12 @@ const WorkerDetails = () => {
             />
           ))}
         </Box>
-      </Paper>
+      </Box>
 
-     <FormsBottomNavbar />
+      {/* Bottom Navigation */}
+      <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <FormsBottomNavbar />
+      </Box>
     </Box>
   );
 };

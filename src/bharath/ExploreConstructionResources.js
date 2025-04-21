@@ -94,7 +94,7 @@
 //           <ArrowBackIosIcon />
 //         </IconButton>
 //       </Box>
-      
+
 //       <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
 //         <Drawer
 //           variant="permanent"
@@ -124,7 +124,7 @@
 //               <React.Fragment key={item.id}>
 //                 <ListItem
 //                   button
-//                   selected={activeCategory === item.id}
+//                   selected={activeCategory == item.id}
 //                   onClick={() => setActiveCategory(item.id)}
 //                   sx={{
 //                     py: 1.5,
@@ -143,7 +143,7 @@
 //                     '& .MuiListItemIcon-root': {
 //                       minWidth: 'auto',
 //                       justifyContent: 'center',
-//                       color: activeCategory === item.id ? 'white' : 'rgba(255, 255, 255, 0.7)',
+//                       color: activeCategory == item.id ? 'white' : 'rgba(255, 255, 255, 0.7)',
 //                       transition: 'color 0.2s, transform 0.2s',
 //                     }
 //                   }}
@@ -181,8 +181,8 @@
 //                     sx={{
 //                       width: '100%',
 //                       borderRadius: 2,
-//                       boxShadow: selectedItemId === item.id ? 6 : 2,
-//                       border: selectedItemId === item.id ? '2px solid #00C4B4' : '1px solid #ddd',
+//                       boxShadow: selectedItemId == item.id ? 6 : 2,
+//                       border: selectedItemId == item.id ? '2px solid #00C4B4' : '1px solid #ddd',
 //                       cursor: 'pointer',
 //                       transition: '0.2s',
 //                       overflow: 'hidden',
@@ -263,7 +263,7 @@ import {
   useMediaQuery,
   IconButton,
   Grid, BottomNavigation,
-  BottomNavigationAction,   Paper
+  BottomNavigationAction, Paper
 } from '@mui/material';
 import {
   Kitchen as KitchenIcon,
@@ -289,25 +289,25 @@ const chunkArray = (array, chunkSize) => {
 };
 
 const ExploreConstructionResources = () => {
-  const [activeCategory, setActiveCategory] = useState('kitchen');
+  const [activeCategory, setActiveCategory] = React.useState('kitchen')
   const [selectedItemId, setSelectedItemId] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const [value, setValue] = useState('construction');
-  
 
-  const drawerWidth = 80;
+
+  const drawerWidth = 75;
 
   const categories = {
     kitchen: [
       { id: 1, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 2, title: 'Island Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 3, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1583845112203-29329902330b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
+      { id: 3, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 4, title: 'Minimal Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 5, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 6, title: 'Island Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 7, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1583845112203-29329902330b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
+      { id: 7, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 8, title: 'Minimal Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
     ],
     structure: [
@@ -321,11 +321,11 @@ const ExploreConstructionResources = () => {
       { id: 8, title: 'Concrete Building', imageUrl: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
     ],
     bathroom: [
-      { id: 1, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566752355-35792bedcfe3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
+      { id: 1, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 2, title: 'Modern Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 3, title: 'Small Bathroom', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 4, title: 'Stone Bathroom', imageUrl: 'https://images.unsplash.com/photo-1566669437687-7040a6926753?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 5, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566752355-35792bedcfe3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
+      { id: 5, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 6, title: 'Modern Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 7, title: 'Small Bathroom', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       { id: 8, title: 'Stone Bathroom', imageUrl: 'https://images.unsplash.com/photo-1566669437687-7040a6926753?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
@@ -359,7 +359,7 @@ const ExploreConstructionResources = () => {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/profile');
+        navigate('/work-detail');
         break;
       default:
         navigate('/');
@@ -384,7 +384,7 @@ const ExploreConstructionResources = () => {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/constructions')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }
@@ -396,19 +396,19 @@ const ExploreConstructionResources = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
+          bgcolor: 'rgb(212, 209, 205)',
           padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-            <Link to="/interiors" style={{ textDecoration: 'none' }}>
-              <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
-                color: 'green',
-                fontWeight: 'bold'
-              }}>
-                Constructions
-              </Typography>
+              <Link to="/interiors" style={{ textDecoration: 'none' }}>
+                <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+                  color: 'green',
+                  fontWeight: 'bold'
+                }}>
+                  Constructions
+                </Typography>
               </Link>
 
             </Grid>
@@ -433,12 +433,14 @@ const ExploreConstructionResources = () => {
             '& .MuiDrawer-paper': {
               width: drawerWidth,
               boxSizing: 'border-box',
-              backgroundColor: '#577BC1',
+              backgroundColor: '#e7dbc9',
               borderRight: 'none',
               borderTopLeftRadius: '40px',
               borderBottomRightRadius: '40px',
               marginTop: '170px',
-              height:'70vh' // Adjusted to account for sticky header
+              height: '65vh',
+              marginLeft:'1px',
+              border: '1px solid black'
             },
           }}
         >
@@ -452,17 +454,21 @@ const ExploreConstructionResources = () => {
               <React.Fragment key={item.id}>
                 <ListItem
                   button
-                  selected={activeCategory === item.id}
+                  selected={activeCategory == item.id}
                   onClick={() => setActiveCategory(item.id)}
                   sx={{
                     py: 1.5,
+                    flexDirection: 'column',
                     '&.Mui-selected': {
-                      backgroundColor: '#1976d2',
+                      backgroundColor: '#3A56A8',
                       color: 'white',
-                      '& .MuiListItemIcon-root': { 
+                      '& .MuiListItemIcon-root': {
                         color: 'white',
                         '& svg': { fontSize: '1.5rem' }
                       },
+                      '&:hover': {
+                        backgroundColor: '#3A56A8',
+                      }
                     },
                     '&:hover': {
                       backgroundColor: '#e3f2fd',
@@ -471,17 +477,33 @@ const ExploreConstructionResources = () => {
                     '& .MuiListItemIcon-root': {
                       minWidth: 'auto',
                       justifyContent: 'center',
-                      color: activeCategory === item.id ? 'white' : 'rgba(255, 255, 255, 0.7)',
-                      transition: 'color 0.2s, transform 0.2s',
+                                            color: activeCategory == item.id ? 'white' : 'rgba(5, 4, 4, 0.7)',
+
+                      // color: activeCategory == item.id ? 'white' : 'rgba(255, 255, 255, 0.7)',
+                      transition: 'color 0.2s, transform 0.2s'
                     }
                   }}
                 >
                   <ListItemIcon>
                     {item.icon}
                   </ListItemIcon>
-                  {!isMobile && <ListItemText primary={item.label} />}
+                  <ListItemText
+                    primary={item.label}
+                    primaryTypographyProps={{
+                      fontSize: '0.7rem',
+                      textAlign: 'center',
+                      fontWeight: activeCategory == item.id ? '600' : '400',
+                      color: activeCategory == item.id ? '#577BC1' : 'rgba(10, 10, 10, 0.9)'
+                    }}
+                    sx={{
+                      marginTop: '4px',
+                      '& .MuiTypography-root': {
+                        display: 'block'
+                      }
+                    }}
+                  />
                 </ListItem>
-                <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} />
+                <Divider sx={{ backgroundColor: 'rgba(9, 9, 9, 0.2)' }} />
               </React.Fragment>
             ))}
           </List>
@@ -511,8 +533,8 @@ const ExploreConstructionResources = () => {
                     sx={{
                       width: '100%',
                       borderRadius: 2,
-                      boxShadow: selectedItemId === item.id ? 6 : 2,
-                      border: selectedItemId === item.id ? '2px solid #00C4B4' : '1px solid #ddd',
+                      boxShadow: selectedItemId == item.id ? 6 : 2,
+                      border: selectedItemId == item.id ? '2px solid #00C4B4' : '1px solid #ddd',
                       cursor: 'pointer',
                       transition: '0.2s',
                       overflow: 'hidden',
@@ -538,63 +560,63 @@ const ExploreConstructionResources = () => {
       </Box>
 
       <Paper
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          value={value}
+          onChange={handleChange}
+          showLabels
+          sx={{
+            borderTop: '1px solid #e0e0e0',
+            height: '60px',
+            '& .MuiBottomNavigationAction-root': {
+              minWidth: 'auto',
+              padding: '6px 0',
+              color: 'black',
+            },
+            '& .MuiBottomNavigationAction-label': {
+              fontSize: '0.7rem',
+            },
+          }}
+        >
+          <BottomNavigationAction
+            value="home"
+            label="Home"
+            icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+          <BottomNavigationAction
+            value="construction"
+            label="Construction & Interiors"
+            icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+          <BottomNavigationAction
+            value="post"
+            label="Post"
+            icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
             sx={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1000,
+              '& .MuiSvgIcon-root': { color: '#2196f3' },
+              '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
             }}
-            elevation={3}
-          >
-            <BottomNavigation
-              value={value}
-              onChange={handleChange}
-              showLabels
-              sx={{
-                borderTop: '1px solid #e0e0e0',
-                height: '60px',
-                '& .MuiBottomNavigationAction-root': {
-                  minWidth: 'auto',
-                  padding: '6px 0',
-                  color: 'black',
-                },
-                '& .MuiBottomNavigationAction-label': {
-                  fontSize: '0.7rem',
-                },
-              }}
-            >
-              <BottomNavigationAction
-                value="home"
-                label="Home"
-                icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="construction"
-                label="Construction & Interiors"
-                icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="post"
-                label="Post"
-                icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-                sx={{
-                  '& .MuiSvgIcon-root': { color: '#2196f3' },
-                  '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-                }}
-              />
-              <BottomNavigationAction
-                value="services"
-                label="Home Services"
-                icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="profile"
-                label="Profile"
-                icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-            </BottomNavigation>
-                </Paper>
+          />
+          <BottomNavigationAction
+            value="services"
+            label="Home Services"
+            icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+          <BottomNavigationAction
+            value="profile"
+            label="Profile"
+            icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 };

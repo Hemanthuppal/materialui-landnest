@@ -67,7 +67,7 @@ const InteriorServicesEnhanced = () => {
               navigate('/home-service');
               break;
             case 'profile':
-              navigate('/profile');
+              navigate('/work-detail');
               break;
             default:
               navigate('/');
@@ -90,7 +90,7 @@ const InteriorServicesEnhanced = () => {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/interiors')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': {
@@ -104,9 +104,11 @@ const InteriorServicesEnhanced = () => {
 
         {/* Navigation Tabs - Stays below back arrow */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
-          borderBottom: '1px solid rgba(0,0,0,0.08)'
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 2 : 2,
+          borderBottom: '1px solid rgba(0,0,0,0.08)',
+          marginBottom : '20px'
+
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
@@ -148,7 +150,8 @@ const InteriorServicesEnhanced = () => {
       </Box>
 
       {/* Main Content */}
-      <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 12 }}>
+      <Box sx={{ width: '100%', minHeight: '100vh',  backgroundColor:"#e7dbc9"
+, pb: 12 }}>
         {/* Tagline */}
         <Typography
           variant="h6"
@@ -167,7 +170,7 @@ const InteriorServicesEnhanced = () => {
               bottom: 0,
               left: 45,
               width: '4px',
-              bgcolor: '#cfd8dc',
+              bgcolor: 'black',
               borderRadius: 2,
               mx: 'auto',
               height: '90%'
@@ -194,7 +197,8 @@ const InteriorServicesEnhanced = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bgcolor: theme.palette.primary.main,
+                  // bgcolor: theme.palette.primary.main,
+                  bgcolor: '#438b98',
                   color: '#fff',
                   borderRadius: '50%',
                   fontWeight: 'bold',

@@ -3,28 +3,20 @@ import {
   Box,
   Chip,
   Typography,
-  IconButton,
-  Card,
-  Tooltip,
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction
+
 } from '@mui/material';
-import {Close} from '@mui/icons-material';
+
 
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import ListIcon from '@mui/icons-material/List';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MailIcon from '@mui/icons-material/Mail';
+
 
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './ReUsableCard';
+import BottomNavbar from './BottomNavbar/BottomNavbar';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -67,7 +59,7 @@ const properties = [
 
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [value, setValue] = useState(0);
+ 
   const navigate = useNavigate();
   const [saved, setSaved] = useState(() => {
       const stored = localStorage.getItem('savedRent');
@@ -76,13 +68,6 @@ const Rent_Property_Map = () => {
   
     const [likedCards, setLikedCards] = useState({});
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
-    if (newValue === 3) navigate('/inbox');
-  };
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -121,7 +106,7 @@ const Rent_Property_Map = () => {
   };
 
   return (
-    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
+    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' ,backgroundColor: 'rgb(239, 231, 221)'}}>
        {/* Sticky Search Bar */}
   <Box
     sx={{
@@ -130,7 +115,8 @@ const Rent_Property_Map = () => {
       zIndex: 1000,
       bgcolor: '#fff', // background to cover content underneath
       px: 1,
-      py: 1
+      py: 1,
+      backgroundColor: 'rgb(239, 231, 221)'
     }}
   >
     <CustomSearchBar />
@@ -213,15 +199,7 @@ const Rent_Property_Map = () => {
         <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
       )}
 
-      {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+     <BottomNavbar/>
     </Box>
   );
 };

@@ -115,7 +115,7 @@ const VendorRegister = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px', backgroundColor: 'rgb(239, 231, 221)'}}>
             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                     Vendor Registration

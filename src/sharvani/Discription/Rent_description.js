@@ -5,9 +5,7 @@ import {
   Typography,
   Grid,
   Chip,
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
+ 
   Card,
   CardContent,
   IconButton,
@@ -16,10 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import HomeIcon from '@mui/icons-material/Home';
-import ListIcon from '@mui/icons-material/List';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MailIcon from '@mui/icons-material/Mail';
+
 
 import BedIcon from '@mui/icons-material/Bed';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -34,21 +29,15 @@ import CompassCalibrationOutlinedIcon from '@mui/icons-material/CompassCalibrati
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 
-import buildingImage from '../Images/house.jpeg';
+import buildingImage from '../../Images/house.jpeg';
+import BottomNavbar from '../BottomNavbar/BottomNavbar';
 
 const Rent_description = () => {
   const navigate = useNavigate();
-   const [value, setValue] = useState();
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
-    if (newValue === 3) navigate('/inbox');
-  };
+  
 
   return (
-    <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
+    <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 ,backgroundColor: 'rgb(239, 231, 221)'}}>
       {/* Header with Back Button */}
       <Box
   sx={{
@@ -251,17 +240,7 @@ const Rent_description = () => {
           </CardContent>
         </Card>
       </Box>
-
-      
-       {/* Bottom Navigation */}
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-              <BottomNavigation value={value} onChange={handleChange} showLabels>
-                <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-                <BottomNavigationAction label="List" icon={<ListIcon />} />
-                <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-                <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-              </BottomNavigation>
-            </Paper>
+<BottomNavbar/>
     </Box>
   );
 };
