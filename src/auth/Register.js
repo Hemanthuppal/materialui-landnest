@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import landNestLogo from '../../src/assets/LandNestLogo.jpg'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -66,6 +67,7 @@ const Register = () => {
   return (
     <div style={styles.container}>
       <div style={styles.registerBox}>
+        <img src={landNestLogo} alt="Land Nest Logo" style={styles.logo} />
         <h2 style={styles.title}>Create Account</h2>
         
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -217,6 +219,12 @@ const styles = {
     width: '100%',
     maxWidth: '500px',
     margin: '20px 0'
+  },
+  logo: {
+    width: '250px',
+    height: 'auto',
+    marginBottom: '20px',
+    borderRadius: '5px'
   },
   title: {
     color: '#333',
