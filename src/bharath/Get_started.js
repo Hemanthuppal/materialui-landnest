@@ -244,7 +244,7 @@ function InteriorConsultationForm() {
             navigate('/home-service');
             break;
           case 'profile':
-            navigate('/profile');
+            navigate('/work-detail');
             break;
           default:
             navigate('/');

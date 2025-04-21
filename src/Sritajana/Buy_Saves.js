@@ -38,7 +38,7 @@ const BuySaves = () => {
     if (newValue === 0) navigate('/dashboard');
     if (newValue === 1) navigate('/buy-details');
     if (newValue === 2) navigate('/buy-saves');
-    if (newValue === 3) navigate('/inbox');
+    if (newValue === 3) navigate('/inboxlist');
   };
 
   const handleRemove = (id) => {
@@ -71,7 +71,7 @@ const BuySaves = () => {
     <>
       <CustomSearchBar />
 
-      <Box sx={{ pb: 10 }}>
+      <Box sx={{ pb: 10, backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
         {saved.length === 0 ? (
           <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
             No saved properties.

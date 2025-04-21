@@ -27,8 +27,14 @@ import Elevations from './bharath/Elevations';
 import Packages from './bharath/Packages'
 import HowItWorks from './bharath/HowItWorks'
 import Lease_discription from './Rajesh/Lease_description';
+
 import Rent_Property_Map from './sharvani/Rent_Propertymap';
+<<<<<<< HEAD
+
+import Rent_description from './sharvani/Rent_description';
+=======
 import Rent_description from './sharvani/Discription/Rent_description';
+>>>>>>> bfbbf0f178135de02c34c178dde962c3373b39b8
 import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
 import RentSaves from './sharvani/Rent_Saves';
@@ -46,6 +52,9 @@ import Buy_Property_Map from './Sritajana/Buy_Propertymap';
 import Buy_description from './Sritajana/Buy_description';
 import Buy_Details_Page from './Sritajana/Details_Page';
 import BuySaves from './Sritajana/Buy_Saves';
+import Buy_Postdeal from './Sritajana/Buy_Postdeal';
+import Buy_Posttable from './Sritajana/Buy_Posttable'
+
 
 
 import AdminLogin from './Components/Admin/Login/Login';
@@ -129,6 +138,10 @@ function App() {
         <Route path="/Buy-description" element={<Buy_description/>} />
         <Route path="/Buy-details" element={<Buy_Details_Page />} />
         <Route path="/Buy-saves" element={<BuySaves/>} />
+        <Route path="/Buy-Postdeal" element={<Buy_Postdeal/>} />
+        <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
+       
+
 
 
 //AdminDashboard
