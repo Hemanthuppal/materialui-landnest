@@ -9,7 +9,7 @@ import {
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
-import CustomSearchBar from "../Rajesh/CustomSearchBar";
+ import CustomSearchBar from "./HomeServiceNavigate";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
