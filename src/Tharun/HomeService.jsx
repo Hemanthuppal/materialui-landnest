@@ -4,9 +4,6 @@ import {
   Typography,
   Card,
   Chip,
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction,
 } from '@mui/material';
 
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
@@ -50,7 +47,6 @@ const workerTypes = [
 
 const HomeService = () => {
   const [selectedWorker, setSelectedWorker] = useState(null);
-  const [value, setValue] = useState(0);
   const navigate = useNavigate();
 
   const { isLoaded } = useJsApiLoader({
@@ -66,31 +62,27 @@ const HomeService = () => {
 
   const containerStyle = {
     width: '100%',
-    height: 'calc(100vh - 240px)', // Adjust for chips + nav
-  };
-
-  const handleMarkerClick = (worker) => {
-    setSelectedWorker(worker);
-  };
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
-    if (newValue === 3) navigate('/inbox');
+    height: 'calc(100vh - 240px)',
   };
 
   return (
-    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
-      
+    <Box
+      sx={{
+        pb: 7,
+        maxWidth: 480,
+        mx: "auto",
+        position: 'relative',
+        bgcolor: 'rgb(239, 231, 221)',
+        minHeight: '100vh'
+      }}
+    >
       {/* Sticky Search Header */}
       <Box
         sx={{
           position: 'sticky',
           top: 0,
           zIndex: 1000,
-          bgcolor: '#fff',
+          bgcolor: 'rgb(239, 231, 221)',
           px: 1,
           py: 1,
         }}
@@ -99,7 +91,7 @@ const HomeService = () => {
       </Box>
 
       {/* Worker Type Chips */}
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: 2, bgcolor: 'rgb(239, 231, 221)' }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>
           Looking for Home Services
         </Typography>
@@ -139,7 +131,7 @@ const HomeService = () => {
                 <Marker
                   key={worker.id}
                   position={{ lat: worker.lat, lng: worker.lng }}
-                  onClick={() => handleMarkerClick(worker)}
+                  onClick={() => setSelectedWorker(worker)}
                 />
               ))}
             </GoogleMap>
@@ -147,22 +139,24 @@ const HomeService = () => {
 
           {/* Floating Worker Card */}
           {selectedWorker && (
-            <Box sx={{
-              position: 'absolute',
-              bottom: 164,
-              left: 0,
-              right: 0,
-              margin: '0 auto',
-              width: '100%',
-              maxWidth: 480,
-              zIndex: 999
-            }}>
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 300,
+                left: 0,
+                right: 0,
+                margin: '0 auto',
+                width: '100%',
+                maxWidth: 480,
+                zIndex: 999
+              }}
+            >
               <Card
                 onClick={() => navigate('/work-details')}
                 sx={{
                   borderRadius: 3,
                   p: 2,
-                  backgroundColor: 'white',
+                  backgroundColor: 'rgb(239, 231, 221)',
                 }}
               >
                 <Box sx={{ display: 'flex', gap: 2 }}>
@@ -196,7 +190,9 @@ const HomeService = () => {
       )}
 
       {/* Bottom Navigation */}
-      <FormsBottomNavbar />
+      <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <FormsBottomNavbar />
+      </Box>
     </Box>
   );
 };
