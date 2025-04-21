@@ -273,12 +273,13 @@ const PropertyCard = () => {
           zIndex: 1000,
           bgcolor: '#fff', // background to cover content underneath
           px: 1,
-          py: 1
+          py: 1,
+          backgroundColor: 'rgb(239, 231, 221)'
         }}
       >
       <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       </Box>
-      <Box sx={{ pb: 10 }}>
+      <Box sx={{ pb: 10, backgroundColor: 'rgb(239, 231, 221)'}}>
         {filteredProperties.map((property) => (
           <Card
             key={property.id}
