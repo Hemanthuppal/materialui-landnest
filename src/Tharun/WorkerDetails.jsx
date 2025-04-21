@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
 import PostAddIcon from '@mui/icons-material/PostAdd';
@@ -47,11 +47,11 @@ const WorkerDetails = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        maxHeight: '100vh',
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        pt: 4,
+        // pt: 4,
       }}
     >
       <Paper
@@ -63,12 +63,13 @@ const WorkerDetails = () => {
           borderRadius: 2,
           display: 'flex',
           flexDirection: 'column',
+          height: '100vh'
         }}
       >
         {/* Back arrow header */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
-            <ArrowBackIcon />
+             <ArrowBackIosNewIcon />
           </IconButton>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             Worker Details
@@ -105,7 +106,7 @@ const WorkerDetails = () => {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'flex-start',
-            mt: 2,
+            // mt: 2,
           }}
         >
           {workerDetails.photos.map((photo, index) => (
