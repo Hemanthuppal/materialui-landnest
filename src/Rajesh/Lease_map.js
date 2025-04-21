@@ -336,22 +336,30 @@ const leaseTypes = [
 const leaseProperties = [
   {
     id: 1,
-    title: "Modern Office Space",
-    description: "Fully furnished with high-speed internet.",
-    address: "123 Tech Street, Lucknow",
-    price: "₹1,20,000/month",
-    lat: 26.8500,
-    lng: 80.9499,
+    title: 'Plot For Lease in Btm Layout 2nd Stage',
+    location: '16th Main Road, BTM layout 2nd...',
+    price: '₹3.25 Cr/m',
+    date: '01-04-2025',
+    facing: 'East',
+    area: '1600 sq ft',
+    dimensions: '40×40',
+    listedBy: 'Owner/Agent',
+    lat: 26.8467,
+    lng: 80.9462,
     image:leaseImage1,
   },
   {
     id: 2,
-    title: "Retail Shop in Mall",
-    description: "Perfect for small business.",
-    address: "Wave Mall, Lucknow",
-    price: "₹85,000/month",
-    lat: 26.8520,
-    lng: 80.9420,
+    title: 'Commercial Plot for Lease near Silk Board',
+    location: 'Silk Board Junction, Bangalore...',
+    price: '₹2.75 Cr/m',
+    date: '02-04-2025',
+    facing: 'North',
+    area: '1400 sq ft',
+    dimensions: '35×40',
+    listedBy: 'Builder',
+    lat: 26.8500,
+    lng: 80.9500,
     image:leaseImage2,
   },
 ];
@@ -419,7 +427,7 @@ const Lease_Property_Map = () => {
 
   
   return (
-    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' }}>
+    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative', backgroundColor: 'rgb(239, 231, 221)' }}>
        {/* Sticky Search Bar */}
   <Box
     sx={{
@@ -428,7 +436,8 @@ const Lease_Property_Map = () => {
       zIndex: 1000,
       bgcolor: '#fff', // background to cover content underneath
       px: 1,
-      py: 1
+      py: 1,
+      backgroundColor: 'rgb(239, 231, 221)'
     }}
   >
     <CustomSearchBar />
@@ -495,7 +504,7 @@ const Lease_Property_Map = () => {
   }}>
     <ReUsableCard
   property={selectedProperty}
-  onCardClick={() => navigate('/rent-description', { state: { property: selectedProperty } })}
+  onCardClick={() => navigate('/lease_description', { state: { property: selectedProperty } })}
   isSaved={isSaved}
   toggleSave={toggleSave}
   likedCards={likedCards}

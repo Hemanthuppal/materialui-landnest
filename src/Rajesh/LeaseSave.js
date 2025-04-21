@@ -70,12 +70,13 @@ const LeaseSave = () => {
       zIndex: 1000,
       bgcolor: '#fff', // background to cover content underneath
       px: 1,
-      py: 1
+      py: 1,
+      backgroundColor: 'rgb(239, 231, 221)'
     }}
   >
     <CustomSearchBar />
   </Box>
-      <Box sx={{ pt: 2, pb: 10 }}>
+      <Box sx={{ pt: 2, pb: 10, minHeight: '100vh', backgroundColor: 'rgb(239, 231, 221)' }}>
         {saved.length === 0 ? (
           <Typography align="center" variant="h6" sx={{ mt: 5, color: 'text.secondary' }}>
             No saved lease properties yet.
