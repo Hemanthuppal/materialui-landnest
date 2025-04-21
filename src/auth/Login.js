@@ -142,7 +142,7 @@ const Login = () => {
          
         }
   
-        // navigate('/dashboard');
+        navigate('/dashboard');
       } else {
         setError(data.message || 'Invalid email or password');
       }
