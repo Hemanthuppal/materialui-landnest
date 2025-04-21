@@ -185,7 +185,7 @@ function App() {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/work-detail');
+        navigate('/profile');
         break;
       default:
         navigate('/');
@@ -199,7 +199,7 @@ function App() {
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '88vh', sm: '78vh' },
+            height: { xs: '90vh', sm: '85vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -491,7 +491,7 @@ function App() {
                 <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
               <IconButton size="small">
-                <RiMessengerLine  onClick={() => navigate('/inboxlist')} sx={{ fontSize: '1rem', color: '#757575' }} />
+                <RiMessengerLine  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
             </Toolbar>
           </AppBar>

@@ -1,5 +1,4 @@
-
-   :root {
+:root {
     --primary: #edd1a6; /* Biscuit color */
     --background: #000; /* Solid black */
     --glow: rgba(244, 199, 133, 0.5); /* Soft biscuit glow */
@@ -9,7 +8,7 @@
   
   .nav-wrapper {
     position: fixed;
-    bottom: 0; /* Fixed to the very bottom */
+    bottom: 0; /* Stick to the bottom */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -35,24 +34,40 @@
     height: 50px;
     color: var(--icon-default);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 1.6rem;
     cursor: pointer;
     transition: 0.3s;
+    gap: 2px;
   }
   
   .nav-item.active {
     color: var(--icon-active);
   }
   
+  .nav-label {
+    font-size: 0.65rem;
+    color: var(--icon-default);
+    margin-top: 2px;
+  }
+  
+  .nav-item.active .nav-label {
+    color: var(--icon-active);
+  }
+  
   .nav-item.center {
     background: var(--primary);
-    color: black; /* Stand out on biscuit color */
+    color: black;
     border-radius: 50%;
     transform: translateY(-20%);
     box-shadow: 0 8px 20px var(--glow);
     font-size: 1.8rem;
+    width: 60px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
   }
   
   .nav-indicator {

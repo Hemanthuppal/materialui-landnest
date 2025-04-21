@@ -468,6 +468,7 @@ import roof1 from "./Images/roof1.jpg"
 import soiltest1 from "./Images/soiltest1.jpg"
 import plumbing1 from "./Images/plumbing1.jpg"
 import { jsPDF } from "jspdf";
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const steps = [
   { title: 'Agreement Sign', image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
@@ -992,7 +993,7 @@ const Constructions = () => {
           ))}
         </Box>
       </Box>
-      <Paper
+      {/* <Paper
         sx={{
           position: 'fixed',
           bottom: 0,
@@ -1049,8 +1050,8 @@ const Constructions = () => {
             icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
           />
         </BottomNavigation>
-      </Paper>
-
+      </Paper> */}
+      <FormsBottomNavbar />
     </>
   );
 };

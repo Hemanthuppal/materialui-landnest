@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
@@ -9,11 +8,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import './FormsBottomNavbar.css';
 
 const navItems = [
-  { key: 'home', icon: <HomeIcon />, route: '/dashboard' },
-  { key: 'construction', icon: <BuildIcon />, route: '/constructions' },
-  { key: 'post', icon: <AddCircleIcon />, route: '/post', isCenter: true },
-  { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service' },
-  { key: 'profile', icon: <AccountCircleIcon />, route: '/profile' },
+  { key: 'home', icon: <HomeIcon />, route: '/dashboard', label: 'Home' },
+  { key: 'construction', icon: <BuildIcon />, route: '/constructions', label: 'Construction' },
+  { key: 'post', icon: <AddCircleIcon />, route: '/post', label: 'Post', isCenter: true },
+  { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service', label: 'Services' },
+  { key: 'profile', icon: <AccountCircleIcon />, route: '/profile', label: 'Profile' },
 ];
 
 const FormsBottomNavbar = () => {
@@ -21,35 +20,12 @@ const FormsBottomNavbar = () => {
   const navigate = useNavigate();
   const navRef = useRef(null);
 
-<<<<<<< HEAD
   useEffect(() => {
     const current = document.querySelector(`.nav-item[data-key="${active}"]`);
     const indicator = document.querySelector('.nav-indicator');
     if (current && indicator) {
       const { offsetLeft, offsetWidth } = current;
       indicator.style.left = `${offsetLeft + offsetWidth / 2 - 25}px`;
-=======
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    switch (newValue) {
-      case 'home':
-        navigate('/dashboard');
-        break;
-      case 'construction':
-        navigate('/constructions');
-        break;
-      case 'post':
-        navigate('/post');
-        break;
-      case 'services':
-        navigate('/home-service');
-        break;
-      case 'profile':
-        navigate('/work-detail');
-        break;
-      default:
-        break;
->>>>>>> a167beab2f0f1e0b640922eaac8601e308d63323
     }
   }, [active]);
 
@@ -69,6 +45,7 @@ const FormsBottomNavbar = () => {
             onClick={() => handleNav(item)}
           >
             {item.icon}
+            {!item.isCenter && <span className="nav-label">{item.label}</span>}
           </div>
         ))}
         <div className="nav-indicator" />
