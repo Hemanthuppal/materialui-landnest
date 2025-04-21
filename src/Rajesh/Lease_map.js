@@ -323,6 +323,7 @@ import leaseImage1 from '../Images/duplex-house.webp';
 import leaseImage2 from '../Images/Leasebuilding.png';
 import CustomSearchBar from './CustomSearchBar';
 import ReUsableCard from '../sharvani/ReUsableCard';
+import CustomBottomNav from "./CustomBottomNav";
 
 const leaseTypes = [
   "Office",
@@ -521,14 +522,9 @@ const Lease_Property_Map = () => {
       )}
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+      
+        <CustomBottomNav />
+      
     </Box>
   );
 };

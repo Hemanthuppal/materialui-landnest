@@ -192,6 +192,7 @@ import {
 import buildingImage from '../Images/duplex-house.webp';
 import buildingImage2 from '../Images/Leasebuilding.png';
 import CustomSearchBar from './CustomSearchBar';
+import CustomBottomNav from './CustomBottomNav';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
@@ -373,7 +374,7 @@ const PropertyCard = () => {
 
               <Divider sx={{ my: 2 }} />
 
-              <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+              <Box sx={{ display: 'flex', border: '1px solid black', borderRadius: 2, overflow: 'hidden' }}>
                 {[ 
                   { label: 'Facing', value: property.facing },
                   { label: `Area (${property.dimensions})`, value: property.area },
@@ -385,7 +386,7 @@ const PropertyCard = () => {
                       flex: 1,
                       p: 1.5,
                       textAlign: 'center',
-                      borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+                      borderRight: index < 2 ? '1px solid black' : 'none'
                     }}
                   >
                     <Typography variant="caption" color="text.secondary">{item.label}</Typography>
@@ -398,14 +399,9 @@ const PropertyCard = () => {
         ))}
       </Box>
 
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+      
+        <CustomBottomNav />
+      
     </>
   );
 };
