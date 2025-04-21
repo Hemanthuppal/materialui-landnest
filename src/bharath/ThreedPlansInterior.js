@@ -147,18 +147,7 @@ const ThreedPlansInterior = () => {
       </Box>
 
       {/* Page Title */}
-      <Typography
-        variant="h5"
-        align="center"
-        fontWeight="bold"
-        sx={{
-          mt: 3,
-          mb: 2,
-          fontSize: isMobile ? '1.5rem' : '2rem'
-        }}
-      >
-        3D Plans Interior
-      </Typography>
+   
 
       {/* Content Cards */}
       <Box sx={{ 
@@ -167,8 +156,21 @@ const ThreedPlansInterior = () => {
         gap: 2, 
         px: 2,
         pb: 10,
-        mt: 2
+        mt: 2, 
+        backgroundColor: '#e7dbc9',
       }}>
+
+<Typography
+        variant="h5"
+        align="center"
+        fontWeight="bold"
+        sx={{
+          mt: 3,
+          fontSize: isMobile ? '1.5rem' : '2rem'
+        }}
+      >
+        3D Plans Interior
+      </Typography>
         {rows.map((row, rowIndex) => (
           <Box
             key={rowIndex}

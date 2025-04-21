@@ -519,54 +519,59 @@ const Interiors = () => {
           </Button>
         </Box>
 
-        {/* Pricing Buttons */}
-        <Grid container spacing={2} sx={{ mb: 2 }}>
-          <Grid item xs={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{
-                py: 0.8,
-                borderRadius: 30,
-                borderWidth: 2,
-                fontWeight: 'bold',
-              }}
-            >
-              1BHK starting at 1.8L
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{
-                py: 0.8,
-                borderRadius: 30,
-                borderWidth: 2,
-                fontWeight: 'bold',
-              }}
-            >
-              2BHK starting at 2.5L
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{
-                py: 0.8,
-                borderRadius: 30,
-                borderWidth: 2,
-                fontWeight: 'bold',
-              }}
-            >
-              3BHK starting at 3.5L
-            </Button>
-          </Grid>
-        </Grid>
+      {/* Pricing Buttons */}
+<Grid container spacing={2} sx={{ 
+  mb: 2,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center' // This centers the buttons horizontally
+}}>
+  <Grid item xs={12} sx={{ width: isMobile ? '75%' : '100%' }}>
+    <Button
+      fullWidth
+      variant="contained"
+      color="error"
+      sx={{
+        py: 0.8,
+        borderRadius: 30,
+        borderWidth: 2,
+        fontWeight: 'bold',
+      }}
+    >
+      1BHK starting at 1.8L
+    </Button>
+  </Grid>
+  <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%' }}>
+    <Button
+      fullWidth
+      variant="contained"
+      color="error"
+      sx={{
+        py: 0.8,
+        borderRadius: 30,
+        borderWidth: 2,
+        fontWeight: 'bold',
+      }}
+    >
+      2BHK starting at 2.5L
+    </Button>
+  </Grid>
+  <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%' }}>
+    <Button
+      fullWidth
+      variant="contained"
+      color="error"
+      sx={{
+        py: 0.8,
+        borderRadius: 30,
+        borderWidth: 2,
+        fontWeight: 'bold',
+      }}
+    >
+      3BHK starting at 3.5L
+    </Button>
+  </Grid>
+</Grid>
 
         {/* Transformation Button */}
         <Button
@@ -589,7 +594,7 @@ const Interiors = () => {
           fontWeight="bold"
           gutterBottom
           sx={{
-            textAlign: 'left',
+            textAlign: 'center',
             mt: 2,
             mb: 2,
             color: 'primary.main',
