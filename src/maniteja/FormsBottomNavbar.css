@@ -1,14 +1,14 @@
 :root {
-    --primary: #edd1a6; /* Biscuit color */
-    --background: #000; /* Solid black */
-    --glow: rgba(244, 199, 133, 0.5); /* Soft biscuit glow */
+    --primary: #edd1a6;
+    --background: #000;
+    --glow: rgba(244, 199, 133, 0.5);
     --icon-default: #bbb;
     --icon-active: #f1ce99;
   }
   
   .nav-wrapper {
     position: fixed;
-    bottom: 0; /* Stick to the bottom */
+    bottom: 0;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -24,14 +24,14 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     max-width: 420px;
     width: 90%;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
   }
   
   .nav-item {
     position: relative;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     color: var(--icon-default);
     display: flex;
     flex-direction: column;
@@ -40,7 +40,6 @@
     font-size: 1.6rem;
     cursor: pointer;
     transition: 0.3s;
-    gap: 2px;
   }
   
   .nav-item.active {
@@ -51,23 +50,44 @@
     font-size: 0.65rem;
     color: var(--icon-default);
     margin-top: 2px;
+    text-align: center;
   }
   
   .nav-item.active .nav-label {
     color: var(--icon-active);
   }
   
+  .nav-spacer {
+    width: 60px;
+  }
+  
   .nav-item.center {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background: var(--primary);
     color: black;
     border-radius: 50%;
-    transform: translateY(-20%);
     box-shadow: 0 8px 20px var(--glow);
     font-size: 1.8rem;
-    width: 60px;
-    height: 60px;
-    justify-content: center;
+    width: 65px;
+    height: 65px;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  
+  .nav-item.center .nav-label {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-align: center;
   }
   
   .nav-indicator {
