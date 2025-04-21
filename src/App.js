@@ -28,13 +28,8 @@ import Packages from './bharath/Packages'
 import HowItWorks from './bharath/HowItWorks'
 import Lease_discription from './Rajesh/Lease_description';
 
-import Rent_Property_Map from './sharvani/Rent_Propertymap';
-<<<<<<< HEAD
-
-import Rent_description from './sharvani/Rent_description';
-=======
+import Rent_Property_Map from './sharvani/Rent_Propertymap'
 import Rent_description from './sharvani/Discription/Rent_description';
->>>>>>> bfbbf0f178135de02c34c178dde962c3373b39b8
 import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
 import RentSaves from './sharvani/Rent_Saves';
