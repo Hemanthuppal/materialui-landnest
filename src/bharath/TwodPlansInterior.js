@@ -112,7 +112,7 @@ const TwodPlansInterior = () => {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/constructions')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }

@@ -602,6 +602,7 @@ const ConstructionPackages = () => {
         minHeight: '100vh',
         background: 'linear-gradient(to bottom, #f8f9fa, #e9ecef)',
         pb: 6
+
       }}>
        {/* Sticky Header Section */}
        <Box sx={{
@@ -610,6 +611,7 @@ const ConstructionPackages = () => {
             zIndex: 1200,
             bgcolor: 'background.paper',
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            
           }}>
             {/* Back Arrow */}
             <Box display="flex" alignItems="center" p={1} sx={{
@@ -663,6 +665,7 @@ const ConstructionPackages = () => {
           maxWidth: '1200px',
           margin: '0 auto',
           backgroundColor: '#e7dbc9',
+          pb: 2
 
         }}>
           {packages.map((pkg, index) => (
