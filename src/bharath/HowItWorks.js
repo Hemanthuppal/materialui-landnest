@@ -104,9 +104,11 @@ const InteriorServicesEnhanced = () => {
 
         {/* Navigation Tabs - Stays below back arrow */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
-          borderBottom: '1px solid rgba(0,0,0,0.08)'
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 2 : 2,
+          borderBottom: '1px solid rgba(0,0,0,0.08)',
+          marginBottom : '20px'
+
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
@@ -148,7 +150,8 @@ const InteriorServicesEnhanced = () => {
       </Box>
 
       {/* Main Content */}
-      <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#f5f7f6', pb: 12 }}>
+      <Box sx={{ width: '100%', minHeight: '100vh',  backgroundColor:"#e7dbc9"
+, pb: 12 }}>
         {/* Tagline */}
         <Typography
           variant="h6"

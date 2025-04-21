@@ -94,7 +94,7 @@
 //           <ArrowBackIosIcon />
 //         </IconButton>
 //       </Box>
-      
+
 //       <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
 //         <Drawer
 //           variant="permanent"
@@ -263,7 +263,7 @@ import {
   useMediaQuery,
   IconButton,
   Grid, BottomNavigation,
-  BottomNavigationAction,   Paper
+  BottomNavigationAction, Paper
 } from '@mui/material';
 import {
   Kitchen as KitchenIcon,
@@ -295,7 +295,7 @@ const ExploreConstructionResources = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const [value, setValue] = useState('construction');
-  
+
 
   const drawerWidth = 80;
 
@@ -396,19 +396,19 @@ const ExploreConstructionResources = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
+          bgcolor: 'rgb(212, 209, 205)',
           padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-            <Link to="/interiors" style={{ textDecoration: 'none' }}>
-              <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
-                color: 'green',
-                fontWeight: 'bold'
-              }}>
-                Constructions
-              </Typography>
+              <Link to="/interiors" style={{ textDecoration: 'none' }}>
+                <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+                  color: 'green',
+                  fontWeight: 'bold'
+                }}>
+                  Constructions
+                </Typography>
               </Link>
 
             </Grid>
@@ -438,7 +438,7 @@ const ExploreConstructionResources = () => {
               borderTopLeftRadius: '40px',
               borderBottomRightRadius: '40px',
               marginTop: '170px',
-              height:'70vh' // Adjusted to account for sticky header
+              height: '70vh'
             },
           }}
         >
@@ -456,13 +456,17 @@ const ExploreConstructionResources = () => {
                   onClick={() => setActiveCategory(item.id)}
                   sx={{
                     py: 1.5,
+                    flexDirection: 'column',
                     '&.Mui-selected': {
-                      backgroundColor: '#1976d2',
+                      backgroundColor: '#3A56A8',
                       color: 'white',
-                      '& .MuiListItemIcon-root': { 
+                      '& .MuiListItemIcon-root': {
                         color: 'white',
                         '& svg': { fontSize: '1.5rem' }
                       },
+                      '&:hover': {
+                        backgroundColor: '#3A56A8',
+                      }
                     },
                     '&:hover': {
                       backgroundColor: '#e3f2fd',
@@ -472,14 +476,28 @@ const ExploreConstructionResources = () => {
                       minWidth: 'auto',
                       justifyContent: 'center',
                       color: activeCategory === item.id ? 'white' : 'rgba(255, 255, 255, 0.7)',
-                      transition: 'color 0.2s, transform 0.2s',
+                      transition: 'color 0.2s, transform 0.2s'
                     }
                   }}
                 >
                   <ListItemIcon>
                     {item.icon}
                   </ListItemIcon>
-                  {!isMobile && <ListItemText primary={item.label} />}
+                  <ListItemText
+                    primary={item.label}
+                    primaryTypographyProps={{
+                      fontSize: '0.7rem',
+                      textAlign: 'center',
+                      fontWeight: activeCategory === item.id ? '600' : '400',
+                      color: activeCategory === item.id ? '#577BC1' : 'rgba(255, 255, 255, 0.9)'
+                    }}
+                    sx={{
+                      marginTop: '4px',
+                      '& .MuiTypography-root': {
+                        display: 'block'
+                      }
+                    }}
+                  />
                 </ListItem>
                 <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} />
               </React.Fragment>
@@ -538,63 +556,63 @@ const ExploreConstructionResources = () => {
       </Box>
 
       <Paper
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          value={value}
+          onChange={handleChange}
+          showLabels
+          sx={{
+            borderTop: '1px solid #e0e0e0',
+            height: '60px',
+            '& .MuiBottomNavigationAction-root': {
+              minWidth: 'auto',
+              padding: '6px 0',
+              color: 'black',
+            },
+            '& .MuiBottomNavigationAction-label': {
+              fontSize: '0.7rem',
+            },
+          }}
+        >
+          <BottomNavigationAction
+            value="home"
+            label="Home"
+            icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+          <BottomNavigationAction
+            value="construction"
+            label="Construction & Interiors"
+            icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+          <BottomNavigationAction
+            value="post"
+            label="Post"
+            icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
             sx={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1000,
+              '& .MuiSvgIcon-root': { color: '#2196f3' },
+              '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
             }}
-            elevation={3}
-          >
-            <BottomNavigation
-              value={value}
-              onChange={handleChange}
-              showLabels
-              sx={{
-                borderTop: '1px solid #e0e0e0',
-                height: '60px',
-                '& .MuiBottomNavigationAction-root': {
-                  minWidth: 'auto',
-                  padding: '6px 0',
-                  color: 'black',
-                },
-                '& .MuiBottomNavigationAction-label': {
-                  fontSize: '0.7rem',
-                },
-              }}
-            >
-              <BottomNavigationAction
-                value="home"
-                label="Home"
-                icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="construction"
-                label="Construction & Interiors"
-                icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="post"
-                label="Post"
-                icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-                sx={{
-                  '& .MuiSvgIcon-root': { color: '#2196f3' },
-                  '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-                }}
-              />
-              <BottomNavigationAction
-                value="services"
-                label="Home Services"
-                icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="profile"
-                label="Profile"
-                icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-            </BottomNavigation>
-                </Paper>
+          />
+          <BottomNavigationAction
+            value="services"
+            label="Home Services"
+            icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+          <BottomNavigationAction
+            value="profile"
+            label="Profile"
+            icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
+          />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 };

@@ -286,8 +286,8 @@ function InteriorConsultationForm() {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 1 : 1,
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 1 : 1,
         }}>
           <AppBar position="static" color="default" sx={{ boxShadow: 'none', backgroundColor: 'transparent' }}>
             <Tabs
