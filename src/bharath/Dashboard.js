@@ -64,6 +64,9 @@ import {
 
 } from '@mui/icons-material';
 import { href } from 'react-router-dom';
+
+
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
@@ -75,7 +78,6 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   height: '100%',
@@ -208,8 +210,8 @@ function App() {
             flexDirection: 'column',
             alignItems: 'center',
             overflow: 'hidden',
-            borderTopLeftRadius: '40px',
-            borderBottomRightRadius: '40px',
+            borderTopLeftRadius: '30px',
+            borderBottomRightRadius: '30px',
             // marginTop: '10px',
             marginTop: '0.5%',
     marginLeft: '0.5%',
@@ -279,8 +281,8 @@ function App() {
               justifyContent: 'space-between',
               pt: 2,
               pb: 2,
-              borderTopLeftRadius: '40px',
-              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '30px',
+              borderBottomRightRadius: '30px',
               boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.1),
         0 5px 10px rgba(0,0,0,0.1)

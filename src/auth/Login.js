@@ -108,52 +108,50 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Login = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState('user@gmail.com');
-  const [password, setPassword] = useState('user@123');
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-       navigate('/dashboard');
-
-    // Hardcoded admin credentials
-    const adminCredentials = {
-      email: 'user@gmail.com',
-      password: 'user@123'
-    };
-
-    // Check if logging in as admin
-//     if (email === adminCredentials.email && password === adminCredentials.password) {
-//       setIsAuthenticated(true);
-//       if (rememberMe) {
-//         localStorage.setItem('isAuthenticated', 'true');
-//         localStorage.setItem('rememberMe', 'true');
-//       }
-//       navigate('/dashboard');
-//       return;
-//     }
-
-    // Check regular users from localStorage
-//     const users = JSON.parse(localStorage.getItem('users')) || [];
-//     const user = users.find(u => u.email === email && u.password === password);
-
-//     if (user) {
-//       setIsAuthenticated(true);
-//       if (rememberMe) {
-//         localStorage.setItem('isAuthenticated', 'true');
-//         localStorage.setItem('currentUser', JSON.stringify(user));
-//         localStorage.setItem('rememberMe', 'true');
-//       }
-//       navigate('/dashboard');
-//     } else {
-//       setError('Invalid email or password');
-//     }
+  
+    try {
+      const response = await fetch('http://46.37.122.105:89/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: email,
+          password: password
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        if (rememberMe) {
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem("user_id", data.user_id);
+       
+         
+        }
+  
+        // navigate('/dashboard');
+      } else {
+        setError(data.message || 'Invalid email or password');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Something went wrong. Please try again later.');
+    }
   };
+  
 
   return (
     <div style={styles.container}>
@@ -165,7 +163,7 @@ const Login = ({ setIsAuthenticated }) => {
           <div style={styles.formGroup}>
             <label style={styles.label}>Email</label>
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={styles.input}
