@@ -9,7 +9,7 @@ import {
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
-import CustomSearchBar from "../Rajesh/CustomSearchBar";
+ import CustomSearchBar from "./HomeServiceNavigate";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
@@ -137,18 +137,16 @@ const HomeService = () => {
             </GoogleMap>
           </Box>
 
-          {/* Floating Worker Card */}
+           {/* Floating Worker Card */}
           {selectedWorker && (
             <Box
               sx={{
                 position: 'absolute',
-                bottom: 300,
+                bottom: 250,
                 left: 0,
                 right: 0,
-                margin: '0 auto',
-                width: '100%',
-                maxWidth: 480,
-                zIndex: 999
+                px: 2, // Horizontal padding for the card container
+                zIndex: 999,
               }}
             >
               <Card
@@ -156,7 +154,8 @@ const HomeService = () => {
                 sx={{
                   borderRadius: 3,
                   p: 2,
-                  backgroundColor: 'rgb(239, 231, 221)',
+                  backgroundColor: '#fff', // White background
+                  boxShadow: 3,
                 }}
               >
                 <Box sx={{ display: 'flex', gap: 2 }}>
@@ -167,7 +166,7 @@ const HomeService = () => {
                       width: 100,
                       height: 100,
                       borderRadius: 10,
-                      objectFit: 'cover'
+                      objectFit: 'cover',
                     }}
                   />
                   <Box>
@@ -184,6 +183,7 @@ const HomeService = () => {
               </Card>
             </Box>
           )}
+
         </Box>
       ) : (
         <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
