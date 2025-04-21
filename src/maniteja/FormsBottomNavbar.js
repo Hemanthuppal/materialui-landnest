@@ -32,7 +32,7 @@ const FormsBottomNavbar = () => {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('');
+        navigate('/work-detail');
         break;
       default:
         break;

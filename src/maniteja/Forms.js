@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import img1 from '../Images/vendorform.jpg';
+import img1 from '../Images/vendorcard.jpg';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FormsBottomNavbar from './FormsBottomNavbar';
 

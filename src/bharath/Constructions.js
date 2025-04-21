@@ -461,23 +461,29 @@ import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import doors from "./Images/doors-windows.jpg"
+import fabrication1 from "./Images/fabrication1.jpg"
+import paintings1 from "./Images/paintings1.jpg"
+import roof1 from "./Images/roof1.jpg"
+import soiltest1 from "./Images/soiltest1.jpg"
+import plumbing1 from "./Images/plumbing1.jpg"
 
 const steps = [
   { title: 'Agreement Sign', image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Soil Test', image: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+  { title: 'Soil Test', image: soiltest1 },
   { title: 'Column Marking', image: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Column Foundation', image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Column Plinth', image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Roof Shuttering', image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+  { title: 'Roof Shuttering', image: roof1 },
   { title: 'Roof Barbending', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Roof Concrete', image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Partitions Wall', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Flooring', image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
   { title: 'Electrical', image: 'https://images.unsplash.com/photo-1605170439002-90845e8c0137?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Plumbing', image: 'https://images.unsplash.com/photo-1600566752225-9f0fc0a76e96?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Fabrication', image: 'https://images.unsplash.com/photo-1605153864431-a2795a1b2d95?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Doors and Windows', image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Paintings', image: 'https://images.unsplash.com/photo-1600607688969-a5bfa4fe99c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+  { title: 'Plumbing', image: plumbing1 },
+  { title: 'Fabrication', image: fabrication1}, // Replaced
+  { title: 'Doors and Windows', image:doors },
+  { title: 'Paintings', image: paintings1 }, // Replaced
   { title: 'Handover', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
 ];
 
@@ -569,7 +575,7 @@ const Constructions = () => {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/profile');
+        navigate('/work-detail');
         break;
       default:
         navigate('/');
@@ -630,7 +636,7 @@ const Constructions = () => {
       </Box>
 
       {/* Main Content */}
-      <Box sx={{ pb: 5 }}>
+      <Box sx={{ pb: 2 }}>
         <Box sx={{
           // backgroundColor: 'rgba(173, 216, 230, 0.3)',
           background: "#e7dbc9",
@@ -713,13 +719,13 @@ const Constructions = () => {
           </Box>
         </Box>
 
-        <Box sx={{ padding: 2, marginY: 4 }}>
+        <Box sx={{ padding: 2, marginY: 1 }}>
           <Typography
             variant="h5"
             fontWeight="bold"
             gutterBottom
             sx={{
-              textAlign: 'left',
+              textAlign: 'center',
               mb: 2,
               color: 'primary.main',
               fontSize: '1.5rem',
@@ -786,22 +792,23 @@ const Constructions = () => {
           </Box>
         </Box>
 
+      
+
+        <Box sx={{ px: 2, py: 1, bgcolor:'#e7dbc9' }}>
         <Typography
           variant="h5"
           fontWeight="bold"
           gutterBottom
           sx={{
-            textAlign: 'left',
+            textAlign: 'center',
             mb: 2,
             color: 'primary.main',
             fontSize: '1.5rem',
-            paddingLeft: 2
+            paddingLeft: 1
           }}
         >
           Our Construction Process
         </Typography>
-
-        <Box sx={{ px: 2, py: 4 }}>
           {rows.map((row, rowIndex) => (
             <Box
               key={rowIndex}

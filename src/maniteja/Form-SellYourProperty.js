@@ -133,7 +133,7 @@ const SellYourProperty = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '64px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '64px', backgroundColor: 'rgb(239, 231, 221)' }}>
                 <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Sell Your Property
@@ -154,18 +154,45 @@ const SellYourProperty = () => {
                             </Select>
                         </FormControl>
 
-                        {/* Site Area special layout */}
-                        {fields.includes('Site Area') && (
-                            <Box key="Site Area" sx={{ mb: 2 }}>
-                                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                                    Site Area (ft)
-                                </Typography>
-                                <Stack direction="row" spacing={2}>
-                                    <TextField fullWidth label="Length (ft)" variant="outlined" />
-                                    <TextField fullWidth label="Width (ft)" variant="outlined" />
-                                </Stack>
-                            </Box>
-                        )}
+                       {fields.includes('Site Area') && (
+  <Box key="Site Area" sx={{ mb: 2 }}>
+    <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+      Site Area
+    </Typography>
+    <Stack direction="row" spacing={2}>
+      {/* Length input and unit */}
+      <TextField fullWidth label="Length" variant="outlined" />
+      <TextField
+        select
+        label="Unit"
+        defaultValue="ft"
+        sx={{ minWidth: 100 }}
+      >
+        {['ft', 'm', 'cm', 'in'].map((unit) => (
+          <MenuItem key={unit} value={unit}>
+            {unit}
+          </MenuItem>
+        ))}
+      </TextField>
+
+      {/* Width input and unit */}
+      <TextField fullWidth label="Width" variant="outlined" />
+      <TextField
+        select
+        label="Unit"
+        defaultValue="ft"
+        sx={{ minWidth: 100 }}
+      >
+        {['ft', 'm', 'cm', 'in'].map((unit) => (
+          <MenuItem key={unit} value={unit}>
+            {unit}
+          </MenuItem>
+        ))}
+      </TextField>
+    </Stack>
+  </Box>
+)}
+
 
                         {/* Remaining Dynamic Fields */}
                         {fields.map((label) => {

@@ -6,24 +6,20 @@ import {
   CardContent,
   Typography,
   IconButton,
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction,
   Tooltip
 } from '@mui/material';
 import {
-  Home as HomeIcon,
-  List as ListIcon,
+  
   Favorite as FavoriteIcon,
-  Mail as MailIcon,
+ 
   Share as ShareIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
+import BottomNavbar from './BottomNavbar/BottomNavbar';
 
 const RentSaves = () => {
   const [saved, setSaved] = useState([]);
-  const [value, setValue] = useState(2);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,13 +29,7 @@ const RentSaves = () => {
     }
   }, []);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
-    if (newValue === 3) navigate('/inbox');
-  };
+  
 
   const handleRemove = (id) => {
     const updated = saved.filter((item) => item.id !== id);
@@ -68,20 +58,30 @@ const RentSaves = () => {
   };
 
   return (
-    <>
- <Box
-    sx={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      bgcolor: '#fff', // background to cover content underneath
-      px: 1,
-      py: 1
-    }}
-  >
-    <CustomSearchBar />
-  </Box>
-      <Box sx={{ pb: 10 }}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundColor: 'rgb(239, 231, 221)',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* Sticky Search Bar */}
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          px: 1,
+          py: 1,
+          backgroundColor: 'rgb(239, 231, 221)',
+        }}
+      >
+        <CustomSearchBar />
+      </Box>
+  
+      {/* Saved Cards Section */}
+      <Box sx={{ flex: 1, pb: 10 }}>
         {saved.length === 0 ? (
           <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
             No saved properties.
@@ -97,11 +97,11 @@ const RentSaves = () => {
                 boxShadow: 3,
                 position: 'relative',
                 overflow: 'hidden',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
               onClick={(e) => handleCardClick(e, property)}
             >
-              {/* Icons over image */}
+              {/* Top Right Icons */}
               <Box
                 sx={{
                   position: 'absolute',
@@ -109,7 +109,7 @@ const RentSaves = () => {
                   right: 8,
                   zIndex: 2,
                   display: 'flex',
-                  gap: 1
+                  gap: 1,
                 }}
               >
                 <Tooltip title="Share">
@@ -123,7 +123,7 @@ const RentSaves = () => {
                     <ShareIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-
+  
                 <Tooltip title="Remove">
                   <IconButton
                     onClick={(e) => {
@@ -136,16 +136,9 @@ const RentSaves = () => {
                   </IconButton>
                 </Tooltip>
               </Box>
-
-              {/* Image */}
-              <CardMedia
-                component="img"
-                height="180"
-                image={property.image}
-                alt={property.title}
-              />
-
-              {/* Title & location */}
+  
+              {/* Image and Content */}
+              <CardMedia component="img" height="180" image={property.image} alt={property.title} />
               <CardContent>
                 <Typography variant="h6">{property.title}</Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -156,18 +149,12 @@ const RentSaves = () => {
           ))
         )}
       </Box>
-
-      {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
-    </>
+  
+      {/* Bottom Nav */}
+      <BottomNavbar />
+    </Box>
   );
+  
 };
 
 export default RentSaves;

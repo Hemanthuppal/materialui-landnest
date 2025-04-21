@@ -244,7 +244,7 @@ function InteriorConsultationForm() {
             navigate('/home-service');
             break;
           case 'profile':
-            navigate('/profile');
+            navigate('/work-detail');
             break;
           default:
             navigate('/');
@@ -321,7 +321,7 @@ function InteriorConsultationForm() {
 
     
 
-            <Box sx={{ 
+            {/* <Box sx={{ 
                     display: 'flex', 
                     justifyContent: 'space-around', 
                     p: 1, 
@@ -339,7 +339,7 @@ function InteriorConsultationForm() {
                     <Typography fontWeight={500} >How it works?</Typography>
                     </Link>
 
-                  </Box>
+                  </Box> */}
 
       {/* Main Content */}
       <Container maxWidth="sm" sx={{ mt: 4, mb: 12 }}>
