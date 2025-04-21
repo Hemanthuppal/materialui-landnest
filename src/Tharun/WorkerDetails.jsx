@@ -11,12 +11,13 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import PersonIcon from '@mui/icons-material/Person';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const workerDetails = {
   name: 'Kiran',
@@ -46,11 +47,11 @@ const WorkerDetails = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        maxHeight: '100vh',
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        pt: 4,
+        // pt: 4,
       }}
     >
       <Paper
@@ -62,12 +63,13 @@ const WorkerDetails = () => {
           borderRadius: 2,
           display: 'flex',
           flexDirection: 'column',
+          height: '100vh'
         }}
       >
         {/* Back arrow header */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <IconButton onClick={() => navigate('/')} sx={{ mr: 1 }}>
-            <ArrowBackIcon />
+          <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
+             <ArrowBackIosNewIcon />
           </IconButton>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             Worker Details
@@ -87,14 +89,31 @@ const WorkerDetails = () => {
         </Box>
 
         <Box sx={{ mb: 3 }}>
-          <Typography gutterBottom><strong>Name:</strong> {workerDetails.name}</Typography>
-          <Typography gutterBottom><strong>Email ID:</strong> {workerDetails.email}</Typography>
-          <Typography gutterBottom><strong>Mobile:</strong> {workerDetails.mobile}</Typography>
-          <Typography gutterBottom><strong>Address:</strong> {workerDetails.address}</Typography>
-          <Typography gutterBottom><strong>Customer ID:</strong> {workerDetails.customerId}</Typography>
-          <Typography gutterBottom><strong>Category:</strong> {workerDetails.category}</Typography>
-          <Typography gutterBottom><strong>Description:</strong> {workerDetails.description}</Typography>
-        </Box>
+  {[
+    { label: 'Name', value: workerDetails.name },
+    { label: 'Email ID', value: workerDetails.email },
+    { label: 'Mobile', value: workerDetails.mobile },
+    { label: 'Address', value: workerDetails.address },
+    { label: 'Customer ID', value: workerDetails.customerId },
+    { label: 'Category', value: workerDetails.category },
+    { label: 'Description', value: workerDetails.description },
+  ].map((item, index) => (
+    <Box
+      key={index}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        mb: 1,
+        // borderBottom: '1px solid #ddd',
+        pb: 0.5,
+      }}
+    >
+      <Typography fontWeight="bold">{item.label}:</Typography>
+      <Typography>{item.value}</Typography>
+    </Box>
+  ))}
+</Box>
+
 
         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
           Work Photos:
@@ -104,7 +123,7 @@ const WorkerDetails = () => {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'flex-start',
-            mt: 2,
+            // mt: 2,
           }}
         >
           {workerDetails.photos.map((photo, index) => (
@@ -125,24 +144,7 @@ const WorkerDetails = () => {
         </Box>
       </Paper>
 
-      <Paper
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderTop: '1px solid #ccc',
-        }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Construction & Interiors" icon={<BuildIcon />} />
-          <BottomNavigationAction label="Post" icon={<PostAddIcon />} />
-          <BottomNavigationAction label="Home Services" icon={<HomeRepairServiceIcon />} />
-          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-        </BottomNavigation>
-      </Paper>
+     <FormsBottomNavbar />
     </Box>
   );
 };

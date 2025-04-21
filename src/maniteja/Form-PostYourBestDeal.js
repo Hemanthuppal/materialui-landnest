@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import {
     Box, Typography, TextField, Button, Paper, Stack, styled
 } from '@mui/material';
-import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +31,11 @@ const GreenButton = styled(Button)({
     '&:hover': { backgroundColor: '#008000' },
 });
 const PostYourBestDeal = () => {
+     const { isLoaded } = useJsApiLoader({
+                id: 'google-map-script',
+                googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+                libraries: ['places'],
+            });
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const autocompleteRef = useRef(null);
@@ -38,6 +43,7 @@ const PostYourBestDeal = () => {
 
     // ✅ Handle selection from Google Places dropdown
     const onPlaceChanged = () => {
+        if (autocompleteRef.current) {
         const place = autocompleteRef.current.getPlace();
         if (place && place.geometry) {
             const newLoc = {
@@ -47,10 +53,12 @@ const PostYourBestDeal = () => {
             setLocation(newLoc);
             setAddress(place.formatted_address);
         }
+    }
     };
 
     // ✅ Handle manual address entry
     const geocodeAddress = async () => {
+        if (window.google && window.google.maps) {
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode({ address }, (results, status) => {
             if (status === 'OK' && results[0]) {
@@ -64,6 +72,7 @@ const PostYourBestDeal = () => {
                 alert('Address could not be located. Please check input.');
             }
         });
+    }
     };
 
     // ✅ Optional callback handlers for SearchBar
@@ -78,16 +87,21 @@ const PostYourBestDeal = () => {
     const handleFilterClick = () => {
         console.log('Filter icon clicked');
     };
+     if (!isLoaded) {
+                return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <Typography>Loading Google Maps...</Typography>
+                </Box>;
+            }
 
     return (
-        <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
+        <>
             {/* ✅ Add SearchBar at the top */}
             <SearchBar
                 onBackClick={handleBackClick}
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px' }}>
             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                     Post Your Best Deal
@@ -139,8 +153,9 @@ const PostYourBestDeal = () => {
                 <Box sx={{ height: '70px' }} />
 
             </Box>
+            </Box>
             <FormsBottomNavbar />
-        </LoadScript>
+        </>
     );
 };
 

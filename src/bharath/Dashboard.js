@@ -21,16 +21,37 @@ import SearchIcon from '@mui/icons-material/Search';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import BoltIcon from '@mui/icons-material/Bolt';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+// import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+// import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { FaRegHeart, FaRegBell } from 'react-icons/fa';
+import { RiMessengerLine } from 'react-icons/ri';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import image from "../Images/Leasebuilding.png"
-import image1 from "../Images/building.jpeg"
+import image from "../Images/construction.jpg";
+import image1 from "../Images/building.jpeg";
+import image2 from "../Images/renovation.png";
+import image3 from "../Images/Painting.png";
+import image4 from "../Images/Electrical.jpg";
+import image5 from "../Images/tilegranites.jpg";
+import image6 from "../Images/Plumber.png";
+import image7 from "../Images/carpenter.jpg";
+import image8 from "../Images/Acrepair.jpg";
+import image9 from "../Images/gardener.jpg";
+import image10 from "../Images/Aluminium.jpg";
+import image11 from "../Images/upvc.jpg";
+import image12 from "../Images/gaspipe.jpg";
+import image13 from "../Images/steel.jpg";
+import image14 from "../Images/homeclean.jpg";
+import image15 from "../Images/toiletkitchen.jpg";
+import image16 from "../Images/sofacurtain.jpg";
+import image17 from "../Images/home.jpg";
+import imagebuy from "../Images/buy.jpg";
+import imagerent from "../Images/rent.jpg";
+import imagelease from "../Images/lease.jpg";
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -124,22 +145,23 @@ const cards = [
   {
     title: "Buy",
     icon: <BuyIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    bgImage: `url(${imagebuy})`,
     path: "/buy-propertymap"
   },
   {
     title: "Rent",
     icon: <RentIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
+    bgImage: `url(${imagerent})`,
     path: "/rent-propertymap"
   },
   {
     title: "Lease",
     icon: <LeaseIcon fontSize="large" />,
-    bgImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)",
-
+    bgImage: `url(${imagelease})`,
+    path: "/lease_map"
   }
 ];
+
 
 
 
@@ -180,7 +202,7 @@ function App() {
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Box
           sx={{
-            width: { xs: '50px', sm: '60px' },
+            width: { xs: '17%', sm: '60px' },
             height: { xs: '90vh', sm: '85vh' },
             display: 'flex',
             flexDirection: 'column',
@@ -189,8 +211,8 @@ function App() {
             borderTopLeftRadius: '40px',
             borderBottomRightRadius: '40px',
             // marginTop: '10px',
-            marginTop: '5%',
-    marginLeft: '0.1%',
+            marginTop: '0.5%',
+    marginLeft: '0.5%',
 
             boxShadow: `
       0 10px 30px -5px rgba(0,0,0,0.3),
@@ -448,14 +470,15 @@ function App() {
           <AppBar
             position="fixed" // Fixed at top
             sx={{
-              bgcolor: 'rgb(235, 233, 230)',
+              bgcolor: 'rgb(212, 209, 205)',
               boxShadow: 'none',
               height: '50px',
-              width: '85%',
+              width: '82%',
               ml: "65",
               zIndex: 1201,
-              marginTop: '4%',
-              marginRight: '1%',// ensure it stays above other elements
+              // marginTop: '0.5%',
+              // marginRight: '0.5%',// ensure it stays above other elements
+              
             }}
           >
             <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
@@ -469,10 +492,10 @@ function App() {
                 <FavoriteBorderIcon sx={{ fontSize: '1rem', color: ' #757575' }} />
               </IconButton>
               <IconButton size="small">
-                <NotificationsNoneIcon sx={{ fontSize: '1rem', color: '#757575' }} />
+                <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
               <IconButton size="small">
-                <ChatBubbleOutlineIcon sx={{ fontSize: '1rem', color: '#757575' }} />
+                <RiMessengerLine  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
             </Toolbar>
           </AppBar>
@@ -505,7 +528,7 @@ function App() {
                         onClick={() => card.path && navigate(card.path)}
                         sx={{
                           height: '100px',
-                          width: '140px',
+                          width: '127px',
                           borderRadius: '12px',
                           boxShadow:
                             '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
@@ -532,8 +555,8 @@ function App() {
                           }}
                         >
                           <Box sx={{ textAlign: 'left' }}>
-                            {card.icon}
-                            <Typography variant="h6" component="div" mt={1}>
+                            {/* {card.icon} */}
+                            <Typography variant="h6" component="div" mt={6}>
                               {card.title}
                             </Typography>
                           </Box>
@@ -551,6 +574,9 @@ function App() {
                       </Card>
                     </Grid>
                   ))}
+                  
+
+
 
                   {/* Second Row: Centered Third Card */}
                   <Grid item xs={12} display="flex" justifyContent="center">
@@ -558,7 +584,7 @@ function App() {
                       <Card
                         sx={{
                           height: '100px',
-                          width: '140px',
+                          width: '127px',
                           borderRadius: '12px',
                           boxShadow:
                             '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)',
@@ -585,8 +611,8 @@ function App() {
                           }}
                         >
                           <Box sx={{ textAlign: 'left' }}>
-                            {cards[2].icon}
-                            <Typography variant="h6" component="div" mt={1}>
+                            {/* {cards[2].icon} */}
+                            <Typography variant="h6" component="div" mt={6}>
                               {cards[2].title}
                             </Typography>
                           </Box>
@@ -623,7 +649,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -674,7 +700,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+                width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -724,7 +750,7 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
+               width: '100%',
                 height: 220,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
@@ -737,7 +763,7 @@ function App() {
               <Box
                 sx={{
                   height: '70%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image2})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -780,8 +806,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -792,8 +818,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image3})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -806,7 +832,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -830,8 +856,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -842,8 +868,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image4})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -856,7 +882,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -880,8 +906,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -892,8 +918,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image5})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -906,7 +932,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -929,8 +955,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -941,8 +967,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image6})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -955,7 +981,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -978,8 +1004,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -990,8 +1016,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image7})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1004,7 +1030,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1027,8 +1053,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1039,8 +1065,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image8})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1053,7 +1079,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1077,8 +1103,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1089,8 +1115,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image9})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1103,7 +1129,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1126,8 +1152,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1138,8 +1164,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image10})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1152,7 +1178,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1174,8 +1200,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1186,8 +1212,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image11})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1200,7 +1226,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1222,8 +1248,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 210,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1235,7 +1261,7 @@ function App() {
               <Box
                 sx={{
                   height: '70%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image12})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1270,8 +1296,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1282,8 +1308,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image13})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1296,7 +1322,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1319,8 +1345,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1331,8 +1357,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image14})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1345,7 +1371,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1367,8 +1393,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1379,8 +1405,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image15})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1393,7 +1419,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1415,8 +1441,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 210,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1428,7 +1454,7 @@ function App() {
               <Box
                 sx={{
                   height: '70%',
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${image16})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1463,8 +1489,8 @@ function App() {
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
                 overflow: 'hidden',
-                width: 310,
-                height: 220,
+                 width: "100%",
+                height: 200,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
                   transform: 'scale(1.02)',
@@ -1475,8 +1501,8 @@ function App() {
               {/* Top image section */}
               <Box
                 sx={{
-                  height: '70%',
-                  backgroundImage: `url(${image})`,
+                  height: '75%',
+                  backgroundImage: `url(${image17})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   borderBottomRightRadius: "40px",
@@ -1489,7 +1515,7 @@ function App() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '30%',
+                  height: '25%',
                   px: 2,
                   py: 1,
                   backgroundColor: '#d8ccba',
@@ -1528,7 +1554,7 @@ function App() {
           '& .MuiBottomNavigationAction-root': {
             minWidth: 'auto',
             padding: '6px 0',
-            color: '#757575',
+            color: 'black',
           },
           '& .MuiBottomNavigationAction-label': {
             fontSize: '0.7rem',

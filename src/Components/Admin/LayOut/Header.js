@@ -1,3 +1,4 @@
+// src/Components/Admin/Header/Header.js
 import React, { useState } from 'react';
 import Logo from '../../../Images/plot.jpeg';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -26,14 +27,13 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 const navItems = [
-  { label: 'Dashboard', path: '/admin-dashboard' },
-  { label: 'Properties', path: '/adminuploadproperties' },
-  { label: '2D Plans', path: '/admin-2dplans' },
-  { label: '3D Plans', path: '/admin-3dplans' },
-  { label: 'Packages', path: '/admin-packages' },
-  { label: 'Constructions', path: '/admin-explore-constructions' },
-  { label: 'Customers', path: '/admin-customers' },
-  { label: 'Best Deals', path: '/admin-bestdeals' },
+  { label: 'Dashboard', path: 'dashboard' },
+  { label: 'Properties', path: 'properties' },
+  { label: 'Transactions', path: 'transactions' },
+  { label: 'All Leads', path: 'leads' },
+  { label: 'Agents', path: 'agents' },
+  { label: 'Referral & Commission', path: 'referral' },
+  { label: 'Subscriptions', path: 'subscriptions' },
 ];
 
 export default function Header() {
@@ -48,7 +48,7 @@ export default function Header() {
   const handleAvatarClick = (event) => setProfileAnchorEl(event.currentTarget);
   const handleProfileMenuClose = () => setProfileAnchorEl(null);
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.includes(`/admin/${path}`);
 
   const drawer = (
     <Box sx={{ width: 250 }}>
@@ -98,7 +98,7 @@ export default function Header() {
               <IconButton onClick={handleDrawerToggle} sx={{ mr: 2 }}>
                 <MenuIcon />
               </IconButton>
-              <Link to="/admin-dashboard" style={{ textDecoration: 'none' }}>
+              <Link to="dashboard" style={{ textDecoration: 'none' }}>
                 <img src={Logo} alt="logo" style={{ height: '50px' }} />
               </Link>
               <Box display="flex" alignItems="center">
@@ -114,7 +114,7 @@ export default function Header() {
             </Box>
           ) : (
             <>
-              <Link to="/admin-dashboard" style={{ textDecoration: 'none' }}>
+              <Link to="dashboard" style={{ textDecoration: 'none' }}>
                 <img src={Logo} alt="logo" style={{ height: '75px', paddingTop: '8px' }} />
               </Link>
               <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: 2 }}>
@@ -166,14 +166,17 @@ export default function Header() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={() => { handleProfileMenuClose(); navigate('/admin-profile'); }}>
+        <MenuItem onClick={() => { handleProfileMenuClose(); navigate('profile'); }}>
           Profile
         </MenuItem>
-       
+        <MenuItem onClick={() => { handleProfileMenuClose(); navigate('kyc'); }}>
+          KYC
+        </MenuItem>
         <Divider />
         <MenuItem 
           onClick={() => { 
             handleProfileMenuClose(); 
+            // Add logout logic here
             navigate('/login'); 
           }}
           sx={{ color: 'error.main' }}

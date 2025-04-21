@@ -6,18 +6,11 @@ import {
   Avatar,
   Typography,
   Container,
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
   IconButton,
 } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
-import HomeIcon from "@mui/icons-material/Home";
-import BuildIcon from "@mui/icons-material/Build";
-import PostAddIcon from "@mui/icons-material/PostAdd";
-import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
-import PersonIcon from "@mui/icons-material/Person";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate } from "react-router-dom";
+import FormsBottomNavbar from "../maniteja/FormsBottomNavbar";
 
 const WorkerDetail = () => {
   const navigate = useNavigate();
@@ -27,9 +20,9 @@ const WorkerDetail = () => {
       {/* Header with Back Button */}
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <IconButton edge="start" onClick={() => navigate("/inboxlist")}>
-          <ArrowBack />
+             <ArrowBackIosNewIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ ml: 1 }}>
+        <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
           Worker Details
         </Typography>
       </Box>
@@ -41,61 +34,64 @@ const WorkerDetail = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              mb: 2,
+              textAlign: "left",
+              px: 2,
+              py: 3,
+              height: "80vh"
             }}
           >
-            <Avatar
-              variant="square"
-              alt="Kiran"
-              src="https://randomuser.me/api/portraits/men/75.jpg"
+            {/* Avatar in a Box for clean spacing */}
+            <Box
               sx={{
-                width: 120,
-                height: 120,
+                mb: 3,
+                p: 1,
+                display: "flex",
+                justifyContent: "center",
                 borderRadius: 2,
-                mb: 2,
-                boxShadow: 2,
               }}
-            />
+            >
+              <Avatar
+                variant="square"
+                alt="Kiran"
+                src="https://randomuser.me/api/portraits/men/75.jpg"
+                sx={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 2,
+                  boxShadow: 2,
+                }}
+              />
+            </Box>
 
+            {/* Worker Info */}
             <Box sx={{ width: "100%" }}>
-              <Typography variant="body1" gutterBottom>
-                <strong>Name:</strong> Kiran
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Email ID:</strong> Kiran@gmail.com
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Mobile:</strong> 9999999999
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Address:</strong> 7-52/Gb
-              </Typography>
-              <Typography variant="body1">
-                <strong>Customer ID:</strong> CUSTOMER001
-              </Typography>
+              {[
+                { label: "Name", value: "Kiran" },
+                { label: "Email ID", value: "Kiran@gmail.com" },
+                { label: "Mobile", value: "9999999999" },
+                { label: "Address", value: "7-52/5b" },
+                { label: "Customer ID", value: "CUSTOMER001" },
+              ].map((item, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1.5,
+                  }}
+                >
+                  <Typography variant="body1" fontWeight="bold">
+                    {item.label}:
+                  </Typography>
+                  <Typography variant="body1">{item.value}</Typography>
+                </Box>
+              ))}
             </Box>
           </Box>
         </CardContent>
       </Card>
 
-      <Paper
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderTop: "1px solid #ccc",
-        }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Construction & Interiors" icon={<BuildIcon />} />
-          <BottomNavigationAction label="Post" icon={<PostAddIcon />} />
-          <BottomNavigationAction label="Home Services" icon={<HomeRepairServiceIcon />} />
-          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-        </BottomNavigation>
-      </Paper>
+      <FormsBottomNavbar />
     </Container>
   );
 };

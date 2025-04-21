@@ -358,7 +358,7 @@ import {
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react'; // if not already
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
@@ -382,7 +382,14 @@ import buildingImage from '../Images/Leasebuilding.png';
 
 const Lease_description = () => {
   const navigate = useNavigate();
-
+  const [value, setValue] = useState(1); // Highlight current tab (1 for List view)
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    if (newValue === 0) navigate('/dashboard');
+    if (newValue === 1) navigate('/lease_details');
+    if (newValue === 2) navigate('/lease_save');
+    if (newValue === 3) navigate('/inboxlist');
+  };
   return (
     <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
       {/* Header with Back Button */}
@@ -583,26 +590,15 @@ const Lease_description = () => {
       </Box>
 
       {/* Bottom Navigation */}
-      <Paper
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          maxWidth: 430,
-          mx: 'auto',
-          borderTop: '1px solid #ccc',
-          bgcolor: '#fff',
-        }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<FormatListBulletedIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteBorderIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailOutlineIcon />} />
-        </BottomNavigation>
-      </Paper>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+  <BottomNavigation value={value} onChange={handleChange} showLabels>
+    <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+    <BottomNavigationAction label="List" icon={<FormatListBulletedIcon />} />
+    <BottomNavigationAction label="Saves" icon={<FavoriteBorderIcon />} />
+    <BottomNavigationAction label="Inbox" icon={<MailOutlineIcon />} />
+  </BottomNavigation>
+</Paper>
+
     </Box>
   );
 };

@@ -365,12 +365,14 @@ const Lease_Property_Map = () => {
     setValue(newValue);
     if (newValue === 0) navigate("/dashboard");
     if (newValue === 1) navigate("/lease_details");
-    if (newValue === 2) navigate("/lease_saves");
-    if (newValue === 3) navigate("/inbox");
+    if (newValue === 2) navigate("/lease_save");
+    if (newValue === 3) navigate("/inboxlist");
   };
 
   const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
   });
 
   const containerStyle = {
