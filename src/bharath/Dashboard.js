@@ -497,7 +497,7 @@ function App() {
                 <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
               <IconButton size="small">
-                <RiMessengerLine  sx={{ fontSize: '1rem', color: '#757575' }} />
+                <RiMessengerLine  onClick={() => navigate('/inboxlist')} sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
             </Toolbar>
           </AppBar>

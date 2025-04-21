@@ -510,7 +510,7 @@ const ConstructionPackages = () => {
       title: 'Basic Package Details',
       price: 'Rs 1850/sqft',
       color: '', // White text for better contrast
-  gradient: 'linear-gradient(135deg,rgb(108, 71, 63),rgb(63, 60, 60))', // Coffee to black gradient
+  gradient: 'linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))', // Coffee to black gradient
       sections: [
         { id: 'pkg2500One', title: 'Design & Drawings', content: sectionContent.package2500.design },
         { id: 'pkg2500Two', title: 'Construction Materials', content: sectionContent.package2500.materials },
@@ -531,8 +531,7 @@ const ConstructionPackages = () => {
       title: 'Premium Package Details',
       price: 'Rs 2000/sqft',
       color: '', // White text for better contrast
-      gradient: 'linear-gradient(135deg,rgb(108, 71, 63),rgb(63, 60, 60))',
-      sections: [
+      gradient: 'linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))',      sections: [
         { id: 'pkg2000One', title: 'Design & Drawings', content: sectionContent.package2000.design },
         { id: 'pkg2000Two', title: 'Core Construction Materials', content: sectionContent.package2000.materials },
         { id: 'pkg2000Three', title: 'Flooring & Wall Tiling', content: sectionContent.package2000.flooring },
@@ -552,8 +551,7 @@ const ConstructionPackages = () => {
       title: 'Construction Package Details',
       price: 'Rs 2300/sqft',
       color: '', // White text for better contrast
-  gradient: 'linear-gradient(135deg,rgb(108, 71, 63),rgb(63, 60, 60))',
-      sections: [
+      gradient: 'linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))',      sections: [
         { id: 'pkg2300One', title: 'Design & Drawings', content: sectionContent.package2300.design },
         { id: 'pkg2300Two', title: 'Materials & Construction', content: sectionContent.package2300.materials },
         { id: 'pkg2300Three', title: 'Foundation & Waterproofing', content: sectionContent.package2300.foundation },
@@ -589,7 +587,7 @@ const ConstructionPackages = () => {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/profile');
+        navigate('/work-detail');
         break;
       default:
         navigate('/');
@@ -663,7 +661,9 @@ const ConstructionPackages = () => {
           px: { xs: 2, sm: 4, md: 6 },
           pt: 4,
           maxWidth: '1200px',
-          margin: '0 auto'
+          margin: '0 auto',
+          backgroundColor: '#e7dbc9',
+
         }}>
           {packages.map((pkg, index) => (
             <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>

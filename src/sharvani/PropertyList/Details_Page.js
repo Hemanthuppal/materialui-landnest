@@ -12,9 +12,7 @@ import {
   Grid,
   Divider,
   Tooltip,
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction
+  
 } from '@mui/material';
 import {
   FavoriteBorder,
@@ -24,18 +22,15 @@ import {
   ThumbUpAlt,
   Call,
   LocationOn,
-  Home as HomeIcon,
-  List as ListIcon,
-  Favorite as FavoriteIcon,
-  Mail as MailIcon
+
 } from '@mui/icons-material';
-import buildingImage from '../Images/house.jpeg';
-import buildingImage2 from '../Images/house1.jpg';
-import CustomSearchBar from './../Rajesh/CustomSearchBar';
+import buildingImage from '../../Images/house.jpeg';
+import buildingImage2 from '../../Images/house1.jpg';
+import CustomSearchBar from '../../Rajesh/CustomSearchBar';
+import BottomNavbar from '../BottomNavbar/BottomNavbar';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedRent');
@@ -43,14 +38,6 @@ const PropertyCard = () => {
   });
 
   const [likedCards, setLikedCards] = useState({}); // 🔵 Per-card like state
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/details');
-    if (newValue === 2) navigate('/rent-saves');
-    if (newValue === 3) navigate('/inbox');
-  };
 
   const propertyData = [
     {
@@ -117,12 +104,13 @@ const PropertyCard = () => {
       zIndex: 1000,
       bgcolor: '#fff', // background to cover content underneath
       px: 1,
-      py: 1
+      py: 1,
+      backgroundColor: 'rgb(239, 231, 221)'
     }}
   >
     <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
   </Box>
-  <Box sx={{ pb: 8 }}>
+  <Box sx={{ pb: 8 ,backgroundColor: 'rgb(239, 231, 221)'}}>
   {filteredProperties.map((property) => (
     <Card
       key={property.id}
@@ -259,14 +247,7 @@ const PropertyCard = () => {
 </Box>
 
 
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+<BottomNavbar/>
     </>
   );
 };

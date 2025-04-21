@@ -67,7 +67,7 @@ const InteriorServicesEnhanced = () => {
               navigate('/home-service');
               break;
             case 'profile':
-              navigate('/profile');
+              navigate('/work-detail');
               break;
             default:
               navigate('/');
@@ -170,7 +170,7 @@ const InteriorServicesEnhanced = () => {
               bottom: 0,
               left: 45,
               width: '4px',
-              bgcolor: '#cfd8dc',
+              bgcolor: 'black',
               borderRadius: 2,
               mx: 'auto',
               height: '90%'
@@ -197,7 +197,8 @@ const InteriorServicesEnhanced = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bgcolor: theme.palette.primary.main,
+                  // bgcolor: theme.palette.primary.main,
+                  bgcolor: '#438b98',
                   color: '#fff',
                   borderRadius: '50%',
                   fontWeight: 'bold',

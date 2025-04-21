@@ -107,6 +107,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import landNestLogo from '../../src/assets/LandNestLogo.jpg'; // adjust path as needed
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -156,6 +158,7 @@ const Login = () => {
   return (
     <div style={styles.container}>
       <div style={styles.loginBox}>
+      <img src={landNestLogo} alt="Land Nest Logo" style={styles.logo} />
         <h2 style={styles.title}>Login</h2>
         {error && <div style={styles.error}>{error}</div>}
         
@@ -243,6 +246,13 @@ const styles = {
     maxWidth: '400px',
     textAlign: 'center'
   },
+  logo: {
+    width: '250px',
+    height: 'auto',
+    marginBottom: '20px',
+    borderRadius: '5px'
+  },
+  
   title: {
     color: '#333',
     marginBottom: '30px',
