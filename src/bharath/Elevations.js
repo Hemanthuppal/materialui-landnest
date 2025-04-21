@@ -124,8 +124,8 @@ const Elevations = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
         <Grid container justifyContent="space-between" alignItems="center">

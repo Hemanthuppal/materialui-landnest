@@ -606,7 +606,9 @@ const Constructions = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
+          // backgroundColor: '#e6f2ff',
+          bgcolor: 'rgb(212, 209, 205)',
+
           padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
@@ -630,7 +632,8 @@ const Constructions = () => {
       {/* Main Content */}
       <Box sx={{ pb: 5 }}>
         <Box sx={{
-          backgroundColor: 'rgba(173, 216, 230, 0.3)',
+          // backgroundColor: 'rgba(173, 216, 230, 0.3)',
+          background: "#e7dbc9",
           padding: isMobile ? 2 : 2,
           marginY: 2
         }}>
