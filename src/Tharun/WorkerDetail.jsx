@@ -32,7 +32,7 @@ const WorkerDetail = () => {
           borderBottom: "1px solid #ccc",
         }}
       >
-        <IconButton edge="start" onClick={() => navigate("/inboxlist")}>
+        <IconButton edge="start" onClick={() => navigate(-1)}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
