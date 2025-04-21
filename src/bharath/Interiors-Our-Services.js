@@ -413,7 +413,9 @@ const Interiors = () => {
         top: 0,
         zIndex: 1200,
         bgcolor: 'background.paper',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        marginBottom : '20px'
+
       }}>
         {/* Back Arrow */}
         <Box display="flex" alignItems="center" p={1} sx={{
@@ -433,8 +435,8 @@ const Interiors = () => {
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-          backgroundColor: '#e6f2ff',
-          padding: isMobile ? 2 : 2,
+              bgcolor: 'rgb(212, 209, 205)',
+              padding: isMobile ? 2 : 2,
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <Grid container justifyContent="space-between" alignItems="center">
@@ -457,7 +459,7 @@ const Interiors = () => {
         </Box>
       </Box>
 
-      <Container sx={{ padding: 1, backgroundColor: "lightgray", pb: 10 }}>
+      <Container sx={{ padding: 1, backgroundColor:"#e7dbc9", pb: 10 }}>
         {/* Services Row */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
           <Typography sx={{ color: 'green', fontWeight: 'bold' }} variant="body1">Our services</Typography>
