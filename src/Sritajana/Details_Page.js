@@ -1,4 +1,3 @@
-// PropertyCard.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -105,9 +104,26 @@ const PropertyCard = () => {
 
   return (
     <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh', pb: 10 }}>
-      <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      {/* Fixed Search Bar */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          backgroundColor: 'white',
+          px: 2,
+          pt: 1,
+          pb: 2,
+          boxShadow: 2
+        }}
+      >
+        <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      </Box>
 
-      <Box>
+      {/* Property Cards with margin top to offset fixed search bar */}
+      <Box sx={{ mt: '120px' }}>
         {filteredProperties.map((property) => (
           <Card
             key={property.id}
@@ -202,8 +218,7 @@ const PropertyCard = () => {
               <Divider sx={{ my: 2 }} />
 
               <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
-                {[
-                  { label: 'Facing', value: property.facing },
+                {[{ label: 'Facing', value: property.facing },
                   { label: `Area (${property.dimensions})`, value: property.area },
                   { label: 'Listed By', value: property.listedBy }
                 ].map((item, index) => (
@@ -226,6 +241,7 @@ const PropertyCard = () => {
         ))}
       </Box>
 
+      {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation value={value} onChange={handleChange} showLabels>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
