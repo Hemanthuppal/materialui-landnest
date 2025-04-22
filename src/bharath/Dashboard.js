@@ -32,7 +32,7 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import image from "../Images/construction.jpg";
-import image1 from "../Images/building.jpeg";
+import image1 from "../Images/interior.avif";
 import image2 from "../Images/renovation.png";
 import image3 from "../Images/Painting.png";
 import image4 from "../Images/Electrical.jpg";
@@ -200,7 +200,7 @@ function App() {
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '88vh', sm: '82vh' },
+            height: { xs: '86vh', sm: '82vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

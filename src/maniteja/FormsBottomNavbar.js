@@ -122,11 +122,15 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import './FormsBottomNavbar.css';
 
+import ConstructionIcon from '@mui/icons-material/Construction';
+
+
+
 const navItems = [
   { key: 'home', icon: <HomeIcon />, route: '/dashboard', label: 'Home' },
-  { key: 'construction', icon: <BuildIcon />, route: '/constructions', label: 'Works' },
+  { key: 'construction', icon: <ConstructionIcon />, route: '/constructions', label: 'Construction & Interior' },
   { key: 'spacer', isSpacer: true },
-  { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service', label: 'Services' },
+  { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service', label: 'Home Services' },
   { key: 'profile', icon: <AccountCircleIcon />, route: '/work-detail', label: 'Profile' },
 ];
 

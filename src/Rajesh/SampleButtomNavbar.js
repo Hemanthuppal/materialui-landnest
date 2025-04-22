@@ -5,8 +5,8 @@ import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
- import './SampleBottomNavbar.css';
-//  import './nav1.css';
+import './SampleBottomNavbar.css';
+
 
 
 const navItems = [

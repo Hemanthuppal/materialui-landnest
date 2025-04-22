@@ -66,7 +66,7 @@ import AdminCustomers from './Components/Admin/Customers/Customers';
 import AdminBestDeals from './Components/Admin/BestDeals/BestDeals';
 import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
 import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
-import SampleBottomNav from './Rajesh/SampleNav';
+
 
 
 
@@ -124,7 +124,7 @@ function App() {
         <Route path="/lease_save" element={<LeaseSave />} />
         <Route path="/lease_nav" element={< FormsBottomNavbar />} />
         <Route path="/lease_sampleNavbar" element={< SampleBottomNavbar />} />
-        <Route path="/lease_sampleNav" element={< SampleBottomNav />} />
+       
         
         <Route path="/rent-form" element={<RentForm />} />
         <Route path="/get-started" element={<InteriorConsultationForm />} />

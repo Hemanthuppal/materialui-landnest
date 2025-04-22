@@ -39,7 +39,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1.6rem;
+    font-size: 1.0rem;
     cursor: pointer;
     transition: 0.3s;
   }
