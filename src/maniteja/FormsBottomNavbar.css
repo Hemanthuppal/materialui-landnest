@@ -1,6 +1,6 @@
 :root {
     --primary: #edd1a6;
-    --background: #000;
+    --background: #000000;
     --glow: rgba(244, 199, 133, 0.5);
     --icon-default: #bbb;
     --icon-active: #f1ce99;
@@ -19,13 +19,15 @@
     position: relative;
     display: flex;
     background: var(--background);
-    border-radius: 35px;
+    border-radius: 0px;
     padding: 10px 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px rgba(34, 34, 34, 0.3);
     max-width: 420px;
-    width: 90%;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
+   
   }
   
   .nav-item {

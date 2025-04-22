@@ -127,7 +127,7 @@ const navItems = [
   { key: 'construction', icon: <BuildIcon />, route: '/constructions', label: 'Works' },
   { key: 'spacer', isSpacer: true },
   { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service', label: 'Services' },
-  { key: 'profile', icon: <AccountCircleIcon />, route: '/profile', label: 'Profile' },
+  { key: 'profile', icon: <AccountCircleIcon />, route: '/work-detail', label: 'Profile' },
 ];
 
 const centerItem = { key: 'post', icon: <AddCircleIcon />, route: '/post', label: 'Post', isCenter: true };

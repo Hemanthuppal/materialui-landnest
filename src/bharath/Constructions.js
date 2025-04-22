@@ -464,29 +464,44 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import doors from "./Images/doors-windows.jpg"
 import fabrication1 from "./Images/fabrication1.jpg"
 import paintings1 from "./Images/paintings1.jpg"
-import roof1 from "./Images/roof1.jpg"
-import soiltest1 from "./Images/soiltest1.jpg"
-import plumbing1 from "./Images/plumbing1.jpg"
+import pic4 from "../Images/roofshuttering.webp";
+
+import soiltest1 from "../Images/soiltest.webp";
+import pic1 from "../Images/column_marking.webp";
+import pic2 from "../Images/columnfoundation.jpg";
+import pic3 from "../Images/plinth.avif";
+import pic5 from "../Images/roofbarbending.jpg";
+import pic6 from "../Images/roofconcreate.jpg";
+import pic7 from "../Images/partitionwalls.jpg";
+import pic8 from "../Images/flooring.jpg";
+import pic9 from "../Images/electricals.jpg";
+import pic10 from "../Images/plumbing.webp";
+import pic11 from "../Images/fabrication.jpg";
+import pic12 from "../Images/doors_windows.jpg";
+import pic13 from "../Images/paintings.jpg";
+import pic14 from "../Images/handover.jpg";
+import pic15 from "../Images/agreement.webp";
+
 import { jsPDF } from "jspdf";
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const steps = [
-  { title: 'Agreement Sign', image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+  { title: 'Agreement Sign', image: pic15 },
   { title: 'Soil Test', image: soiltest1 },
-  { title: 'Column Marking', image: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Column Foundation', image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Column Plinth', image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Roof Shuttering', image: roof1 },
-  { title: 'Roof Barbending', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Roof Concrete', image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Partitions Wall', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Flooring', image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Electrical', image: 'https://images.unsplash.com/photo-1605170439002-90845e8c0137?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
-  { title: 'Plumbing', image: plumbing1 },
-  { title: 'Fabrication', image: fabrication1 }, // Replaced
-  { title: 'Doors and Windows', image: doors },
-  { title: 'Paintings', image: paintings1 }, // Replaced
-  { title: 'Handover', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+  { title: 'Column Marking', image: pic1},
+  { title: 'Column Foundation', image: pic2 },
+  { title: 'Column Plinth', image: pic3 },
+  { title: 'Roof Shuttering', image: pic4 },
+  { title: 'Roof Barbending', image: pic5 },
+  { title: 'Roof Concrete', image: pic6 },
+  { title: 'Partitions Wall', image: pic7 },
+  { title: 'Flooring', image: pic8 },
+  { title: 'Electrical', image: pic9 },
+  { title: 'Plumbing', image: pic10 },
+  { title: 'Fabrication', image: pic11 }, // Replaced
+  { title: 'Doors and Windows', image: pic12 },
+  { title: 'Paintings', image: pic13 }, // Replaced
+  { title: 'Handover', image: pic14 },
 ];
 
 const chunkArray = (array, chunkSize) => {

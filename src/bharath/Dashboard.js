@@ -193,13 +193,14 @@ function App() {
   };
 
   return (
+    <>
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
 
-      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden',marginBottom:"100px" }}>
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '90vh', sm: '85vh' },
+            height: { xs: '88vh', sm: '82vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -227,7 +228,7 @@ function App() {
           <Box
             sx={{
               width: '100%',
-              background: 'linear-gradient(145deg,rgb(36, 36, 36),rgb(36, 36, 36))',
+              background: 'linear-gradient(145deg,rgb(18, 17, 17),rgb(18, 17, 17))',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -380,7 +381,7 @@ function App() {
           <Box
             sx={{
               background: `
-        linear-gradient(145deg, #2a2a2a, #1e1e1e),
+        linear-gradient(145deg,rgb(22, 22, 22),rgb(15, 15, 15)),
         url('https://www.transparenttextures.com/patterns/dark-matter.png')
       `,
               width: '100%',
@@ -466,8 +467,9 @@ function App() {
           <AppBar
             position="fixed" // Fixed at top
             sx={{
-              bgcolor: 'rgb(212, 209, 205)',
+              bgcolor: 'rgba(232, 217, 183, 0.95)',
               boxShadow: 'none',
+              border:'1px solid black',
               height: '50px',
               width: '82%',
               ml: "65",
@@ -1527,9 +1529,11 @@ function App() {
         </Box>
       </Box>
 
-      <FormsBottomNavbar />
+      
 
     </Box>
+    <FormsBottomNavbar />
+    </>
   );
 }
 
