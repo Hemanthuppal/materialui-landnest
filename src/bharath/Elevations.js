@@ -14,6 +14,8 @@ import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+
 const data = [
   {
     id: 1,
@@ -210,7 +212,7 @@ const Elevations = () => {
         ))}
       </Box>
 
-      <Paper
+      {/* <Paper
             sx={{
               position: 'fixed',
               bottom: 0,
@@ -267,7 +269,9 @@ const Elevations = () => {
                 icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
               />
             </BottomNavigation>
-                </Paper>
+                </Paper> */}
+                      <FormsBottomNavbar />
+                
     </>
   );
 };

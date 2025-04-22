@@ -19,6 +19,8 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+
 
 // Steps for flowchart
 const steps = [
@@ -309,7 +311,7 @@ const InteriorServicesEnhanced = () => {
         </Box>
       </Box>
 
-      <Paper
+      {/* <Paper
             sx={{
               position: 'fixed',
               bottom: 0,
@@ -366,7 +368,9 @@ const InteriorServicesEnhanced = () => {
                 icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
               />
             </BottomNavigation>
-                </Paper>
+                </Paper> */}
+                      <FormsBottomNavbar />
+                
     </>
   );
 };
