@@ -280,6 +280,8 @@ import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+
 const chunkArray = (array, chunkSize) => {
   const result = [];
   for (let i = 0; i < array.length; i += chunkSize) {
@@ -384,7 +386,7 @@ const ExploreConstructionResources = () => {
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
           <IconButton
-            onClick={() => navigate('/constructions')}
+            onClick={() => navigate(-1)}
             sx={{
               color: '#4A00E0',
               '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }
@@ -559,7 +561,7 @@ const ExploreConstructionResources = () => {
         </Box>
       </Box>
 
-      <Paper
+      {/* <Paper
         sx={{
           position: 'fixed',
           bottom: 0,
@@ -616,7 +618,9 @@ const ExploreConstructionResources = () => {
             icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
           />
         </BottomNavigation>
-      </Paper>
+      </Paper> */}
+            <FormsBottomNavbar />
+      
     </>
   );
 };

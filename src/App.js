@@ -64,6 +64,9 @@ import AdminExploresConstructions from './Components/Admin/ExploresConstruction/
 import AdminElevation from './Components/Admin/Elevations/Elevations';
 import AdminCustomers from './Components/Admin/Customers/Customers';
 import AdminBestDeals from './Components/Admin/BestDeals/BestDeals';
+import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
+import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
+
 
 
 
@@ -123,6 +126,9 @@ function App() {
         <Route path="/lease_description" element={<Lease_discription />} />
         <Route path="/lease-description" element={<Lease_discription />} />
         <Route path="/lease_save" element={<LeaseSave />} />
+        <Route path="/lease_nav" element={< FormsBottomNavbar />} />
+        <Route path="/lease_sampleNavbar" element={< SampleBottomNavbar />} />
+       
         
         <Route path="/rent-form" element={<RentForm />} />
         <Route path="/get-started" element={<InteriorConsultationForm />} />

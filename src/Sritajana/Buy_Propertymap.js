@@ -25,6 +25,8 @@ import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './../sharvani/ReUsableCard';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+import CustomBottomNav from './CustomNav';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -124,6 +126,7 @@ const Rent_Property_Map = () => {
   };
 
   return (
+    
     <Box
       sx={{
         pb: 7,
@@ -221,15 +224,11 @@ const Rent_Property_Map = () => {
       )}
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+      <CustomBottomNav />
+      
     </Box>
+    
+    
   );
 };
 

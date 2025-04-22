@@ -31,6 +31,7 @@ import {
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from './../Rajesh/CustomSearchBar';
+import FormsBottomNavbar from './CustomNav';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ const PropertyCard = () => {
   };
 
   return (
+    
     <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh', pb: 10 }}>
       {/* Fixed Search Bar */}
       <Box
@@ -242,14 +244,8 @@ const PropertyCard = () => {
       </Box>
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+      <FormsBottomNavbar />
+
     </Box>
   );
 };

@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import img1 from '../Images/vendorcard.jpg';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FormsBottomNavbar from './FormsBottomNavbar';
+import SearchBar from './PostBack';
 
 // Array of form navigation options
 const options = [
@@ -47,49 +48,124 @@ const Forms = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
 
+  const handleBackClick = () => navigate(-1);
+
   return (
-    <Box
-      sx={{
-        px: 2,
-        pt: 3,
-        pb: 10,
-        maxWidth: '100%',
-        mx: 'auto',
-        minHeight: '100vh',
-        backgroundImage: 'url(https://www.transparenttextures.com/patterns/cubes.png)', // ✅ Pattern background
-        backgroundColor: '#f5f5f5', // ✅ Fallback background
-      }}
-    >
-      <Button
-        startIcon={<ArrowBackIosNewIcon />}
-        onClick={() => navigate(-1)}
+    <>
+      <SearchBar
+        onBackClick={handleBackClick}
+      />
+
+      <Box
         sx={{
-          mb: 1,
-          fontWeight: 600,
-          color: '#333',
-          '&:hover': {
-            backgroundColor: '#e0e0e0',
-          },
+          px: 2,
+          pt: 10,
+          pb: 10,
+          maxWidth: '100%',
+          mx: 'auto',
+          minHeight: '100vh',
+          backgroundImage: 'url(https://www.transparenttextures.com/patterns/cubes.png)', // ✅ Pattern background
+          backgroundColor: '#f5f5f5', // ✅ Fallback background
         }}
       >
-        Back
-      </Button>
+        <Stack spacing={3}>
+          {options.map((item, index) => (
+            <Box key={index} onClick={() => navigate(item.path)} sx={{ cursor: 'pointer' }}>
+              <Paper
+                elevation={4}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  bgcolor: '#D6C0B3',
+                  height: 100,
+                  borderTopLeftRadius: '40px', // ✅ Simplified border-radius logic
+                  borderBottomRightRadius: '40px',
 
-      <Stack spacing={3}>
-        {options.map((item, index) => (
-          <Box key={index} onClick={() => navigate(item.path)} sx={{ cursor: 'pointer' }}>
+
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.03)',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+                  },
+                }}
+              >
+                {item.leftLabel && (
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: '99%',
+                      bgcolor: '#343a40',
+                      color: '#fff',
+                      writingMode: 'vertical-rl',
+                      transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
+                      textAlign: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      borderTopRightRadius: '5px',
+                      borderBottomRightRadius: '40px',
+                    }}
+                  >
+                    {item.leftLabel}
+                  </Box>
+                )}
+
+                {/* ✅ Fixed fallback to only centerText as label isn't defined in options */}
+                <Typography
+                  sx={{
+                    flexGrow: 1,
+                    textAlign: 'center',
+                    whiteSpace: 'pre-line', // ✅ To support line breaks
+                    fontWeight: 600,
+                    fontSize: isMobile ? '14px' : '16px',
+                    color: '#333',
+                  }}
+                >
+                  {item.centerText}
+                </Typography>
+
+                {item.rightLabel && (
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: '100%',
+                      bgcolor: '#343a40',
+                      color: '#fff',
+                      writingMode: 'vertical-rl',
+                      transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
+                      textAlign: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      borderBottomLeftRadius: '5px',
+                      borderTopLeftRadius: '40px',
+                    }}
+                  >
+                    {item.rightLabel}
+                  </Box>
+                )}
+              </Paper>
+            </Box>
+          ))}
+
+          {/* ✅ Vendor Registration Section */}
+          <Box onClick={() => navigate('/vendor-form')} sx={{ cursor: 'pointer' }}>
             <Paper
               elevation={4}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
                 bgcolor: '#D6C0B3',
                 height: 100,
-                borderTopLeftRadius: '40px', // ✅ Simplified border-radius logic
+                borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
-                
-              
+                borderTopRightRadius: '10px',
+                borderBottomleftRadius: '10px',
                 transition: 'transform 0.3s ease',
                 '&:hover': {
                   transform: 'scale(1.03)',
@@ -97,125 +173,42 @@ const Forms = () => {
                 },
               }}
             >
-              {item.leftLabel && (
-                <Box
-                  sx={{
-                    width: 40,
-                    height: '99%',
-                    bgcolor: '#343a40',
-                    color: '#fff',
-                    writingMode: 'vertical-rl',
-                     transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
-                    textAlign: 'center',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 600,
-                    borderTopRightRadius: '5px',
-                    borderBottomRightRadius: '40px',
-                  }}
-                >
-                  {item.leftLabel}
-                </Box>
-              )}
-
-              {/* ✅ Fixed fallback to only centerText as label isn't defined in options */}
-              <Typography
+              <Box
                 sx={{
-                  flexGrow: 1,
-                  textAlign: 'center',
-                  whiteSpace: 'pre-line', // ✅ To support line breaks
+                  width: 60,
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Avatar
+                  src={img1}
+                  alt="Vendor"
+                  sx={{
+                    width: 55,
+                    height: 55,
+                    border: '2px solid #fff',
+                  }}
+                />
+              </Box>
+              <Typography
+                variant="body1"
+                sx={{
+                  ml: 2,
                   fontWeight: 600,
-                  fontSize: isMobile ? '14px' : '16px',
+                  fontSize: isMobile ? '14px' : '18px',
                   color: '#333',
                 }}
               >
-                {item.centerText}
+                Vendors Registration
               </Typography>
-
-              {item.rightLabel && (
-                <Box
-                  sx={{
-                    width: 40,
-                    height: '100%',
-                    bgcolor: '#343a40',
-                    color: '#fff',
-                    writingMode: 'vertical-rl',
-                    transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
-                    textAlign: 'center',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 600,
-                    borderBottomLeftRadius: '5px',
-                    borderTopLeftRadius: '40px', 
-                  }}
-                >
-                  {item.rightLabel}
-                </Box>
-              )}
             </Paper>
           </Box>
-        ))}
-
-        {/* ✅ Vendor Registration Section */}
-        <Box onClick={() => navigate('/vendor-form')} sx={{ cursor: 'pointer' }}>
-          <Paper
-            elevation={4}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              bgcolor: '#D6C0B3',
-              height: 100,
-              borderTopLeftRadius: '40px',
-              borderBottomRightRadius: '40px',
-              borderTopRightRadius: '10px',
-              borderBottomleftRadius: '10px',
-              transition: 'transform 0.3s ease',
-              '&:hover': {
-                transform: 'scale(1.03)',
-                boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-              },
-            }}
-          >
-            <Box
-              sx={{
-                width: 60,
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Avatar
-                src={img1}
-                alt="Vendor"
-                sx={{
-                  width: 55,
-                  height: 55,
-                  border: '2px solid #fff',
-                }}
-              />
-            </Box>
-            <Typography
-              variant="body1"
-              sx={{
-                ml: 2,
-                fontWeight: 600,
-                fontSize: isMobile ? '14px' : '18px',
-                color: '#333',
-              }}
-            >
-              Vendors Registration
-            </Typography>
-          </Paper>
-        </Box>
-      </Stack>
-      <FormsBottomNavbar />
-    </Box>
-    
+        </Stack>
+        <FormsBottomNavbar />
+      </Box>
+    </>
   );
 };
 
