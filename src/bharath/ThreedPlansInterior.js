@@ -4,8 +4,14 @@ import {
   useMediaQuery, useTheme, BottomNavigation,
   BottomNavigationAction,   Paper
 } from '@mui/material';
-import pic1 from './Images/3d-pic1.jpg';
-import pic2 from './Images/3d-pic2.jpg';
+import pic1 from '../Images/3dplan.jpg';
+import pic2 from '../Images/virtual.jpg';
+import pic3 from '../Images/visualization.jpg';
+import pic4 from '../Images/spaceplanings.jpg';
+import pic5 from '../Images/lighting.jpg';
+import pic6 from '../Images/material.jpg';
+import pic7 from '../Images/furniture.jpg';
+import pic8 from '../Images/final.jpg';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
@@ -25,37 +31,37 @@ const data = [
   {
     id: 2,
     title: 'Virtual Walkthrough',
-    image: pic1
+    image: pic2
   },
   {
     id: 3,
     title: 'Interior Renderings',
-    image: pic2
+    image: pic3
   },
   {
     id: 4,
     title: 'Space Planning',
-    image: pic2
+    image: pic4
   },
   {
     id: 5,
     title: 'Lighting Simulation',
-    image: pic1
+    image: pic5
   },
   {
     id: 6,
     title: 'Material Selection',
-    image: pic2
+    image: pic6
   },
   {
     id: 7,
     title: 'Furniture Layout',
-    image: pic1
+    image: pic7
   },
   {
     id: 8,
     title: 'Final Presentation',
-    image: pic2
+    image: pic8
   }
 ];
 
