@@ -186,7 +186,7 @@ const Rent_Property_Map = () => {
 {selectedProperty && (
   <Box sx={{
     position: 'absolute',
-    bottom: 30,
+    bottom: 62,
     left: 0,
     right: 0,
     margin: '0 auto',
