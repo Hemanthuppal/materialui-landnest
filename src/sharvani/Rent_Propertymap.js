@@ -106,7 +106,19 @@ const Rent_Property_Map = () => {
   };
 
   return (
-    <Box sx={{ pb: 7, maxWidth: 480, mx: "auto", position: 'relative' ,backgroundColor: 'rgb(239, 231, 221)'}}>
+    <Box
+  sx={{
+    height: '100vh',
+    maxWidth: 480,
+    mx: 'auto',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'rgb(239, 231, 221)',
+    position: 'relative',
+  }}
+>
+
        {/* Sticky Search Bar */}
   <Box
     sx={{
@@ -123,28 +135,29 @@ const Rent_Property_Map = () => {
   </Box>
 
       {/* Rental Type Chips */}
-      <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1,
-            overflowX: 'auto',
-            whiteSpace: 'nowrap',
-            pb: 1,
-            mb: 2
-          }}
-        >
-          {rentalTypes.map((type, index) => (
-            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
-          ))}
-        </Box>
-      </Box>
+      {/* Chips Section */}
+<Box sx={{ p: 2, flexShrink: 0 }}>
+  <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
+  <Box
+    sx={{
+      display: 'flex',
+      gap: 1,
+      overflowX: 'auto',
+      whiteSpace: 'nowrap',
+      pb: 1
+    }}
+  >
+    {rentalTypes.map((type, index) => (
+      <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
+    ))}
+  </Box>
+</Box>
+
 
       {/* Google Map */}
       {isLoaded ? (
         <Box sx={{ px: 2, pb: 10 }}> {/* Add padding around map */}
-        <Box sx={{ width: '100%', height: containerStyle.height }}>
+        <Box sx={{  width: '100%', height: '100%' }}>
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
@@ -173,7 +186,7 @@ const Rent_Property_Map = () => {
 {selectedProperty && (
   <Box sx={{
     position: 'absolute',
-    bottom: 164,
+    bottom: 30,
     left: 0,
     right: 0,
     margin: '0 auto',

@@ -10,7 +10,7 @@ const navItems = [
   { key: 'home', icon: <HomeIcon />, route: '/dashboard', label: 'Home' },
   { key: 'list', icon: <FormatListBulletedIcon />, route: '/lease_details', label: 'List' },
   { key: 'saves', icon: <FavoriteBorderIcon />, route: '/lease_save', label: 'Saves' },
-  { key: 'inbox', icon: <MailOutlineIcon />, route: '/inbox', label: 'Inbox' },
+  { key: 'inbox', icon: <MailOutlineIcon />, route: '/inboxlist', label: 'Inbox' },
 ];
 
 const CustomBottomNav = () => {
