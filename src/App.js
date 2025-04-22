@@ -91,10 +91,14 @@ function App() {
      <Route path="/register" element={<Register />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* Tharun */}
         <Route path="/home-service" element={<HomeService />} />
         <Route path="/work-details" element={<WorkerDetails />} />
         <Route path="/inboxlist" element={<InboxList />} />
-        <Route path="/work-detail" element={<WorkerDetail />} />
+        <Route path="/work-detail" element={<WorkerDetail />} />
+
+
         <Route path="/post" element={<Forms/>} />
         <Route path="/details" element={<Details_Page />} />
         <Route path="/postyourbestdeal-form" element={<PostYourBestDeal />} />
