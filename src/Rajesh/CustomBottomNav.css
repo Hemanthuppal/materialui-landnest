@@ -1,0 +1,69 @@
+:root {
+    --primary: #edd1a6; /* Biscuit color */
+    --background: #000;
+    --glow: rgba(244, 199, 133, 0.5);
+    --icon-default: #bbb;
+    --icon-active: #f1ce99;
+}
+
+.nav-wrapper {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 999;
+}
+
+.nav-bar {
+    position: relative;
+    display: flex;
+    background: var(--background);
+    border-radius: 35px;
+    padding: 10px 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 420px;
+    width: 90%;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.nav-item {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    color: var(--icon-default);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-item-active {
+    color: var(--icon-active);
+}
+
+.nav-label {
+    font-size: 0.65rem;
+    color: var(--icon-default);
+    margin-top: 2px;
+    text-align: center;
+}
+
+.nav-item-active .nav-label {
+    color: var(--icon-active);
+}
+
+.nav-indicator {
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    width: 50px;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: left 0.3s ease;
+    box-shadow: 0 0 8px var(--glow);
+}

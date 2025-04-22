@@ -1,97 +1,196 @@
-import React from 'react';
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
-  Box,
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+// import React, { useState, useEffect, useRef } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import HomeIcon from '@mui/icons-material/Home';
+// import BuildIcon from '@mui/icons-material/Build';
+// import AddCircleIcon from '@mui/icons-material/AddCircle';
+// import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import './FormsBottomNavbar.css';
+
+// const navItems = [
+//   { key: 'home', icon: <HomeIcon />, route: '/dashboard', label: 'Home' },
+//   { key: 'construction', icon: <BuildIcon />, route: '/constructions', label: 'Construction' },
+//   { key: 'post', icon: <AddCircleIcon />, route: '/post', label: 'Post', isCenter: true },
+//   { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service', label: 'Services' },
+//   { key: 'profile', icon: <AccountCircleIcon />, route: '/profile', label: 'Profile' },
+// ];
+
+// const FormsBottomNavbar = () => {
+//   const [active, setActive] = useState('post');
+//   const navigate = useNavigate();
+//   const navRef = useRef(null);
+
+//   useEffect(() => {
+//     const current = document.querySelector(`.nav-item[data-key="${active}"]`);
+//     const indicator = document.querySelector('.nav-indicator');
+//     if (current && indicator) {
+//       const { offsetLeft, offsetWidth } = current;
+//       indicator.style.left = `${offsetLeft + offsetWidth / 2 - 25}px`;
+//     }
+//   }, [active]);
+
+//   const handleNav = (item) => {
+//     setActive(item.key);
+//     navigate(item.route);
+//   };
+
+//   return (
+//     <div className="nav-wrapper">
+//       <div className="nav-bar" ref={navRef}>
+//         {navItems.map((item) => (
+//           <div
+//             key={item.key}
+//             data-key={item.key}
+//             className={`nav-item ${active === item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
+//             onClick={() => handleNav(item)}
+//           >
+//             {item.icon}
+//             {!item.isCenter && <span className="nav-label">{item.label}</span>}
+//           </div>
+//         ))}
+//         <div className="nav-indicator" />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FormsBottomNavbar;
+
+// import React, { useEffect, useRef } from 'react';
+// import { useNavigate, useLocation } from 'react-router-dom';
+// import HomeIcon from '@mui/icons-material/Home';
+// import BuildIcon from '@mui/icons-material/Build';
+// import AddCircleIcon from '@mui/icons-material/AddCircle';
+// import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import './FormsBottomNavbar.css';
+
+// const navItems = [
+//   { key: 'home', icon: <HomeIcon />, route: '/dashboard' },
+//   { key: 'construction', icon: <BuildIcon />, route: '/constructions' },
+//   { key: 'post', icon: <AddCircleIcon />, route: '/post', isCenter: true },
+//   { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service' },
+//   { key: 'profile', icon: <AccountCircleIcon />, route: '/profile' },
+// ];
+
+// const FormsBottomNavbar = () => {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const navRef = useRef(null);
+
+//   const currentKey = navItems.find(item => location.pathname.startsWith(item.route))?.key || 'post';
+
+//   useEffect(() => {
+//     const current = document.querySelector(`.nav-item[data-key="${currentKey}"]`);
+//     const indicator = document.querySelector('.nav-indicator');
+//     if (current && indicator) {
+//       const { offsetLeft, offsetWidth } = current;
+//       indicator.style.left = `${offsetLeft + offsetWidth / 2 - 25}px`;
+//     }
+//   }, [currentKey]);
+
+//   const handleNav = (item) => {
+//     navigate(item.route);
+//   };
+
+//   return (
+//     <div className="nav-wrapper">
+//       <div className="nav-bar" ref={navRef}>
+//         {navItems.map((item) => (
+//           <div
+//             key={item.key}
+//             data-key={item.key}
+//             className={`nav-item ${currentKey === item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
+//             onClick={() => handleNav(item)}
+//           >
+//             {item.icon}
+//           </div>
+//         ))}
+//         <div className="nav-indicator" />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FormsBottomNavbar;
+import React, { useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import './FormsBottomNavbar.css';
+
+import ConstructionIcon from '@mui/icons-material/Construction';
+
+
+
+const navItems = [
+  { key: 'home', icon: <HomeIcon />, route: '/dashboard', label: 'Home' },
+  { key: 'construction', icon: <ConstructionIcon />, route: '/constructions', label: 'Construction & Interior' },
+  { key: 'spacer', isSpacer: true },
+  { key: 'services', icon: <CleaningServicesIcon />, route: '/home-service', label: 'Home Services' },
+  { key: 'profile', icon: <AccountCircleIcon />, route: '/work-detail', label: 'Profile' },
+];
+
+const centerItem = { key: 'post', icon: <AddCircleIcon />, route: '/post', label: 'Post', isCenter: true };
 
 const FormsBottomNavbar = () => {
-  const [value, setValue] = React.useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const navRef = useRef(null);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    switch (newValue) {
-      case 'home':
-        navigate('/dashboard');
-        break;
-      case 'construction':
-        navigate('/constructions');
-        break;
-      case 'post':
-        navigate('/post');
-        break;
-      case 'services':
-        navigate('/home-service');
-        break;
-      case 'profile':
-        navigate('/work-detail');
-        break;
-      default:
-        break;
+  const currentKey = location.pathname.startsWith(centerItem.route)
+    ? centerItem.key
+    : navItems.find((item) => location.pathname.startsWith(item.route))?.key || 'home';
+
+  useEffect(() => {
+    const current = document.querySelector(`.nav-item[data-key="${currentKey}"]`);
+    const indicator = document.querySelector('.nav-indicator');
+    if (current && indicator) {
+      const { offsetLeft, offsetWidth } = current;
+      indicator.style.left = `${offsetLeft + offsetWidth / 2 - 25}px`;
     }
+  }, [currentKey]);
+
+  const handleNav = (item) => {
+    if (!item.isSpacer) navigate(item.route);
   };
 
   return (
-    <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-      <Paper elevation={8}>
-        <BottomNavigation
-          value={value}
-          onChange={handleChange}
-          showLabels
-          sx={{
-            borderTop: '1px solid #e0e0e0',
-            height: '60px',
-            '& .MuiBottomNavigationAction-root': {
-              minWidth: 'auto',
-              padding: '6px 0',
-              color: '#757575',
-            },
-            '& .MuiBottomNavigationAction-label': {
-              fontSize: '0.7rem',
-            },
-          }}
+    <div className="nav-wrapper">
+      <div className="nav-bar" ref={navRef}>
+        {navItems.map((item) =>
+          item.isSpacer ? (
+            <div key="spacer" className="nav-spacer" />
+          ) : (
+            <div
+              key={item.key}
+              data-key={item.key}
+              className={`nav-item ${currentKey === item.key ? 'active' : ''}`}
+              onClick={() => handleNav(item)}
+            >
+              {item.icon}
+              <div className="nav-label">{item.label}</div>
+            </div>
+          )
+        )}
+
+        <div
+          className={`nav-item center ${currentKey === centerItem.key ? 'active' : ''}`}
+          data-key={centerItem.key}
+          onClick={() => handleNav(centerItem)}
         >
-          <BottomNavigationAction
-            value="home"
-            label="Home"
-            icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="construction"
-            label="Construction & Interiors"
-            icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="post"
-            label="Post"
-            icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-            sx={{
-              '& .MuiSvgIcon-root': { color: '#2196f3' },
-              '& .MuiBottomNavigationAction-label': { color: '#2196f3' },
-            }}
-          />
-          <BottomNavigationAction
-            value="services"
-            label="Home Services"
-            icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="profile"
-            label="Profile"
-            icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-        </BottomNavigation>
-      </Paper>
-    </Box>
+          {centerItem.icon}
+          <div className="nav-label">{centerItem.label}</div>
+        </div>
+
+        <div className="nav-indicator" />
+      </div>
+    </div>
   );
 };
 
 export default FormsBottomNavbar;
+

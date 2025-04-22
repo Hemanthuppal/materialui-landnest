@@ -81,12 +81,12 @@ const SearchBar = ({ onBackClick }) => {
         justifyContent: 'space-between',
         px: 1.5,
         py: 1,
-        bgcolor: '#12192c', // Deep navy
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+        bgcolor: '#D6C0B3', // Deep navy
+        
       }}
     >
       {/* Back Button */}
-      <IconButton onClick={onBackClick} sx={{ color: 'white' }}>
+      <IconButton onClick={onBackClick} sx={{ color: 'black' }}>
         <ArrowBackIosNewIcon />
       </IconButton>
 

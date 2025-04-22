@@ -138,10 +138,8 @@ const Login = () => {
   
       if (response.ok) {
         if (rememberMe) {
-          localStorage.setItem('isAuthenticated', 'true');
-          localStorage.setItem("user_id", data.user_id);
-       
-         
+          sessionStorage.setItem('isAuthenticated', 'true');
+          sessionStorage.setItem('user_id', data.user_id);
         }
   
         navigate('/dashboard');
@@ -153,6 +151,7 @@ const Login = () => {
       setError('Something went wrong. Please try again later.');
     }
   };
+  
   
 
   return (

@@ -32,7 +32,7 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import image from "../Images/construction.jpg";
-import image1 from "../Images/building.jpeg";
+import image1 from "../Images/interior.avif";
 import image2 from "../Images/renovation.png";
 import image3 from "../Images/Painting.png";
 import image4 from "../Images/Electrical.jpg";
@@ -64,9 +64,7 @@ import {
 
 } from '@mui/icons-material';
 import { href } from 'react-router-dom';
-
-
-
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
@@ -165,8 +163,6 @@ const cards = [
 ];
 
 
-
-
 function App() {
 
   const navigate = useNavigate();
@@ -188,7 +184,7 @@ function App() {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/work-detail');
+        navigate('/profile');
         break;
       default:
         navigate('/');
@@ -196,22 +192,20 @@ function App() {
   };
 
   return (
+    <>
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
 
-
-
-
-      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden',marginBottom:"100px" }}>
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '90vh', sm: '85vh' },
+            height: { xs: '86vh', sm: '82vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             overflow: 'hidden',
-            borderTopLeftRadius: '30px',
-            borderBottomRightRadius: '30px',
+            borderTopLeftRadius: '18px',
+            borderBottomRightRadius: '18px',
             // marginTop: '10px',
             marginTop: '0.5%',
     marginLeft: '0.5%',
@@ -233,7 +227,7 @@ function App() {
           <Box
             sx={{
               width: '100%',
-              background: 'linear-gradient(145deg,rgb(36, 36, 36),rgb(36, 36, 36))',
+              background: 'linear-gradient(145deg,rgb(18, 17, 17),rgb(18, 17, 17))',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -250,8 +244,8 @@ function App() {
               alt="User"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               sx={{
-                width: { xs: 30, sm: 34 },
-                height: { xs: 30, sm: 34 },
+                width: { xs: 45, sm: 34 },
+                height: { xs: 45, sm: 34 },
                 border: '3px solid rgba(216,204,186,0.7)',
                 boxShadow: `
           0 3px 10px rgba(0,0,0,0.3),
@@ -386,7 +380,7 @@ function App() {
           <Box
             sx={{
               background: `
-        linear-gradient(145deg, #2a2a2a, #1e1e1e),
+        linear-gradient(145deg,rgb(22, 22, 22),rgb(15, 15, 15)),
         url('https://www.transparenttextures.com/patterns/dark-matter.png')
       `,
               width: '100%',
@@ -472,8 +466,9 @@ function App() {
           <AppBar
             position="fixed" // Fixed at top
             sx={{
-              bgcolor: 'rgb(212, 209, 205)',
+              bgcolor: 'rgba(232, 217, 183, 0.95)',
               boxShadow: 'none',
+              border:'1px solid black',
               height: '50px',
               width: '82%',
               ml: "65",
@@ -483,7 +478,7 @@ function App() {
               
             }}
           >
-            <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
+            <Toolbar sx={{ minHeight: '50px !important', px: 1,}}>
               <Search sx={{ flex: 1, mx: 1 }}>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ fontSize: '1rem' }} />
@@ -497,7 +492,7 @@ function App() {
                 <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
               <IconButton size="small">
-                <RiMessengerLine  onClick={() => navigate('/inboxlist')} sx={{ fontSize: '1rem', color: '#757575' }} />
+                <RiMessengerLine  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
             </Toolbar>
           </AppBar>
@@ -577,9 +572,6 @@ function App() {
                     </Grid>
                   ))}
                   
-
-
-
                   {/* Second Row: Centered Third Card */}
                   <Grid item xs={12} display="flex" justifyContent="center">
                     <Link to="/lease_map" style={{ textDecoration: 'none' }}>
@@ -636,8 +628,6 @@ function App() {
               </Card>
             </Box>
           </Box>
-
-
 
           <Box mb={2}>
             <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
@@ -744,8 +734,6 @@ function App() {
             </Card>
           </Box>
           <Box mb={2}>
-
-
             <Card
               sx={{
                 backgroundColor: '#d8ccba',
@@ -793,9 +781,6 @@ function App() {
               </CardContent>
             </Card>
           </Box>
-
-
-
 
           <Box mb={2}>
             <Typography variant="h6" fontWeight='bold' align="center" mb={1}>
@@ -849,7 +834,6 @@ function App() {
               </CardContent>
             </Card>
           </Box>
-
 
           <Box mb={2}>
             <Card
@@ -1147,6 +1131,7 @@ function App() {
             </Card>
 
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1195,6 +1180,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1243,6 +1229,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1291,6 +1278,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1388,6 +1376,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1436,6 +1425,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+
           <Box mb={2}>
             <Card
               sx={{
@@ -1484,6 +1474,7 @@ function App() {
               </CardContent>
             </Card>
           </Box>
+          
           <Box mb={2}>
             <Card
               sx={{
@@ -1535,65 +1526,13 @@ function App() {
 
 
         </Box>
-
-
-
-
-
       </Box>
 
+      
 
-
-
-
-      <BottomNavigation
-        value={value}
-        onChange={handleChange}
-        showLabels
-        sx={{
-          borderTop: '1px solid #e0e0e0',
-          height: '60px',
-          '& .MuiBottomNavigationAction-root': {
-            minWidth: 'auto',
-            padding: '6px 0',
-            color: 'black',
-          },
-          '& .MuiBottomNavigationAction-label': {
-            fontSize: '0.7rem',
-          },
-        }}
-      >
-        <BottomNavigationAction
-          value="home"
-          label="Home"
-          icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          value="construction"
-          label="Construction & Interiors"
-          icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          value="post"
-          label="Post"
-          icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-          sx={{
-            '& .MuiSvgIcon-root': { color: '#2196f3' },
-            '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-          }}
-        />
-        <BottomNavigationAction
-          value="services"
-          label="Home Services"
-          icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-        <BottomNavigationAction
-          value="profile"
-          label="Profile"
-          icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-        />
-      </BottomNavigation>
     </Box>
+    <FormsBottomNavbar />
+    </>
   );
 }
 
