@@ -86,7 +86,7 @@ const SearchBar = ({ onBackClick }) => {
       }}
     >
       {/* Back Button */}
-      <IconButton onClick={onBackClick} sx={{ color: '#f4c430' }}>
+      <IconButton onClick={onBackClick} sx={{ color: 'white' }}>
         <ArrowBackIosNewIcon />
       </IconButton>
 

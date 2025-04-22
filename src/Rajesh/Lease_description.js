@@ -391,7 +391,7 @@ const Lease_description = () => {
     if (newValue === 3) navigate('/inboxlist');
   };
   return (
-    <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10 }}>
+    <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: ' #f8f9fa', pb: 10,  backgroundColor: 'rgb(239, 231, 221)' }}>
       {/* Header with Back Button */}
       <Box
        sx={{
@@ -405,6 +405,7 @@ const Lease_description = () => {
         p: 2,
         display: 'flex',
         alignItems: 'center',
+       
       }}
       >
         <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
