@@ -248,8 +248,8 @@ function App() {
               alt="User"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               sx={{
-                width: { xs: 30, sm: 34 },
-                height: { xs: 30, sm: 34 },
+                width: { xs: 40, sm: 34 },
+                height: { xs: 40, sm: 34 },
                 border: '3px solid rgba(216,204,186,0.7)',
                 boxShadow: `
           0 3px 10px rgba(0,0,0,0.3),
@@ -279,8 +279,8 @@ function App() {
               justifyContent: 'space-between',
               pt: 2,
               pb: 2,
-              borderTopLeftRadius: '40px',
-              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '20px',
+              borderBottomRightRadius: '20px',
               boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.1),
         0 5px 10px rgba(0,0,0,0.1)
@@ -307,8 +307,8 @@ function App() {
               <Typography
                 sx={{
                   fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                  color: '#5a4d3a',
-                  fontWeight: 700,
+                  color: '#3a3225',
+                  fontWeight: 1000,
                   fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
                   letterSpacing: '1.2px',
                   textTransform: 'uppercase',
@@ -368,8 +368,8 @@ function App() {
               <Typography
                 sx={{
                   fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                  color: '#5a4d3a',
-                  fontWeight: 700,
+                  color: '#3a3225',
+                  fontWeight: 1000,
                   letterSpacing: '1.2px',
                   textTransform: 'uppercase',
                   textShadow: '0 1px 2px rgba(255,255,255,0.5)'
