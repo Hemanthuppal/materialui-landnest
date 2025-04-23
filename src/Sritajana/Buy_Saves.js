@@ -78,7 +78,7 @@ const BuySaves = () => {
           left: 0,
           right: 0,
           zIndex: 10,
-          backgroundColor: 'white',
+          backgroundColor: 'rgb(239, 231, 221)',
           boxShadow: 1,
         }}
       >

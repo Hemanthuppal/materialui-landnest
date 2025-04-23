@@ -104,8 +104,17 @@ const PropertyCard = () => {
   };
 
   return (
-    
-    <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh', pb: 10 }}>
+    <Box sx={{ 
+      backgroundColor: 'rgb(239, 231, 221)',
+      minHeight: '100vh',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      pb: 10,
+      overflowY: 'auto'
+    }}>
       {/* Fixed Search Bar */}
       <Box
         sx={{
@@ -125,13 +134,12 @@ const PropertyCard = () => {
       </Box>
 
       {/* Property Cards with margin top to offset fixed search bar */}
-      <Box sx={{ mt: '120px' }}>
+      <Box sx={{ mt: '120px', px: 2 }}>
         {filteredProperties.map((property) => (
           <Card
             key={property.id}
             sx={{
               mb: 4,
-              mx: 2,
               borderRadius: 4,
               boxShadow: 3,
               transition: 'transform 0.2s ease-in-out',
@@ -245,7 +253,6 @@ const PropertyCard = () => {
 
       {/* Bottom Navigation */}
       <FormsBottomNavbar />
-
     </Box>
   );
 };

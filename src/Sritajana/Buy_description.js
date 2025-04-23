@@ -50,14 +50,20 @@ const Buy_description = () => {
 
   return (
     <Box sx={{ width: '100vw', minHeight: '100vh', backgroundColor: 'rgb(239, 231, 221)', pb: 10 }}>
-      {/* Header with Back Button */}
+      {/* Fixed Header with Back Button */}
       <Box
         sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
           bgcolor: 'rgb(49, 48, 49)',
           color: 'white',
           p: 2,
           display: 'flex',
           alignItems: 'center',
+          height: '64px',
         }}
       >
         <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
@@ -68,8 +74,13 @@ const Buy_description = () => {
         </Typography>
       </Box>
 
-      {/* Details Card */}
-      <Box sx={{ px: 2, mt: 3 }}>
+      {/* Content with proper spacing */}
+      <Box sx={{ 
+        pt: '80px', // Padding to account for fixed header
+        px: 2,
+        backgroundColor: 'rgb(239, 231, 221)',
+        mt: 4 // Added margin top for space between header and card
+      }}>
         <Card
           sx={{
             borderRadius: '20px',
@@ -77,7 +88,7 @@ const Buy_description = () => {
             boxShadow: 5,
           }}
         >
-          {/* Image */}
+          {/* Rest of your card content remains the same */}
           <Box
             component="img"
             src={buildingImage}

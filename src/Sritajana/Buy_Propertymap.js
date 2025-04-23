@@ -157,7 +157,7 @@ const Rent_Property_Map = () => {
 
       {/* Rental Type Chips */}
       <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property </Typography>
         <Box
           sx={{
             display: 'flex',
