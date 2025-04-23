@@ -439,8 +439,8 @@ const Login = () => {
                 margin="normal"
                 required
                 fullWidth
-                label="Email Address"
-                type="email"
+                label="Mobile Number"
+                type="mobile"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 InputProps={{
