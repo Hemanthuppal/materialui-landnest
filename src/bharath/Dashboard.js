@@ -468,61 +468,56 @@ function App() {
 
 
         <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
-          <AppBar
-            position="fixed" // Fixed at top
-            sx={{
-              bgcolor: 'rgba(232, 217, 183, 0.95)',
-              boxShadow: 'none',
-              border:'1px solid black',
-              height: '50px',
-              width: '82%',
-              ml: "65",
-              zIndex: 1201,
-              // marginTop: '0.5%',
-              // marginRight: '0.5%',// ensure it stays above other elements
-              
-            }}
-          >
-            <Toolbar sx={{ minHeight: '50px !important', px: 1,}}>
-              <Search sx={{ flex: 1, mx: 1 }}>
-                <SearchIconWrapper>
-                  <SearchIcon sx={{ fontSize: '1rem' }} />
-                </SearchIconWrapper>
-                <StyledInputBase placeholder="Search…" />
-              </Search>
-              <IconButton size="small">
-                <FavoriteBorderIcon sx={{ fontSize: '1rem', color: ' #757575' }} />
-              </IconButton>
-              <IconButton size="small">
-                <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton>
-              {/* <IconButton size="small">
-                <FaSms  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton> */}
-              {/* <IconButton size="small">
-                <MdSms  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton> */}
+        <AppBar
+  position="fixed"
+  sx={{
+    bgcolor: 'rgba(232, 217, 183, 0.95)',
+    boxShadow: 'none',
+    border: '1px solid black',
+    height: '50px',
+    width: '82%',
+    ml: "65",
+    zIndex: 1201,
+  }}
+>
+  <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
+    <Search sx={{
+      flex: 1,
+      mx: 1,
+      border: '1px solid black',
+      borderRadius: '25px',
+      display: 'flex',
+      alignItems: 'center',
+      px: 1,
+    }}>
+      <SearchIconWrapper>
+        <SearchIcon sx={{ fontSize: '1rem', color: 'black' }} />
+      </SearchIconWrapper>
+      <StyledInputBase placeholder="Search…" sx={{ color: 'black' }} />
+    </Search>
 
-              {/* <IconButton size="small">
-                <IoIosChatbubbles  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton> */}
+    {[
+      <FavoriteBorderIcon />,
+      <FaRegBell />,
+      <AiOutlineMessage />
+    ].map((Icon, index) => (
+      <IconButton
+        key={index}
+        size="small"
+        sx={{
+          border: '1px solid black',
+          borderRadius: '8px',
+          p: '4px',
+          mx: 0.5,
+          backgroundColor: 'transparent',
+        }}
+      >
+        {React.cloneElement(Icon, { sx: { fontSize: '1rem', color: 'black' } })}
+      </IconButton>
+    ))}
+  </Toolbar>
+</AppBar>
 
-              {/* <IconButton size="small">
-                <BiMessageSquareDetail  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton> */}
-
-              {/* <IconButton size="small">
-                <HiOutlineChatAlt2  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton> */}
-
-              <IconButton size="small">
-                <AiOutlineMessage  sx={{ fontSize: '1rem', color: '#757575' }} />
-              </IconButton>
-
-
-
-            </Toolbar>
-          </AppBar>
 
           {/* Add spacing to avoid content going under the AppBar */}
           <Box sx={{ mt: '60px' }}>

@@ -53,11 +53,11 @@ const VendorRegister = () => {
         libraries: ['places'],
     });
 
-    const { user_id } = useContext( useAuth );
+    // const { user_id } = useContext( useAuth );
     
     const [formData, setFormData] = useState({
         name: '',
-        user_id: user_id,
+        user_id: 1,
         profession: 'Plumbing',
         mobile: '',
         email: '',
