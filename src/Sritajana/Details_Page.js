@@ -114,7 +114,7 @@ const PropertyCard = () => {
           left: 0,
           right: 0,
           zIndex: 10,
-          backgroundColor: 'white',
+          backgroundColor: 'rgb(239, 231, 221)',
           px: 2,
           pt: 1,
           pb: 2,

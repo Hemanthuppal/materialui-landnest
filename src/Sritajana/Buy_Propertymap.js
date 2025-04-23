@@ -15,18 +15,19 @@ import { Close } from '@mui/icons-material';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import ListIcon from '@mui/icons-material/List';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MailIcon from '@mui/icons-material/Mail';
+
 
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './../sharvani/ReUsableCard';
-import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+
 import CustomBottomNav from './CustomNav';
+
+import {InputBase } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -126,7 +127,6 @@ const Rent_Property_Map = () => {
   };
 
   return (
-    
     <Box
       sx={{
         pb: 7,
@@ -137,19 +137,23 @@ const Rent_Property_Map = () => {
         minHeight: '100vh'
       }}
     >
-      {/* Sticky Search Bar */}
-      <Box
-        sx={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 1000,
-          bgcolor: '#fff',
-          px: 1,
-          py: 1
-        }}
-      >
-        <CustomSearchBar />
-      </Box>
+      
+
+
+
+<Box
+  sx={{
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+    bgcolor: 'rgb(239, 231, 221)', // matches the beige tone
+    px: 1,
+    py: 1,
+    
+  }}
+>
+  <CustomSearchBar />
+</Box>
 
       {/* Rental Type Chips */}
       <Box sx={{ p: 2 }}>
@@ -224,11 +228,10 @@ const Rent_Property_Map = () => {
       )}
 
       {/* Bottom Navigation */}
-      <CustomBottomNav />
-      
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <CustomBottomNav/>
+      </Paper>
     </Box>
-    
-    
   );
 };
 
