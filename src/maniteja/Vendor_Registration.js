@@ -8,7 +8,7 @@ import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-m
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
-import { useAuth  } from '../AuthContext/AuthContext';
+import { AuthContext  } from '../AuthContext/AuthContext';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -47,17 +47,18 @@ const GreenButton = styled(Button)({
 });
 
 const VendorRegister = () => {
+
+    const { userId, logout } = useContext(AuthContext);
+
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
-
-    const { user_id } = useContext( useAuth );
     
     const [formData, setFormData] = useState({
         name: '',
-        user_id: user_id,
+        user_id: '', 
         profession: 'Plumbing',
         mobile: '',
         email: '',
@@ -141,45 +142,45 @@ const VendorRegister = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+      
         const formDataToSend = new FormData();
-        
-        // Append all form data
-        Object.keys(formData).forEach(key => {
-            formDataToSend.append(key, formData[key]);
+      
+        // Inject userId dynamically before sending
+        const updatedFormData = { ...formData, user_id: userId };
+      
+        Object.keys(updatedFormData).forEach(key => {
+          formDataToSend.append(key, updatedFormData[key]);
         });
-        
-        // Append profile photo if exists
+      
         if (profilePhoto) {
-            formDataToSend.append('profile', profilePhoto);
+          formDataToSend.append('profile', profilePhoto);
         }
-        
-        // Append work photos if exists
-        workPhotos.forEach((photo, index) => {
-            formDataToSend.append(`new_work_images`, photo);
+      
+        workPhotos.forEach((photo) => {
+          formDataToSend.append('new_work_images', photo);
         });
-        
+      
         try {
-            const response = await fetch('http://46.37.122.105:89/vendors/', {
-                method: 'POST',
-                body: formDataToSend,
-                // Don't set Content-Type header when using FormData
-                // The browser will set it automatically with the correct boundary
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Success:', data);
-                alert('Vendor registered successfully!');
-                navigate('/'); // Redirect to home or another page
-            } else {
-                throw new Error('Network response was not ok');
-            }
+          const response = await fetch('http://46.37.122.105:89/vendors/', {
+            method: 'POST',
+            body: formDataToSend,
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Success:', data);
+            alert('Vendor registered successfully!');
+            navigate('/dashboard');
+          } else {
+            throw new Error('Network response was not ok');
+          }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Error submitting form. Please try again.');
+          console.error('Error:', error);
+          alert('Error submitting form. Please try again.');
         }
-    };
+      };
+      
+    
 
     const handleBackClick = () => {
         navigate(-1);

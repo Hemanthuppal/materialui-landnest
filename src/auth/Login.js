@@ -105,7 +105,8 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../AuthContext/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import landNestLogo from '../../src/assets/LandNestLogo.jpg'; // adjust path as needed
 
@@ -117,6 +118,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,12 +140,15 @@ const Login = () => {
       const data = await response.json();
   
       if (response.ok) {
+        // Save to context instead of only sessionStorage
+        login(data.user_id); // <- this sets user_id in AuthContext
+  
         if (rememberMe) {
           sessionStorage.setItem('isAuthenticated', 'true');
           sessionStorage.setItem('user_id', data.user_id);
         }
-        console.log("userid=",data.user_id);
   
+        console.log("userid=", data.user_id);
         navigate('/dashboard');
       } else {
         setError(data.message || 'Invalid email or password');
@@ -152,6 +158,7 @@ const Login = () => {
       setError('Something went wrong. Please try again later.');
     }
   };
+  
   
   return (
     <div style={styles.container}>
