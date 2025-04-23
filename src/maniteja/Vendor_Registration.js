@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
     Box, Typography, TextField, Button, Select, MenuItem,
     InputLabel, FormControl, Paper, Stack, styled
@@ -8,6 +8,7 @@ import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-m
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
+import { useAuth  } from '../AuthContext/AuthContext';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -51,15 +52,20 @@ const VendorRegister = () => {
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
+
+    const { user_id } = useContext( useAuth );
     
     const [formData, setFormData] = useState({
         name: '',
+        user_id: user_id,
         profession: 'Plumbing',
         mobile: '',
         email: '',
         address: '',
         experience: '',
-        description: ''
+        description: '',
+        lat: '',
+        long: ''
     });
     
     const [profilePhoto, setProfilePhoto] = useState(null);
@@ -92,18 +98,21 @@ const VendorRegister = () => {
         if (autocompleteRef.current) {
             const place = autocompleteRef.current.getPlace();
             if (place && place.geometry) {
-                const newLoc = {
-                    lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng(),
-                };
-                setLocation(newLoc);
+                const newLat = place.geometry.location.lat();
+                const newLng = place.geometry.location.lng();
+    
+                setLocation({ lat: newLat, lng: newLng });
+    
                 setFormData(prev => ({
                     ...prev,
-                    address: place.formatted_address
+                    address: place.formatted_address,
+                    lat: newLat,
+                    long: newLng
                 }));
             }
         }
     };
+    
 
     const geocodeAddress = async () => {
         if (window.google && window.google.maps) {
@@ -111,13 +120,16 @@ const VendorRegister = () => {
             geocoder.geocode({ address: formData.address }, (results, status) => {
                 if (status === 'OK' && results[0]) {
                     const location = results[0].geometry.location;
-                    setLocation({
-                        lat: location.lat(),
-                        lng: location.lng(),
-                    });
+                    const lat = location.lat();
+                    const lng = location.lng();
+    
+                    setLocation({ lat, lng });
+    
                     setFormData(prev => ({
                         ...prev,
-                        address: results[0].formatted_address
+                        address: results[0].formatted_address,
+                        lat: lat,
+                        long: lng
                     }));
                 } else {
                     alert('Address could not be located. Please check input.');
@@ -125,6 +137,7 @@ const VendorRegister = () => {
             });
         }
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
