@@ -20,6 +20,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
+import FormsBottomNavbar from './CustomNav';
 
 const BuySaves = () => {
   const [saved, setSaved] = useState([]);
@@ -164,12 +165,8 @@ const BuySaves = () => {
 
       {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
+     
+        <FormsBottomNavbar/>
       </Paper>
     </>
   );
