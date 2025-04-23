@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
+import AuthProvider from './AuthContext/AuthContext';
 import Dashboard from './bharath/Dashboard';
 import Details_Page from './sharvani/PropertyList/Details_Page';
 import Vendor_Registration from './maniteja/Vendor_Registration';
@@ -72,6 +72,7 @@ function App() {
 
 
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
       {/* Auth routes */}
@@ -164,6 +165,7 @@ function App() {
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
