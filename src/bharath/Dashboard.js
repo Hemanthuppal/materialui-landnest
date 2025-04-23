@@ -81,7 +81,6 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   height: '100%',
@@ -210,8 +209,8 @@ function App() {
             flexDirection: 'column',
             alignItems: 'center',
             overflow: 'hidden',
-            borderTopLeftRadius: '40px',
-            borderBottomRightRadius: '40px',
+            borderTopLeftRadius: '18px',
+            borderBottomRightRadius: '18px',
             // marginTop: '10px',
             marginTop: '0.5%',
     marginLeft: '0.5%',
@@ -250,8 +249,8 @@ function App() {
               alt="User"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               sx={{
-                width: { xs: 30, sm: 34 },
-                height: { xs: 30, sm: 34 },
+                width: { xs: 45, sm: 34 },
+                height: { xs: 45, sm: 34 },
                 border: '3px solid rgba(216,204,186,0.7)',
                 boxShadow: `
           0 3px 10px rgba(0,0,0,0.3),
@@ -281,8 +280,8 @@ function App() {
               justifyContent: 'space-between',
               pt: 2,
               pb: 2,
-              borderTopLeftRadius: '40px',
-              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '30px',
+              borderBottomRightRadius: '30px',
               boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.1),
         0 5px 10px rgba(0,0,0,0.1)
@@ -484,7 +483,7 @@ function App() {
               
             }}
           >
-            <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
+            <Toolbar sx={{ minHeight: '50px !important', px: 1,}}>
               <Search sx={{ flex: 1, mx: 1 }}>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ fontSize: '1rem' }} />

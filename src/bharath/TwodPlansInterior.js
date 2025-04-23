@@ -4,8 +4,14 @@ import {
   useMediaQuery, useTheme, BottomNavigation,
   BottomNavigationAction,   Paper
 } from '@mui/material';
-import pic1 from './Images/2d-pic1.jpg';
-import pic2 from './Images/2d-pic2.jpg';
+import pic1 from '../Images/2dplan.jpg';
+import pic2 from '../Images/floorplans.jpg';
+import pic3 from '../Images/layout.jpg';
+import pic4 from '../Images/spaceplanning.jpg';
+import pic5 from '../Images/measurement.jpg';
+import pic6 from '../Images/structurejpg.jpg';
+import pic7 from '../Images/elevationviews.jpg';
+import pic8 from '../Images/sections.jpg';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
@@ -25,37 +31,37 @@ const data = [
   {
     id: 2,
     title: 'Floor Plans',
-    image: pic1
+    image: pic2
   },
   {
     id: 3,
     title: 'Layout Designs',
-    image: pic2
+    image: pic3
   },
   {
     id: 4,
     title: 'Space Planning',
-    image: pic2
+    image: pic4
   },
   {
     id: 5,
     title: 'Measurement Plans',
-    image: pic1
+    image: pic5
   },
   {
     id: 6,
     title: 'Structural Drawings',
-    image: pic2
+    image: pic6
   },
   {
     id: 7,
     title: 'Elevation Views',
-    image: pic1
+    image: pic7
   },
   {
     id: 8,
     title: 'Section Drawings',
-    image: pic2
+    image: pic8
   }
 ];
 

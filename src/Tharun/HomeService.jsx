@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -9,43 +9,17 @@ import {
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
- import CustomSearchBar from "./HomeServiceNavigate";
+import CustomSearchBar from "./HomeServiceNavigate";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
-const workers = [
-  {
-    id: 1,
-    name: "ABC",
-    role: "Painter",
-    mobile: "XXXXXXXXXX",
-    email: "abc@gmail.com",
-    experience: "2+ years",
-    rating: 4,
-    lat: 26.8467,
-    lng: 80.9462,
-    image: 'https://media.istockphoto.com/id/1309328823/photo/headshot-portrait-of-smiling-male-employee-in-office.jpg?s=612x612&w=0&k=20&c=kPvoBm6qCYzQXMAn9JUtqLREXe9-PlZyMl9i-ibaVuY='
-  },
-  {
-    id: 2,
-    name: "XYZ",
-    role: "Carpenter",
-    mobile: "YYYYYYYYYY",
-    email: "xyz@gmail.com",
-    experience: "5+ years",
-    rating: 5,
-    lat: 26.8500,
-    lng: 80.9500,
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqIZXTe5iRAKg6-DVQypvrm1wuVQtUxsAX1Q&s'
-  }
-];
-
 const workerTypes = [
   "Painting", "Carpenter", "Flooring", "AC Technician", "Cleaning maid",
-  "Gardener", "Sofa Cleaning", "Water Purifier", "Kitchen/Toilet Cleaning"
+  "Gardener", "Sofa Cleaning", "Water Purifier", "Kitchen/Toilet Cleaning", "Plumbing"
 ];
 
 const HomeService = () => {
+  const [vendors, setVendors] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
   const navigate = useNavigate();
 
@@ -56,14 +30,28 @@ const HomeService = () => {
   });
 
   const center = {
-    lat: 26.8467,
-    lng: 80.9462,
+    lat: 17.3147955,
+    lng: 76.1804832,
   };
 
   const containerStyle = {
     width: '100%',
     height: 'calc(100vh - 240px)',
   };
+
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const response = await fetch("http://46.37.122.105:89/vendors/");
+        const data = await response.json();
+        setVendors(data);
+      } catch (error) {
+        console.error("Error fetching vendors:", error);
+      }
+    };
+
+    fetchVendors();
+  }, []);
 
   return (
     <Box
@@ -91,7 +79,7 @@ const HomeService = () => {
       </Box>
 
       {/* Worker Type Chips */}
-      <Box sx={{ p: 2, bgcolor: 'rgb(239, 231, 221)' }}>
+      <Box sx={{ p: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>
           Looking for Home Services
         </Typography>
@@ -127,17 +115,20 @@ const HomeService = () => {
                 fullscreenControl: false,
               }}
             >
-              {workers.map(worker => (
+              {vendors.map((vendor) => (
                 <Marker
-                  key={worker.id}
-                  position={{ lat: worker.lat, lng: worker.lng }}
-                  onClick={() => setSelectedWorker(worker)}
+                  key={vendor.vendor_id}
+                  position={{
+                    lat: parseFloat(vendor.lat),
+                    lng: parseFloat(vendor.long),
+                  }}
+                  onClick={() => setSelectedWorker(vendor)}
                 />
               ))}
             </GoogleMap>
           </Box>
 
-           {/* Floating Worker Card */}
+          {/* Floating Worker Card */}
           {selectedWorker && (
             <Box
               sx={{
@@ -145,7 +136,7 @@ const HomeService = () => {
                 bottom: 250,
                 left: 0,
                 right: 0,
-                px: 2, // Horizontal padding for the card container
+                px: 2,
                 zIndex: 999,
               }}
             >
@@ -154,13 +145,13 @@ const HomeService = () => {
                 sx={{
                   borderRadius: 3,
                   p: 2,
-                  backgroundColor: '#fff', // White background
+                  backgroundColor: '#fff',
                   boxShadow: 3,
                 }}
               >
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <img
-                    src={selectedWorker.image}
+                    src={`http://46.37.122.105:89${selectedWorker.profile}`}
                     alt={selectedWorker.name}
                     style={{
                       width: 100,
@@ -171,19 +162,18 @@ const HomeService = () => {
                   />
                   <Box>
                     <Typography variant="subtitle1" fontWeight="bold">
-                      {selectedWorker.role}
+                      {selectedWorker.profession}
                     </Typography>
                     <Typography variant="body2">Name: {selectedWorker.name}</Typography>
                     <Typography variant="body2">Mobile: {selectedWorker.mobile}</Typography>
                     <Typography variant="body2">Email: {selectedWorker.email}</Typography>
-                    <Typography variant="body2">Experience: {selectedWorker.experience}</Typography>
+                    <Typography variant="body2">Experience: {selectedWorker.experience}+ year(s)</Typography>
                     <Typography variant="body2">⭐⭐⭐⭐</Typography>
                   </Box>
                 </Box>
               </Card>
             </Box>
           )}
-
         </Box>
       ) : (
         <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>

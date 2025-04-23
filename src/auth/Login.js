@@ -141,6 +141,7 @@ const Login = () => {
           sessionStorage.setItem('isAuthenticated', 'true');
           sessionStorage.setItem('user_id', data.user_id);
         }
+        console.log("userid=",data.user_id);
   
         navigate('/dashboard');
       } else {
@@ -152,8 +153,6 @@ const Login = () => {
     }
   };
   
-  
-
   return (
     <div style={styles.container}>
       <div style={styles.loginBox}>
