@@ -5,13 +5,11 @@ import {
   Avatar,
   Stack,
   useMediaQuery,
-  Paper,
-  Button
+  Paper
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import img1 from '../Images/vendorcard.jpg';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import SearchBar from './PostBack';
 
@@ -46,24 +44,29 @@ const options = [
 const Forms = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const navigate = useNavigate();
+  // ✅ Detect iPhone SE specifically (375w x 667h)
+const isiPhoneSE = useMediaQuery('(max-width: 376px) and (max-height: 670px)');
 
+
+  // ✅ Detect extra small screens (iPhone SE, Samsung S8+)
+  const isSmallScreen = useMediaQuery('(max-width: 376px)');
+  const cardHeight = isSmallScreen ? 90 : 110; // ✅ Responsive card height
+
+  const navigate = useNavigate();
   const handleBackClick = () => navigate(-1);
 
   return (
     <>
-      <SearchBar
-        onBackClick={handleBackClick}
-      />
+      <SearchBar onBackClick={handleBackClick} />
 
       <Box
         sx={{
           px: 2,
           pt: 10,
-          pb: 10,
+          pb: 2,
           maxWidth: '100%',
           mx: 'auto',
-          minHeight: '100vh',
+          minHeight: isiPhoneSE ? '100vh' : '82vh', // ✅ Conditional height
           backgroundImage: 'url(https://www.transparenttextures.com/patterns/cubes.png)', // ✅ Pattern background
           backgroundColor: '#f5f5f5', // ✅ Fallback background
         }}
@@ -78,11 +81,9 @@ const Forms = () => {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   bgcolor: '#D6C0B3',
-                  height: 100,
-                  borderTopLeftRadius: '40px', // ✅ Simplified border-radius logic
+                  height: cardHeight, // ✅ Responsive card height
+                  borderTopLeftRadius: '40px',
                   borderBottomRightRadius: '40px',
-
-
                   transition: 'transform 0.3s ease',
                   '&:hover': {
                     transform: 'scale(1.03)',
@@ -98,7 +99,7 @@ const Forms = () => {
                       bgcolor: '#343a40',
                       color: '#fff',
                       writingMode: 'vertical-rl',
-                      transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
+                      transform: 'rotate(180deg)',
                       textAlign: 'center',
                       display: 'flex',
                       alignItems: 'center',
@@ -113,12 +114,11 @@ const Forms = () => {
                   </Box>
                 )}
 
-                {/* ✅ Fixed fallback to only centerText as label isn't defined in options */}
                 <Typography
                   sx={{
                     flexGrow: 1,
                     textAlign: 'center',
-                    whiteSpace: 'pre-line', // ✅ To support line breaks
+                    whiteSpace: 'pre-line',
                     fontWeight: 600,
                     fontSize: isMobile ? '14px' : '16px',
                     color: '#333',
@@ -135,7 +135,7 @@ const Forms = () => {
                       bgcolor: '#343a40',
                       color: '#fff',
                       writingMode: 'vertical-rl',
-                      transform: 'rotate(180deg)', // 🔁 Rotates the text 180 degrees
+                      transform: 'rotate(180deg)',
                       textAlign: 'center',
                       display: 'flex',
                       alignItems: 'center',
@@ -160,12 +160,11 @@ const Forms = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'space-between',
                 bgcolor: '#D6C0B3',
-                height: 100,
+                height: cardHeight, // ✅ Responsive height
                 borderTopLeftRadius: '40px',
                 borderBottomRightRadius: '40px',
-                borderTopRightRadius: '10px',
-                borderBottomleftRadius: '10px',
                 transition: 'transform 0.3s ease',
                 '&:hover': {
                   transform: 'scale(1.03)',
@@ -173,97 +172,75 @@ const Forms = () => {
                 },
               }}
             >
+              {/* Avatar and Text */}
               <Box
                 sx={{
-                  width: 60,
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 90,
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Avatar
+                    src={img1}
+                    alt="Vendor"
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      border: '2px solid #fff',
+                    }}
+                  />
+                </Box>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    ml: 5,
+                    fontWeight: 600,
+                    fontSize: isMobile ? '14px' : '18px',
+                    color: '#333',
+                  }}
+                >
+                  Vendors Registration
+                </Typography>
+              </Box>
+
+              {/* ✅ Right Label Added */}
+              <Box
+                sx={{
+                  width: 40,
                   height: '100%',
+                  bgcolor: '#343a40',
+                  color: '#fff',
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  textAlign: 'center',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}
-              >
-                <Avatar
-                  src={img1}
-                  alt="Vendor"
-                  sx={{
-                    width: 55,
-                    height: 55,
-                    border: '2px solid #fff',
-                  }}
-                />
-              </Box>
-              <Typography
-                variant="body1"
-                sx={{
-                  ml: 2,
+                  fontSize: 12,
                   fontWeight: 600,
-                  fontSize: isMobile ? '14px' : '18px',
-                  color: '#333',
+                  borderBottomLeftRadius: '5px',
+                  borderTopLeftRadius: '40px',
                 }}
               >
-                Vendors Registration
-              </Typography>
+                
+              </Box>
             </Paper>
           </Box>
         </Stack>
-        <FormsBottomNavbar />
       </Box>
+
+      <FormsBottomNavbar />
     </>
   );
 };
 
 export default Forms;
-
-
-
-
-// import React from "react";
-// import { Box, Typography, Stack } from "@mui/material";
-
-// const cardData = [
-//   { title: "Post Your Property with Landnest" },
-//   { title: "Sell Your Property" },
-//   { title: "Rent Your Property" },
-//   { title: "Lease Your Property" },
-// ];
-
-// const Forms = () => {
-//   return (
-//     <Stack spacing={3} sx={{ p: 3, alignItems: "center" }}>
-//       {cardData.map((card, index) => (
-//         <Box
-//           key={index}
-//           sx={{
-//             width: 360,
-//             height: 80,
-//             position: "relative",
-//             transform: "skewX(-15deg)",
-//             backgroundColor: "#d4c5af",
-//             display: "flex",
-//             alignItems: "center",
-//             justifyContent: "center",
-//             boxShadow: 3,
-//             borderRadius: "25px",
-//             overflow: "hidden",
-//           }}
-//         >
-//           {/* Un-skew content inside */}
-//           <Box
-//             sx={{
-//               transform: "skewX(15deg)",
-//               textAlign: "center",
-//               px: 2,
-//             }}
-//           >
-//             <Typography variant="subtitle1" fontWeight="bold">
-//               {card.title}
-//             </Typography>
-//           </Box>
-//         </Box>
-//       ))}
-//     </Stack>
-//   );
-// };
-
-// export default Forms;
-

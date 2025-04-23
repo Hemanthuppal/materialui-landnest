@@ -18,13 +18,15 @@ const PostBack = ({ onBackClick, onSearchClick, onFilterClick }) => {
         justifyContent: 'space-between',
         px: 1.5,
         py: 1,
-        backgroundColor: '#D6C0B3',
+        backgroundColor: 'black',
         boxShadow: 1,
       }}
     >
       {/* Back Button */}
       <IconButton onClick={onBackClick}>
-        <ArrowBackIosNewIcon />
+        <ArrowBackIosNewIcon  sx={{
+          color: 'white'
+        }}/>
       </IconButton>
 
       {/* Search Input */}
