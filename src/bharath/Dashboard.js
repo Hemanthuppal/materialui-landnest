@@ -24,7 +24,12 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 // import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { FaRegHeart, FaRegBell } from 'react-icons/fa';
-import { RiMessengerLine } from 'react-icons/ri';
+// import { FaSms } from 'react-icons/fa'; 
+// import { MdSms } from 'react-icons/md'; 
+import { IoIosChatbubbles } from 'react-icons/io'
+import { BiMessageSquareDetail } from 'react-icons/bi'; // BoxIcons
+import { HiOutlineChatAlt2 } from 'react-icons/hi'; // Heroicons
+import { AiOutlineMessage } from 'react-icons/ai'; 
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
@@ -491,9 +496,31 @@ function App() {
               <IconButton size="small">
                 <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
+              {/* <IconButton size="small">
+                <FaSms  sx={{ fontSize: '1rem', color: '#757575' }} />
+              </IconButton> */}
+              {/* <IconButton size="small">
+                <MdSms  sx={{ fontSize: '1rem', color: '#757575' }} />
+              </IconButton> */}
+
+              {/* <IconButton size="small">
+                <IoIosChatbubbles  sx={{ fontSize: '1rem', color: '#757575' }} />
+              </IconButton> */}
+
+              {/* <IconButton size="small">
+                <BiMessageSquareDetail  sx={{ fontSize: '1rem', color: '#757575' }} />
+              </IconButton> */}
+
+              {/* <IconButton size="small">
+                <HiOutlineChatAlt2  sx={{ fontSize: '1rem', color: '#757575' }} />
+              </IconButton> */}
+
               <IconButton size="small">
-                <RiMessengerLine  sx={{ fontSize: '1rem', color: '#757575' }} />
+                <AiOutlineMessage  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
+
+
+
             </Toolbar>
           </AppBar>
 
