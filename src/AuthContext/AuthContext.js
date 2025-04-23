@@ -1,31 +1,38 @@
-// src/context/AuthContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [authUser, setAuthUser] = useState(() => {
-    const storedUserId = sessionStorage.getItem('user_id');
-    return storedUserId ? { user_id: storedUserId } : null;
+const AuthProvider = ({ children }) => {
+  const [userId, setUserId] = useState(() => {
+    // Try to get user_id from sessionStorage first
+    const storedUserId = sessionStorage.getItem("user_id");
+    return storedUserId ? storedUserId : null;
   });
 
-  const login = (user_id) => {
-    setAuthUser({ user_id });
-    sessionStorage.setItem('user_id', user_id);
-    sessionStorage.setItem('isAuthenticated', 'true');
+  useEffect(() => {
+    if (userId) {
+      // Store the user_id in sessionStorage
+      sessionStorage.setItem("user_id", userId);
+    } else {
+      // Clear user_id from sessionStorage if it's null
+      sessionStorage.removeItem("user_id");
+    }
+  }, [userId]);
+
+  const login = (id) => {
+    setUserId(id);
   };
 
   const logout = () => {
-    setAuthUser(null);
-    sessionStorage.clear();
+    sessionStorage.removeItem("user_id"); // Remove from sessionStorage
+    setUserId(null); // Update state
   };
 
   return (
-    <AuthContext.Provider value={{ authUser, login, logout }}>
+    <AuthContext.Provider value={{ userId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
-
+export default AuthProvider;
