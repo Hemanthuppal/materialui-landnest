@@ -34,6 +34,8 @@ import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 
 import buildingImage from '../Images/house.jpeg';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+import CustomBottomNav from './CustomNav';
 
 const Buy_description = () => {
   const navigate = useNavigate();
@@ -246,14 +248,7 @@ const Buy_description = () => {
       </Box>
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="List" icon={<ListIcon />} />
-          <BottomNavigationAction label="Saves" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Inbox" icon={<MailIcon />} />
-        </BottomNavigation>
-      </Paper>
+      <CustomBottomNav />
     </Box>
   );
 };

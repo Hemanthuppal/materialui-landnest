@@ -32,7 +32,7 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import image from "../Images/construction.jpg";
-import image1 from "../Images/building.jpeg";
+import image1 from "../Images/interior.avif";
 import image2 from "../Images/renovation.png";
 import image3 from "../Images/Painting.png";
 import image4 from "../Images/Electrical.jpg";
@@ -76,7 +76,6 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   height: '100%',
@@ -185,7 +184,7 @@ function App() {
         navigate('/home-service');
         break;
       case 'profile':
-        navigate('/work-detail');
+        navigate('/profile');
         break;
       default:
         navigate('/');
@@ -193,19 +192,20 @@ function App() {
   };
 
   return (
+    <>
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
 
-      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden',marginBottom:"100px" }}>
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '88vh', sm: '78vh' },
+            height: { xs: '86vh', sm: '82vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             overflow: 'hidden',
-            borderTopLeftRadius: '40px',
-            borderBottomRightRadius: '40px',
+            borderTopLeftRadius: '18px',
+            borderBottomRightRadius: '18px',
             // marginTop: '10px',
             marginTop: '0.5%',
     marginLeft: '0.5%',
@@ -227,7 +227,7 @@ function App() {
           <Box
             sx={{
               width: '100%',
-              background: 'linear-gradient(145deg,rgb(36, 36, 36),rgb(36, 36, 36))',
+              background: 'linear-gradient(145deg,rgb(18, 17, 17),rgb(18, 17, 17))',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -244,8 +244,8 @@ function App() {
               alt="User"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               sx={{
-                width: { xs: 30, sm: 34 },
-                height: { xs: 30, sm: 34 },
+                width: { xs: 45, sm: 34 },
+                height: { xs: 45, sm: 34 },
                 border: '3px solid rgba(216,204,186,0.7)',
                 boxShadow: `
           0 3px 10px rgba(0,0,0,0.3),
@@ -275,8 +275,8 @@ function App() {
               justifyContent: 'space-between',
               pt: 2,
               pb: 2,
-              borderTopLeftRadius: '40px',
-              borderBottomRightRadius: '40px',
+              borderTopLeftRadius: '30px',
+              borderBottomRightRadius: '30px',
               boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.1),
         0 5px 10px rgba(0,0,0,0.1)
@@ -380,7 +380,7 @@ function App() {
           <Box
             sx={{
               background: `
-        linear-gradient(145deg, #2a2a2a, #1e1e1e),
+        linear-gradient(145deg,rgb(22, 22, 22),rgb(15, 15, 15)),
         url('https://www.transparenttextures.com/patterns/dark-matter.png')
       `,
               width: '100%',
@@ -466,8 +466,9 @@ function App() {
           <AppBar
             position="fixed" // Fixed at top
             sx={{
-              bgcolor: 'rgb(212, 209, 205)',
+              bgcolor: 'rgba(232, 217, 183, 0.95)',
               boxShadow: 'none',
+              border:'1px solid black',
               height: '50px',
               width: '82%',
               ml: "65",
@@ -477,7 +478,7 @@ function App() {
               
             }}
           >
-            <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
+            <Toolbar sx={{ minHeight: '50px !important', px: 1,}}>
               <Search sx={{ flex: 1, mx: 1 }}>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ fontSize: '1rem' }} />
@@ -491,7 +492,7 @@ function App() {
                 <FaRegBell  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
               <IconButton size="small">
-                <RiMessengerLine  onClick={() => navigate('/inboxlist')} sx={{ fontSize: '1rem', color: '#757575' }} />
+                <RiMessengerLine  sx={{ fontSize: '1rem', color: '#757575' }} />
               </IconButton>
             </Toolbar>
           </AppBar>
@@ -1527,9 +1528,11 @@ function App() {
         </Box>
       </Box>
 
-      <FormsBottomNavbar />
+      
 
     </Box>
+    <FormsBottomNavbar />
+    </>
   );
 }
 

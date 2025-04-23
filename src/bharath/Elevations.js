@@ -4,8 +4,14 @@ import {
   useMediaQuery, useTheme, BottomNavigation,
     BottomNavigationAction,   Paper
 } from '@mui/material';
-import pic1 from './Images/elevations-pic-1.jpg';
-import pic2 from './Images/elevations-pic1.jpg';
+import pic1 from '../Images/rear.jpg';
+import pic2 from '../Images/front.jpg';
+import pic3 from '../Images/sideelevation.jpg';
+import pic4 from '../Images/3d elevation.jpg';
+import pic5 from '../Images/modern.jpg';
+import pic6 from '../Images/traditional.jpg';
+import pic7 from '../Images/contemperory.jpg';
+import pic8 from '../Images/mimalastic.jpg';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
@@ -14,6 +20,8 @@ import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+
 const data = [
   {
     id: 1,
@@ -23,37 +31,37 @@ const data = [
   {
     id: 2,
     title: 'Rear Elevation',
-    image: pic1
+    image: pic2
   },
   {
     id: 3,
     title: 'Side Elevation',
-    image: pic2
+    image: pic3
   },
   {
     id: 4,
     title: '3D Elevation',
-    image: pic2
+    image: pic4
   },
   {
     id: 5,
     title: 'Modern Design',
-    image: pic1
+    image: pic5
   },
   {
     id: 6,
     title: 'Traditional Design',
-    image: pic2
+    image: pic6
   },
   {
     id: 7,
     title: 'Contemporary Design',
-    image: pic1
+    image: pic7
   },
   {
     id: 8,
     title: 'Minimalist Design',
-    image: pic2
+    image: pic8
   }
 ];
 
@@ -210,7 +218,7 @@ const Elevations = () => {
         ))}
       </Box>
 
-      <Paper
+      {/* <Paper
             sx={{
               position: 'fixed',
               bottom: 0,
@@ -267,7 +275,9 @@ const Elevations = () => {
                 icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
               />
             </BottomNavigation>
-                </Paper>
+                </Paper> */}
+                      <FormsBottomNavbar />
+                
     </>
   );
 };

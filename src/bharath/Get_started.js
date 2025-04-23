@@ -220,6 +220,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+
 
 function InteriorConsultationForm() {
   const navigate = useNavigate();
@@ -390,7 +392,7 @@ function InteriorConsultationForm() {
         </Paper>
       </Container>
 
-      <Paper
+      {/* <Paper
             sx={{
               position: 'fixed',
               bottom: 0,
@@ -447,7 +449,9 @@ function InteriorConsultationForm() {
                 icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
               />
             </BottomNavigation>
-                </Paper>
+                </Paper> */}
+                      <FormsBottomNavbar />
+                
     </>
   );
 }
