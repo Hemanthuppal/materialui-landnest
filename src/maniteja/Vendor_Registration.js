@@ -55,10 +55,17 @@ const VendorRegister = () => {
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
+
+
+    // const { user_id } = useContext( useAuth );
+    
+    // const [formData, setFormData] = useState({
+    //     name: '',
+    //     user_id: 1,
     
     const [formData, setFormData] = useState({
         name: '',
-        user_id: '', 
+        user_id: '',
         profession: 'Plumbing',
         mobile: '',
         email: '',

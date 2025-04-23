@@ -96,6 +96,8 @@ function App() {
         {/* Tharun */}
         <Route path="/home-service" element={<HomeService />} />
         <Route path="/work-details" element={<WorkerDetails />} />
+        <Route path="/work-details/:id" element={<WorkerDetails />} />
+
         <Route path="/inboxlist" element={<InboxList />} />
         <Route path="/work-detail" element={<WorkerDetail />} />
 

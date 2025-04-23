@@ -141,7 +141,7 @@ const HomeService = () => {
               }}
             >
               <Card
-                onClick={() => navigate('/work-details')}
+                onClick={() => navigate(`/work-details/${selectedWorker.vendor_id}`)}
                 sx={{
                   borderRadius: 3,
                   p: 2,

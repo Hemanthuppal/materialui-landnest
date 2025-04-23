@@ -1,43 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
   Avatar,
   IconButton,
+  CircularProgress,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
-const workerDetails = {
-  name: 'Kiran',
-  email: 'Kiran@gmail.com',
-  mobile: '9999999999',
-  address: '7-52/5b',
-  customerId: 'CUSTOMER001',
-  category: 'Flooring',
-  description: 'Good worker',
-  photos: [
-    'https://thumbs.dreamstime.com/b/man-cleaning-kitchen-worktop-portrait-happy-young-222459943.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaowl-g-wcchBvXY-BNXdiopLrf9ZgNw5SJMeMlSPbdse9LMz2Y7lcFKs&s',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFmm06GweVSfEMNl3y9ryxP04w3X2dKqsLjHHT_8xRde6g62AKHUr1ack&s',
-    'https://img.freepik.com/free-photo/medium-shot-people-cleaning-building_23-2150454565.jpg',
-    'https://img.freepik.com/premium-photo/team-service-workers-cleaning-sofa-carpet-cuisine-table-panoramic-window_161094-21349.jpg',
-    'https://img.freepik.com/free-photo/medium-shot-people-cleaning-building_23-2150454555.jpg',
-  ],
-};
-
 const WorkerDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [workerDetails, setWorkerDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // const handleLogoClick = () => {
-  //   navigate('/inboxlist');
-  // };
+  const isSmallHeight = useMediaQuery('(max-height:740px)');
+  const isTinyHeight = useMediaQuery('(max-height:667px)');
+
+  useEffect(() => {
+    const fetchWorkerDetails = async () => {
+      try {
+        const response = await fetch(`http://46.37.122.105:89/vendors/${id}/`);
+        if (!response.ok) throw new Error('Failed to fetch worker details');
+        const data = await response.json();
+        setWorkerDetails(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWorkerDetails();
+  }, [id]);
+
+  if (loading || error || !workerDetails) {
+    return (
+      <Box
+        sx={{
+          bgcolor: 'rgb(239, 231, 221)',
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          p: 2,
+        }}
+      >
+        {loading ? <CircularProgress /> : <Typography color="error">{error || 'No worker details found'}</Typography>}
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ bgcolor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
-      {/* Fixed Header */}
+    <Box sx={{ bgcolor: 'rgb(239, 231, 221)', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Header */}
       <Box
         sx={{
           position: 'fixed',
@@ -56,43 +76,43 @@ const WorkerDetails = () => {
         <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
           <ArrowBackIosNewIcon />
         </IconButton>
-        <Typography variant="h6" fontWeight="bold">
-          Worker Details
-        </Typography>
+        <Typography variant="h6" fontWeight="bold">Worker Details</Typography>
       </Box>
 
-      {/* Scrollable Content */}
+      {/* Main Content */}
       <Box
         sx={{
           pt: 8,
-          pb: 8,
+          pb: 14,
           px: 2,
           maxWidth: 600,
           mx: 'auto',
-          bgcolor: 'rgb(239, 231, 221)',
+          overflowY: 'auto',
+          flex: 1,
         }}
       >
+        {/* Profile Image */}
         <Box display="flex" justifyContent="center" sx={{ mb: 3 }}>
           <Avatar
-            src="https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg="
+            src={`http://46.37.122.105:89${workerDetails.profile}`}
             sx={{
-              width: 100,
-              height: 100,
+              width: isTinyHeight ? 70 : isSmallHeight ? 80 : 100,
+              height: isTinyHeight ? 70 : isSmallHeight ? 80 : 100,
               borderRadius: '8px',
               border: '2px solid #e0e0e0',
             }}
           />
         </Box>
 
-        {/* Worker Info */}
+        {/* Info Fields */}
         <Box sx={{ mb: 3 }}>
           {[
             { label: 'Name', value: workerDetails.name },
             { label: 'Email ID', value: workerDetails.email },
             { label: 'Mobile', value: workerDetails.mobile },
             { label: 'Address', value: workerDetails.address },
-            { label: 'Customer ID', value: workerDetails.customerId },
-            { label: 'Category', value: workerDetails.category },
+            { label: 'Profession', value: workerDetails.profession },
+            { label: 'Experience', value: `${workerDetails.experience} years` },
             { label: 'Description', value: workerDetails.description },
           ].map((item, index) => (
             <Box
@@ -104,41 +124,53 @@ const WorkerDetails = () => {
               }}
             >
               <Typography fontWeight="bold">{item.label}:</Typography>
-              <Typography>{item.value}</Typography>
+              <Typography>{item.value || 'N/A'}</Typography>
             </Box>
           ))}
         </Box>
 
         {/* Work Photos */}
+        {/* Work Photos */}
         <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
           Work Photos:
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start',
-          }}
-        >
-          {workerDetails.photos.map((photo, index) => (
-            <Box
-              key={index}
-              component="img"
-              src={photo}
-              alt={`work-${index}`}
-              sx={{
-                width: 'calc(33.333% - 8px)',
-                margin: '4px',
-                borderRadius: 1,
-                aspectRatio: '1',
-                objectFit: 'cover',
-              }}
-            />
-          ))}
-        </Box>
+        {workerDetails.work_images?.length > 0 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: 1,
+            }}
+          >
+            {workerDetails.work_images.map((image, index) => (
+              <Box
+                key={image.id || index}
+                component="img"
+                src={`http://46.37.122.105:89${image.image}`}
+                alt={`work-${index}`}
+                sx={{
+                  width: {
+                    xs: '30%', // Allow flexible wrap based on width
+                    sm: '28%',
+                    md: '25%',
+                  },
+                  height: 'auto',
+                  aspectRatio: '4 / 3',
+                  objectFit: 'cover',
+                  borderRadius: 2,
+                  boxShadow: 1,
+                }}
+              />
+            ))}
+          </Box>
+        ) : (
+          <Typography>No work photos available</Typography>
+        )}
+
       </Box>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Nav */}
       <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
         <FormsBottomNavbar />
       </Box>
