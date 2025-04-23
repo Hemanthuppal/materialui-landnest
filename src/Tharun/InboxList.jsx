@@ -71,6 +71,7 @@ const InboxList = () => {
           alignItems: 'center',
           borderRadius: 5,
           backgroundColor: '#f0f0f0',
+          border: '1px solid black', // ✅ Black border
         }}
       >
         <Search sx={{ color: 'gray', mr: 1 }} />

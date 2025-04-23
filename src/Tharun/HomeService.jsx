@@ -73,6 +73,7 @@ const HomeService = () => {
           bgcolor: 'rgb(239, 231, 221)',
           px: 1,
           py: 1,
+          
         }}
       >
         <CustomSearchBar />
@@ -94,7 +95,7 @@ const HomeService = () => {
           }}
         >
           {workerTypes.map((type, index) => (
-            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
+            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0, border: '1px solid black' }} />
           ))}
         </Box>
       </Box>

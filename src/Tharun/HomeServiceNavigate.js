@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const CustomSearchBar = ({ value, onChange }) => {
   const navigate = useNavigate();
+
   return (
     <Paper
       component="form"
@@ -19,22 +20,23 @@ const CustomSearchBar = ({ value, onChange }) => {
         backgroundColor: "#f2f5f7",
         mx: 2,
         my: 2,
+        border: "1px solid black", // ✅ Black border
       }}
     >
       <IconButton onClick={() => navigate("/dashboard")}>
-        <ArrowBackIosNewIcon />
+        <ArrowBackIosNewIcon sx={{ color: "black" }} /> {/* ✅ Black icon */}
       </IconButton>
       <InputBase
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ ml: 1, flex: 1, color: "black" }} // ✅ Black text
         placeholder="Search"
         value={value}
         onChange={onChange}
       />
       <IconButton>
-        <Search />
+        <Search sx={{ color: "black" }} /> {/* ✅ Black icon */}
       </IconButton>
       <IconButton>
-        <Tune />
+        <Tune sx={{ color: "black" }} /> {/* ✅ Black icon */}
       </IconButton>
     </Paper>
   );

@@ -458,7 +458,7 @@ const Lease_Property_Map = () => {
           }}
         >
           {rentalTypes.map((type, index) => (
-            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 }} />
+            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 ,border: '1px solid black'}} />
           ))}
         </Box>
       </Box>
