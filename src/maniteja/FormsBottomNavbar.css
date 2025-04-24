@@ -1,4 +1,4 @@
-:root {
+ /* :root {
     --primary: #edd1a6;
     --background: #000000;
     --glow: rgba(244, 199, 133, 0.5);
@@ -103,4 +103,111 @@
     transition: left 0.3s ease;
     box-shadow: 0 0 8px var(--glow);
   }
-  
+   
+ */
+
+ :root {
+  --cbn-primary: #edd1a6;
+  --cbn-bg: rgba(0, 0, 0, 0.85);
+  --cbn-glow: rgba(244, 199, 133, 0.5);
+  --cbn-icon: #aaa;
+  --cbn-icon-active: #f1ce99;
+}
+
+.cbn-wrapper {
+  position: fixed;
+  bottom: 6px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  background: transparent;
+}
+
+.cbn-bar {
+  display: flex;
+  background-color: black;
+  border-radius: 20px;
+  padding: 4px 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  width: 94%;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  backdrop-filter: blur(8px);
+  height: 60px; /* Reduced height */
+  margin-bottom: 10px;
+}
+
+.cbn-nav-item {
+  width: 30px;
+  height: 30px;
+  color: var(--cbn-icon);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cbn-label {
+  font-size: 0.75rem;
+  margin-top: 2px;
+  color: var(--cbn-icon);
+}
+
+.cbn-nav-item.cbn-active {
+  color: var(--cbn-icon-active);
+}
+
+.cbn-nav-item.cbn-active .cbn-label {
+  color: var(--cbn-icon-active);
+}
+
+.cbn-spacer {
+  width: 50px;
+}
+
+.cbn-center {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cbn-primary);
+  color: black;
+  border-radius: 50%;
+  box-shadow: 0 8px 20px var(--cbn-glow);
+  font-size: 2.9rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.cbn-center .cbn-label {
+  position: absolute;
+  top: 55px;
+  font-size: 3.0rem;
+  font-weight: 500;
+  color: black;
+  white-space: nowrap;
+  text-align: center;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.cbn-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 40px;
+  background: var(--cbn-primary);
+  border-radius: 2px;
+  transition: left 0.3s ease;
+  box-shadow: 0 0 8px var(--cbn-glow);
+}

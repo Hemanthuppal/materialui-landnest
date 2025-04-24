@@ -24,12 +24,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 // import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { FaRegHeart, FaRegBell } from 'react-icons/fa';
-// import { FaSms } from 'react-icons/fa'; 
-// import { MdSms } from 'react-icons/md'; 
-import { IoIosChatbubbles } from 'react-icons/io'
-import { BiMessageSquareDetail } from 'react-icons/bi'; // BoxIcons
-import { HiOutlineChatAlt2 } from 'react-icons/hi'; // Heroicons
-import { AiOutlineMessage } from 'react-icons/ai'; 
+import { RiMessengerLine } from 'react-icons/ri';
+import { AiOutlineMessage } from 'react-icons/ai';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
 import AddIcon from '@mui/icons-material/Add';
@@ -81,6 +77,7 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
+
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   height: '100%',
@@ -89,7 +86,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#9e9e9e',
+  color: ' #9e9e9e',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -196,21 +193,23 @@ function App() {
     }
   };
 
+  
+
   return (
-    <>
+    
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
 
-      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden',marginBottom:"100px" }}>
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden',marginBottom:"70px" }}>
         <Box
           sx={{
             width: { xs: '17%', sm: '60px' },
-            height: { xs: '86vh', sm: '82vh' },
+            height: { xs: '88vh', sm: '88vh' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             overflow: 'hidden',
-            borderTopLeftRadius: '18px',
-            borderBottomRightRadius: '18px',
+            borderTopLeftRadius: '20px',
+            borderBottomRightRadius: '20px',
             // marginTop: '10px',
             marginTop: '0.5%',
     marginLeft: '0.5%',
@@ -249,8 +248,8 @@ function App() {
               alt="User"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               sx={{
-                width: { xs: 45, sm: 34 },
-                height: { xs: 45, sm: 34 },
+                width: { xs: 40, sm: 34 },
+                height: { xs: 40, sm: 34 },
                 border: '3px solid rgba(216,204,186,0.7)',
                 boxShadow: `
           0 3px 10px rgba(0,0,0,0.3),
@@ -280,8 +279,8 @@ function App() {
               justifyContent: 'space-between',
               pt: 2,
               pb: 2,
-              borderTopLeftRadius: '30px',
-              borderBottomRightRadius: '30px',
+              borderTopLeftRadius: '20px',
+              borderBottomRightRadius: '20px',
               boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.1),
         0 5px 10px rgba(0,0,0,0.1)
@@ -308,8 +307,8 @@ function App() {
               <Typography
                 sx={{
                   fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                  color: '#5a4d3a',
-                  fontWeight: 700,
+                  color: '#3a3225',
+                  fontWeight: 1000,
                   fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
                   letterSpacing: '1.2px',
                   textTransform: 'uppercase',
@@ -369,8 +368,8 @@ function App() {
               <Typography
                 sx={{
                   fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                  color: '#5a4d3a',
-                  fontWeight: 700,
+                  color: '#3a3225',
+                  fontWeight: 1000,
                   letterSpacing: '1.2px',
                   textTransform: 'uppercase',
                   textShadow: '0 1px 2px rgba(255,255,255,0.5)'
@@ -469,55 +468,62 @@ function App() {
 
         <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
         <AppBar
-  position="fixed"
-  sx={{
-    bgcolor: 'rgba(232, 217, 183, 0.95)',
-    boxShadow: 'none',
-    border: '1px solid black',
-    height: '50px',
-    width: '82%',
-    ml: "65",
-    zIndex: 1201,
-  }}
->
-  <Toolbar sx={{ minHeight: '50px !important', px: 1 }}>
-    <Search sx={{
-      flex: 1,
-      mx: 1,
-      border: '1px solid black',
-      borderRadius: '25px',
-      display: 'flex',
-      alignItems: 'center',
-      px: 1,
-    }}>
-      <SearchIconWrapper>
-        <SearchIcon sx={{ fontSize: '1rem', color: 'black' }} />
-      </SearchIconWrapper>
-      <StyledInputBase placeholder="Search…" sx={{ color: 'black' }} />
-    </Search>
+              position="fixed"
+              sx={{
+                bgcolor: "rgba(232, 217, 183, 0.95)",
+                boxShadow: "none",
+                border: "1px solid black",
+                height: "50px",
+                borderRadius:'10px',
+                width: "82%",
+                ml: "65",
+                zIndex: 1201,
+              }}
+            >
+              <Toolbar sx={{ minHeight: "50px !important", px: 1 }}>
+                <Search
+                  sx={{
+                    flex: 1,
+                    mx: 1,
+                    border: "1px solid black",
+                    borderRadius: "25px",
+                    display: "flex",
+                    alignItems: "center",
+                    px: 1,
+                  }}
+                >
+                  <SearchIconWrapper>
+                    <SearchIcon sx={{ fontSize: "1rem", color: "black" }} />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    sx={{ color: "black" }}
+                  />
+                </Search>
 
-    {[
-      <FavoriteBorderIcon />,
-      <FaRegBell />,
-      <AiOutlineMessage />
-    ].map((Icon, index) => (
-      <IconButton
-        key={index}
-        size="small"
-        sx={{
-          border: '1px solid black',
-          borderRadius: '8px',
-          p: '4px',
-          mx: 0.5,
-          backgroundColor: 'transparent',
-        }}
-      >
-        {React.cloneElement(Icon, { sx: { fontSize: '1rem', color: 'black' } })}
-      </IconButton>
-    ))}
-  </Toolbar>
-</AppBar>
-
+                {[
+                  <FavoriteBorderIcon />,
+                  <FaRegBell />,
+                  <AiOutlineMessage onClick={() => navigate('/inboxlist')} />,
+                ].map((Icon, index) => (
+                  <IconButton
+                    key={index}
+                    size="small"
+                    sx={{
+                      border: "1px solid black",
+                      borderRadius: "8px",
+                      p: "4px",
+                      mx: 0.5,
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    {React.cloneElement(Icon, {
+                      sx: { fontSize: "1rem", color: "black" },
+                    })}
+                  </IconButton>
+                ))}
+              </Toolbar>
+            </AppBar>
 
           {/* Add spacing to avoid content going under the AppBar */}
           <Box sx={{ mt: '60px' }}>
@@ -1550,11 +1556,11 @@ function App() {
         </Box>
       </Box>
 
-      
+      <FormsBottomNavbar />
 
     </Box>
-    <FormsBottomNavbar />
-    </>
+    
+    
   );
 }
 
