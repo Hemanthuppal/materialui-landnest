@@ -49,6 +49,8 @@ const PropertyCard = () => {
       dimensions: '40×40',
       listedBy: 'Owner/Agent',
       image: buildingImage,
+      lat: 12.9174,     // Sample coordinates
+    long: 77.6101,
     },
     {
       id: 2,
@@ -61,9 +63,31 @@ const PropertyCard = () => {
       dimensions: '35×40',
       listedBy: 'Builder',
       image: buildingImage2,
+      lat: 12.9177,
+    long: 77.6233,
     },
   ];
-
+  const openGoogleMapsWithDirections = (destLat, destLng) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const currentLat = position.coords.latitude;
+          const currentLng = position.coords.longitude;
+  
+          const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${destLat},${destLng}&travelmode=driving`;
+  
+          window.open(googleMapsUrl, '_blank');
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          alert("Could not get your location. Please allow location access.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+  
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     let updated;
@@ -93,7 +117,7 @@ const PropertyCard = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
+    <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '120vh' }}>
       {/* Sticky Search Bar */}
       <Box
         sx={{
@@ -114,7 +138,7 @@ const PropertyCard = () => {
           <Card
             key={property.id}
             sx={{
-              mb: 2,
+              mb: 1.2,
               mx: 2,
               borderRadius: 3,
               boxShadow: 2,
@@ -135,7 +159,7 @@ const PropertyCard = () => {
                 alt="Property"
                 sx={{
                   width: '100%',
-                  height: '160px',
+                  height: '140px',
                   objectFit: 'cover',
                   borderTopLeftRadius: 12,
                   borderTopRightRadius: 12,
@@ -173,11 +197,11 @@ const PropertyCard = () => {
               </Box>
             </Box>
 
-            <CardContent sx={{ p: 1.5 }}>
+            <CardContent sx={{ px: 2,py:0.2,pb: '7px !important'}}>
               <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
                 {property.title}
               </Typography>
-              <Typography variant="caption" color="text.secondary" mb={0.3} noWrap>
+              <Typography variant="caption" color="text.secondary" mb={0.2} noWrap>
                 {property.location}
               </Typography>
 
@@ -190,8 +214,17 @@ const PropertyCard = () => {
                 </Typography>
               </Grid>
 
-              <Box display="flex" alignItems="center" mt={1}>
-                <LocationOn fontSize="small" color="action" />
+              <Box display="flex" alignItems="center" mt={0.2}>
+              <IconButton
+  onClick={(e) => {
+    e.stopPropagation(); // prevents navigation on card click
+    openGoogleMapsWithDirections(property.lat, property.long);
+  }}
+>
+  <LocationOn fontSize="small" color="action" />
+</IconButton>
+
+
                 <Typography variant="caption" color="text.primary" ml={0.5}>
                   Location Verified
                 </Typography>
@@ -207,7 +240,7 @@ const PropertyCard = () => {
                 </Button>
               </Box>
 
-              <Divider sx={{ my: 1 }} />
+              {/* <Divider sx={{ my: 1 }} /> */}
 
               <Box
                 sx={{
@@ -226,7 +259,8 @@ const PropertyCard = () => {
                     key={index}
                     sx={{
                       flex: 1,
-                      p: 1,
+                      px: 1,
+                      py:0.2,
                       textAlign: 'center',
                       borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
                     }}

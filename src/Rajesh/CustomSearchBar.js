@@ -15,11 +15,11 @@ const CustomSearchBar = ({ value, onChange }) => {
         alignItems: 'center',
         borderRadius: '30px',
         px: 1,
-        py: 0.5,
+        
         backgroundColor: '#f2f5f7',
         border: '1px solid black', // Black border
-        mx: 2,
-        my: 2
+        mx: 0.5,
+        my: 0.5
       }}
     >
       <IconButton onClick={() => navigate(-1)} sx={{ color: 'black' }}>

@@ -49,7 +49,7 @@ const RentSaves = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '100vh' }}>
+    <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '110vh' }}>
       {/* Sticky Search Bar */}
       <Box
         sx={{
@@ -96,7 +96,7 @@ const RentSaves = () => {
                   alt="Property"
                   sx={{
                     width: '100%',
-                    height: '160px',
+                    height: '140px',
                     objectFit: 'cover',
                     borderTopLeftRadius: 12,
                     borderTopRightRadius: 12,
@@ -155,11 +155,11 @@ const RentSaves = () => {
                 </Box>
               </Box>
 
-              <CardContent sx={{ p: 1.5 }}>
+              <CardContent sx={{ px: 2,py:0.2 ,pb: '7px !important'}}>
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
                   {property.title}
                 </Typography>
-                <Typography variant="caption" color="text.secondary" mb={0.3} noWrap>
+                <Typography variant="caption" color="text.secondary" mb={0.2} noWrap>
                   {property.location}
                 </Typography>
 
@@ -172,7 +172,7 @@ const RentSaves = () => {
                   </Typography>
                 </Grid>
 
-                <Box display="flex" alignItems="center" mt={1}>
+                <Box display="flex" alignItems="center" mt={0.2}>
                   <LocationOn fontSize="small" color="action" />
                   <Typography variant="caption" color="text.primary" ml={0.5}>
                     Location Verified
@@ -183,13 +183,13 @@ const RentSaves = () => {
                     variant="outlined"
                     color="success"
                     startIcon={<Call />}
-                    sx={{ textTransform: 'none', px: 1.2, py: 0.3, fontSize: '0.7rem' }}
+                    sx={{ textTransform: 'none', px: 1.2, py: 0.2, fontSize: '0.7rem' }}
                   >
                     Call
                   </Button>
                 </Box>
 
-                <Divider sx={{ my: 1 }} />
+                {/* <Divider sx={{ my: 1 }} /> */}
 
                 <Box
                   sx={{
@@ -208,7 +208,8 @@ const RentSaves = () => {
                       key={index}
                       sx={{
                         flex: 1,
-                        p: 1,
+                        px: 1,
+                        py:0.2,
                         textAlign: 'center',
                         borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
                       }}
