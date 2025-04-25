@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
     Box, Typography, TextField, Button, Select, MenuItem,
     InputLabel, FormControl, Paper, Stack, styled
@@ -7,7 +7,9 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext  } from '../AuthContext/AuthContext';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual key
 
@@ -61,12 +63,43 @@ const categoryFields = {
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
 const RentForm = () => {
+
+    const [workPhotos, setWorkPhotos] = useState([]);
+    const { userId, logout } = useContext(AuthContext);
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
 
+    const handleWorkPhotosChange = (e) => {
+        if (e.target.files) {
+            setWorkPhotos(Array.from(e.target.files));
+        }
+    };
+
+    const [formData, setFormData] = useState({
+        user_id: userId, // This should probably come from user auth
+        category_id: 1, // This should be mapped from your category selection
+        type: 'rent', // or 'sell' based on your form
+        facing: '',
+        roadwidth: '',
+        site_area: '',
+        buildup_area: '',
+        list: '',
+        price: '',
+        location: '',
+        lat: '',
+        long: '',
+        nearby: '',
+        no_of_flores: '',
+        _1bhk_count: '',
+        bedrooms_count: '',
+        balcony: '',
+        gated_security: '',
+        parking: '',
+        advance_payment: ''
+    });
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('1BHK');
@@ -76,43 +109,63 @@ const RentForm = () => {
 
     const onPlaceChanged = () => {
         if (autocompleteRef.current) {
-            const place = autocompleteRef.current.getPlace();
-            if (place && place.geometry) {
-                const newLoc = {
-                    lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng(),
-                };
-                setLocation(newLoc);
-                setAddress(place.formatted_address);
-            }
+        const place = autocompleteRef.current.getPlace();
+        if (place && place.geometry) {
+            const newLoc = {
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+            };
+            setLocation(newLoc);
+            setAddress(place.formatted_address);
         }
+    }
     };
 
-    const geocodeAddress = () => {
+    // ✅ Handle manual address entry
+    const geocodeAddress = async () => {
         if (window.google && window.google.maps) {
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode({ address }, (results, status) => {
-                if (status === 'OK' && results[0]) {
-                    const location = results[0].geometry.location;
-                    setLocation({
-                        lat: location.lat(),
-                        lng: location.lng(),
-                    });
-                    setAddress(results[0].formatted_address);
-                } else {
-                    alert('Address could not be located. Please check input.');
-                }
-            });
-        }
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({ address }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+                const location = results[0].geometry.location;
+                setLocation({
+                    lat: location.lat(),
+                    lng: location.lng(),
+                });
+                setAddress(results[0].formatted_address);
+            } else {
+                alert('Address could not be located. Please check input.');
+            }
+        });
+    }
     };
 
     const handleBackClick = () => {
         navigate(-1);
     };
 
-    const handleFieldChange = (label, value) => {
-        setFormValues(prev => ({ ...prev, [label]: value }));
+    // const handleFieldChange = (label, value) => {
+    //     setFormValues(prev => ({ ...prev, [label]: value }));
+    //     setFormData(prev => ({ ...prev, [label]: value }));
+    // };
+
+    const labelKeyMap = {
+        'Facing': 'facing',
+        'Price': 'price',
+        'Parking': 'parking',
+        'Area': 'site_area',
+        'No.of floors': 'no_of_flores',
+        'Rooms-Count': 'rooms_count', // or whatever field matches
+        // Add others as needed
     };
+    
+
+    const handleFieldChange = (label, value) => {
+        const key = labelKeyMap[label] || label; // fallback to label if not in map
+        setFormValues(prev => ({ ...prev, [label]: value }));
+        setFormData(prev => ({ ...prev, [key]: value }));
+    };
+    
 
     const handleSearchClick = () => {
         console.log('Search icon clicked');
@@ -130,6 +183,52 @@ const RentForm = () => {
         );
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        // Update lat & long from selected location
+        const updatedFormData = {
+            ...formData,
+            lat: location.lat,
+            long: location.lng,
+            location: address, // Optional, depending on your backend
+        };
+    
+        const formDataToSend = new FormData();
+    
+        // Append data fields
+        Object.entries(updatedFormData).forEach(([key, value]) => {
+            formDataToSend.append(key, value);
+        });
+    
+        // Append work photos
+        workPhotos.forEach((file, index) => {
+            formDataToSend.append('new_property_images', file);
+        });
+    
+        try {
+            const response = await axios.post('http://46.37.122.105:89/property/', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+    
+            if (response.status === 201 || response.status === 200) {
+                alert('Property submitted successfully!');
+                navigate('/dashboard');
+            } else {
+                alert('Something went wrong. Try again.');
+            }
+        } catch (error) {
+            console.error('Submission Error:', error);
+            if (error.response) {
+                alert(`Error: ${error.response.data.message || 'Something went wrong'}`);
+            } else {
+                alert('An error occurred while submitting. Please try again.');
+            }
+        }
+    };
+    
     return (
         <>
             <SearchBar
@@ -137,13 +236,13 @@ const RentForm = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '64px', backgroundColor: 'rgb(239, 231, 221)' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
                 <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 10, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Rent Property Form
                     </Typography>
 
-                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
+                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
                         {/* Category Dropdown */}
                         <FormControl fullWidth sx={{ mb: 3 }}>
                             <InputLabel id="category-label">Select Category</InputLabel>
@@ -217,21 +316,35 @@ const RentForm = () => {
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
                             Upload Images
                         </Typography>
-                        <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ mb: 3 }}>
-                            Upload Image
-                            <VisuallyHiddenInput type="file" multiple />
+                        <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} fullWidth sx={{ mb: 3 }}>
+                            Upload Images
+                            <VisuallyHiddenInput
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleWorkPhotosChange}
+                            />
                         </Button>
-
+                        {workPhotos.length > 0 && (
+                            <Typography variant="caption" display="block" gutterBottom>
+                                Selected: {workPhotos.length} file(s)
+                            </Typography>
+                        )}
                         {/* Description */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                         <TextField fullWidth variant="outlined" multiline rows={4} sx={{ mb: 3 }} />
 
                         <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
                             <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}
-                             onClick={() => navigate(-1)}>
+                                onClick={() => navigate(-1)}>
                                 Cancel
                             </RedButton>
-                            <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
+                            <GreenButton
+                                variant="contained"
+                                size="large"
+                                sx={{ px: 4, fontWeight: 'bold' }}
+                                type="submit"
+                            >
                                 Submit
                             </GreenButton>
                         </Stack>
