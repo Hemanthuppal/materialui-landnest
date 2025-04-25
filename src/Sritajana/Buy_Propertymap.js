@@ -73,7 +73,7 @@ const Rent_Property_Map = () => {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('savedRent');
+    const stored = localStorage.getItem('savedBuy');
     return stored ? JSON.parse(stored) : [];
   });
 
@@ -114,7 +114,7 @@ const Rent_Property_Map = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('savedRent', JSON.stringify(updated));
+    localStorage.setItem('savedBuy', JSON.stringify(updated));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -156,7 +156,7 @@ const Rent_Property_Map = () => {
 </Box>
 
       {/* Rental Type Chips */}
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ px: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property </Typography>
         <Box
           sx={{
@@ -165,7 +165,7 @@ const Rent_Property_Map = () => {
             overflowX: 'auto',
             whiteSpace: 'nowrap',
             pb: 1,
-            mb: 2
+            
           }}
         >
           {rentalTypes.map((type, index) => (

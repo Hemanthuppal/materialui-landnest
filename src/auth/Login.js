@@ -342,6 +342,7 @@ import { AuthContext } from '../AuthContext/AuthContext';
 import { Visibility, VisibilityOff, Lock } from '@mui/icons-material';
 import { useNavigate, Link } from 'react-router-dom';
 import landNestLogo from '../../src/assets/LandNestLogo.jpg';
+import {BASE_URL} from '../Api/ApiUrls';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -357,7 +358,7 @@ const Login = () => {
     setError('');
   
     try {
-      const response = await fetch('http://46.37.122.105:89/login/', {
+      const response = await fetch(`${BASE_URL}/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

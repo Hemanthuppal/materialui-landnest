@@ -10,6 +10,7 @@ import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import CustomSearchBar from "./HomeServiceNavigate";
+import {BASE_URL} from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
@@ -42,7 +43,7 @@ const HomeService = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await fetch("http://46.37.122.105:89/vendors/");
+        const response = await fetch(`${BASE_URL}/vendors/`);
         const data = await response.json();
         setVendors(data);
       } catch (error) {
@@ -152,7 +153,7 @@ const HomeService = () => {
               >
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <img
-                    src={`http://46.37.122.105:89${selectedWorker.profile}`}
+                    src={`${BASE_URL}${selectedWorker.profile}`}
                     alt={selectedWorker.name}
                     style={{
                       width: 100,

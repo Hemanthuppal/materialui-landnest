@@ -164,6 +164,7 @@ import {
 import { Visibility, VisibilityOff, Lock } from '@mui/icons-material';
 import { useNavigate, Link } from 'react-router-dom';
 import landNestLogo from '../../src/assets/LandNestLogo.jpg'; // Update if the path differs
+import {BASE_URL} from '../Api/ApiUrls';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -201,11 +202,11 @@ const RegisterPage = () => {
       password: password,
       state: state,
       city: city,
-      role: 3
+      role: 1
     };
   
     try {
-      const response = await fetch('http://46.37.122.105:89/users/', {
+      const response = await fetch(`${BASE_URL}/users/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
