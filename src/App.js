@@ -66,7 +66,7 @@ import AdminCustomers from './Components/Admin/Customers/Customers';
 import AdminBestDeals from './Components/Admin/BestDeals/BestDeals';
 import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
 import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
-
+import ConstructionGetStarted from './bharath/ConstructionGetStarted'
 
 function App() {
 
@@ -112,6 +112,8 @@ function App() {
         <Route path="/Savedbuy" element={<Saved_Buy />} />
         <Route path="/constructions" element={<Constructions />} />
         <Route path="/interiors" element={<Interiors />} />
+        <Route path="/construction-get-started" element={<ConstructionGetStarted />} />
+
         <Route path="/explore-construction-resources" element={<ExploreConstructionResources />} />
         <Route path="/two-d-plane-interior" element={<TwodPlansInterior />} />
         <Route path="/three-d-plane-interior" element={<ThreedPlansInterior />} />
