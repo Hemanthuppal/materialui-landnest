@@ -116,7 +116,7 @@
 
 .cbn-wrapper {
   position: fixed;
-  bottom: 6px;
+  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -127,22 +127,23 @@
 .cbn-bar {
   display: flex;
   background-color: black;
-  border-radius: 20px;
+  border-radius: 16px;
   padding: 4px 10px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  max-width: 400px;
-  width: 94%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  width: 95%;
+  max-width: 500px;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  backdrop-filter: blur(8px);
-  height: 60px; /* Reduced height */
+  backdrop-filter: blur(6px);
+  height: 50px;
   margin-bottom: 10px;
 }
 
 .cbn-nav-item {
-  width: 30px;
-  height: 30px;
+  flex: 1;
+  text-align: center;
+  font-size: 1.2rem;
   color: var(--cbn-icon);
   display: flex;
   flex-direction: column;
@@ -150,12 +151,14 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 48px;
 }
 
 .cbn-label {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   margin-top: 2px;
   color: var(--cbn-icon);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4); /* Text shadow added */
 }
 
 .cbn-nav-item.cbn-active {
@@ -167,47 +170,84 @@
 }
 
 .cbn-spacer {
-  width: 50px;
+  width: 40px;
 }
 
 .cbn-center {
   position: absolute;
-  bottom: 4px;
+  bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--cbn-primary);
   color: black;
   border-radius: 50%;
-  box-shadow: 0 8px 20px var(--cbn-glow);
-  font-size: 2.9rem;
-  width: 60px;
-  height: 60px;
+  box-shadow: 0 6px 16px var(--cbn-glow);
+  font-size: 2rem;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
+  transition: all 0.3s ease;
 }
 
 .cbn-center .cbn-label {
   position: absolute;
-  top: 55px;
-  font-size: 3.0rem;
+  top: 56px;
+  font-size: 0.75rem;
   font-weight: 500;
   color: black;
   white-space: nowrap;
   text-align: center;
   transform: translateX(-50%);
   left: 50%;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4); /* Text shadow added */
+}
+
+.cbn-nav-item.cbn-center.cbn-active {
+  background: var(--cbn-icon-active);
+  color: black;
+}
+
+.cbn-nav-item.cbn-center.cbn-active .cbn-label {
+  color: var(--cbn-icon-active);
+}
+
+.cbn-center .MuiSvgIcon-root {
+  color: black;
 }
 
 .cbn-indicator {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 3px;
-  width: 40px;
+  height: 2px;
+  width: 32px;
   background: var(--cbn-primary);
   border-radius: 2px;
   transition: left 0.3s ease;
-  box-shadow: 0 0 8px var(--cbn-glow);
+  box-shadow: 0 0 6px var(--cbn-glow);
+}
+
+/* Responsive Enhancements */
+@media (max-width: 400px) {
+  .cbn-label {
+    font-size: 0.55rem;
+  }
+
+  .cbn-bar {
+    height: 52px;
+  }
+
+  .cbn-center {
+    width: 48px;
+    height: 48px;
+    font-size: 1.7rem;
+  }
+
+  .cbn-center .cbn-label {
+    font-size: 0.65rem;
+    top: 50px;
+  }
 }

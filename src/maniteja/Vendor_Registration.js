@@ -9,6 +9,7 @@ import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext  } from '../AuthContext/AuthContext';
+import {BASE_URL} from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -168,7 +169,7 @@ const VendorRegister = () => {
         });
       
         try {
-          const response = await fetch('http://46.37.122.105:89/vendors/', {
+          const response = await fetch(`${BASE_URL}/vendors/`, {
             method: 'POST',
             body: formDataToSend,
           });
