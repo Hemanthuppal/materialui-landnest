@@ -68,6 +68,8 @@ import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
 import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
 
 
+import CustomerList from "../src/Components/Admin/View/Customers"
+
 function App() {
 
 
@@ -88,7 +90,7 @@ function App() {
           path="/dashboard" 
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
         /> */}
-              <Route path="/" element={<Login />} />
+      <Route path="/" element={<Login />} />
      <Route path="/register" element={<Register />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
@@ -163,6 +165,7 @@ function App() {
         <Route path="/admin-elevation" element={<AdminElevation />} />
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
+        <Route path="/view" element={<CustomerList />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>
