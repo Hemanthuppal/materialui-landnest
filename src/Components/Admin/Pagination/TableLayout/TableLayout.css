@@ -1,0 +1,25 @@
+/* Ensure only table headers are bold */
+.dataTable_headerCell {
+  font-weight: bold;  /* Make headers bold */
+  white-space: nowrap;  /* Prevent text wrapping */
+  overflow: hidden;     /* Hide overflowing content */
+  text-overflow: ellipsis; /* Add ellipsis for truncated text */
+  max-width: 200px;     /* Set a maximum width for the header cells */
+}
+
+/* Ensure table data is normal weight */
+.dataTable_cell {
+  font-weight: normal;  /* Make data text normal */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;    /* Hide overflowing content */
+  text-overflow: ellipsis; /* Add ellipsis to truncated text */
+  max-width: 200px;    /* Set a maximum width for cells */
+}
+
+
+/* Override for action column specifically */
+.action-column {
+  max-width: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
