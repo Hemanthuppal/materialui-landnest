@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Add as AddIcon, Remove as RemoveIcon, Edit as EditIcon, Save as SaveIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import AdminDashboard from "../../Admin/Dashboard/Dashboard"
 
 const ConstructionPackages = () => {
   const navigate = useNavigate();
@@ -443,6 +444,8 @@ const ConstructionPackages = () => {
 
  
   return (
+    <>
+    <AdminDashboard />
     <Fade in={true} timeout={800}>
       <Box sx={{ minHeight: "100vh", background: "linear-gradient(to bottom, #f8f9fa, #e9ecef)", pb: 6 }}>
         <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, pt: 4, maxWidth: "1200px", margin: "0 auto", backgroundColor: "#e7dbc9", pb: 2, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
@@ -530,6 +533,7 @@ const ConstructionPackages = () => {
         </Box>
       </Box>
     </Fade>
+    </>
   );
 };
 
