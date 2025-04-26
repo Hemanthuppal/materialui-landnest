@@ -736,110 +736,98 @@ const Constructions = () => {
     </Box>
   </Box>
 
-  {/* Construction/Interior Navigation */}
-{/* Construction/Interior Navigation */}
-<Box sx={{
-  padding: isMobile ? 1 : 0.5,
-  display: 'flex',
-  justifyContent: 'space-between',
-  boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
-}}>
-  {/* Construction - Active */}
-  <Box sx={{
-    flex: 1,
-    textAlign: 'center',
-    py: 2,
-    background: `
-      linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
-      url('https://www.transparenttextures.com/patterns/cream-paper.png')
-    `,
-    backgroundBlendMode: 'overlay',
-    borderRight: '1px solid rgba(0,0,0,0.1)',
-    borderTopLeftRadius: '30px',
-    boxShadow: `
-      inset 0 0 15px rgba(0,0,0,0.1),
-      0 2px 5px rgba(0,0,0,0.08)
-    `,
-    transform: 'scale(1.02) translateY(-2px)',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    '&:after': {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '50%',
-      height: '4px',
-      backgroundColor: 'green',
-      borderRadius: '2px'
-    },
-    '&:hover': {
-      transform: 'scale(1.05) translateY(-3px)',
-      boxShadow: `
-        inset 0 0 20px rgba(0,0,0,0.15),
-        0 3px 8px rgba(0,0,0,0.15)
-      `
-    }
-  }}>
-    <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
-      fontWeight: 800,
-      color: 'green',
-      letterSpacing: '1px',
-      textShadow: '0 1px 3px rgba(255,255,255,0.5)',
-      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-      textTransform: 'uppercase'
-    }}>
-      Constructions
-    </Typography>
-  </Box>
-  
-  {/* Interiors - Inactive */}
-  <Box 
-    component={Link}
-    to="/interiors"
-    sx={{
-      flex: 1,
-      textAlign: 'center',
-      py: 2,
-      background: `
-        linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
-        url('https://www.transparenttextures.com/patterns/dark-matter.png')
-      `,
-      backgroundBlendMode: 'overlay',
-      textDecoration: 'none',
-      borderBottomRightRadius: '30px',
-      boxShadow: `
-        inset 0 0 15px rgba(0,0,0,0.2),
-        0 2px 5px rgba(0,0,0,0.1)
-      `,
-      transform: 'scale(0.98)',
-      transition: 'all 0.3s ease',
-      '&:hover': {
-        background: `
-          linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
-          url('https://www.transparenttextures.com/patterns/dark-matter.png')
-        `,
-        transform: 'scale(1)',
-        boxShadow: `
-          inset 0 0 20px rgba(0,0,0,0.3),
-          0 3px 8px rgba(0,0,0,0.2)
-        `
-      }
-    }}
-  >
-    <Typography variant={isMobile ? "h6" : "h6"} component="div" sx={{ 
-      fontWeight: 300,
-      color: 'rgba(255,255,255,0.7)',
-      letterSpacing: '1px',
-      textShadow: '0 1px 5px rgba(0,0,0,0.7)',
-      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-      textTransform: 'uppercase'
-    }}>
-      Interiors
-    </Typography>
-  </Box>
-</Box>
+   <Box sx={{
+          padding: isMobile ? 1 : 0.5,
+          display: 'flex',
+          justifyContent: 'space-between',
+          boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
+        }}>
+          <Box
+            component={Link}
+            to="/constructions"
+
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              textDecoration: 'none',
+
+              background: `
+           linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
+           url('https://www.transparenttextures.com/patterns/cream-paper.png')
+         `,
+              backgroundBlendMode: 'overlay',
+              borderRight: '1px solid rgba(0,0,0,0.1)',
+              borderTopLeftRadius: '30px',
+              boxShadow: `
+           inset 0 0 15px rgba(0,0,0,0.1),
+           0 2px 5px rgba(0,0,0,0.08)
+         `,
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1)',
+                boxShadow: `
+             inset 0 0 20px rgba(0,0,0,0.15),
+             0 3px 8px rgba(0,0,0,0.15)
+           `
+              }
+            }}>
+            <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+              fontWeight: 700,
+              color: '#333333',
+              textShadow: '0 1px 3px rgba(255,255,255,0.5)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+            }}>
+              Constructions
+            </Typography>
+          </Box>
+
+          <Box
+            component={Link}
+            to="/interiors"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              background: `
+             linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
+             url('https://www.transparenttextures.com/patterns/dark-matter.png')
+           `,
+              backgroundBlendMode: 'overlay',
+              textDecoration: 'none',
+              borderBottomRightRadius: '30px',
+              boxShadow: `
+             inset 0 0 15px rgba(0,0,0,0.2),
+             0 2px 5px rgba(0,0,0,0.1)
+           `,
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: `
+               linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
+               url('https://www.transparenttextures.com/patterns/dark-matter.png')
+             `,
+                transform: 'scale(1)',
+                boxShadow: `
+               inset 0 0 20px rgba(0,0,0,0.3),
+               0 3px 8px rgba(0,0,0,0.2)
+             `
+              }
+            }}
+          >
+            <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+              fontWeight: 700,
+              color: 'rgba(255,255,255,0.9)',
+              letterSpacing: '1px',
+              textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+              // textTransform: 'uppercase'
+            }}>
+              Interiors
+            </Typography>
+          </Box>
+        </Box>
 </Box>
 
       {/* Main Content */}
@@ -866,7 +854,7 @@ const Constructions = () => {
               variant="body1"
               fontWeight="bold"
               onClick={() => navigate('/explore-construction-resources')}
-              sx={{ cursor: 'pointer', fontSize:'18px' }}
+              sx={{ cursor: 'pointer', fontSize:'16px' }}
             >
               Explore Construction Resources →
             </Typography>
@@ -932,7 +920,7 @@ const Constructions = () => {
       <Button
         variant="contained"
         sx={{
-          backgroundColor: 'green',
+          backgroundColor: 'red',
           color: '#fff',
           borderRadius: '20px',
           px: 4,

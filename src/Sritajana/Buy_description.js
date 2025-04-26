@@ -10,6 +10,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import buildingImage from '../Images/house.jpeg';
 import CustomBottomNav from './CustomNav';
 import BathtubIcon from '@mui/icons-material/Bathtub';
+import { BASE_URL } from './../Api/ApiUrls';
 
 
 const Buy_description = () => {
@@ -23,7 +24,7 @@ const Buy_description = () => {
     console.log('Property ID:', propertyId); // Log the property ID
   
     if (propertyId) {
-      axios.get(`http://46.37.122.105:89/property/${propertyId}/`)
+      axios.get(`${BASE_URL}/property/${propertyId}/`)
         .then((res) => setProperty(res.data))
         .catch((err) => console.error('Failed to fetch property:', err));
     }
@@ -43,7 +44,7 @@ const Buy_description = () => {
   } = property;
 
   const imageUrl = property_images?.[0]?.image
-    ? `http://46.37.122.105:89${property_images[0].image}`
+    ? `${BASE_URL}${property_images[0].image}`
     : buildingImage;
 
   return (
