@@ -20,6 +20,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
       sx={{
         mb: 4,
         mx: 2,
+        
         borderRadius: 4,
         boxShadow: 3,
         transition: 'transform 0.2s ease-in-out',
@@ -109,11 +110,12 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
         </Box>
       </Box>
 
-      <CardContent sx={{ p: 2 }}> {/* 🔽 Reduced padding from 2.5 to 2 */}
+      <CardContent sx={{ px: 2, py: 0.5, pb: '7px !important' }}>
+ {/* 🔽 Reduced padding from 2.5 to 2 */}
         <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ fontSize: '1rem' }}> {/* 🔽 Slightly smaller font */}
           {property.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={0.5}> {/* 🔽 Reduced bottom margin */}
+        <Typography variant="body2" color="text.secondary" mb={0.2}> {/* 🔽 Reduced bottom margin */}
           {property.location}
         </Typography>
 
@@ -126,7 +128,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
           </Typography>
         </Grid>
 
-        <Box display="flex" alignItems="center" mt={1.5}> {/* 🔽 Reduced top margin */}
+        <Box display="flex" alignItems="center" mt={0.5}> {/* 🔽 Reduced top margin */}
           <LocationOn fontSize="small" color="action" />
           <Typography variant="body2" color="text.primary" ml={0.5}>
             Location Verified
@@ -137,13 +139,13 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
             variant="outlined"
             color="success"
             startIcon={<Call />}
-            sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.5, px: 1.5 }} // 🔽 Compressed button
+            sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.2, px: 1.5 }} // 🔽 Compressed button
           >
             Call
           </Button>
         </Box>
 
-        <Divider sx={{ my: 1.2 }} /> {/* 🔽 Reduced divider spacing */}
+        {/* <Divider sx={{ my: 1.2 }} /> 🔽 Reduced divider spacing */}
 
         <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
           {[
@@ -155,7 +157,8 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
               key={index}
               sx={{
                 flex: 1,
-                p: 1.2, // 🔽 Reduced padding inside info columns
+                px: 1.2,
+                py: 0.5, // 🔽 Reduced padding inside info columns
                 textAlign: 'center',
                 borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
               }}
@@ -170,6 +173,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
           ))}
         </Box>
       </CardContent>
+      
     </Card>
   );
 };

@@ -9,6 +9,7 @@ import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext  } from '../AuthContext/AuthContext';
+import {BASE_URL} from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -168,7 +169,7 @@ const VendorRegister = () => {
         });
       
         try {
-          const response = await fetch('http://46.37.122.105:89/vendors/', {
+          const response = await fetch(`${BASE_URL}/vendors/`, {
             method: 'POST',
             body: formDataToSend,
           });
@@ -214,7 +215,7 @@ const VendorRegister = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'64px', backgroundColor: 'rgb(239, 231, 221)'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'10px', backgroundColor: 'rgb(239, 231, 221)'}}>
                 <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Vendor Registration

@@ -11,6 +11,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+import { BASE_URL } from './../Api/ApiUrls';
 
 const WorkerDetails = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const WorkerDetails = () => {
   useEffect(() => {
     const fetchWorkerDetails = async () => {
       try {
-        const response = await fetch(`http://46.37.122.105:89/vendors/${id}/`);
+        const response = await fetch(`${BASE_URL}/vendors/${id}/`);
         if (!response.ok) throw new Error('Failed to fetch worker details');
         const data = await response.json();
         setWorkerDetails(data);
@@ -94,7 +95,7 @@ const WorkerDetails = () => {
         {/* Profile Image */}
         <Box display="flex" justifyContent="center" sx={{ mb: 3 }}>
           <Avatar
-            src={`http://46.37.122.105:89${workerDetails.profile}`}
+            src={`${BASE_URL}${workerDetails.profile}`}
             sx={{
               width: isTinyHeight ? 70 : isSmallHeight ? 80 : 100,
               height: isTinyHeight ? 70 : isSmallHeight ? 80 : 100,
@@ -147,7 +148,7 @@ const WorkerDetails = () => {
               <Box
                 key={image.id || index}
                 component="img"
-                src={`http://46.37.122.105:89${image.image}`}
+                src={`${BASE_URL}${image.image}`}
                 alt={`work-${index}`}
                 sx={{
                   width: {

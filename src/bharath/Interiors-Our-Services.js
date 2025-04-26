@@ -54,7 +54,7 @@
 //   return (
 
 //     <>
-   
+
 
 //       <Box display="flex" alignItems="center" p={1} sx={{
 //         background: 'white',
@@ -92,7 +92,7 @@
 //                         Constructions
 //                       </Typography>
 //                     </Link>
-      
+
 //                   </Grid>
 //                   <Grid item>
 //                     <Link to="/interiors" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -328,27 +328,26 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, Container, Grid, Card, CardContent, useTheme, useMediaQuery, IconButton, BottomNavigation,
-  BottomNavigationAction,   Paper } from '@mui/material';
+import {
+  Box, Typography, Button, Container, Grid, Card, CardContent, useTheme, useMediaQuery, IconButton, BottomNavigation,
+  BottomNavigationAction, Paper
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
-import BuildIcon from '@mui/icons-material/Build';
-import AddIcon from '@mui/icons-material/Add';
-import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+import logotop from './Images/landnest-logo.jpg'
 
 const Interiors = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
-   const [value, setValue] = useState('construction');
+  const [value, setValue] = useState('construction');
 
   const cards = [
     {
-      title: "Full Time Interiors",
+      title: "Full Home Interiors",
       description: "Professional 2D plans with detailed measurements",
       bgImage: 'url(https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
     },
@@ -384,96 +383,307 @@ const Interiors = () => {
     }
   ];
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    // Navigate to the corresponding route
-    switch (newValue) {
-      case 'home':
-        navigate('/dashboard');
-        break;
-      case 'construction':
-        navigate('/constructions');
-        break;
-      case 'post':
-        navigate('/post');
-        break;
-      case 'services':
-        navigate('/home-service');
-        break;
-      case 'profile':
-        navigate('/work-detail');
-        break;
-      default:
-        navigate('/');
-    }
-  };
+
   return (
     <>
       {/* Sticky Header Section */}
+
+
+
       <Box sx={{
         position: 'sticky',
         top: 0,
         zIndex: 1200,
         bgcolor: 'background.paper',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        marginBottom : '20px'
-
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        {/* Back Arrow */}
-        <Box display="flex" alignItems="center" p={1} sx={{
-          background: 'white',
+        {/* Top Navigation Bar */}
+        <Box display="flex" alignItems="center" justifyContent="space-between" p={1} sx={{
+          background: 'black',
           borderBottom: '1px solid rgba(0,0,0,0.08)'
         }}>
+          {/* Back Arrow - Left Side */}
           <IconButton
             onClick={() => navigate(-1)}
             sx={{
-              color: '#4A00E0',
-              '&:hover': { backgroundColor: 'rgba(74, 0, 224, 0.1)' }
+              color: 'white',
+              '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
             }}
           >
             <ArrowBackIosIcon />
           </IconButton>
+
+          {/* Center Text - "landnest" */}
+          <Typography variant="h6" component="div" sx={{
+            color: 'white',
+            fontWeight: 'bold',
+            flexGrow: 1,
+            textAlign: 'left'
+          }}>
+            LANDNEST
+          </Typography>
+
+          {/* Right Side Logo */}
+          <Box sx={{
+            width: 100,
+            height: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img
+              src={logotop}
+              alt="Landnest Logo"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </Box>
         </Box>
 
         {/* Construction/Interior Navigation */}
         <Box sx={{
-              bgcolor: 'rgb(212, 209, 205)',
-              padding: isMobile ? 2 : 2,
-          borderBottom: '1px solid rgba(0,0,0,0.08)'
+          padding: isMobile ? 1 : 0.5,
+          display: 'flex',
+          justifyContent: 'space-between',
+          boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
         }}>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Link to="/constructions" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Typography variant={isMobile ? "h6" : "h5"} component="div">
-                  Constructions
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ 
-                color: 'green',
-                fontWeight: 'bold'
-              }}>
-                Interiors
-              </Typography>
-            </Grid>
-          </Grid>
+          {/* Construction - Inactive */}
+          <Box
+            component={Link}
+            to="/constructions"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              textDecoration: 'none',
+              background: `
+          linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
+          url('https://www.transparenttextures.com/patterns/dark-matter.png')
+        `,
+              backgroundBlendMode: 'overlay',
+              borderRight: '1px solid rgba(0,0,0,0.1)',
+              borderTopLeftRadius: '30px',
+              boxShadow: `
+          inset 0 0 15px rgba(0,0,0,0.2),
+          0 2px 5px rgba(0,0,0,0.1)
+        `,
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: `
+            linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
+            url('https://www.transparenttextures.com/patterns/dark-matter.png')
+          `,
+                transform: 'scale(1)',
+                boxShadow: `
+            inset 0 0 20px rgba(0,0,0,0.3),
+            0 3px 8px rgba(0,0,0,0.2)
+          `
+              }
+            }}>
+            <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+              fontWeight: 500,
+              color: 'white',
+              letterSpacing: '1px',
+              textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+            }}>
+              Constructions
+            </Typography>
+          </Box>
+
+          {/* Interiors - Active */}
+          <Box
+            component={Link}
+            to="/interiors"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              background: `
+          linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
+          url('https://www.transparenttextures.com/patterns/cream-paper.png')
+        `,
+              backgroundBlendMode: 'overlay',
+              textDecoration: 'none',
+              borderBottomRightRadius: '30px',
+              boxShadow: `
+          inset 0 0 15px rgba(0,0,0,0.1),
+          0 2px 5px rgba(0,0,0,0.08)
+        `,
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1)',
+                boxShadow: `
+            inset 0 0 20px rgba(0,0,0,0.15),
+            0 3px 8px rgba(0,0,0,0.15)
+          `
+              }
+            }}
+          >
+            <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+              fontWeight: 800,
+              color: 'green',
+              letterSpacing: '1px',
+              textShadow: '0 1px 3px rgba(255,255,255,0.5)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+            }}>
+              Interiors
+            </Typography>
+          </Box>
         </Box>
+        <Box sx={{
+  position: 'sticky',
+  top: isMobile ? 145 : 138, // Adjust based on header height
+  zIndex: 1100,
+  padding: isMobile ? 1 : 0.5,
+  display: 'flex',
+  justifyContent: 'space-between',
+  boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
+}}>
+  {/* Our Services - Active */}
+  <Box
+    component={Link}
+    to="/interiors"
+    sx={{
+      flex: 1,
+      textAlign: 'center',
+      py: 2,
+      background: `
+        linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
+        url('https://www.transparenttextures.com/patterns/cream-paper.png')
+      `,
+      backgroundBlendMode: 'overlay',
+      textDecoration: 'none',
+      borderTopLeftRadius: '30px',
+      boxShadow: `
+        inset 0 0 15px rgba(0,0,0,0.1),
+        0 2px 5px rgba(0,0,0,0.08)
+      `,
+      transform: 'scale(0.98)',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'scale(1)',
+        boxShadow: `
+          inset 0 0 20px rgba(0,0,0,0.15),
+          0 3px 8px rgba(0,0,0,0.15)
+        `
+      }
+    }}
+  >
+    <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
+      fontWeight: 800,
+      color: 'green',
+      letterSpacing: '1px',
+      textShadow: '0 1px 3px rgba(255,255,255,0.5)',
+      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+    }}>
+      Our Services
+    </Typography>
+  </Box>
+
+  {/* Portfolio - Inactive */}
+  <Box
+ 
+    sx={{
+      flex: 1,
+      textAlign: 'center',
+      py: 2,
+      textDecoration: 'none',
+      background: `
+        linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
+        url('https://www.transparenttextures.com/patterns/dark-matter.png')
+      `,
+      backgroundBlendMode: 'overlay',
+      borderRight: '1px solid rgba(0,0,0,0.1)',
+      borderLeft: '1px solid rgba(0,0,0,0.1)',
+      boxShadow: `
+        inset 0 0 15px rgba(0,0,0,0.2),
+        0 2px 5px rgba(0,0,0,0.1)
+      `,
+      transform: 'scale(0.98)',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        background: `
+          linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
+          url('https://www.transparenttextures.com/patterns/dark-matter.png')
+        `,
+        transform: 'scale(1)',
+        boxShadow: `
+          inset 0 0 20px rgba(0,0,0,0.3),
+          0 3px 8px rgba(0,0,0,0.2)
+        `
+      }
+    }}
+  >
+    <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
+      fontWeight: 400,
+      color: 'white',
+      letterSpacing: '1px',
+      textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+    }}>
+      Portfolio
+    </Typography>
+  </Box>
+
+  {/* How It Works - Inactive */}
+  <Box
+    component={Link}
+    to="/how-it-works"
+    sx={{
+      flex: 1,
+      textAlign: 'center',
+      py: 2,
+      textDecoration: 'none',
+      background: `
+        linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
+        url('https://www.transparenttextures.com/patterns/dark-matter.png')
+      `,
+      backgroundBlendMode: 'overlay',
+      borderBottomRightRadius: '30px',
+      boxShadow: `
+        inset 0 0 15px rgba(0,0,0,0.2),
+        0 2px 5px rgba(0,0,0,0.1)
+      `,
+      transform: 'scale(0.98)',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        background: `
+          linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
+          url('https://www.transparenttextures.com/patterns/dark-matter.png')
+        `,
+        transform: 'scale(1)',
+        boxShadow: `
+          inset 0 0 20px rgba(0,0,0,0.3),
+          0 3px 8px rgba(0,0,0,0.2)
+        `
+      }
+    }}
+  >
+    <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
+      fontWeight: 400,
+      color: 'white',
+      letterSpacing: '1px',
+      textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+    }}>
+      How It Works
+    </Typography>
+  </Box>
+</Box>
       </Box>
 
-      <Container sx={{ padding: 1, backgroundColor:"#e7dbc9", pb: 10 }}>
+      {/* Sticky Services Navigation */}
+
+
+      <Container sx={{ padding: 1, backgroundColor: "#e7dbc9", pb: 10 }}>
         {/* Services Row */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <Typography sx={{ color: 'green', fontWeight: 'bold' }} variant="body1">Our services</Typography>
-          <Typography variant="body1">Portfolio</Typography>
-          <Typography 
-            onClick={() => navigate('/how-it-works')} 
-            sx={{ cursor: 'pointer' }}
-            variant="body1"
-          >
-            How it works?
-          </Typography>
-        </Box>
+     
 
         {/* Full-width Image with Overlay Text & Button */}
         <Box
@@ -510,86 +720,93 @@ const Interiors = () => {
             color="error"
             sx={{
               position: 'absolute',
-              bottom: '10%',
-              left: '17%',
-              fontWeight: 'bold',
-              borderRadius: 30,
-              boxShadow: 2,
+      bottom: '10%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      fontWeight: 'bold',
+      borderRadius: 30,
+      boxShadow: 2,
+      width: isMobile ? '80%' : 'auto',
+      maxWidth: '300px'
             }}
           >
             Start my transformation
           </Button>
         </Box>
 
-      {/* Pricing Buttons */}
-<Grid container spacing={2} sx={{ 
-  mb: 2,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center' // This centers the buttons horizontally
-}}>
-  <Grid item xs={12} sx={{ width: isMobile ? '75%' : '100%' }}>
-    <Button
-      fullWidth
-      variant="contained"
-      color="error"
-      sx={{
-        py: 0.8,
-        borderRadius: 30,
-        borderWidth: 2,
-        fontWeight: 'bold',
-      }}
-    >
-      1BHK starting at 1.8L
-    </Button>
+        {/* Pricing Buttons */}
+        <Grid container spacing={2} sx={{
+          mb: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center' // This centers the buttons horizontally
+        }}>
+          <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
+      <Button
+        fullWidth
+        variant="contained"
+        color="error"
+        sx={{
+          py: 0.8,
+          borderRadius: 30,
+          borderWidth: 2,
+          fontWeight: 'bold',
+        }}
+      >
+        1BHK starting at 1.8L
+      </Button>
+    </Grid>
+    <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
+      <Button
+        fullWidth
+        variant="contained"
+        color="error"
+        sx={{
+          py: 0.8,
+          borderRadius: 30,
+          borderWidth: 2,
+          fontWeight: 'bold',
+        }}
+      >
+        2BHK starting at 2.5L
+      </Button>
+    </Grid>
+    <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
+      <Button
+        fullWidth
+        variant="contained"
+        color="error"
+        sx={{
+          py: 0.8,
+          borderRadius: 30,
+          borderWidth: 2,
+          fontWeight: 'bold',
+        }}
+      >
+        3BHK starting at 3.5L
+      </Button>
+    </Grid>
   </Grid>
-  <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%' }}>
-    <Button
-      fullWidth
-      variant="contained"
-      color="error"
-      sx={{
-        py: 0.8,
-        borderRadius: 30,
-        borderWidth: 2,
-        fontWeight: 'bold',
-      }}
-    >
-      2BHK starting at 2.5L
-    </Button>
-  </Grid>
-  <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%' }}>
-    <Button
-      fullWidth
-      variant="contained"
-      color="error"
-      sx={{
-        py: 0.8,
-        borderRadius: 30,
-        borderWidth: 2,
-        fontWeight: 'bold',
-      }}
-    >
-      3BHK starting at 3.5L
-    </Button>
-  </Grid>
-</Grid>
 
         {/* Transformation Button */}
         <Button
-          fullWidth
-          variant="contained"
-          color="secondary"
-          sx={{
-            py: 0.8,
-            fontSize: '1rem',
-            fontWeight: 'bold',
-            borderRadius: 30,
-            mt: 1
-          }}
-        >
-          Start my transformation
-        </Button>
+    fullWidth
+    variant="contained"
+    color="secondary"
+    sx={{
+      py: 0.8,
+      fontSize: '1rem',
+      fontWeight: 'bold',
+      borderRadius: 30,
+      mt: 1,
+      width: isMobile ? '80%' : '100%',
+      maxWidth: '300px',
+      mx: 'auto',
+      display: 'block'
+    }}
+  >
+    Start my transformation
+  </Button>
 
         <Typography
           variant="h5"
@@ -652,67 +869,10 @@ const Interiors = () => {
         </Box>
       </Container>
 
-    
-      {/* <Paper
-            sx={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1000,
-            }}
-            elevation={3}
-          >
-            <BottomNavigation
-              value={value}
-              onChange={handleChange}
-              showLabels
-              sx={{
-                borderTop: '1px solid #e0e0e0',
-                height: '60px',
-                '& .MuiBottomNavigationAction-root': {
-                  minWidth: 'auto',
-                  padding: '6px 0',
-                  color: 'black',
-                },
-                '& .MuiBottomNavigationAction-label': {
-                  fontSize: '0.7rem',
-                },
-              }}
-            >
-              <BottomNavigationAction
-                value="home"
-                label="Home"
-                icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="construction"
-                label="Construction & Interiors"
-                icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="post"
-                label="Post"
-                icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-                sx={{
-                  '& .MuiSvgIcon-root': { color: '#2196f3' },
-                  '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-                }}
-              />
-              <BottomNavigationAction
-                value="services"
-                label="Home Services"
-                icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-              <BottomNavigationAction
-                value="profile"
-                label="Profile"
-                icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-              />
-            </BottomNavigation>
-                </Paper> */}
-                      <FormsBottomNavbar />
-                
+
+   
+      <FormsBottomNavbar />
+
     </>
   );
 }

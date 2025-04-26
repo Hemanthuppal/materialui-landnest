@@ -1,8 +1,7 @@
 import React from 'react';
-import { Box, IconButton, InputBase, Paper } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import SearchIcon from '@mui/icons-material/Search';
-import TuneIcon from '@mui/icons-material/Tune';
+import logo from '../Images/logo.jpg'; // Replace with your actual logo path
 
 const PostBack = ({ onBackClick, onSearchClick, onFilterClick }) => {
   return (
@@ -24,13 +23,46 @@ const PostBack = ({ onBackClick, onSearchClick, onFilterClick }) => {
     >
       {/* Back Button */}
       <IconButton onClick={onBackClick}>
-        <ArrowBackIosNewIcon  sx={{
-          color: 'white'
-        }}/>
+        <ArrowBackIosNewIcon sx={{ color: 'white' }} />
       </IconButton>
 
-      {/* Search Input */}
-      {/* <Paper
+      <Typography
+                variant="h6"
+                sx={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  flexGrow: 1,
+                  textAlign: 'center',
+                  fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+                }}
+              >
+                LANDNEST
+              </Typography>
+
+      {/* Logo on the Right */}
+      <Box
+        sx={{
+          width: 80,
+          height: 40,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <img
+          src={logo}
+          alt="Landnest Logo"
+          style={{
+            maxWidth: '100%',
+            maxHeight: '100%',
+            objectFit: 'contain',
+          }}
+        />
+      </Box>
+
+      {/* Search and Filter (Optional/Future Use) */}
+      {/*
+      <Paper
         component="form"
         sx={{
           display: 'flex',
@@ -52,12 +84,12 @@ const PostBack = ({ onBackClick, onSearchClick, onFilterClick }) => {
         <IconButton type="button" onClick={onSearchClick}>
           <SearchIcon />
         </IconButton>
-      </Paper> */}
+      </Paper>
 
-      {/* Filter Icon */}
-      {/* <IconButton onClick={onFilterClick}>
+      <IconButton onClick={onFilterClick}>
         <TuneIcon />
-      </IconButton> */}
+      </IconButton>
+      */}
     </Box>
   );
 };

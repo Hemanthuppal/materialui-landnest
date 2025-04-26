@@ -1,151 +1,123 @@
-import { React, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Typography,
-  Grid,
-  Chip,
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
-  Card,
-  CardContent,
-  IconButton,
+  Box, Typography, Grid, Chip, Card, CardContent, IconButton, Paper
 } from '@mui/material';
-
-import { useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import HomeIcon from '@mui/icons-material/Home';
-import ListIcon from '@mui/icons-material/List';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MailIcon from '@mui/icons-material/Mail';
-
 import BedIcon from '@mui/icons-material/Bed';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import BathtubIcon from '@mui/icons-material/Bathtub';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import BalconyIcon from '@mui/icons-material/Balcony';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import PowerIcon from '@mui/icons-material/Power';
-import CropSquareOutlinedIcon from '@mui/icons-material/CropSquareOutlined';
-import CompassCalibrationOutlinedIcon from '@mui/icons-material/CompassCalibrationOutlined';
-import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
-import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
-
 import buildingImage from '../Images/house.jpeg';
-import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import CustomBottomNav from './CustomNav';
+import BathtubIcon from '@mui/icons-material/Bathtub';
+
 
 const Buy_description = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState();
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if (newValue === 0) navigate('/dashboard');
-    if (newValue === 1) navigate('/buy-details');
-    if (newValue === 2) navigate('/buy-saves');
-    if (newValue === 3) navigate('/inboxlist');
-  };
+  const location = useLocation();
+  const { propertyId } = location.state || {};
+
+  const [property, setProperty] = useState(null);
+
+  useEffect(() => {
+    console.log('Property ID:', propertyId); // Log the property ID
+  
+    if (propertyId) {
+      axios.get(`http://46.37.122.105:89/property/${propertyId}/`)
+        .then((res) => setProperty(res.data))
+        .catch((err) => console.error('Failed to fetch property:', err));
+    }
+  }, [propertyId]);
+  
+  if (!property) {
+    return <Typography sx={{ mt: 10, textAlign: 'center' }}>Loading property...</Typography>;
+  }
+
+  const {
+    property_images = [],
+    type, price, location: loc,
+    site_area, buildup_area,
+    facing, roadwidth, list,
+    nearby, created_at, bedrooms_count,
+    bathrooms_count, parking, balcony
+  } = property;
+
+  const imageUrl = property_images?.[0]?.image
+    ? `http://46.37.122.105:89${property_images[0].image}`
+    : buildingImage;
 
   return (
     <Box sx={{ width: '100vw', minHeight: '100vh', backgroundColor: 'rgb(239, 231, 221)', pb: 10 }}>
-      {/* Fixed Header with Back Button */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          bgcolor: 'rgb(49, 48, 49)',
-          color: 'white',
-          p: 2,
-          display: 'flex',
-          alignItems: 'center',
-          height: '64px',
-        }}
-      >
+      {/* Header */}
+      <Box sx={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+        bgcolor: 'rgb(49, 48, 49)', color: 'white', p: 2,
+        display: 'flex', alignItems: 'center', height: '64px',
+      }}>
         <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h6" fontWeight="bold">
-          1BHK House For Buy
+          {type?.replace(/"/g, '') || 'Property'}
         </Typography>
       </Box>
 
-      {/* Content with proper spacing */}
-      <Box sx={{ 
-        pt: '80px', // Padding to account for fixed header
-        px: 2,
-        backgroundColor: 'rgb(239, 231, 221)',
-        mt: 4 // Added margin top for space between header and card
-      }}>
-        <Card
-          sx={{
-            borderRadius: '20px',
-            background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
-            boxShadow: 5,
-          }}
-        >
-          {/* Rest of your card content remains the same */}
-          <Box
-            component="img"
-            src={buildingImage}
-            alt="Property"
-            sx={{
-              width: '100%',
-              height: 220,
-              objectFit: 'cover',
-              borderTopLeftRadius: '20px',
-              borderTopRightRadius: '20px',
-            }}
-          />
+      {/* Property Content */}
+      <Box sx={{ pt: '80px', px: 2, mt: 4 }}>
+        <Card sx={{
+          borderRadius: '20px',
+          background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
+          boxShadow: 5,
+        }}>
+          <Box component="img" src={imageUrl} alt="Property" sx={{
+            width: '100%', height: 220, objectFit: 'cover',
+            borderTopLeftRadius: '20px', borderTopRightRadius: '20px',
+          }} />
 
           <CardContent>
             {/* Title & Price */}
             <Grid container justifyContent="space-between" alignItems="center" sx={{ pb: 2 }}>
               <Grid item xs={8}>
                 <Typography fontWeight="bold" fontSize="18px">
-                  1BHK House For Buy in Hitec City
+                  {type?.replace(/"/g, '') || 'Property Type'}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  NRR Puram, Gowldoddy, Hitec City.
+                  {loc || 'Not Specified'}
                 </Typography>
               </Grid>
               <Grid item sx={{ textAlign: 'right' }}>
                 <Typography fontWeight="bold" fontSize="18px" color="rgb(240, 65, 30)">
-                  ₹50,00,000
+                  ₹{price?.toLocaleString()}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  Price from owner
+                  Listed by {list?.replace(/"/g, '') || 'Owner'}
                 </Typography>
               </Grid>
             </Grid>
 
             {/* Basic Info */}
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                bgcolor: ' #ede7f6',
-                borderRadius: 2,
-                p: 2,
-                mb: 2,
-              }}
-            >
-              {[
-                { label: 'Built Up Area', value: '450 Sq ft' },
-                { label: 'Risk Area', value: 'NA' },
-                { label: 'Land', value: 'Unverified' },
-              ].map((item, i) => (
-                <Box key={i} sx={{ textAlign: 'center', flex: 1 }}>
-                  <Typography fontWeight="bold" color="primary">
-                    {item.value}
-                  </Typography>
-                  <Typography variant="caption">{item.label}</Typography>
-                </Box>
-              ))}
+            <Box sx={{
+              display: 'flex', justifyContent: 'space-between',
+              bgcolor: '#ede7f6', borderRadius: 2, p: 2, mb: 2,
+            }}>
+              <Box sx={{ textAlign: 'center', flex: 1 }}>
+                <Typography fontWeight="bold" color="primary">
+                  {site_area || 'NA'} sq ft
+                </Typography>
+                <Typography variant="caption">Site Area</Typography>
+              </Box>
+              <Box sx={{ textAlign: 'center', flex: 1 }}>
+                <Typography fontWeight="bold" color="primary">
+                  {roadwidth || 'NA'} ft
+                </Typography>
+                <Typography variant="caption">Road Width</Typography>
+              </Box>
+              <Box sx={{ textAlign: 'center', flex: 1 }}>
+                <Typography fontWeight="bold" color="primary">
+                  {facing?.replace(/"/g, '') || 'NA'}
+                </Typography>
+                <Typography variant="caption">Facing</Typography>
+              </Box>
             </Box>
 
             {/* Nearby */}
@@ -153,113 +125,46 @@ const Buy_description = () => {
               Nearby:
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-              {['ABC Colony', 'Gachibowli', 'ABC Village'].map((place, i) => (
-                <Chip
-                  key={i}
-                  label={place}
-                  sx={{
-                    bgcolor: 'rgb(211, 135, 173)',
-                    color: 'rgb(35, 35, 36)',
-                    fontWeight: 'bold',
-                    fontSize: '13px',
-                  }}
-                />
-              ))}
+              <Chip
+                label={nearby?.replace(/"/g, '') || 'Not Available'}
+                sx={{
+                  bgcolor: 'rgb(211, 135, 173)',
+                  color: 'rgb(35, 35, 36)',
+                  fontWeight: 'bold',
+                  fontSize: '13px',
+                }}
+              />
             </Box>
 
             {/* Overview */}
             <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
               Overview:
             </Typography>
-            <Box
-              sx={{
-                border: '2px solid #424242',
-                borderRadius: 2,
-                overflow: 'hidden',
-              }}
-            >
-              {[
-                [
-                  { icon: <BedIcon />, title: '1 Bedroom', subtitle: 'No. of Bedrooms' },
-                  { icon: <CalendarTodayIcon />, title: 'Mar-31-2025', subtitle: 'Posted on' },
-                ],
-                [
-                  { icon: <BathtubIcon />, title: '1 Bathroom', subtitle: 'No. of Bathrooms' },
-                  { icon: <AccessTimeIcon />, title: 'Immediately', subtitle: 'Available From' },
-                ],
-                [
-                  { icon: <BalconyIcon />, title: 'NA', subtitle: 'Balcony' },
-                  { icon: <HomeWorkIcon />, title: 'Independent', subtitle: 'Property Type' },
-                ],
-                [
-                  { icon: <DirectionsCarIcon />, title: 'Bike and Car', subtitle: 'Parking' },
-                  { icon: <PowerIcon />, title: 'None', subtitle: 'Power Backup' },
-                ],
-              ].map((row, rowIndex) => (
-                <Box key={rowIndex} sx={{ display: 'flex' }}>
-                  {row.map((item, colIndex) => (
-                    <Box
-                      key={colIndex}
-                      sx={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        p: 2,
-                        borderRight: colIndex === 0 ? '1px solid #9e9e9e' : 'none',
-                        borderBottom: rowIndex < 3 ? '1px solid #9e9e9e' : 'none',
-                      }}
-                    >
-                      <Box sx={{ color: 'rgb(50, 47, 52)' }}>{item.icon}</Box>
-                      <Box>
-                        <Typography fontWeight={600} fontSize="15px">
-                          {item.title}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {item.subtitle}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              ))}
-            </Box>
-
-            {/* Final Info */}
-            <Box sx={{ mt: 3, borderTop: '1px dashed #d1c4e9', pt: 2 }}>
-              {[
-                ['Built Up Area', '450 Sq.ft', <CropSquareOutlinedIcon />],
-                ['Facing', 'North', <CompassCalibrationOutlinedIcon />],
-                ['Floor', '0/0', <LayersOutlinedIcon />],
-                ['Gated Security', 'No', <SecurityOutlinedIcon />],
-              ].map(([label, value, icon], i) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    mb: i !== 3 ? 1.5 : 0,
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'rgb(52, 50, 53)' }}>
-                    {icon}
-                    <Typography fontSize={14} sx={{ ml: 1 }} color="text.primary">
-                      {label}
-                    </Typography>
-                  </Box>
-                  <Typography fontWeight={500} color="text.primary" fontSize={14}>
-                    {value}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <Typography><BedIcon /> {bedrooms_count || 'NA'} Bedrooms</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography><BathtubIcon /> {bathrooms_count || 'NA'} Bathrooms</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography><CalendarTodayIcon /> {created_at?.split('T')[0]}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography>{balcony ? 'Balcony Available' : 'No Balcony'}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography>{parking ? 'Parking Available' : 'No Parking'}</Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Box>
 
       {/* Bottom Navigation */}
-      <CustomBottomNav />
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <CustomBottomNav />
+      </Paper>
     </Box>
   );
 };
