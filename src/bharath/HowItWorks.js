@@ -522,7 +522,6 @@ const InteriorServicesEnhanced = () => {
           justifyContent: 'space-between',
           boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
         }}>
-          {/* Construction - Inactive */}
           <Box
             component={Link}
             to="/constructions"
@@ -559,7 +558,6 @@ const InteriorServicesEnhanced = () => {
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 700,
               color: 'white',
-              letterSpacing: '1px',
               textShadow: '0 1px 5px rgba(0,0,0,0.7)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
             }}>
@@ -567,7 +565,6 @@ const InteriorServicesEnhanced = () => {
             </Typography>
           </Box>
 
-          {/* Interiors - Active */}
           <Box
             component={Link}
             to="/interiors"
@@ -599,7 +596,7 @@ const InteriorServicesEnhanced = () => {
           >
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 700,
-              color: 'green',
+              color: '#333333',
               letterSpacing: '1px',
               textShadow: '0 1px 3px rgba(255,255,255,0.5)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
@@ -663,9 +660,8 @@ const InteriorServicesEnhanced = () => {
           }}
         >
           <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
-            fontWeight: 700,
+            fontWeight: 500,
             color: isServices ? 'green' : 'white',
-            letterSpacing: '1px',
             textShadow: isServices ? '0 1px 3px rgba(255,255,255,0.5)' : '0 1px 5px rgba(0,0,0,0.7)',
             fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
           }}>
@@ -713,9 +709,8 @@ const InteriorServicesEnhanced = () => {
           }}
         >
           <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
-            fontWeight: 700,
+            fontWeight: 500,
             color: isPortfolio ? 'green' : 'white',
-            letterSpacing: '1px',
             textShadow: isPortfolio ? '0 1px 3px rgba(255,255,255,0.5)' : '0 1px 5px rgba(0,0,0,0.7)',
             fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
           }}>
@@ -763,8 +758,7 @@ const InteriorServicesEnhanced = () => {
         >
           <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
             fontWeight: 700,
-            color: isHowItWorks ? 'green' : 'white',
-            letterSpacing: '1px',
+            color: isHowItWorks ? '#333' : 'white',
             textShadow: isHowItWorks ? '0 1px 3px rgba(255,255,255,0.5)' : '0 1px 5px rgba(0,0,0,0.7)',
             fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
           }}>

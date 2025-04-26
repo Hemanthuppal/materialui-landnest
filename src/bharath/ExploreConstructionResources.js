@@ -300,7 +300,7 @@ const ExploreConstructionResources = () => {
   const [value, setValue] = useState('construction');
 
 
-  const drawerWidth = '17%';
+  const drawerWidth = '15%';
 
   const categories = {
     kitchen: [
@@ -389,7 +389,7 @@ const ExploreConstructionResources = () => {
         }}>
           {/* Back Arrow - Left Side */}
           <IconButton
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate(-1)}
             sx={{
               color: 'white',
               '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
@@ -435,7 +435,6 @@ const ExploreConstructionResources = () => {
           justifyContent: 'space-between',
           boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
         }}>
-          {/* Construction - Active */}
           <Box
             component={Link}
             to="/constructions"
@@ -469,17 +468,14 @@ const ExploreConstructionResources = () => {
             }}>
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 700,
-              color: 'green',
-              letterSpacing: '1px',
+              color: '#333333',
               textShadow: '0 1px 3px rgba(255,255,255,0.5)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-              // textTransform: 'uppercase'
             }}>
               Constructions
             </Typography>
           </Box>
 
-          {/* Interiors - Inactive */}
           <Box
             component={Link}
             to="/interiors"
@@ -542,7 +538,7 @@ const ExploreConstructionResources = () => {
       borderTopLeftRadius: '40px',
       borderBottomRightRadius: '40px',
       marginTop: '155px',
-      height: '67vh',
+      height: '70vh',
       marginLeft: '1px',
       border: '1px solid black',
     },
@@ -566,10 +562,12 @@ const ExploreConstructionResources = () => {
             sx={{
               py: 1.5,
               flexDirection: 'column',
-              backgroundColor: isSelected ? '#3A56A8' : 'transparent',
+              // backgroundColor: isSelected ? '#3A56A8' : 'transparent',
+              backgroundColor: isSelected ? 'black' : 'transparent',
               color: isSelected ? 'white' : 'rgba(5, 4, 4, 0.7)',
               '&:hover': {
-                backgroundColor: isSelected ? '#3A56A8' : '#e3f2fd',
+                // backgroundColor: isSelected ? '#3A56A8' : '#e3f2fd',
+                backgroundColor: isSelected ? 'black' : '#e3f2fd',
               },
             }}
           >
