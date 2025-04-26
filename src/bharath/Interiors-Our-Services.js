@@ -443,7 +443,9 @@ const Interiors = () => {
           </Box>
         </Box>
 
-        {/* Construction/Interior Navigation */}
+
+
+
         <Box sx={{
           padding: isMobile ? 1 : 0.5,
           display: 'flex',
@@ -487,7 +489,6 @@ const Interiors = () => {
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 500,
               color: 'white',
-              letterSpacing: '1px',
               textShadow: '0 1px 5px rgba(0,0,0,0.7)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
             }}>
@@ -527,7 +528,9 @@ const Interiors = () => {
           >
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 800,
-              color: 'green',
+              // color: '#5d4037',
+              color: '#333333',
+              // color:"#556b2f",
               letterSpacing: '1px',
               textShadow: '0 1px 3px rgba(255,255,255,0.5)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
@@ -537,145 +540,142 @@ const Interiors = () => {
           </Box>
         </Box>
         <Box sx={{
-  position: 'sticky',
-  top: isMobile ? 145 : 138, // Adjust based on header height
-  zIndex: 1100,
-  padding: isMobile ? 1 : 0.5,
-  display: 'flex',
-  justifyContent: 'space-between',
-  boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
-}}>
-  {/* Our Services - Active */}
-  <Box
-    component={Link}
-    to="/interiors"
-    sx={{
-      flex: 1,
-      textAlign: 'center',
-      py: 2,
-      background: `
+          position: 'sticky',
+          top: isMobile ? 145 : 138, // Adjust based on header height
+          zIndex: 1100,
+          padding: isMobile ? 1 : 0.5,
+          display: 'flex',
+          justifyContent: 'space-between',
+          boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
+        }}>
+          {/* Our Services - Active */}
+          <Box
+            component={Link}
+            to="/interiors"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              background: `
         linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
         url('https://www.transparenttextures.com/patterns/cream-paper.png')
       `,
-      backgroundBlendMode: 'overlay',
-      textDecoration: 'none',
-      borderTopLeftRadius: '30px',
-      boxShadow: `
+              backgroundBlendMode: 'overlay',
+              textDecoration: 'none',
+              borderTopLeftRadius: '30px',
+              boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.1),
         0 2px 5px rgba(0,0,0,0.08)
       `,
-      transform: 'scale(0.98)',
-      transition: 'all 0.3s ease',
-      '&:hover': {
-        transform: 'scale(1)',
-        boxShadow: `
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1)',
+                boxShadow: `
           inset 0 0 20px rgba(0,0,0,0.15),
           0 3px 8px rgba(0,0,0,0.15)
         `
-      }
-    }}
-  >
-    <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
-      fontWeight: 800,
-      color: 'green',
-      letterSpacing: '1px',
-      textShadow: '0 1px 3px rgba(255,255,255,0.5)',
-      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-    }}>
-      Our Services
-    </Typography>
-  </Box>
+              }
+            }}
+          >
+            <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
+              fontWeight: 600,
+              color: '#333333',
+              textShadow: '0 1px 3px rgba(255,255,255,0.5)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+            }}>
+              Our Services
+            </Typography>
+          </Box>
 
-  {/* Portfolio - Inactive */}
-  <Box
- 
-    sx={{
-      flex: 1,
-      textAlign: 'center',
-      py: 2,
-      textDecoration: 'none',
-      background: `
+          {/* Portfolio - Inactive */}
+          <Box
+
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              textDecoration: 'none',
+              background: `
         linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
         url('https://www.transparenttextures.com/patterns/dark-matter.png')
       `,
-      backgroundBlendMode: 'overlay',
-      borderRight: '1px solid rgba(0,0,0,0.1)',
-      borderLeft: '1px solid rgba(0,0,0,0.1)',
-      boxShadow: `
+              backgroundBlendMode: 'overlay',
+              borderRight: '1px solid rgba(0,0,0,0.1)',
+              borderLeft: '1px solid rgba(0,0,0,0.1)',
+              boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.2),
         0 2px 5px rgba(0,0,0,0.1)
       `,
-      transform: 'scale(0.98)',
-      transition: 'all 0.3s ease',
-      '&:hover': {
-        background: `
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: `
           linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
           url('https://www.transparenttextures.com/patterns/dark-matter.png')
         `,
-        transform: 'scale(1)',
-        boxShadow: `
+                transform: 'scale(1)',
+                boxShadow: `
           inset 0 0 20px rgba(0,0,0,0.3),
           0 3px 8px rgba(0,0,0,0.2)
         `
-      }
-    }}
-  >
-    <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
-      fontWeight: 400,
-      color: 'white',
-      letterSpacing: '1px',
-      textShadow: '0 1px 5px rgba(0,0,0,0.7)',
-      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-    }}>
-      Portfolio
-    </Typography>
-  </Box>
+              }
+            }}
+          >
+            <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
+              fontWeight: 400,
+              color: 'white',
+              textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+            }}>
+              Portfolio
+            </Typography>
+          </Box>
 
-  {/* How It Works - Inactive */}
-  <Box
-    component={Link}
-    to="/how-it-works"
-    sx={{
-      flex: 1,
-      textAlign: 'center',
-      py: 2,
-      textDecoration: 'none',
-      background: `
+          {/* How It Works - Inactive */}
+          <Box
+            component={Link}
+            to="/how-it-works"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              textDecoration: 'none',
+              background: `
         linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
         url('https://www.transparenttextures.com/patterns/dark-matter.png')
       `,
-      backgroundBlendMode: 'overlay',
-      borderBottomRightRadius: '30px',
-      boxShadow: `
+              backgroundBlendMode: 'overlay',
+              borderBottomRightRadius: '30px',
+              boxShadow: `
         inset 0 0 15px rgba(0,0,0,0.2),
         0 2px 5px rgba(0,0,0,0.1)
       `,
-      transform: 'scale(0.98)',
-      transition: 'all 0.3s ease',
-      '&:hover': {
-        background: `
+              transform: 'scale(0.98)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: `
           linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
           url('https://www.transparenttextures.com/patterns/dark-matter.png')
         `,
-        transform: 'scale(1)',
-        boxShadow: `
+                transform: 'scale(1)',
+                boxShadow: `
           inset 0 0 20px rgba(0,0,0,0.3),
           0 3px 8px rgba(0,0,0,0.2)
         `
-      }
-    }}
-  >
-    <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
-      fontWeight: 400,
-      color: 'white',
-      letterSpacing: '1px',
-      textShadow: '0 1px 5px rgba(0,0,0,0.7)',
-      fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-    }}>
-      How It Works
-    </Typography>
-  </Box>
-</Box>
+              }
+            }}
+          >
+            <Typography variant={isMobile ? "body1" : "h6"} component="div" sx={{
+              fontWeight: 400,
+              color: 'white',
+              textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+              fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+            }}>
+              How It Works
+            </Typography>
+          </Box>
+        </Box>
       </Box>
 
       {/* Sticky Services Navigation */}
@@ -683,7 +683,7 @@ const Interiors = () => {
 
       <Container sx={{ padding: 1, backgroundColor: "#e7dbc9", pb: 10 }}>
         {/* Services Row */}
-     
+
 
         {/* Full-width Image with Overlay Text & Button */}
         <Box
@@ -720,14 +720,14 @@ const Interiors = () => {
             color="error"
             sx={{
               position: 'absolute',
-      bottom: '10%',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      fontWeight: 'bold',
-      borderRadius: 30,
-      boxShadow: 2,
-      width: isMobile ? '80%' : 'auto',
-      maxWidth: '300px'
+              bottom: '10%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              fontWeight: 'bold',
+              borderRadius: 30,
+              boxShadow: 2,
+              width: isMobile ? '80%' : 'auto',
+              maxWidth: '300px'
             }}
           >
             Start my transformation
@@ -742,71 +742,71 @@ const Interiors = () => {
           alignItems: 'center' // This centers the buttons horizontally
         }}>
           <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
-      <Button
-        fullWidth
-        variant="contained"
-        color="error"
-        sx={{
-          py: 0.8,
-          borderRadius: 30,
-          borderWidth: 2,
-          fontWeight: 'bold',
-        }}
-      >
-        1BHK starting at 1.8L
-      </Button>
-    </Grid>
-    <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
-      <Button
-        fullWidth
-        variant="contained"
-        color="error"
-        sx={{
-          py: 0.8,
-          borderRadius: 30,
-          borderWidth: 2,
-          fontWeight: 'bold',
-        }}
-      >
-        2BHK starting at 2.5L
-      </Button>
-    </Grid>
-    <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
-      <Button
-        fullWidth
-        variant="contained"
-        color="error"
-        sx={{
-          py: 0.8,
-          borderRadius: 30,
-          borderWidth: 2,
-          fontWeight: 'bold',
-        }}
-      >
-        3BHK starting at 3.5L
-      </Button>
-    </Grid>
-  </Grid>
+            <Button
+              fullWidth
+              variant="contained"
+              color="error"
+              sx={{
+                py: 0.8,
+                borderRadius: 30,
+                borderWidth: 2,
+                fontWeight: 'bold',
+              }}
+            >
+              1BHK starting at 1.8L
+            </Button>
+          </Grid>
+          <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="error"
+              sx={{
+                py: 0.8,
+                borderRadius: 30,
+                borderWidth: 2,
+                fontWeight: 'bold',
+              }}
+            >
+              2BHK starting at 2.5L
+            </Button>
+          </Grid>
+          <Grid item xs={12} sx={{ width: isMobile ? '80%' : '100%', maxWidth: '300px' }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="error"
+              sx={{
+                py: 0.8,
+                borderRadius: 30,
+                borderWidth: 2,
+                fontWeight: 'bold',
+              }}
+            >
+              3BHK starting at 3.5L
+            </Button>
+          </Grid>
+        </Grid>
 
         {/* Transformation Button */}
         <Button
-    fullWidth
-    variant="contained"
-    color="secondary"
-    sx={{
-      py: 0.8,
-      fontSize: '1rem',
-      fontWeight: 'bold',
-      borderRadius: 30,
-      mt: 1,
-      width: isMobile ? '80%' : '100%',
-      maxWidth: '300px',
-      mx: 'auto',
-      display: 'block'
-    }}
-  >
-    Start my transformation
-  </Button>
+          fullWidth
+          variant="contained"
+          color="secondary"
+          sx={{
+            py: 0.8,
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            borderRadius: 30,
+            mt: 1,
+            width: isMobile ? '80%' : '100%',
+            maxWidth: '300px',
+            mx: 'auto',
+            display: 'block'
+          }}
+        >
+          Start my transformation
+        </Button>
 
         <Typography
           variant="h5"
@@ -870,7 +870,7 @@ const Interiors = () => {
       </Container>
 
 
-   
+
       <FormsBottomNavbar />
 
     </>

@@ -13,6 +13,7 @@ import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './../sharvani/ReUsableCard';
 import CustomBottomNav from './CustomNav';
+import { BASE_URL } from './../Api/ApiUrls';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -53,7 +54,7 @@ const Rent_Property_Map = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://46.37.122.105:89/property/');
+        const response = await axios.get(`${BASE_URL}/property/`);
         const filtered = response.data.filter(item =>
           item.type && item.type.toLowerCase().includes("sell")
         );
@@ -78,7 +79,7 @@ const Rent_Property_Map = () => {
             lat: parseCoord(item.lat),
             lng: parseCoord(item.long),
             image: item.property_images?.[0]?.image
-              ? `http://46.37.122.105:89${item.property_images[0].image}`
+              ? `${BASE_URL}${item.property_images[0].image}`
               : buildingImage
           };
         });

@@ -142,7 +142,6 @@ function InteriorConsultationForm() {
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 700,
               color: 'white',
-              letterSpacing: '1px',
               textShadow: '0 1px 5px rgba(0,0,0,0.7)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
             }}>
@@ -182,8 +181,7 @@ function InteriorConsultationForm() {
           >
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
               fontWeight: 700,
-              color: 'green',
-              letterSpacing: '1px',
+              color: '#333333',
               textShadow: '0 1px 3px rgba(255,255,255,0.5)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
             }}>
