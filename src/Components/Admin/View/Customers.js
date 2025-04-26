@@ -27,11 +27,11 @@ import UserDetailModal from "./CustomerModel";
 import DataTable from "../Pagination/TableLayout/TableLayout"; // import your reusable table component
 import AdminDashboard from "../../Admin/Dashboard/Dashboard"
 
-const summaryCardsData = [
-  { title: "Total Customers", key: "total", icon: <GroupIcon color="primary" /> },
-  { title: "Active", key: "active", icon: <GroupAddIcon color="success" /> },
-  { title: "Inactive", key: "inactive", icon: <GroupOffIcon color="error" /> },
-];
+// const summaryCardsData = [
+//   { title: "Total Customers", key: "total", icon: <GroupIcon color="primary" /> },
+//   { title: "Active", key: "active", icon: <GroupAddIcon color="success" /> },
+//   { title: "Inactive", key: "inactive", icon: <GroupOffIcon color="error" /> },
+// ];
 
 const Customer = () => {
   const navigate = useNavigate();
@@ -159,7 +159,7 @@ const Customer = () => {
       </Typography>
 
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} mt={1}>
+      {/* <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} mt={1}>
         {summaryCardsData.map((card, index) => (
           <Card
             key={index}
@@ -193,7 +193,7 @@ const Customer = () => {
             </Box>
           </Card>
         ))}
-      </Box>
+      </Box> */}
 
       <Box mt={4} mb={2} display="flex" justifyContent={isMobile ? "center" : "flex-end"}>
         <TextField

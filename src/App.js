@@ -59,7 +59,7 @@ import AdminDashboard from './Components/Admin/Dashboard/Dashboard';
 import AdminUploadProperties from './Components/Admin/AdminUploadedProperties/AdminUploadProperties';
 import AdminTwoDPlans from './Components/Admin/TwoDPlans/TwoDPlans';
 import AdminThreeDPlans from './Components/Admin/ThreeDPlans/ThreeDPlans';
-import AdminPackages from './Components/Admin/Packages/Pakages';
+import AdminPackages from './Components/Admin/Packages/Packages';
 import AdminExploresConstructions from './Components/Admin/ExploresConstruction/ExploresConstruction';
 import AdminElevation from './Components/Admin/Elevations/Elevations';
 import AdminCustomers from './Components/Admin/Customers/Customers';
@@ -69,6 +69,7 @@ import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
 import ConstructionGetStarted from './bharath/ConstructionGetStarted'
 
 import CustomerList from "../src/Components/Admin/View/Customers"
+import AdminUploadPropertiesForm from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesForm';
 
 function App() {
 
@@ -168,6 +169,7 @@ function App() {
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
         <Route path="/view" element={<CustomerList />} />
+        <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

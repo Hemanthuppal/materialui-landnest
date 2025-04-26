@@ -1,35 +1,10 @@
 import React from "react";
-import { Container, Typography, IconButton } from "@mui/material";
+import { Container, Typography, IconButton, Box, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import image1 from "../../../Images/Admin3D-1.jpg";
-import image2 from "../../../Images/Admin3D-2.jpg";
-import DataTable from "../Pagination/TableLayout/TableLayout"; // Adjust path as needed
+import DataTable from "../Pagination/TableLayout/TableLayout";
 
-const dummyPlans = [
-  {
-    id: 1,
-    name: "Ground Floor 3D Plan",
-    image: image1,
-    date: "2024-04-01",
-  },
-  {
-    id: 2,
-    name: "First Floor 3D Plan",
-    image: image2,
-    date: "2024-04-10",
-  },
-];
-
-const ThreeDPlanTable = () => {
-  const handleEdit = (id) => {
-    console.log("Edit plan with ID:", id);
-  };
-
-  const handleDelete = (id) => {
-    console.log("Delete plan with ID:", id);
-  };
-
+const ThreeDPlanTable = ({ toggleForm, plans, onEdit, onDelete }) => {
   const columns = [
     {
       Header: "S.No",
@@ -46,7 +21,12 @@ const ThreeDPlanTable = () => {
       accessor: "image",
       Cell: ({ value, row }) =>
         value ? (
-          <img src={value} alt={row.original.name} width="60" />
+          <Box
+            component="img"
+            src={value}
+            alt={row.original.name}
+            sx={{ width: 60, borderRadius: 1 }}
+          />
         ) : (
           "No Image"
         ),
@@ -61,10 +41,10 @@ const ThreeDPlanTable = () => {
       accessor: "id",
       Cell: ({ value }) => (
         <>
-          <IconButton color="primary" onClick={() => handleEdit(value)}>
+          <IconButton color="primary" onClick={() => onEdit(value)}>
             <EditIcon />
           </IconButton>
-          <IconButton color="error" onClick={() => handleDelete(value)}>
+          <IconButton color="error" onClick={() => onDelete(value)}>
             <DeleteIcon />
           </IconButton>
         </>
@@ -74,11 +54,23 @@ const ThreeDPlanTable = () => {
   ];
 
   return (
-    <Container sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        3D Plans Table
-      </Typography>
-      <DataTable columns={columns} data={dummyPlans} />
+    <Container sx={{ mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h5">3D Plans Table</Typography>
+
+        <Button variant="contained" color="primary" onClick={toggleForm}>
+          Add 3D Plan
+        </Button>
+      </Box>
+
+      <DataTable columns={columns} data={plans} />
     </Container>
   );
 };

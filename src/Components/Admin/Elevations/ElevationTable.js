@@ -1,35 +1,10 @@
 import React from "react";
-import { Container, Typography, IconButton } from "@mui/material";
+import { Container, Typography, IconButton, Box, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import image1 from "../../../Images/Elevation1.jpg";
-import image2 from "../../../Images/Elevation2.jpg";
-import DataTable from "../Pagination/TableLayout/TableLayout"; // Adjust path as needed
+import DataTable from "../Pagination/TableLayout/TableLayout"; // Adjust if needed
 
-const dummyElevations = [
-  {
-    id: 1,
-    name: "Front Elevation",
-    image: image1,
-    date: "2024-04-12",
-  },
-  {
-    id: 2,
-    name: "Side Elevation",
-    image: image2,
-    date: "2024-04-12",
-  },
-];
-
-const ElevationTable = () => {
-  const handleEdit = (id) => {
-    console.log("Edit elevation with ID:", id);
-  };
-
-  const handleDelete = (id) => {
-    console.log("Delete elevation with ID:", id);
-  };
-
+const ElevationTable = ({ toggleForm, elevations, onEdit, onDelete }) => {
   const columns = [
     {
       Header: "S.No",
@@ -46,7 +21,12 @@ const ElevationTable = () => {
       accessor: "image",
       Cell: ({ value, row }) =>
         value ? (
-          <img src={value} alt={row.original.name} width="60" />
+          <Box
+            component="img"
+            src={value}
+            alt={row.original.name}
+            sx={{ width: 60, borderRadius: 1 }}
+          />
         ) : (
           "No Image"
         ),
@@ -61,10 +41,10 @@ const ElevationTable = () => {
       accessor: "id",
       Cell: ({ value }) => (
         <>
-          <IconButton color="primary" onClick={() => handleEdit(value)}>
+          <IconButton color="primary" onClick={() => onEdit(value)}>
             <EditIcon />
           </IconButton>
-          <IconButton color="error" onClick={() => handleDelete(value)}>
+          <IconButton color="error" onClick={() => onDelete(value)}>
             <DeleteIcon />
           </IconButton>
         </>
@@ -74,11 +54,23 @@ const ElevationTable = () => {
   ];
 
   return (
-    <Container sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Elevation Plans Table
-      </Typography>
-      <DataTable columns={columns} data={dummyElevations} />
+    <Container sx={{ mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h5">Elevation Plans Table</Typography>
+
+        <Button variant="contained" color="primary" onClick={toggleForm}>
+          Add Elevation
+        </Button>
+      </Box>
+
+      <DataTable columns={columns} data={elevations} />
     </Container>
   );
 };
