@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, TextField, Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, InputAdornment } from '@mui/material';  // <-- Import InputAdornment
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTable, usePagination, useGlobalFilter, useSortBy } from 'react-table';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Add, Edit, Delete, Search } from '@mui/icons-material'; // Add the Add icon
-
+import { Add, Edit, Delete } from '@mui/icons-material'; // Add the Add icon
+import AdminDashboard from "../../Admin/Dashboard/Dashboard";
 
 // Global Search Filter Component
 function GlobalFilter({ globalFilter, setGlobalFilter }) {
   return (
-    <Box mb={2} sx={{ display: 'inline-flex', alignItems: 'center' }}>
+    <Box mb={2} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
       <TextField
-        value={globalFilter || ''}
-        onChange={(e) => setGlobalFilter(e.target.value)}
         variant="outlined"
         placeholder="Search..."
         size="small"
-        sx={{ maxWidth: 250, marginRight: '10px' }}
+        value={globalFilter || ''}
+        onChange={(e) => setGlobalFilter(e.target.value)}
+        sx={{ width: 250 }}
       />
       <Button
         variant="contained"
         color="primary"
         onClick={() => setGlobalFilter('')} // Clear search on button click
-        startIcon={<Search />}
+        size="small"
       >
-      
+        Search
       </Button>
     </Box>
   );
@@ -65,7 +65,7 @@ const Category = () => {
               onClick={() => handleDelete(row.index)}
               startIcon={<Delete />}
             >
-            
+             
             </Button>
           </Box>
         ),
@@ -148,126 +148,140 @@ const Category = () => {
   };
 
   return (
-    <div style={{ width: '80%', margin: '0 auto', textAlign: 'center' }}>
-      <h2>{editing !== null ? 'Update Category' : 'Add Category'}</h2>
+    <>
+      <AdminDashboard />
+      
 
-      {/* Input and Button for Add/Update Category */}
-      <Box mb={3} sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        <TextField
-          label="Category Name"
-          variant="outlined"
-          value={categoryName}
-          onChange={(e) => setCategoryName(e.target.value)}
-          sx={{ marginRight: '10px' }}
+      <div style={{ width: '80%', margin: '0 auto', textAlign: 'center' }}>
+        <h2>{editing !== null ? 'Update Category' : 'Add Category'}</h2>
+
+        {/* Input and Button for Add/Update Category */}
+        <Box mb={3} sx={{ maxWidth: 400, mx: 'auto' }}>
+          <TextField
+            label="Category Name"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddOrUpdateCategory}
+                    size="small"
+                    sx={{ ml: 1, height: '100%' }}  // Make sure button height matches input field height
+                    startIcon={editing !== null ? <Edit /> : <Add />}
+                  >
+                    {editing !== null ? 'Update' : 'Add'}
+                  </Button>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+
+        {/* Global Filter */}
+        <GlobalFilter
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddOrUpdateCategory}
-          startIcon={editing !== null ? <Edit /> : <Add />}
-        >
-          {editing !== null ? 'Update' : 'Add'}
-        </Button>
-      </Box>
 
-      {/* Global Filter */}
-      <GlobalFilter
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-      />
-
-      {/* Table */}
-      <Paper sx={{ overflow: 'hidden' }}>
-        <TableContainer>
-          <Table {...getTableProps()}>
-            <TableHead>
-              {headerGroups.map((headerGroup) => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <TableCell
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      sx={{
-                        fontWeight: 'bold',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        maxWidth: 200,
-                      }}
-                    >
-                      {column.render('Header')}
-                      <span>
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? ' 🔽'
-                            : ' 🔼'
-                          : ''}
-                      </span>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <TableRow {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <TableCell {...cell.getCellProps()}>
-                        {cell.render('Cell')}
+        {/* Table */}
+        <Paper sx={{ overflow: 'hidden' }}>
+          <TableContainer>
+            <Table {...getTableProps()}>
+              <TableHead>
+                {headerGroups.map((headerGroup) => (
+                  <TableRow {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map((column) => (
+                      <TableCell
+                        {...column.getHeaderProps(column.getSortByToggleProps())}
+                        sx={{
+                          fontWeight: 'bold',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          maxWidth: 200,
+                        }}
+                      >
+                        {column.render('Header')}
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? ' 🔽'
+                              : ' 🔼'
+                            : ''}
+                        </span>
                       </TableCell>
                     ))}
                   </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                ))}
+              </TableHead>
+              <TableBody {...getTableBodyProps()}>
+                {page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <TableRow {...row.getRowProps()}>
+                      {row.cells.map((cell) => (
+                        <TableCell {...cell.getCellProps()}>
+                          {cell.render('Cell')}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        {/* Pagination */}
-        <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-          <Typography>
-            Page {pageIndex + 1} of {pageOptions.length}
-          </Typography>
+          {/* Pagination */}
+          <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+            <Typography>
+              Page {pageIndex + 1} of {pageOptions.length}
+            </Typography>
 
-          <Box>
-            <Button
-              variant="contained"
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-              sx={{ mr: 1 }}
-            >
-              Prev
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => nextPage()}
-              disabled={!canNextPage}
-            >
-              Next
-            </Button>
+            <Box>
+              <Button
+                variant="contained"
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+                sx={{ mr: 1 }}
+              >
+                Prev
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
+                Next
+              </Button>
+            </Box>
+
+            <FormControl size="small" sx={{ minWidth: 100 }}>
+              <InputLabel>Rows</InputLabel>
+              <Select
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                label="Rows"
+              >
+                {[5, 10, 20].map((size) => (
+                  <MenuItem key={size} value={size}>
+                    Show {size}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
+        </Paper>
 
-          <FormControl size="small" sx={{ minWidth: 100 }}>
-            <InputLabel>Rows</InputLabel>
-            <Select
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-              label="Rows"
-            >
-              {[5, 10, 20].map((size) => (
-                <MenuItem key={size} value={size}>
-                  Show {size}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Paper>
-
-      {/* ToastContainer to display toast notifications */}
-      <ToastContainer />
-    </div>
+        {/* ToastContainer to display toast notifications */}
+        <ToastContainer />
+      </div>
+    </>
   );
 };
 

@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import DataTable from '../Pagination/TableLayout/TableLayout';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
+import AdminDashboard from "../../Admin/Dashboard/Dashboard"
 
 const Material = () => {
     const [materials, setMaterials] = useState([]);
@@ -120,11 +121,37 @@ const Material = () => {
     ];
 
     return (
-        <Box>
+        <>
+    <AdminDashboard />
+        <Box
+        sx={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            
+            px: { xs: 2, md: 4 },
+            py: { xs: 2, md: 4 },
+            marginTop:'40px',
+            maxWidth: 1100,
+            mx: "auto",
+           
+          }}
+        >
+
             {/* Header and Add Button Centered */}
-            <Box mb={2}>
-    <h3 style={{ textAlign: 'center' }}>Add Materials</h3> {/* or remove textAlign if you want it left */}
-  </Box>
+            
+            <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
+  <h3 style={{ margin: 0 }}>Add Materials</h3>
+  <Button
+    variant="contained"
+    color="primary"
+    size="small"
+    onClick={handleAddClick}
+  >
+    Add
+  </Button>
+</Box>
+
 
 
 
@@ -194,6 +221,7 @@ const Material = () => {
                 </DialogActions>
             </Dialog>
         </Box>
+        </>
     );
 };
 

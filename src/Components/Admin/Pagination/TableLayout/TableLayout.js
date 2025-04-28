@@ -42,14 +42,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter, onAdd }) {
         size="small"
         sx={{ maxWidth: 250 }}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onAdd}
-        size="small"
-      >
-        Add
-      </Button>
+     
     </Box>
   );
 }
