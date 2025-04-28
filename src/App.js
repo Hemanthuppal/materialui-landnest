@@ -70,8 +70,12 @@ import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
 import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
 import ConstructionGetStarted from './bharath/ConstructionGetStarted'
 
-import CustomerList from "../src/Components/Admin/View/Customers"
+import CustomerList from "../src/Components/Admin/Customers/Customers"
 import AdminUploadPropertiesForm from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesForm';
+import AdminUploadPropertiesTable from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesTable';
+
+import Category from "./Components/Admin/Material/Category";
+import Construction from "./Components/Admin/Material/Construction"
 
 function App() {
 
@@ -172,8 +176,22 @@ function App() {
         <Route path="/admin-elevation" element={<AdminElevation />} />
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
-        <Route path="/view" element={<CustomerList />} />
+        <Route path="/customer" element={<CustomerList />} />
         <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
+        <Routes path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} />
+
+
+        <Route
+            path="/admin-material"
+            element={<Category />}
+          />
+
+            <Route
+            path="/admin-construction"
+            element={<Construction />}
+          />
+
+
       </Routes>
     </BrowserRouter>
     </AuthProvider>
