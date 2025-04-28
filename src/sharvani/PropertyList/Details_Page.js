@@ -35,22 +35,6 @@ const PropertyCard = () => {
     return stored ? JSON.parse(stored) : [];
   });
 
-
-  const handleShare = (property) => {
-    if (navigator.share) {
-      navigator.share({
-        title: property.title,
-        text: `${property.title}\n${property.location}\nPrice: ${property.price}`,
-        url: window.location.href, // or you can pass a specific URL if you have one
-      })
-        .then(() => console.log('Shared successfully'))
-        .catch((error) => console.error('Error sharing:', error));
-    } else {
-      alert('Sharing not supported on this device/browser.');
-    }
-  };
-
-
   const [likedCards, setLikedCards] = useState({});
 
   const propertyData = [
@@ -66,7 +50,7 @@ const PropertyCard = () => {
       listedBy: 'Owner/Agent',
       image: buildingImage,
       lat: 12.9174,     // Sample coordinates
-      long: 77.6101,
+    long: 77.6101,
     },
     {
       id: 2,
@@ -80,7 +64,7 @@ const PropertyCard = () => {
       listedBy: 'Builder',
       image: buildingImage2,
       lat: 12.9177,
-      long: 77.6233,
+    long: 77.6233,
     },
   ];
   const openGoogleMapsWithDirections = (destLat, destLng) => {
@@ -89,9 +73,9 @@ const PropertyCard = () => {
         (position) => {
           const currentLat = position.coords.latitude;
           const currentLng = position.coords.longitude;
-
+  
           const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${destLat},${destLng}&travelmode=driving`;
-
+  
           window.open(googleMapsUrl, '_blank');
         },
         (error) => {
@@ -103,7 +87,7 @@ const PropertyCard = () => {
       alert("Geolocation is not supported by your browser.");
     }
   };
-
+  
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     let updated;
@@ -191,17 +175,10 @@ const PropertyCard = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Share">
-                  <IconButton
-                    sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}
-                    onClick={(e) => {
-                      e.stopPropagation(); // prevent card navigation
-                      handleShare(property);
-                    }}
-                  >
+                  <IconButton sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}>
                     <Share />
                   </IconButton>
                 </Tooltip>
-
               </Box>
               <Box sx={{ position: 'absolute', bottom: 6, right: 6 }}>
                 <Tooltip title="Like">
@@ -220,7 +197,7 @@ const PropertyCard = () => {
               </Box>
             </Box>
 
-            <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
+            <CardContent sx={{ px: 2,py:0.2,pb: '7px !important'}}>
               <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
                 {property.title}
               </Typography>
@@ -238,14 +215,14 @@ const PropertyCard = () => {
               </Grid>
 
               <Box display="flex" alignItems="center" mt={0.2}>
-                <IconButton
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevents navigation on card click
-                    openGoogleMapsWithDirections(property.lat, property.long);
-                  }}
-                >
-                  <LocationOn fontSize="small" color="action" />
-                </IconButton>
+              <IconButton
+  onClick={(e) => {
+    e.stopPropagation(); // prevents navigation on card click
+    openGoogleMapsWithDirections(property.lat, property.long);
+  }}
+>
+  <LocationOn fontSize="small" color="action" />
+</IconButton>
 
 
                 <Typography variant="caption" color="text.primary" ml={0.5}>
@@ -283,7 +260,7 @@ const PropertyCard = () => {
                     sx={{
                       flex: 1,
                       px: 1,
-                      py: 0.2,
+                      py:0.2,
                       textAlign: 'center',
                       borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
                     }}
