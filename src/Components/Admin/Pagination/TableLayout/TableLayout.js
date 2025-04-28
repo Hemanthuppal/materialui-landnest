@@ -23,10 +23,17 @@ import {
   InputLabel,
 } from "@mui/material";
 
-// Global Search Filter Component (MUI)
-function GlobalFilter({ globalFilter, setGlobalFilter }) {
+// Global Search Filter Component (with Add button)
+function GlobalFilter({ globalFilter, setGlobalFilter, onAdd }) {
   return (
-    <Box mb={2}>
+    <Box
+      mb={2}
+      display="flex"
+      justifyContent="flex-end"
+      alignItems="center"
+      gap={2}
+      flexWrap="wrap"
+    >
       <TextField
         value={globalFilter || ""}
         onChange={(e) => setGlobalFilter(e.target.value)}
@@ -35,6 +42,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
         size="small"
         sx={{ maxWidth: 250 }}
       />
+     
     </Box>
   );
 }
@@ -83,12 +91,18 @@ export default function DataTable({ columns, data, initialSearchValue }) {
     }
   }, [initialSearchValue, setGlobalFilter]);
 
+  const handleAdd = () => {
+    console.log("Add button clicked!");
+    // Open a modal, navigate to Add form page, etc.
+  };
+
   return (
     <Box>
-      {/* Global Filter */}
+      {/* Global Filter and Add Button */}
       <GlobalFilter
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
+        onAdd={handleAdd}
       />
 
       {/* Table */}
@@ -152,6 +166,8 @@ export default function DataTable({ columns, data, initialSearchValue }) {
         justifyContent="space-between"
         alignItems="center"
         mt={2}
+        flexWrap="wrap"
+        gap={2}
       >
         <Typography>
           Page {pageIndex + 1} of {pageOptions.length}

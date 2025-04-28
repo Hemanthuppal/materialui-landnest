@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  Grid,
   TextField,
   Typography,
   useMediaQuery,
@@ -42,28 +43,35 @@ const AdminUploadPropertiesForm = () => {
       <Box
         component="form"
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          maxWidth: 600,
-          mx: "auto",
+          mt: 2,
         }}
       >
-        {fields.map((field) => (
-          <TextField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputProps={{ sx: { height: "40px" } }}
-          />
-        ))}
-        
-        <Button variant="contained" color="primary">
-          Submit
-        </Button>
+        <Grid container spacing={2}>
+          {fields.map((field) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={2}
+              key={field.name}
+            >
+              <TextField
+                label={field.label}
+                name={field.name}
+                variant="outlined"
+                fullWidth
+                size="small"
+                InputProps={{ sx: { height: "40px" } }}
+              />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Box mt={3} display="flex" justifyContent="center">
+          <Button variant="contained" color="primary">
+            Submit
+          </Button>
+        </Box>
       </Box>
     </Container>
   );

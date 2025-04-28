@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect} from 'react';
 import {
     Box, Typography, TextField, Button, Select, MenuItem,
     InputLabel, FormControl, Paper, Stack, styled
@@ -10,6 +10,9 @@ import FormsBottomNavbar from './FormsBottomNavbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext  } from '../AuthContext/AuthContext';
+import { IconButton, InputAdornment } from '@mui/material';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
+import {BASE_URL} from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual key
 
@@ -46,7 +49,7 @@ const GreenButton = styled(Button)({
     '&:hover': { backgroundColor: '#008000' },
 });
 
-const categoryFields = {
+const fieldMap = {
     '1BHK': ['Facing', 'Price', 'Parking', 'Area'],
     '2BHK': ['Facing', 'Price', 'Parking', 'Area'],
     '3BHK': ['Facing', 'Price', 'Parking', 'Area'],
@@ -66,6 +69,9 @@ const RentForm = () => {
 
     const [workPhotos, setWorkPhotos] = useState([]);
     const { userId, logout } = useContext(AuthContext);
+     const [apiHitCount, setApiHitCount] = useState(0);
+        const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
+    
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
@@ -80,8 +86,8 @@ const RentForm = () => {
 
     const [formData, setFormData] = useState({
         user_id: userId, // This should probably come from user auth
-        category_id: 1, // This should be mapped from your category selection
-        type: 'rent', // or 'sell' based on your form
+        category_id: '4', // This should be mapped from your category selection
+        type: 'rent/lease',
         facing: '',
         roadwidth: '',
         site_area: '',
@@ -102,15 +108,48 @@ const RentForm = () => {
     });
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('1BHK');
+    const [selectedCategory, setSelectedCategory] = useState('duplex house');
     const [formValues, setFormValues] = useState({});
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+
+    const incrementApiHit = () => {
+        setApiHitCount(prev => prev + 1);
+        console.log(`Google Maps API hits: ${apiHitCount + 1}`);
+    }; 
+
+    const getCurrentLocation = () => {
+        if (navigator.geolocation) {
+            setUsingCurrentLocation(true);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    setLocation(pos);
+                    
+                    // Reverse geocode to get address without using Google Maps API
+                    // This is a fallback - ideally you'd use a free geocoding service
+                    setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
+                },
+                (error) => {
+                    console.error("Error getting current location:", error);
+                    alert("Error getting current location. Please enable location services.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    };
 
     const onPlaceChanged = () => {
         if (autocompleteRef.current) {
         const place = autocompleteRef.current.getPlace();
         if (place && place.geometry) {
+            incrementApiHit(); // This uses Google Maps API
+            setUsingCurrentLocation(false);
             const newLoc = {
                 lat: place.geometry.location.lat(),
                 lng: place.geometry.location.lng(),
@@ -121,9 +160,55 @@ const RentForm = () => {
     }
     };
 
+    const handleMapClick = async (e) => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        setLocation({ lat, lng });
+        setUsingCurrentLocation(false);
+        incrementApiHit(); // Clicking on map uses Google Maps API
+
+        if (window.google && window.google.maps) {
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    setAddress(results[0].formatted_address);
+                } else {
+                    setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
+                }
+            });
+        }
+    };
+    
+        useEffect(() => {
+            axios.get('http://46.37.122.105:89/property-category/')
+                .then(response => {
+                    const rentCategories = response.data.filter(
+                        cat => cat.category_type.toLowerCase() === 'rent/lease'
+                    );
+                    setCategories(rentCategories);
+                })
+                .catch(error => {
+                    console.error("Error fetching categories:", error);
+                });
+        }, []);
+    
+        const groupedCategories = categories.reduce((acc, curr) => {
+            const type = curr.category_type;
+            if (!acc[type]) acc[type] = [];
+            acc[type].push(curr);
+            return acc;
+        }, {});
+
     // ✅ Handle manual address entry
     const geocodeAddress = async () => {
+        if (!address) return;
+        
+        if (usingCurrentLocation) {
+            // Don't use API if we're using current location
+            return;
+        }
         if (window.google && window.google.maps) {
+            incrementApiHit();
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode({ address }, (results, status) => {
             if (status === 'OK' && results[0]) {
@@ -243,71 +328,105 @@ const RentForm = () => {
                     </Typography>
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
-                        {/* Category Dropdown */}
-                        <FormControl fullWidth sx={{ mb: 3 }}>
-                            <InputLabel id="category-label">Select Category</InputLabel>
-                            <Select
-                                labelId="category-label"
-                                value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
-                                label="Select Category"
-                            >
-                                {Object.keys(categoryFields).map((cat) => (
-                                    <MenuItem key={cat} value={cat}>{cat}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                         <FormControl fullWidth sx={{ mb: 3 }}>
+                           <InputLabel id="category-label">Select Category</InputLabel>
+                           <Select
+                               labelId="category-label"
+                               value={selectedCategory}
+                               onChange={(e) => {
+                                   const selected = categories.find(cat => cat.category === e.target.value);
+                                   setSelectedCategory(selected.category); // show category name in dropdown
+                                   setFormData(prev => ({
+                                       ...prev,
+                                       category_id: selected.category_id,
+                                       type: selected.category_type,
+                                   }));
+                               }}
+                               label="Select Category"
+                           >
+                               {Object.entries(groupedCategories).map(([type, items]) => [
+                                   // Optional: group headers
+                                   // <ListSubheader key={type}>{type.toUpperCase()}</ListSubheader>,
+                                   ...items.map(cat => (
+                                       <MenuItem key={cat.category_id} value={cat.category}>
+                                           {cat.category}
+                                       </MenuItem>
+                                   ))
+                               ])}
+                           </Select>
+                       </FormControl>
+                       
+                       
+                       
+                       {selectedCategory &&
+                           fieldMap[selectedCategory]?.map((label) => (
+                               label === 'Facing' ? (
+                                   <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                       <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                       <Select
+                                           labelId={`${label}-label`}
+                                           value={formValues[label] || ''}
+                                           label={label}
+                                           onChange={(e) => handleFieldChange(label, e.target.value)}
+                                       >
+                                           {facingOptions.map(option => (
+                                               <MenuItem key={option} value={option}>{option}</MenuItem>
+                                           ))}
+                                       </Select>
+                                   </FormControl>
+                               ) : (
+                                   <TextField
+                                       key={label}
+                                       fullWidth
+                                       label={label}
+                                       variant="outlined"
+                                       sx={{ mb: 2 }}
+                                       value={formValues[label] || ''}
+                                       onChange={(e) => handleFieldChange(label, e.target.value)}
+                                   />
+                               )
+                           ))
+                       }
 
-                        {/* Dynamic Fields */}
-                        {selectedCategory &&
-                            categoryFields[selectedCategory].map((label) => (
-                                label === 'Facing' ? (
-                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                        <Select
-                                            labelId={`${label}-label`}
-                                            value={formValues[label] || ''}
-                                            label={label}
-                                            onChange={(e) => handleFieldChange(label, e.target.value)}
-                                        >
-                                            {facingOptions.map(option => (
-                                                <MenuItem key={option} value={option}>{option}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                ) : (
-                                    <TextField
-                                        key={label}
-                                        fullWidth
-                                        label={label}
-                                        variant="outlined"
-                                        sx={{ mb: 2 }}
-                                        value={formValues[label] || ''}
-                                        onChange={(e) => handleFieldChange(label, e.target.value)}
-                                    />
-                                )
-                            ))}
+                        {/* Location Section */}
+                        <Box sx={{ mb: 2 }}>
+    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
+        Location
+    </Typography>
 
-                        {/* Location + Map */}
-                        <Autocomplete
-                            onLoad={(ref) => (autocompleteRef.current = ref)}
-                            onPlaceChanged={onPlaceChanged}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Location"
-                                variant="outlined"
-                                value={address}
-                                onChange={e => setAddress(e.target.value)}
-                                onBlur={geocodeAddress}
-                                sx={{ mb: 2 }}
-                            />
-                        </Autocomplete>
+    <Autocomplete
+        onLoad={(ref) => (autocompleteRef.current = ref)}
+        onPlaceChanged={onPlaceChanged}
+    >
+        <TextField
+            fullWidth
+            label="Search Location"
+            variant="outlined"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            onBlur={geocodeAddress}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton onClick={getCurrentLocation} edge="end">
+                            <MyLocationIcon />
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }}
+        />
+    </Autocomplete>
+
+    {/* <Typography variant="caption" sx={{ alignSelf: 'center', mt: 1, display: 'block' }}>
+        {usingCurrentLocation ? "Using browser geolocation" : "Using Google Maps API"}
+    </Typography> */}
+</Box>
 
                         <GoogleMap
                             mapContainerStyle={containerStyle}
                             center={location}
                             zoom={15}
+                            onClick={handleMapClick}
                         >
                             <Marker position={location} />
                         </GoogleMap>
