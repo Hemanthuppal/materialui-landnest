@@ -88,9 +88,9 @@ const AdminUploadPropertiesTable = () => {
             >
               <Typography variant="h5">Upload Properties</Typography>
       
-              <Button variant="contained" color="primary" onClick={() => navigate('/adminuploadpropertiesform')}>
+              {/* <Button variant="contained" color="primary" onClick={() => navigate('/adminuploadpropertiesform')}>
                 Add Upload 
-              </Button>
+              </Button> */}
             </Box>
       
       <DataTable columns={columns} data={dummyProperties} />
