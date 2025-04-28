@@ -50,7 +50,9 @@ import Buy_description from './Sritajana/Buy_description';
 import Buy_Details_Page from './Sritajana/Details_Page';
 import BuySaves from './Sritajana/Buy_Saves';
 import Buy_Postdeal from './Sritajana/Buy_Postdeal';
-import Buy_Posttable from './Sritajana/Buy_Posttable'
+import Buy_Posttable from './Sritajana/Buy_Posttable';
+import Category from './Components/Admin/AdminUploadedProperties/Category';
+import Material from './Components/Admin/AdminUploadedProperties/Material';
 
 
 
@@ -153,6 +155,8 @@ function App() {
         <Route path="/Buy-saves" element={<BuySaves/>} />
         <Route path="/Buy-Postdeal" element={<Buy_Postdeal/>} />
         <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
+        <Route path="/Category" element={<Category/>} />
+        <Route path="/Material" element={<Material/>} />
        
 
 
