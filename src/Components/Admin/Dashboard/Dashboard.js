@@ -4,8 +4,8 @@ import AdminLayout from '../../Admin/LayOut/AdminLayout';
 
 const DashboardContent = () => {
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Dashboard Content</h1>
+    <div style={{ padding: '20px', marginTop:'100px' }}>
+     
       {/* Your dashboard content here */}
     </div>
   );

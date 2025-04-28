@@ -72,6 +72,9 @@ import CustomerList from "../src/Components/Admin/Customers/Customers"
 import AdminUploadPropertiesForm from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesForm';
 import AdminUploadPropertiesTable from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesTable';
 
+import Category from "./Components/Admin/Material/Category";
+import Construction from "./Components/Admin/Material/Construction"
+
 function App() {
 
 
@@ -171,7 +174,20 @@ function App() {
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
         <Route path="/customer" element={<CustomerList />} />
         <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
-        <Route path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} />
+        <Routes path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} />
+
+
+        <Route
+            path="/admin-material"
+            element={<Category />}
+          />
+
+            <Route
+            path="/admin-construction"
+            element={<Construction />}
+          />
+
+
       </Routes>
     </BrowserRouter>
     </AuthProvider>
