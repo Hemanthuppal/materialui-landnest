@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate,useContext } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -21,9 +21,9 @@ import {
   LocationOn,
 } from '@mui/icons-material';
 import axios from 'axios';
-import buildingImage from '../Images/house.jpeg';
-import CustomSearchBar from '../Rajesh/CustomSearchBar';
-import BottomNavbar from './CustomNav';
+import buildingImage from '../../Images/house.jpeg';
+import CustomSearchBar from '../../Rajesh/CustomSearchBar';
+import BottomNavbar from '../../maniteja/FormsBottomNavbar';
 import {AuthContext} from '../../AuthContext/AuthContext';
 
 const PropertyCard = () => {

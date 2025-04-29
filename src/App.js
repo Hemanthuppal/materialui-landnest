@@ -82,6 +82,7 @@ import Category from "./Components/Admin/Material/Category";
 import Construction from "./Components/Admin/Material/Construction"
 import MapWithPoints from './hemanth/MapWithPoints';
 
+import UserBuy from './Userproperties/Buy/Buy';
 import UserRent from './Userproperties/Rent/Rent';
 import UserLease from './Userproperties/Lease/Lease';
 import UserVendor from './Userproperties/Vendor/Vendor';
