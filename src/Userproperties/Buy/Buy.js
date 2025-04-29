@@ -10,6 +10,8 @@ import {
   Button,
   Grid,
   Tooltip,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import {
   FavoriteBorder,
@@ -19,6 +21,8 @@ import {
   ThumbUpAlt,
   Call,
   LocationOn,
+ 
+      MoreVert,
 } from '@mui/icons-material';
 import axios from 'axios';
 import buildingImage from '../../Images/house.jpeg';
@@ -30,6 +34,8 @@ const PropertyCard = () => {
   const navigate = useNavigate();
   const { userId, logout } = useContext(AuthContext);
   const [searchQuery, setSearchQuery] = useState('');
+   const [anchorEl, setAnchorEl] = useState(null);
+    const [menuPropertyId, setMenuPropertyId] = useState(null);
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedBuy');
     return stored ? JSON.parse(stored) : [];
@@ -38,6 +44,35 @@ const PropertyCard = () => {
   const [properties, setProperties] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+
+  
+  const handleShare = (event, property) => {
+    event.stopPropagation();
+    alert(`Share clicked for: ${property.title}`);
+  };
+
+  const handleMenuOpen = (event, propertyId) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+    setMenuPropertyId(propertyId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setMenuPropertyId(null);
+  };
+
+  const handleEdit = () => {
+    alert(`Edit clicked for property ID: ${menuPropertyId}`);
+    handleMenuClose();
+  };
+
+  const handleDelete = () => {
+    alert(`Delete clicked for property ID: ${menuPropertyId}`);
+    handleMenuClose();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,11 +83,11 @@ const PropertyCard = () => {
 
         // Then fetch properties
         const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
-         // Filter based on user_id and type === "sell"
+         // Filter based on user_id and type == "sell"
       const filtered = propertiesResponse.data.filter(item =>
-        item.user_id === userId &&
+        item.user_id == userId &&
         item.type &&
-        item.type.toLowerCase() === "sell"
+        item.type.toLowerCase() == "sell"
       );
 
         const parsed = filtered.map(item => {
@@ -64,7 +99,7 @@ const PropertyCard = () => {
 
           // Find matching category
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
           
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -124,7 +159,7 @@ const PropertyCard = () => {
   };
   
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -137,7 +172,7 @@ const PropertyCard = () => {
     localStorage.setItem('savedBuy', JSON.stringify(updated));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const filteredProperties = properties.filter((property) =>
     property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -215,45 +250,37 @@ const PropertyCard = () => {
                     borderTopRightRadius: 12,
                   }}
                 />
-                <Box sx={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 0.8 }}>
-                  <Tooltip title="Add to Wishlist">
-                    <IconButton
-                      sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleSave(property);
-                      }}
-                    >
-                      {isSaved(property) ? <Favorite color="error" /> : <FavoriteBorder />}
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Share">
-                    <IconButton 
-                      sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Share />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-                <Box sx={{ position: 'absolute', bottom: 6, right: 6 }}>
-                  <Tooltip title="Like">
-                    <IconButton
-                      sx={{
-                        bgcolor: 'white',
-                        boxShadow: 1,
-                        color: likedCards[property.id] ? 'blue' : 'default',
-                        p: 0.8,
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleLike(property.id);
-                      }}
-                    >
-                      {likedCards[property.id] ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+                <Box sx={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 1 }}>
+                               <Tooltip title="Share">
+                                 <IconButton
+                                   size="small"
+                                   sx={{ bgcolor: 'white' }}
+                                   onClick={(e) => handleShare(e, property)}
+                                 >
+                                   <Share fontSize="small" />
+                                 </IconButton>
+                               </Tooltip>
+               
+                               <Tooltip title="More Options">
+                                 <IconButton
+                                   size="small"
+                                   sx={{ bgcolor: 'white' }}
+                                   onClick={(e) => handleMenuOpen(e, property.id)}
+                                 >
+                                   <MoreVert fontSize="small" />
+                                 </IconButton>
+                               </Tooltip>
+                             </Box>
+                             <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              </Menu>
               </Box>
 
               <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>

@@ -96,28 +96,30 @@ const Rent_Property_Map = () => {
 
   useEffect(() => {
     if (properties.length === 0) return;
-
+  
+    // Check if map container exists
+    const mapContainer = document.getElementById('leaflet-map');
+    if (!mapContainer || mapContainer._leaflet_id) return; // Skip if already initialized
+  
     const map = L.map('leaflet-map').setView([26.8467, 80.9462], 13);
-
+  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '',
     }).addTo(map);
-
+  
     properties.forEach(property => {
       if (!property.lat || !property.lng) return;
-
+  
       const marker = L.marker([property.lat, property.lng]).addTo(map);
-
       marker.on('click', () => {
         setSelectedProperty(property);
       });
     });
-
+  
     return () => {
       map.remove();
     };
   }, [properties]);
-
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];

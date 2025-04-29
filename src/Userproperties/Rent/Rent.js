@@ -47,11 +47,11 @@ const PropertyCard = () => {
 
         // Then fetch properties
         const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
-         // Filter based on user_id and type === "sell"
+         // Filter based on user_id and type == "sell"
       const filtered = propertiesResponse.data.filter(item =>
-        item.user_id === userId &&
+        item.user_id == userId &&
         item.type &&
-        item.type.toLowerCase() === "rent"
+        item.type.toLowerCase() == "rent"
       );
 
         const parsed = filtered.map(item => {
@@ -63,7 +63,7 @@ const PropertyCard = () => {
 
           // Find matching category
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
           
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -123,7 +123,7 @@ const PropertyCard = () => {
   };
   
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -136,7 +136,7 @@ const PropertyCard = () => {
     localStorage.setItem('savedBuy', JSON.stringify(updated));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const filteredProperties = properties.filter((property) =>
     property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -378,7 +378,7 @@ const SellYourProperty = () => {
             if (response.status == 201 || response.status == 200) {
                 console.log('Success! Response data:', response.data);
                 alert('Property submitted successfully!');
-                // navigate('/dashboard');
+                navigate('/dashboard');
             } else {
                 console.warn('Unexpected status code:', response.status);
                 alert('Something went wrong. Try again.');

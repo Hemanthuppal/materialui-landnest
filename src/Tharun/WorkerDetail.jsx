@@ -115,12 +115,12 @@ const WorkerDetail = () => {
       : 'none',
   }}
   onClick={() => {
-    if (item.label === 'My Post Property With Landnest' || item.label === 'My Sell Property') {
-      navigate('/W_Buy');
-    } else if (item.label === 'My Rent Property') {
-      navigate('/W_Rent');
-    } else if (item.label === 'My Lease Property') {
-      navigate('/W_Lease');
+    if (item.label == 'My Post Property With Landnest' || item.label == 'My Sell Property') {
+      navigate('/user-buy');
+    } else if (item.label == 'My Rent Property') {
+      navigate('/user-rent');
+    } else if (item.label == 'My Lease Property') {
+      navigate('/user-lease');
     }
   }}
 >
