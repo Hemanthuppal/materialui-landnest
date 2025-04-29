@@ -447,8 +447,8 @@ const ConstructionPackages = () => {
     <>
     <AdminDashboard />
     <Fade in={true} timeout={800}>
-      <Box sx={{ minHeight: "100vh", background: "linear-gradient(to bottom, #f8f9fa, #e9ecef)", pb: 6 }}>
-        <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, pt: 4, maxWidth: "1200px", margin: "0 auto", backgroundColor: "#e7dbc9", pb: 2, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
+      {/* <Box sx={{ minHeight: "100vh", background: "linear-gradient(to bottom, #f8f9fa, #e9ecef)", pb: 6 }}> */}
+        <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, pt: 4, maxWidth: "1200px", margin: "0 auto", pb: 2, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
           {packages.map((pkg, index) => (
             <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
               <Card sx={{ borderRadius: "16px", boxShadow: "0 10px 30px rgba(0,0,0,0.1)", overflow: "hidden", transition: "transform 0.4s, box-shadow 0.4s", "&:hover": { transform: "translateY(-8px)", boxShadow: "0 15px 35px rgba(0,0,0,0.15)" }, border: "none" }}>
@@ -531,7 +531,7 @@ const ConstructionPackages = () => {
             </Grow>
           ))}
         </Box>
-      </Box>
+      {/* </Box> */}
     </Fade>
     </>
   );
