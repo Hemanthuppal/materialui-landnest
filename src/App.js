@@ -51,8 +51,6 @@ import Buy_Details_Page from './Sritajana/Details_Page';
 import BuySaves from './Sritajana/Buy_Saves';
 import Buy_Postdeal from './Sritajana/Buy_Postdeal';
 import Buy_Posttable from './Sritajana/Buy_Posttable';
-import Category from './Components/Admin/AdminUploadedProperties/Category';
-import Material from './Components/Admin/AdminUploadedProperties/Material';
 
 
 
@@ -70,12 +68,8 @@ import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
 import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
 import ConstructionGetStarted from './bharath/ConstructionGetStarted'
 
-import CustomerList from "../src/Components/Admin/Customers/Customers"
+// import CustomerList from "../src/Components/Admin/View/Customers"
 import AdminUploadPropertiesForm from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesForm';
-import AdminUploadPropertiesTable from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesTable';
-
-import Category from "./Components/Admin/Material/Category";
-import Construction from "./Components/Admin/Material/Construction"
 
 function App() {
 
@@ -159,8 +153,6 @@ function App() {
         <Route path="/Buy-saves" element={<BuySaves/>} />
         <Route path="/Buy-Postdeal" element={<Buy_Postdeal/>} />
         <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
-        <Route path="/Category" element={<Category/>} />
-        <Route path="/Material" element={<Material/>} />
        
 
 
@@ -176,22 +168,8 @@ function App() {
         <Route path="/admin-elevation" element={<AdminElevation />} />
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
-        <Route path="/customer" element={<CustomerList />} />
+        {/* <Route path="/view" element={<CustomerList />} /> */}
         <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
-        <Routes path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} />
-
-
-        <Route
-            path="/admin-material"
-            element={<Category />}
-          />
-
-            <Route
-            path="/admin-construction"
-            element={<Construction />}
-          />
-
-
       </Routes>
     </BrowserRouter>
     </AuthProvider>

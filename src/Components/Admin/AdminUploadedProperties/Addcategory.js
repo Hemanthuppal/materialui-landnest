@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useTable, usePagination, useGlobalFilter, useSortBy } from 'react-table';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Add, Edit, Delete } from '@mui/icons-material'; // Add the Add icon
-import AdminDashboard from "../../Admin/Dashboard/Dashboard";
+import AdminDashboard from "../Dashboard/Dashboard";
 
 // Global Search Filter Component
 function GlobalFilter({ globalFilter, setGlobalFilter }) {
