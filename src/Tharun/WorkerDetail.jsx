@@ -84,6 +84,11 @@ const WorkerDetail = () => {
                   { label: "Mobile", value: "9999999999" },
                   { label: "Address", value: "7-52/5b" },
                   { label: "Customer ID", value: "CUSTOMER001" },
+                  { label: "My Post Property With Landnest", value: "2" },
+                  { label: "My Sell Property", value: "2" },
+                  { label: "My Rent Property", value: "2" },
+                  { label: "My Lease Property", value: "2" },
+                  { label: "My Vendors Registration", value: "2" },
                 ].map((item, index) => (
                   <Box
                     key={index}
@@ -96,7 +101,32 @@ const WorkerDetail = () => {
                     <Typography variant="body1" fontWeight="bold">
                       {item.label}:
                     </Typography>
-                    <Typography variant="body1">{item.value}</Typography>
+                    <Typography
+  variant="body1"
+  sx={{
+    cursor: ['My Post Property With Landnest', 'My Sell Property', 'My Rent Property', 'My Lease Property'].includes(item.label)
+      ? 'pointer'
+      : 'default',
+    color: ['My Post Property With Landnest', 'My Sell Property', 'My Rent Property', 'My Lease Property'].includes(item.label)
+      ? 'primary.main'
+      : 'inherit',
+    textDecoration: ['My Post Property With Landnest', 'My Sell Property', 'My Rent Property', 'My Lease Property'].includes(item.label)
+      ? 'underline'
+      : 'none',
+  }}
+  onClick={() => {
+    if (item.label === 'My Post Property With Landnest' || item.label === 'My Sell Property') {
+      navigate('/W_Buy');
+    } else if (item.label === 'My Rent Property') {
+      navigate('/W_Rent');
+    } else if (item.label === 'My Lease Property') {
+      navigate('/W_Lease');
+    }
+  }}
+>
+  {item.value}
+</Typography>
+
                   </Box>
                 ))}
               </Box>

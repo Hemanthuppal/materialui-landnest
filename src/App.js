@@ -51,6 +51,12 @@ import Buy_Details_Page from './Sritajana/Details_Page';
 import BuySaves from './Sritajana/Buy_Saves';
 import Buy_Postdeal from './Sritajana/Buy_Postdeal';
 import Buy_Posttable from './Sritajana/Buy_Posttable';
+import W_Buy from './Woker/W_Buy';
+import W_Lease from './Woker/W_Lease';
+import W_Rent from './Woker/W_Rent';
+import W_Vendors from './Woker/W_Vendors';
+import W_Post from './Woker/W_Post';
+import W_Navbar from '././Woker/W_Navbar';
 
 
 // import AdminCategory from './Components/Admin/AdminUploadedProperties/Category';
@@ -160,6 +166,15 @@ function App() {
         <Route path="/Buy-saves" element={<BuySaves/>} />
         <Route path="/Buy-Postdeal" element={<Buy_Postdeal/>} />
         <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
+        <Route path="/W_Buy" element={<W_Buy/>} />
+        <Route path="/W_Lease" element={<W_Lease/>} />
+        <Route path="/W_Rent" element={<W_Rent/>} />
+        <Route path="/W_Vendors" element={<W_Vendors/>} />
+        <Route path="/W_Post" element={<W_Post/>} />
+        <Route path="/W_Navbar" element={<W_Navbar/>} />
+        
+
+        
        
 
 
@@ -175,8 +190,8 @@ function App() {
         <Route path="/admin-elevation" element={<AdminElevation />} />
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
-        <Route path="/Material" element={<Material/>} />
-        <Route path="/Addcategory" element={<Addcategory/>} />
+        <Route path="/Material" element={<Material/>} />     //sritha
+        <Route path="/Addcategory" element={<Addcategory/>} />     //sritha
         
 
         {/* <Route path="/view" element={<CustomerList />} /> */}
