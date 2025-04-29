@@ -7,33 +7,50 @@ import axios from 'axios';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import BedIcon from '@mui/icons-material/Bed';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import BathtubIcon from '@mui/icons-material/Bathtub';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BalconyIcon from '@mui/icons-material/Balcony';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import PowerIcon from '@mui/icons-material/Power';
+import CropSquareOutlinedIcon from '@mui/icons-material/CropSquareOutlined';
+import CompassCalibrationOutlinedIcon from '@mui/icons-material/CompassCalibrationOutlined';
+import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
+import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import buildingImage from '../Images/house.jpeg';
 import CustomBottomNav from './CustomNav';
-import BathtubIcon from '@mui/icons-material/Bathtub';
 import { BASE_URL } from './../Api/ApiUrls';
-
 
 const Buy_description = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { propertyId } = location.state || {};
-
+  const [categories, setCategories] = useState([]);
   const [property, setProperty] = useState(null);
 
+
   useEffect(() => {
-    console.log('Property ID:', propertyId); // Log the property ID
-  
-    if (propertyId) {
-      axios.get(`${BASE_URL}/property/${propertyId}/`)
-        .then((res) => setProperty(res.data))
-        .catch((err) => console.error('Failed to fetch property:', err));
-    }
+    // Fetch categories first
+    axios.get('http://46.37.122.105:89/property-category/')
+      .then((res) => {
+        setCategories(res.data);
+        // Then fetch property if propertyId exists
+        if (propertyId) {
+          axios.get(`http://46.37.122.105:89/property/${propertyId}/`)
+            .then((propertyRes) => setProperty(propertyRes.data))
+            .catch((err) => console.error('Failed to fetch property:', err));
+        }
+      })
+      .catch((err) => console.error('Failed to fetch categories:', err));
   }, [propertyId]);
+
   
   if (!property) {
     return <Typography sx={{ mt: 10, textAlign: 'center' }}>Loading property...</Typography>;
   }
-
+// Find the category that matches the property's category_id
+const propertyCategory = categories.find(cat => cat.category_id === property.category_id);
+const categoryName = propertyCategory ? propertyCategory.category : property.type;
   const {
     property_images = [],
     type, price, location: loc,
@@ -44,16 +61,23 @@ const Buy_description = () => {
   } = property;
 
   const imageUrl = property_images?.[0]?.image
-    ? `${BASE_URL}${property_images[0].image}`
+    ? `http://46.37.122.105:89${property_images[0].image}`
     : buildingImage;
 
   return (
     <Box sx={{ width: '100vw', minHeight: '100vh', backgroundColor: 'rgb(239, 231, 221)', pb: 10 }}>
       {/* Header */}
       <Box sx={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-        bgcolor: 'rgb(49, 48, 49)', color: 'white', p: 2,
-        display: 'flex', alignItems: 'center', height: '64px',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
+        bgcolor: 'rgb(49, 48, 49)',
+        color: 'white',
+        p: 2,
+        display: 'flex',
+        alignItems: 'center',
       }}>
         <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
           <ArrowBackIosNewIcon />
@@ -64,7 +88,7 @@ const Buy_description = () => {
       </Box>
 
       {/* Property Content */}
-      <Box sx={{ pt: '80px', px: 2, mt: 4 }}>
+      <Box sx={{ pt: '80px', px: 2 }}>
         <Card sx={{
           borderRadius: '20px',
           background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
@@ -80,7 +104,7 @@ const Buy_description = () => {
             <Grid container justifyContent="space-between" alignItems="center" sx={{ pb: 2 }}>
               <Grid item xs={8}>
                 <Typography fontWeight="bold" fontSize="18px">
-                  {type?.replace(/"/g, '') || 'Property Type'}
+                  {categoryName?.replace(/"/g, '') || 'Property Type'}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {loc || 'Not Specified'}
@@ -98,8 +122,12 @@ const Buy_description = () => {
 
             {/* Basic Info */}
             <Box sx={{
-              display: 'flex', justifyContent: 'space-between',
-              bgcolor: '#ede7f6', borderRadius: 2, p: 2, mb: 2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              bgcolor: '#ede7f6',
+              borderRadius: 2,
+              p: 2,
+              mb: 2,
             }}>
               <Box sx={{ textAlign: 'center', flex: 1 }}>
                 <Typography fontWeight="bold" color="primary">
@@ -141,23 +169,87 @@ const Buy_description = () => {
             <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
               Overview:
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography><BedIcon /> {bedrooms_count || 'NA'} Bedrooms</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography><BathtubIcon /> {bathrooms_count || 'NA'} Bathrooms</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography><CalendarTodayIcon /> {created_at?.split('T')[0]}</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography>{balcony ? 'Balcony Available' : 'No Balcony'}</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography>{parking ? 'Parking Available' : 'No Parking'}</Typography>
-              </Grid>
-            </Grid>
+            <Box sx={{
+              border: '2px solid #424242',
+              borderRadius: 2,
+              overflow: 'hidden',
+            }}>
+              {[
+                [
+                  { icon: <BedIcon />, title: `${bedrooms_count || 'NA'} Bedroom${bedrooms_count !== 1 ? 's' : ''}`, subtitle: 'No. of Bedrooms' },
+                  { icon: <CalendarTodayIcon />, title: created_at?.split('T')[0] || 'NA', subtitle: 'Posted on' },
+                ],
+                [
+                  { icon: <BathtubIcon />, title: `${bathrooms_count || 'NA'} Bathroom${bathrooms_count !== 1 ? 's' : ''}`, subtitle: 'No. of Bathrooms' },
+                  { icon: <AccessTimeIcon />, title: 'Immediately', subtitle: 'Available From' },
+                ],
+                [
+                  { icon: <BalconyIcon />, title: balcony ? 'Available' : 'NA', subtitle: 'Balcony' },
+                  { icon: <HomeWorkIcon />, title: type?.replace(/"/g, '') || 'NA', subtitle: 'Property Type' },
+                ],
+                [
+                  { icon: <DirectionsCarIcon />, title: parking ? 'Available' : 'NA', subtitle: 'Parking' },
+                  { icon: <PowerIcon />, title: 'None', subtitle: 'Power Backup' },
+                ],
+              ].map((row, rowIndex) => (
+                <Box key={rowIndex} sx={{ display: 'flex' }}>
+                  {row.map((item, colIndex) => (
+                    <Box
+                      key={colIndex}
+                      sx={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        p: 2,
+                        borderRight: colIndex === 0 ? '1px solid #9e9e9e' : 'none',
+                        borderBottom: rowIndex < 3 ? '1px solid #9e9e9e' : 'none',
+                      }}
+                    >
+                      <Box sx={{ color: 'rgb(50, 47, 52)' }}>{item.icon}</Box>
+                      <Box>
+                        <Typography fontWeight={600} fontSize="15px">
+                          {item.title}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {item.subtitle}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+
+            {/* Final Info */}
+            <Box sx={{ mt: 3, borderTop: '1px dashed #d1c4e9', pt: 2 }}>
+              {[
+                ['Built Up Area', `${buildup_area || 'NA'} Sq.ft`, <CropSquareOutlinedIcon />],
+                ['Facing', facing?.replace(/"/g, '') || 'NA', <CompassCalibrationOutlinedIcon />],
+                ['Floor', '0/0', <LayersOutlinedIcon />],
+                ['Gated Security', 'No', <SecurityOutlinedIcon />],
+              ].map(([label, value, icon], i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mb: i !== 3 ? 1.5 : 0,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'rgb(52, 50, 53)' }}>
+                    {icon}
+                    <Typography fontSize={14} sx={{ ml: 1 }} color="text.primary">
+                      {label}
+                    </Typography>
+                  </Box>
+                  <Typography fontWeight={500} color="text.primary" fontSize={14}>
+                    {value}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
           </CardContent>
         </Card>
       </Box>
