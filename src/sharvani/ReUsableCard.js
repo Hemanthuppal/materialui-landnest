@@ -150,7 +150,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
         <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
           {[
             { label: 'Facing', value: property.facing },
-            { label: `Area (${property.dimensions})`, value: property.area },
+            { label: `Area `, value: property.area },
             { label: 'Listed By', value: property.listedBy }
           ].map((item, index) => (
             <Box

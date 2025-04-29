@@ -76,7 +76,12 @@ import Material from './Components/Admin/AdminUploadedProperties/Material';
 
 // import CustomerList from "../src/Components/Admin/View/Customers"
 import AdminUploadPropertiesForm from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesForm';
-import { Category } from '@mui/icons-material';
+import AdminUploadPropertiesTable from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesTable';
+
+import Category from "./Components/Admin/Material/Category";
+import Construction from "./Components/Admin/Material/Construction"
+import MapWithPoints from './hemanth/MapWithPoints';
+
 
 function App() {
 
@@ -160,6 +165,9 @@ function App() {
         <Route path="/Buy-saves" element={<BuySaves/>} />
         <Route path="/Buy-Postdeal" element={<Buy_Postdeal/>} />
         <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
+        <Route path="/Category" element={<Category/>} />
+        <Route path="/Material" element={<Material/>} />
+        <Route path="/map" element={<MapWithPoints/>} />
        
 
 

@@ -6,14 +6,14 @@ import {
   Typography,
   Paper
 } from '@mui/material';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './../sharvani/ReUsableCard';
 import CustomBottomNav from './CustomNav';
-import { BASE_URL } from './../Api/ApiUrls';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -21,41 +21,33 @@ const rentalTypes = [
   "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
 ];
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
+// Fix Leaflet marker icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
-  const [value, setValue] = useState(0);
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedBuy');
     return stored ? JSON.parse(stored) : [];
   });
-
+  const [categories, setCategories] = useState([]);
   const [likedCards, setLikedCards] = useState({});
   const navigate = useNavigate();
-
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-  });
-
-  const containerStyle = {
-    width: '100%',
-    height: 'calc(100vh - 240px)'
-  };
-
-  const center = {
-    lat: 26.8467,
-    lng: 80.9462
-  };
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/property/`);
-        const filtered = response.data.filter(item =>
+        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        setCategories(categoriesResponse.data);
+
+        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const filtered = propertiesResponse.data.filter(item =>
           item.type && item.type.toLowerCase().includes("sell")
         );
 
@@ -66,9 +58,19 @@ const Rent_Property_Map = () => {
             return parseFloat(cleaned);
           };
 
+          const matchedCategory = categoriesResponse.data.find(
+            cat => cat.category_id === item.category_id
+          );
+
+          const categoryName = matchedCategory ? matchedCategory.category : 'Property';
+
+          const imageUrl = item.property_images?.[0]?.image
+            ? `http://46.37.122.105:89${item.property_images[0].image}`
+            : buildingImage;
+
           return {
             id: item.property_id,
-            title: item.type?.replace(/"/g, '') || 'Property',
+            title: categoryName,
             location: item.location || 'Not specified',
             price: `₹${item.price}`,
             date: item.created_at?.split('T')[0],
@@ -78,11 +80,10 @@ const Rent_Property_Map = () => {
             listedBy: item.list?.replace(/"/g, '') || 'Agent',
             lat: parseCoord(item.lat),
             lng: parseCoord(item.long),
-            image: item.property_images?.[0]?.image
-              ? `${BASE_URL}${item.property_images[0].image}`
-              : buildingImage
+            image: imageUrl
           };
         });
+
 
         setProperties(parsed);
       } catch (error) {
@@ -92,6 +93,30 @@ const Rent_Property_Map = () => {
 
     fetchProperties();
   }, []);
+
+  useEffect(() => {
+    if (properties.length === 0) return;
+
+    const map = L.map('leaflet-map').setView([26.8467, 80.9462], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '',
+    }).addTo(map);
+
+    properties.forEach(property => {
+      if (!property.lat || !property.lng) return;
+
+      const marker = L.marker([property.lat, property.lng]).addTo(map);
+
+      marker.on('click', () => {
+        setSelectedProperty(property);
+      });
+    });
+
+    return () => {
+      map.remove();
+    };
+  }, [properties]);
 
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
@@ -152,72 +177,42 @@ const Rent_Property_Map = () => {
         </Box>
       </Box>
 
-      {/* 🗺️ Google Map */}
-      {isLoaded ? (
-        <Box sx={{ px: 2, pb: 10 }}>
-          <Box sx={{ width: '100%', height: containerStyle.height }}>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={13}
-              options={{
-                gestureHandling: 'greedy',
-                zoomControl: true,
-                mapTypeControl: false,
-                streetViewControl: false,
-                fullscreenControl: false
-              }}
-            >
-              {properties.map(property => (
-                property.lat && property.lng && (
-                  <Marker
-                    key={property.id}
-                    position={{ lat: property.lat, lng: property.lng }}
-                    onClick={() => setSelectedProperty(property)}
-                  />
-                )
-              ))}
-            </GoogleMap>
-          </Box>
-
-          {/* 🏠 Show property card on click */}
-          {selectedProperty && (
-            <Box sx={{
-              position: 'absolute',
-              bottom: 164,
-              left: 0,
-              right: 0,
-              margin: '0 auto',
-              width: '100%',
-              maxWidth: 480,
-              zIndex: 999
-            }}>
-              <ReUsableCard
-                property={selectedProperty}
-                onCardClick={() => {
-                  console.log('Selected property:', selectedProperty); // Debug log
-                  if (selectedProperty && selectedProperty.id) {
-                    navigate('/Buy-description', {
-                      state: { propertyId: selectedProperty.id }
-                    });
-                  } else {
-                    console.warn('selectedProperty or property_id is undefined');
-                  }
-                }}
-                
-
-                isSaved={isSaved}
-                toggleSave={toggleSave}
-                likedCards={likedCards}
-                toggleLike={toggleLike}
-                onClose={() => setSelectedProperty(null)}
-              />
-            </Box>
-          )}
+      {/* 🗺️ Leaflet Map */}
+      <Box sx={{ px: 2, pb: 10 }}>
+        <Box sx={{ width: '100%', height: 'calc(100vh - 240px)' }}>
+          <div id="leaflet-map" style={{ height: '100%', width: '100%', borderRadius: '8px' }}></div>
         </Box>
-      ) : (
-        <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
-      )}
+
+        {/* 🏠 Property Card Popup */}
+        {selectedProperty && (
+          <Box sx={{
+            position: 'absolute',
+            bottom: 115,
+            left: 0,
+            right: 0,
+            margin: '0 auto',
+            width: '100%',
+            maxWidth: 480,
+            zIndex: 999
+          }}>
+            <ReUsableCard
+              property={selectedProperty}
+              onCardClick={() => {
+                if (selectedProperty && selectedProperty.id) {
+                  navigate('/Buy-description', {
+                    state: { propertyId: selectedProperty.id }
+                  });
+                }
+              }}
+              isSaved={isSaved}
+              toggleSave={toggleSave}
+              likedCards={likedCards}
+              toggleLike={toggleLike}
+              onClose={() => setSelectedProperty(null)}
+            />
+          </Box>
+        )}
+      </Box>
 
       {/* 📱 Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
