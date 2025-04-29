@@ -41,7 +41,7 @@
 //           <div
 //             key={item.key}
 //             data-key={item.key}
-//             className={`nav-item ${active === item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
+//             className={`nav-item ${active == item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
 //             onClick={() => handleNav(item)}
 //           >
 //             {item.icon}
@@ -100,7 +100,7 @@
 //           <div
 //             key={item.key}
 //             data-key={item.key}
-//             className={`nav-item ${currentKey === item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
+//             className={`nav-item ${currentKey == item.key ? 'active' : ''} ${item.isCenter ? 'center' : ''}`}
 //             onClick={() => handleNav(item)}
 //           >
 //             {item.icon}
@@ -168,7 +168,7 @@
 //             <div
 //               key={item.key}
 //               data-key={item.key}
-//               className={`nav-item ${currentKey === item.key ? 'active' : ''}`}
+//               className={`nav-item ${currentKey == item.key ? 'active' : ''}`}
 //               onClick={() => handleNav(item)}
 //             >
 //               {item.icon}
@@ -178,7 +178,7 @@
 //         )}
 
 //         <div
-//           className={`nav-item center ${currentKey === centerItem.key ? 'active' : ''}`}
+//           className={`nav-item center ${currentKey == centerItem.key ? 'active' : ''}`}
 //           data-key={centerItem.key}
 //           onClick={() => handleNav(centerItem)}
 //         >
@@ -245,7 +245,7 @@ const CustomBottomNavbar = () => {
             <div
               key={item.key}
               data-key={item.key}
-              className={`cbn-nav-item ${currentKey === item.key ? 'cbn-active' : ''}`}
+              className={`cbn-nav-item ${currentKey == item.key ? 'cbn-active' : ''}`}
               onClick={() => handleNav(item)}
             >
               {item.icon}
@@ -255,7 +255,7 @@ const CustomBottomNavbar = () => {
         )}
 
         <div
-          className={`cbn-nav-item cbn-center ${currentKey === centerItem.key ? 'cbn-active' : ''}`}
+          className={`cbn-nav-item cbn-center ${currentKey == centerItem.key ? 'cbn-active' : ''}`}
           data-key={centerItem.key}
           onClick={() => handleNav(centerItem)}
         >
