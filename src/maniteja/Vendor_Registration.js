@@ -127,7 +127,7 @@ const VendorRegister = () => {
         if (window.google && window.google.maps) {
             const geocoder = new window.google.maps.Geocoder();
             geocoder.geocode({ address: formData.address }, (results, status) => {
-                if (status === 'OK' && results[0]) {
+                if (status == 'OK' && results[0]) {
                     const location = results[0].geometry.location;
                     const lat = location.lat();
                     const lng = location.lng();
