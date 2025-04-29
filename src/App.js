@@ -174,7 +174,7 @@ function App() {
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
         <Route path="/customer" element={<CustomerList />} />
         <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
-        <Routes path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} />
+        <Route path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} />
 
 
         <Route
