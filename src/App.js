@@ -76,6 +76,7 @@ import AdminUploadPropertiesTable from './Components/Admin/AdminUploadedProperti
 
 import Category from "./Components/Admin/Material/Category";
 import Construction from "./Components/Admin/Material/Construction"
+import MapWithPoints from './hemanth/MapWithPoints';
 
 function App() {
 
@@ -161,7 +162,7 @@ function App() {
         <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
         <Route path="/Category" element={<Category/>} />
         <Route path="/Material" element={<Material/>} />
-       
+        <Route path="/map" element={<MapWithPoints/>} />
 
 
 
