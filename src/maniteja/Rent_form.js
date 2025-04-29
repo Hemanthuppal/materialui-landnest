@@ -151,30 +151,46 @@ const RentForm = () => {
         console.log(`Google Maps API hits: ${apiHitCount + 1}`);
     }; 
 
-    const getCurrentLocation = () => {
-        if (navigator.geolocation) {
-            setUsingCurrentLocation(true);
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    setLocation(pos);
-                    
-                    // Reverse geocode to get address without using Google Maps API
-                    // This is a fallback - ideally you'd use a free geocoding service
-                    setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
-                },
-                (error) => {
-                    console.error("Error getting current location:", error);
-                    alert("Error getting current location. Please enable location services.");
-                }
-            );
-        } else {
-            alert("Geolocation is not supported by this browser.");
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    setUsingCurrentLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setLocation(pos);
+
+        try {
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${GOOGLE_MAPS_API_KEY}`
+          );
+          const data = await response.json();
+
+          if (data.status === 'OK' && data.results.length > 0) {
+            const address = data.results[0].formatted_address;
+            setAddress(address);
+          } else {
+            console.warn('No address found, fallback to coordinates.');
+            setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
+          }
+        } catch (error) {
+          console.error('Google Maps API error:', error);
+          setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
         }
-    };
+      },
+      (error) => {
+        console.error("Error getting current location:", error);
+        alert("Error getting current location. Please enable location services.");
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+};
+
 
     const onPlaceChanged = () => {
         if (autocompleteRef.current) {
