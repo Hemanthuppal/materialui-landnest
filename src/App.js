@@ -82,6 +82,11 @@ import Category from "./Components/Admin/Material/Category";
 import Construction from "./Components/Admin/Material/Construction"
 import MapWithPoints from './hemanth/MapWithPoints';
 
+import UserRent from './Userproperties/Rent/Rent';
+import UserLease from './Userproperties/Lease/Lease';
+import UserVendor from './Userproperties/Vendor/Vendor';
+import UserBestdeals from './Userproperties/BestDeals/Bestdeals';
+
 
 function App() {
 
@@ -203,7 +208,11 @@ function App() {
             element={<Construction />}
           /> */}
 
-
+<Route path="/user-buy" element={<UserBuy/>} />
+<Route path="/user-rent" element={<UserRent/>} />
+<Route path="/user-lease" element={<UserLease/>} />
+<Route path="/user-deals" element={<UserBestdeals/>} />
+<Route path="/user-vendors" element={<UserVendor/>} />
 
       </Routes>
     </BrowserRouter>
