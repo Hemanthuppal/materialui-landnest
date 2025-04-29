@@ -80,8 +80,9 @@ const SellYourProperty = () => {
     
     const [formData, setFormData] = useState({
         user_id: userId,
-        category_id: '3',
+        category_id: '1', 
         type: 'sell',
+        mobile_no: '',
         facing: '',
         roadwidth: '',
         site_area: '',
@@ -120,12 +121,43 @@ const SellYourProperty = () => {
 
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('duplex house');
+    const [selectedCategory, setSelectedCategory] = useState('Apartment');
     const [formValues, setFormValues] = useState({});
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
 
+    useEffect(() => {
+        const fetchMobileNo = async () => {
+            try {
+                const response = await axios.get(`http://46.37.122.105:89/users/`);
+                const users = response.data;
+                
+                console.log('All users from API:', users);
+                console.log('Current userId:', userId);
+    
+                const matchedUser = users.find(user => user.user_id == userId);
+                
+                if (matchedUser) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        mobile_no: matchedUser.mobile_no,
+                    }));
+                    console.log('Fetched and set mobile_no:', matchedUser.mobile_no);
+                } else {
+                    console.warn(`User with ID ${userId} not found`);
+                }
+            } catch (error) {
+                console.error('Error fetching mobile_no:', error);
+            }
+        };
+    
+        if (userId) {
+            fetchMobileNo();
+        }
+    }, [userId]);
+    
+    
     // Track API hits
     const incrementApiHit = () => {
         setApiHitCount(prev => prev + 1);
@@ -134,28 +166,42 @@ const SellYourProperty = () => {
 
     const getCurrentLocation = () => {
         if (navigator.geolocation) {
-            setUsingCurrentLocation(true);
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    setLocation(pos);
-                    
-                    // Reverse geocode to get address without using Google Maps API
-                    // This is a fallback - ideally you'd use a free geocoding service
-                    setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
-                },
-                (error) => {
-                    console.error("Error getting current location:", error);
-                    alert("Error getting current location. Please enable location services.");
+          setUsingCurrentLocation(true);
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              setLocation(pos);
+      
+              try {
+                const response = await fetch(
+                  `https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${GOOGLE_MAPS_API_KEY}`
+                );
+                const data = await response.json();
+      
+                if (data.status === 'OK' && data.results.length > 0) {
+                  const address = data.results[0].formatted_address;
+                  setAddress(address);
+                } else {
+                  console.warn('No address found, fallback to coordinates.');
+                  setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
                 }
-            );
+              } catch (error) {
+                console.error('Google Maps API error:', error);
+                setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
+              }
+            },
+            (error) => {
+              console.error("Error getting current location:", error);
+              alert("Error getting current location. Please enable location services.");
+            }
+          );
         } else {
-            alert("Geolocation is not supported by this browser.");
+          alert("Geolocation is not supported by this browser.");
         }
-    };
+      };
 
     const onPlaceChanged = () => {
         if (autocompleteRef.current) {
@@ -185,7 +231,7 @@ const SellYourProperty = () => {
             incrementApiHit(); // This uses Google Maps API
             const geocoder = new window.google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
-                if (status === 'OK' && results[0]) {
+                if (status == 'OK' && results[0]) {
                     const location = results[0].geometry.location;
                     setLocation({
                         lat: location.lat(),
@@ -244,7 +290,7 @@ const SellYourProperty = () => {
         if (window.google && window.google.maps) {
             const geocoder = new window.google.maps.Geocoder();
             geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                if (status === 'OK' && results[0]) {
+                if (status == 'OK' && results[0]) {
                     setAddress(results[0].formatted_address);
                 } else {
                     setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
@@ -257,7 +303,7 @@ const SellYourProperty = () => {
         axios.get('http://46.37.122.105:89/property-category/')
             .then(response => {
                 const rentCategories = response.data.filter(
-                    cat => cat.category_type.toLowerCase() === 'sell'
+                    cat => cat.category_type.toLowerCase() == 'sell'
                 );
                 setCategories(rentCategories);
             })
@@ -297,6 +343,7 @@ const SellYourProperty = () => {
             long: location.lng.toString(),
             location: address,
             site_area: site_area.toString(),
+            // mobile_no: formData.mobile_no
         };
     
         console.log('Data being prepared for submission:', updatedFormData);
@@ -328,7 +375,7 @@ const SellYourProperty = () => {
     
             console.log('Server response:', response);
             
-            if (response.status === 201 || response.status === 200) {
+            if (response.status == 201 || response.status == 200) {
                 console.log('Success! Response data:', response.data);
                 alert('Property submitted successfully!');
                 // navigate('/dashboard');
@@ -383,7 +430,7 @@ const SellYourProperty = () => {
                                 labelId="category-label"
                                 value={selectedCategory}
                                 onChange={(e) => {
-                                    const selected = categories.find(cat => cat.category === e.target.value);
+                                    const selected = categories.find(cat => cat.category == e.target.value);
                                     setSelectedCategory(selected.category);
                                     setFormData(prev => ({
                                         ...prev,
@@ -447,8 +494,8 @@ const SellYourProperty = () => {
     </Box>
 )}
                         {fields.map((label) => {
-                            if (label === 'Site Area') return null;
-                            if (label === 'Facing') {
+                            if (label == 'Site Area') return null;
+                            if (label == 'Facing') {
                                 return (
                                     <FormControl fullWidth key={label} sx={{ mb: 2 }}>
                                         <InputLabel id={`${label}-label`}>{label}</InputLabel>

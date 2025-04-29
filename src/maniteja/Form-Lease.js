@@ -59,7 +59,7 @@ const fieldMap  = {
     'duplex house': ['Facing', 'Price', 'Parking', 'Approx Area'],
     'commercial land': ['Facing', 'Price', 'Approx Area'],
     'commercial building/space': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
-    'villa': ['Facing', 'Price', 'Parking', 'Approx Area'],
+    'Villa': ['Facing', 'Price', 'Parking', 'Approx Area'],
     'pg-school-office': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
     'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
 }; 
@@ -80,7 +80,7 @@ const LeaseForm = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const [formValues, setFormValues] = useState({});
-    const [selectedCategory, setSelectedCategory] = useState('duplex house');
+    const [selectedCategory, setSelectedCategory] = useState('Villa');
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
@@ -93,28 +93,42 @@ const LeaseForm = () => {
 
     const getCurrentLocation = () => {
         if (navigator.geolocation) {
-            setUsingCurrentLocation(true);
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    setLocation(pos);
-                    
-                    // Reverse geocode to get address without using Google Maps API
-                    // This is a fallback - ideally you'd use a free geocoding service
-                    setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
-                },
-                (error) => {
-                    console.error("Error getting current location:", error);
-                    alert("Error getting current location. Please enable location services.");
+          setUsingCurrentLocation(true);
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              setLocation(pos);
+      
+              try {
+                const response = await fetch(
+                  `https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${GOOGLE_MAPS_API_KEY}`
+                );
+                const data = await response.json();
+      
+                if (data.status === 'OK' && data.results.length > 0) {
+                  const address = data.results[0].formatted_address;
+                  setAddress(address);
+                } else {
+                  console.warn('No address found, fallback to coordinates.');
+                  setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
                 }
-            );
+              } catch (error) {
+                console.error('Google Maps API error:', error);
+                setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
+              }
+            },
+            (error) => {
+              console.error("Error getting current location:", error);
+              alert("Error getting current location. Please enable location services.");
+            }
+          );
         } else {
-            alert("Geolocation is not supported by this browser.");
+          alert("Geolocation is not supported by this browser.");
         }
-    };
+      };
 
     const handleWorkPhotosChange = (e) => {
         if (e.target.files) {
@@ -132,7 +146,7 @@ const LeaseForm = () => {
         if (window.google && window.google.maps) {
             const geocoder = new window.google.maps.Geocoder();
             geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                if (status === 'OK' && results[0]) {
+                if (status == 'OK' && results[0]) {
                     setAddress(results[0].formatted_address);
                 } else {
                     setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
@@ -145,7 +159,7 @@ const LeaseForm = () => {
         axios.get('http://46.37.122.105:89/property-category/')
             .then(response => {
                 const rentCategories = response.data.filter(
-                    cat => cat.category_type.toLowerCase() === 'rent/lease'
+                    cat => cat.category_type.toLowerCase() == 'rent/lease'
                 );
                 setCategories(rentCategories);
             })
@@ -165,13 +179,15 @@ const LeaseForm = () => {
 
     const [formData, setFormData] = useState({
         user_id: userId, // This should probably come from user auth
-        category_id: '4', // This should be mapped from your category selection
-        type: 'rent/lease', // or 'sell' based on your form
+        category_id: '2', // This should be mapped from your category selection
+        type: 'lease', // or 'sell' based on your form
         facing: '',
+        mobile_no: '',
         roadwidth: '',
         site_area: '',
         buildup_area: '',
         list: '',
+        mobile_no: '',
         price: '',
         location: '',
         lat: '',
@@ -185,6 +201,36 @@ const LeaseForm = () => {
         parking: '',
         advance_payment: ''
     });
+
+    useEffect(() => {
+            const fetchMobileNo = async () => {
+                try {
+                    const response = await axios.get(`http://46.37.122.105:89/users/`);
+                    const users = response.data;
+                    
+                    console.log('All users from API:', users);
+                    console.log('Current userId:', userId);
+        
+                    const matchedUser = users.find(user => user.user_id == userId);
+                    
+                    if (matchedUser) {
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            mobile_no: matchedUser.mobile_no,
+                        }));
+                        console.log('Fetched and set mobile_no:', matchedUser.mobile_no);
+                    } else {
+                        console.warn(`User with ID ${userId} not found`);
+                    }
+                } catch (error) {
+                    console.error('Error fetching mobile_no:', error);
+                }
+            };
+        
+            if (userId) {
+                fetchMobileNo();
+            }
+        }, [userId]);
 
     const onPlaceChanged = () => {
         if (autocompleteRef.current) {
@@ -213,7 +259,7 @@ const LeaseForm = () => {
             incrementApiHit();
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode({ address }, (results, status) => {
-            if (status === 'OK' && results[0]) {
+            if (status == 'OK' && results[0]) {
                 const location = results[0].geometry.location;
                 setLocation({
                     lat: location.lat(),
@@ -291,7 +337,7 @@ const LeaseForm = () => {
     
             console.log('API response:', response);
     
-            if (response.status === 201 || response.status === 200) {
+            if (response.status == 201 || response.status == 200) {
                 console.log('Property submitted successfully!');
                 alert('Property submitted successfully!');
                 navigate('/dashboard');
@@ -339,7 +385,7 @@ const LeaseForm = () => {
         labelId="category-label"
         value={selectedCategory}
         onChange={(e) => {
-            const selected = categories.find(cat => cat.category === e.target.value);
+            const selected = categories.find(cat => cat.category == e.target.value);
             setSelectedCategory(selected.category); // show category name in dropdown
             setFormData(prev => ({
                 ...prev,
@@ -365,7 +411,7 @@ const LeaseForm = () => {
 
 {selectedCategory &&
     fieldMap[selectedCategory]?.map((label) => (
-        label === 'Facing' ? (
+        label == 'Facing' ? (
             <FormControl fullWidth key={label} sx={{ mb: 2 }}>
                 <InputLabel id={`${label}-label`}>{label}</InputLabel>
                 <Select

@@ -75,7 +75,7 @@ const RegisterPage = () => {
     };
 
     try {
-      const response = await fetch(`${BASE_URL}/users/`, {
+      const response = await fetch('http://46.37.122.105:89/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
