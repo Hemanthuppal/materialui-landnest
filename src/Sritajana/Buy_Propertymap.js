@@ -26,6 +26,7 @@ const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [value, setValue] = useState(0);
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedBuy');
@@ -52,10 +53,15 @@ const Rent_Property_Map = () => {
   };
 
   useEffect(() => {
-    const fetchProperties = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/property/`);
-        const filtered = response.data.filter(item =>
+        // Fetch categories first
+        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        setCategories(categoriesResponse.data);
+
+        // Then fetch properties
+        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const filtered = propertiesResponse.data.filter(item =>
           item.type && item.type.toLowerCase().includes("sell")
         );
 
@@ -66,9 +72,21 @@ const Rent_Property_Map = () => {
             return parseFloat(cleaned);
           };
 
+          // Find matching category
+          const matchedCategory = categoriesResponse.data.find(
+            cat => cat.category_id === item.category_id
+          );
+          
+          const categoryName = matchedCategory ? matchedCategory.category : 'Property';
+
+          // Fixed image URL construction
+          const imageUrl = item.property_images?.[0]?.image
+            ? `http://46.37.122.105:89${item.property_images[0].image}`
+            : buildingImage;
+
           return {
             id: item.property_id,
-            title: item.type?.replace(/"/g, '') || 'Property',
+            title: categoryName,
             location: item.location || 'Not specified',
             price: `₹${item.price}`,
             date: item.created_at?.split('T')[0],
@@ -78,19 +96,17 @@ const Rent_Property_Map = () => {
             listedBy: item.list?.replace(/"/g, '') || 'Agent',
             lat: parseCoord(item.lat),
             lng: parseCoord(item.long),
-            image: item.property_images?.[0]?.image
-              ? `${BASE_URL}${item.property_images[0].image}`
-              : buildingImage
+            image: imageUrl
           };
         });
 
         setProperties(parsed);
       } catch (error) {
-        console.error('Error fetching properties:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchProperties();
+    fetchData();
   }, []);
 
   const toggleSave = (property) => {
@@ -184,7 +200,7 @@ const Rent_Property_Map = () => {
           {selectedProperty && (
             <Box sx={{
               position: 'absolute',
-              bottom: 164,
+              bottom: 115,
               left: 0,
               right: 0,
               margin: '0 auto',
@@ -195,7 +211,7 @@ const Rent_Property_Map = () => {
               <ReUsableCard
                 property={selectedProperty}
                 onCardClick={() => {
-                  console.log('Selected property:', selectedProperty); // Debug log
+                  console.log('Selected property:', selectedProperty);
                   if (selectedProperty && selectedProperty.id) {
                     navigate('/Buy-description', {
                       state: { propertyId: selectedProperty.id }
@@ -204,8 +220,6 @@ const Rent_Property_Map = () => {
                     console.warn('selectedProperty or property_id is undefined');
                   }
                 }}
-                
-
                 isSaved={isSaved}
                 toggleSave={toggleSave}
                 likedCards={likedCards}

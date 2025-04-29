@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Chip,
   Typography,
-
 } from '@mui/material';
-
-
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-
-
+import axios from 'axios';
 
 import buildingImage from '../Images/house.jpeg';
 import buildingImage2 from '../Images/house1.jpg';
@@ -26,48 +22,19 @@ const rentalTypes = [
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
-const properties = [
-  {
-    id: 1,
-    title: 'Plot For Rent in Btm Layout 2nd Stage',
-    location: '16th Main Road, BTM layout 2nd...',
-    price: '₹3.25 Cr/m',
-    date: '01-04-2025',
-    facing: 'East',
-    area: '1600 sq ft',
-    dimensions: '40×40',
-    listedBy: 'Owner/Agent',
-    lat: 26.8467,
-    lng: 80.9462,
-    image: buildingImage
-  },
-  {
-    id: 2,
-    title: 'Commercial Plot for Rent near Silk Board',
-    location: 'Silk Board Junction, Bangalore...',
-    price: '₹2.75 Cr/m',
-    date: '02-04-2025',
-    facing: 'North',
-    area: '1400 sq ft',
-    dimensions: '35×40',
-    listedBy: 'Builder',
-    lat: 26.8500,
-    lng: 80.9500,
-    image: buildingImage2
-  }
-];
-
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
- 
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
   const navigate = useNavigate();
   const [saved, setSaved] = useState(() => {
-      const stored = localStorage.getItem('savedRent');
-      return stored ? JSON.parse(stored) : [];
-    });
+    const stored = localStorage.getItem('savedRent');
+    return stored ? JSON.parse(stored) : [];
+  });
   
-    const [likedCards, setLikedCards] = useState({});
-
+  const [likedCards, setLikedCards] = useState({});
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -75,15 +42,40 @@ const Rent_Property_Map = () => {
     libraries: ['places'],
   });
 
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get('http://46.37.122.105:89/property/');
+        // Filter properties where type is "rent/lease"
+        const rentProperties = response.data.filter(property => 
+          property.type && property.type.toLowerCase() === "rent"
+        );
+        setProperties(rentProperties);
+console.log("rentproperties",rentProperties);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+        console.error('Error fetching properties:', err);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
   const containerStyle = {
     width: '100%',
     height: 'calc(100vh - 240px)' // Adjust height for chips + nav
   };
 
-  const center = {
-    lat: 26.8467,
-    lng: 80.9462
-  };
+  // Calculate center based on properties if available, otherwise use default
+  const center = properties.length > 0 
+    ? { 
+        lat: parseFloat(properties[0].latitude) || 26.8467, 
+        lng: parseFloat(properties[0].longitude) || 80.9462 
+      }
+    : { lat: 26.8467, lng: 80.9462 };
+
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     let updated;
@@ -97,7 +89,9 @@ const Rent_Property_Map = () => {
     setSaved(updated);
     localStorage.setItem('savedRent', JSON.stringify(updated));
   };
+
   const isSaved = (property) => saved.some((p) => p.id === property.id);
+
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
       ...prev,
@@ -105,116 +99,158 @@ const Rent_Property_Map = () => {
     }));
   };
 
+  if (loading) {
+    return (
+      <Box sx={{ 
+        height: '100vh', 
+        maxWidth: 480, 
+        mx: 'auto', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        backgroundColor: 'rgb(239, 231, 221)'
+      }}>
+        <Typography>Loading properties...</Typography>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ 
+        height: '100vh', 
+        maxWidth: 480, 
+        mx: 'auto', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        backgroundColor: 'rgb(239, 231, 221)'
+      }}>
+        <Typography color="error">Error: {error}</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
-  sx={{
-    height: '100vh',
-    maxWidth: 480,
-    mx: 'auto',
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: 'rgb(239, 231, 221)',
-    position: 'relative',
-  }}
->
-
-       {/* Sticky Search Bar */}
-  <Box
-    sx={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      bgcolor: '#fff', // background to cover content underneath
-      px: 1,
-      py: 1,
-      backgroundColor: 'rgb(239, 231, 221)'
-    }}
-  >
-    <CustomSearchBar />
-  </Box>
+      sx={{
+        height: '100vh',
+        maxWidth: 480,
+        mx: 'auto',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'rgb(239, 231, 221)',
+        position: 'relative',
+      }}
+    >
+      {/* Sticky Search Bar */}
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          bgcolor: '#fff',
+          px: 1,
+          py: 1,
+          backgroundColor: 'rgb(239, 231, 221)'
+        }}
+      >
+        <CustomSearchBar />
+      </Box>
 
       {/* Rental Type Chips */}
-      {/* Chips Section */}
-<Box sx={{ px: 2, flexShrink: 0 }}>
-  <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
-  <Box
-    sx={{
-      display: 'flex',
-      gap: 1,
-      overflowX: 'auto',
-      whiteSpace: 'nowrap',
-      pb: 1
-    }}
-  >
-    {rentalTypes.map((type, index) => (
-      <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0 ,
-        border: '1px solid black', // Add black border
-        }} />
-    ))}
-  </Box>
-</Box>
-
+      <Box sx={{ px: 2, flexShrink: 0 }}>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            overflowX: 'auto',
+            whiteSpace: 'nowrap',
+            pb: 1
+          }}
+        >
+          {rentalTypes.map((type, index) => (
+            <Chip 
+              key={index} 
+              label={type} 
+              variant="outlined" 
+              sx={{ 
+                flexShrink: 0,
+                border: '1px solid black',
+              }} 
+            />
+          ))}
+        </Box>
+      </Box>
 
       {/* Google Map */}
       {isLoaded ? (
-        <Box sx={{ px: 2, pb: 10 }}> {/* Add padding around map */}
-        <Box sx={{  width: '100%', height: '100%' }}>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={14}
-            options={{
-              gestureHandling: 'greedy',  // allows scroll to zoom
-              zoomControl: true,
-              mapTypeControl: false,
-              streetViewControl: false,
-              fullscreenControl: false
-            }}
-            
-          >
-            {properties.map(property => (
-              <Marker
-                key={property.id}
-                position={{ lat: property.lat, lng: property.lng }}
-                onClick={() => setSelectedProperty(property)}
-              />
-            ))}
-          </GoogleMap>
+        <Box sx={{ px: 2, pb: 10 }}>
+          <Box sx={{ width: '100%', height: '100%' }}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={14}
+              options={{
+                gestureHandling: 'greedy',
+                zoomControl: true,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false
+              }}
+            >
+              {properties.map(property => (
+                <Marker
+                  key={property.id}
+                  position={{ 
+                    lat: parseFloat(property.latitude) || 0, 
+                    lng: parseFloat(property.longitude) || 0 
+                  }}
+                  onClick={() => setSelectedProperty(property)}
+                />
+              ))}
+            </GoogleMap>
           </Box>
 
-        
-
-{selectedProperty && (
-  <Box sx={{
-    position: 'absolute',
-    bottom: 62,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-    width: '100%',
-    maxWidth: 480,
-    zIndex: 999
-  }}>
-    <ReUsableCard
-  property={selectedProperty}
-  onCardClick={() => navigate('/rent-description', { state: { property: selectedProperty } })}
-  isSaved={isSaved}
-  toggleSave={toggleSave}
-  likedCards={likedCards}
-  toggleLike={toggleLike}
-  onClose={() => setSelectedProperty(null)} // 🔽 add this
-/>
-
-  </Box>
-)}
-
+          {selectedProperty && (
+            <Box sx={{
+              position: 'absolute',
+              bottom: 62,
+              left: 0,
+              right: 0,
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: 480,
+              zIndex: 999
+            }}>
+              <ReUsableCard
+                property={selectedProperty}
+                onCardClick={() => {
+                  console.log('Selected property:', selectedProperty); // Debug log
+                  if (selectedProperty && selectedProperty.id) {
+                    navigate('/rent-description', {
+                      state: { propertyId: selectedProperty.id }
+                    });
+                  } else {
+                    console.warn('selectedProperty or property_id is undefined');
+                  }
+                }}
+                isSaved={isSaved}
+                toggleSave={toggleSave}
+                likedCards={likedCards}
+                toggleLike={toggleLike}
+                onClose={() => setSelectedProperty(null)}
+              />
+            </Box>
+          )}
         </Box>
       ) : (
         <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
       )}
 
-     <BottomNavbar/>
+      <BottomNavbar/>
     </Box>
   );
 };
