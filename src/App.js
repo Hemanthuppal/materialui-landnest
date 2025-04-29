@@ -52,8 +52,8 @@ import BuySaves from './Sritajana/Buy_Saves';
 import Buy_Postdeal from './Sritajana/Buy_Postdeal';
 import Buy_Posttable from './Sritajana/Buy_Posttable';
 
+
 // import AdminCategory from './Components/Admin/AdminUploadedProperties/Category';
-import Material from './Components/Admin/AdminUploadedProperties/Material';
 
 
 
@@ -70,10 +70,13 @@ import AdminCustomers from './Components/Admin/Customers/Customers';
 import AdminBestDeals from './Components/Admin/BestDeals/BestDeals';
 import FormsBottomNavbar from './maniteja/FormsBottomNavbar';
 import SampleBottomNavbar from './Rajesh/SampleButtomNavbar';
-import ConstructionGetStarted from './bharath/ConstructionGetStarted'
+import ConstructionGetStarted from './bharath/ConstructionGetStarted';
+import Addcategory from './Components/Admin/AdminUploadedProperties/Addcategory';
+import Material from './Components/Admin/AdminUploadedProperties/Material';
 
 // import CustomerList from "../src/Components/Admin/View/Customers"
 import AdminUploadPropertiesForm from './Components/Admin/AdminUploadedProperties/AdminUploadPropertiesForm';
+import { Category } from '@mui/icons-material';
 
 function App() {
 
@@ -172,6 +175,10 @@ function App() {
         <Route path="/admin-elevation" element={<AdminElevation />} />
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
+        <Route path="/Material" element={<Material/>} />
+        <Route path="/Addcategory" element={<Addcategory/>} />
+        
+
         {/* <Route path="/view" element={<CustomerList />} /> */}
         <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
 
