@@ -52,6 +52,10 @@ import BuySaves from './Sritajana/Buy_Saves';
 import Buy_Postdeal from './Sritajana/Buy_Postdeal';
 import Buy_Posttable from './Sritajana/Buy_Posttable';
 
+// import AdminCategory from './Components/Admin/AdminUploadedProperties/Category';
+import Material from './Components/Admin/AdminUploadedProperties/Material';
+
+
 
 
 import AdminLogin from './Components/Admin/Login/Login';
@@ -170,6 +174,22 @@ function App() {
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
         {/* <Route path="/view" element={<CustomerList />} /> */}
         <Route path="/adminuploadpropertiesform" element={<AdminUploadPropertiesForm />} />
+
+        {/* <Route path="/adminuploadpropertiestable" element={<AdminUploadPropertiesTable />} /> */}
+
+
+        {/* <Route
+            path="/admin-material"
+            element={<AdminCategory />}
+          /> */}
+
+            {/* <Route
+            path="/admin-construction"
+            element={<Construction />}
+          /> */}
+
+
+
       </Routes>
     </BrowserRouter>
     </AuthProvider>
