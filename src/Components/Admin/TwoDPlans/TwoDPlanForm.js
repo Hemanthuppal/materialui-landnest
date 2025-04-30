@@ -1,190 +1,117 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
-  Box,
   Button,
   TextField,
+  Stack,
+  Box,
   Typography,
-  IconButton,
-  CircularProgress,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../AuthContext/AuthContext"; // adjust path as needed
 
-const TwoDPlanForm = ({ addOrUpdatePlan, editPlan }) => {
-  const [planName, setPlanName] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [loading, setLoading] = useState(false);
+const API_BASE_URL = "http://46.37.122.105:89";
+const IMAGE_BASE_URL = `${API_BASE_URL}/construction-content`;
+
+const TwoDPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
+  const { userId } = useContext(AuthContext); // assuming context provides user object
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
   useEffect(() => {
-    console.log("Edit Plan received:", editPlan);
     if (editPlan) {
-      setPlanName(editPlan.name);
-      setImagePreview(editPlan.image);
+      setName(editPlan.content || "");
+      setPreview(`${API_BASE_URL}${editPlan.image}`);
+      setImage(null);
+    } else {
+      setName("");
+      setImage(null);
+      setPreview("");
     }
   }, [editPlan]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!planName || (!imageFile && !imagePreview)) return;
-  
-    setLoading(true);
-  
-    try {
-      const formData = new FormData();
-      formData.append("user_id", 1);
-      formData.append("category_id", 1);
-      formData.append("content", planName);
-  
-      // Always include image data when updating
-      if (editPlan) {
-        if (imageFile) {
-          // New image file selected
-          formData.append("image", imageFile);
-        } else if (imagePreview) {
-          // Keep existing image (might need special handling for your API)
-          // Some APIs need explicit instruction to keep existing image
-          formData.append("image", ""); // Or your API might need different handling
-        } else {
-          // Image was removed
-          formData.append("image", ""); // Explicitly clear image
-        }
-      } else {
-        // For new creations, only include if imageFile exists
-        if (imageFile) {
-          formData.append("image", imageFile);
-        }
-      }
-  
-      const url = editPlan
-        ? `http://46.37.122.105:89/construction-content/${editPlan.content_id || editPlan.id}/`
-        : "http://46.37.122.105:89/construction-content/";
-  
-      const method = editPlan ? "PUT" : "POST";
-  
-      // Debug log to verify FormData contents
-      console.log("FormData contents:");
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-  
-      const response = await fetch(url, {
-        method,
-        body: formData,
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("API Error:", errorData);
-        throw new Error(errorData.detail || "Operation failed");
-      }
-  
-      const result = await response.json();
-      console.log("API Success:", result);
-  
-      toast.success(editPlan ? "Plan updated successfully!" : "Plan uploaded to server!");
-      const updatedPlan = {
-        id: editPlan ? editPlan.content_id || editPlan.id : Date.now(),
-        name: planName,
-        image: imageFile ? URL.createObjectURL(imageFile) : imagePreview,
-        date: new Date().toISOString().slice(0, 10),
-      };
-      addOrUpdatePlan(updatedPlan);
-  
-    } catch (error) {
-      console.error("Submission Error:", error);
-      toast.error(error.message || "An error occurred during submission.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log("Image selected:", file);
     if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        console.log("Image preview generated");
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleRemoveImage = () => {
-    console.log("Image removed");
-    setImageFile(null);
-    setImagePreview(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name) {
+      toast.error("Name is required");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("content", name);
+    formData.append("category_id", 1); // 2D Plan category
+    formData.append("user_id", userId); // assuming user has an 'id' field
+    if (image) formData.append("image", image);
+
+    try {
+      if (editPlan) {
+        await axios.put(`${IMAGE_BASE_URL}/${editPlan.content_id}/`, formData);
+        toast.success("Plan updated successfully");
+      } else {
+        await axios.post(`${IMAGE_BASE_URL}/`, formData);
+        toast.success("Plan added successfully");
+      }
+      fetchPlans();
+      onCancel();
+    } catch (error) {
+      console.error("Error saving plan:", error);
+      toast.error("Failed to save plan");
+    }
   };
 
   return (
-    <>
-      <Typography variant="h5" gutterBottom>
-        {editPlan ? "Edit 2D Plan" : "Upload 2D Plan"}
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-      >
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Stack spacing={2}>
         <TextField
           label="Plan Name"
-          variant="outlined"
           fullWidth
-          size="small"
-          value={planName}
-          onChange={(e) => setPlanName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
 
-        <Button variant="outlined" component="label">
-          {imagePreview ? "Change Image" : "Upload Image"}
-          <input hidden type="file" accept="image/*" onChange={handleImageChange} />
+        <Button variant="contained" component="label">
+          {image ? "Change Image" : "Upload Image"}
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={handleImageChange}
+          />
         </Button>
 
-        {imagePreview && (
-          <Box
-            sx={{
-              position: "relative",
-              width: "100%",
-              maxHeight: 200,
-              overflow: "hidden",
-              borderRadius: 2,
-              mt: 1,
-            }}
-          >
+        {/* Preview of selected or existing image */}
+        {preview && (
+          <Box>
+            <Typography variant="subtitle2">Preview:</Typography>
             <img
-              src={imagePreview}
+              src={preview}
               alt="Preview"
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+              style={{ width: 120, height: 100, objectFit: "contain", border: "1px solid #ccc" }}
             />
-            <IconButton
-              size="small"
-              sx={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                bgcolor: "white",
-                ":hover": { bgcolor: "grey.200" },
-              }}
-              onClick={handleRemoveImage}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
           </Box>
         )}
 
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={!planName || (!imageFile && !imagePreview) || loading}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : editPlan ? "Update" : "Submit"}
-        </Button>
-      </Box>
-    </>
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Button onClick={onCancel} variant="outlined" color="secondary">
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" color="primary">
+            {editPlan ? "Update" : "Add"}
+          </Button>
+        </Stack>
+      </Stack>
+    </Box>
   );
 };
 
