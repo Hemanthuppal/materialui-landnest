@@ -50,17 +50,31 @@ const GreenButton = styled(Button)({
     '&:hover': { backgroundColor: '#008000' },
 });
 
+// const fieldMap = {
+//     'Commercial land/plot': ['Site Area', 'Facing', 'List', 'Price', 'Roadwidth'],
+//     'plot/land': ['Site Area', 'Facing', 'List', 'Price', 'Roadwidth'],
+//     'rent with duplex building': ['Site Area', 'Facing', 'List', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
+//     'duplex house': ['Site Area', 'Facing', 'List', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
+//     'rental building': ['Site Area', 'Facing', 'List', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
+//     'pg-offices': ['Site Area', 'Facing', 'List', 'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth'],
+//     'flat': ['Site Area', 'Facing', 'List', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Roadwidth'],
+//     'villa': ['Site Area', 'Facing', 'List', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
+//     'commercial building': ['Site Area', 'Facing', 'List', 'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
+//     'Apartment': ['Site Area', 'Facing', 'List', 'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth'],
+//     'others': ['Price', 'Roadwidth'],
+// };
+
 const fieldMap = {
-    'Commercial land/plot': ['Site Area', 'Facing', 'List', 'Price', 'Roadwidth'],
-    'plot/land': ['Site Area', 'Facing', 'List', 'Price', 'Roadwidth'],
-    'rent with duplex building': ['Site Area', 'Facing', 'List', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
-    'duplex house': ['Site Area', 'Facing', 'List', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
-    'rental building': ['Site Area', 'Facing', 'List', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
-    'pg-offices': ['Site Area', 'Facing', 'List', 'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth'],
-    'flat': ['Site Area', 'Facing', 'List', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Roadwidth'],
-    'villa': ['Site Area', 'Facing', 'List', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
-    'commercial building': ['Site Area', 'Facing', 'List', 'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
-    'Apartment': ['Site Area', 'Facing', 'List', 'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth'],
+    'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'rent with duplex building': ['Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
+    'duplex house': ['Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
+    'rental building': ['Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
+    'pg-offices': ['Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth'],
+    'flat': ['Site Area', 'Facing',  'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Roadwidth'],
+    'villa': ['Site Area', 'Facing', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
+    'commercial building': ['Site Area', 'Facing',  'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
+    'Apartment': ['Site Area', 'Facing',  'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth'],
     'others': ['Price', 'Roadwidth'],
 };
 
@@ -87,7 +101,7 @@ const SellYourProperty = () => {
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        list: '',
+        list: 'Owner',
         price: '',
         borewell: '',
         location: '',

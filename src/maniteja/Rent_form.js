@@ -93,7 +93,7 @@ const RentForm = () => {
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        list: '',
+        list: 'Owner',
         price: '',
         location: '',
         lat: '',
