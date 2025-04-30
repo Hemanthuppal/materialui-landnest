@@ -296,7 +296,11 @@ const PropertyCard = () => {
                     {property.price}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    {property.date}
+                  {new Date(property.date).toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })}
                   </Typography>
                 </Grid>
 
