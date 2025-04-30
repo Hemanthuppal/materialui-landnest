@@ -105,9 +105,9 @@ const Customer = () => {
           <IconButton color="primary" onClick={() => handleView(row.original)}>
             <VisibilityIcon />
           </IconButton>
-          <IconButton color="info" onClick={() => handleEdit(row.original.user_id)}>
+          {/* <IconButton color="info" onClick={() => handleEdit(row.original.user_id)}>
             <EditIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton color="error" onClick={() => handleDelete(row.original.user_id)}>
             <DeleteIcon />
           </IconButton>
