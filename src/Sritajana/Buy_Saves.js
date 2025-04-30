@@ -48,6 +48,50 @@ const BuySaves = () => {
     }));
   };
 
+  const handleLocationClick = (e, property) => {
+    e.stopPropagation();
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          
+          // Check if property has valid coordinates
+          if (property.lat && property.lng) {
+            // Open maps with directions
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${property.lat},${property.lng}&travelmode=driving`;
+            window.open(mapsUrl, '_blank');
+          } else {
+            // Fallback to just showing the property location if coordinates are missing
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+            window.open(mapsUrl, '_blank');
+          }
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+          // Fallback without user location if permission denied
+          if (property.lat && property.lng) {
+            const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.lng}`;
+            window.open(mapsUrl, '_blank');
+          } else {
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+            window.open(mapsUrl, '_blank');
+          }
+        }
+      );
+    } else {
+      // Geolocation not supported - just open maps with property location
+      if (property.lat && property.lng) {
+        const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.lng}`;
+        window.open(mapsUrl, '_blank');
+      } else {
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+        window.open(mapsUrl, '_blank');
+      }
+    }
+  };
+
   return (
     <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '110vh' }}>
       {/* Sticky Search Bar */}
@@ -85,7 +129,7 @@ const BuySaves = () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/buy-description', { state: { property } });
+                  navigate('/buy-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >
@@ -155,7 +199,7 @@ const BuySaves = () => {
                 </Box>
               </Box>
 
-              <CardContent sx={{ px: 2,py:0.2 ,pb: '7px !important'}}>
+              <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
                   {property.title}
                 </Typography>
@@ -173,7 +217,15 @@ const BuySaves = () => {
                 </Grid>
 
                 <Box display="flex" alignItems="center" mt={0.2}>
-                  <LocationOn fontSize="small" color="action" />
+                  <Tooltip title="View directions in Google Maps">
+                    <IconButton 
+                      size="small" 
+                      onClick={(e) => handleLocationClick(e, property)}
+                      sx={{ p: 0, color: 'primary.main' }}
+                    >
+                      <LocationOn fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                   <Typography variant="caption" color="text.primary" ml={0.5}>
                     Location Verified
                   </Typography>
@@ -184,12 +236,18 @@ const BuySaves = () => {
                     color="success"
                     startIcon={<Call />}
                     sx={{ textTransform: 'none', px: 1.2, py: 0.2, fontSize: '0.7rem' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (property.mobile_no) {
+                        window.location.href = `tel:${property.mobile_no}`;
+                      } else {
+                        alert("Phone number not available");
+                      }
+                    }}
                   >
                     Call
                   </Button>
                 </Box>
-
-                {/* <Divider sx={{ my: 1 }} /> */}
 
                 <Box
                   sx={{
@@ -201,7 +259,7 @@ const BuySaves = () => {
                 >
                   {[
                     { label: 'Facing', value: property.facing },
-                    { label: `Area (${property.dimensions})`, value: property.area },
+                    { label: 'Area', value: `${property.area} (${property.length} × ${property.width})` },
                     { label: 'Listed By', value: property.listedBy },
                   ].map((item, index) => (
                     <Box
@@ -209,7 +267,7 @@ const BuySaves = () => {
                       sx={{
                         flex: 1,
                         px: 1,
-                        py:0.2,
+                        py: 0.2,
                         textAlign: 'center',
                         borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
                       }}

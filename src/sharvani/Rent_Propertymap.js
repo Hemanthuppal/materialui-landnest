@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Box,
   Chip,
   Typography,
+  Paper
 } from '@mui/material';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 import buildingImage from '../Images/house.jpeg';
-import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './ReUsableCard';
-import BottomNavbar from './BottomNavbar/BottomNavbar';
+import CustomBottomNav from './BottomNavbar/BottomNavbar';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -20,74 +21,130 @@ const rentalTypes = [
   "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
 ];
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
+// Fix Leaflet marker icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  const navigate = useNavigate();
+  const [selectedType, setSelectedType] = useState(null);
+
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('savedRent');
+    const stored = localStorage.getItem('saveRent');
     return stored ? JSON.parse(stored) : [];
   });
-  
+  const [categories, setCategories] = useState([]);
   const [likedCards, setLikedCards] = useState({});
-
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://46.37.122.105:89/property/');
-        // Filter properties where type is "rent/lease"
-        const rentProperties = response.data.filter(property => 
-          property.type && property.type.toLowerCase() === "rent"
+        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        setCategories(categoriesResponse.data);
+
+        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const filtered = propertiesResponse.data.filter(item =>
+          item.type && item.type.toLowerCase().includes("rent")
         );
-        setProperties(rentProperties);
-console.log("rentproperties",rentProperties);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-        console.error('Error fetching properties:', err);
+
+        const parsed = filtered.map(item => {
+          const parseCoord = (coord) => {
+            if (!coord) return null;
+            const cleaned = coord.replace(/"/g, '').replace(':', '.');
+            return parseFloat(cleaned);
+          };
+
+          const matchedCategory = categoriesResponse.data.find(
+            cat => cat.category_id === item.category_id
+          );
+
+          const categoryName = matchedCategory ? matchedCategory.category : 'Property';
+
+          const imageUrl = item.property_images?.[0]?.image
+            ? `http://46.37.122.105:89${item.property_images[0].image}`
+            : buildingImage;
+
+          return {
+            id: item.property_id,
+            title: categoryName,
+            location: item.location || 'Not specified',
+            price: `₹${item.price}`,
+            date: item.created_at?.split('T')[0],
+            facing: item.facing?.replace(/"/g, '') || 'N/A',
+            area: item.site_area ? `${item.site_area} sq ft` : 'N/A',
+            dimensions: item.roadwidth ? `${item.roadwidth} ft road` : 'N/A',
+            listedBy: item.list?.replace(/"/g, '') || 'Agent',
+            lat: parseCoord(item.lat),
+            lng: parseCoord(item.long),
+            length:item.length,
+            width:item.width,
+            mobile_no:item.mobile_no,
+            image: imageUrl
+          };
+        });
+
+        setProperties(parsed);
+      } catch (error) {
+        console.error('Error fetching properties:', error);
       }
     };
 
     fetchProperties();
   }, []);
 
-  const containerStyle = {
-    width: '100%',
-    height: 'calc(100vh - 240px)' // Adjust height for chips + nav
-  };
+  // 🔍 Filter based on selected type
+  const filteredProperties = selectedType
+    ? properties.filter(p => p.title.toLowerCase().includes(selectedType.toLowerCase()))
+    : properties;
 
-  // Calculate center based on properties if available, otherwise use default
-  const center = properties.length > 0 
-    ? { 
-        lat: parseFloat(properties[0].latitude) || 26.8467, 
-        lng: parseFloat(properties[0].longitude) || 80.9462 
-      }
-    : { lat: 26.8467, lng: 80.9462 };
+  const redIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  useEffect(() => {
+    if (filteredProperties.length === 0) return;
+
+    const mapContainer = document.getElementById('leaflet-map');
+    if (!mapContainer || mapContainer._leaflet_id) return;
+
+    const map = L.map('leaflet-map').setView([17.9358528, 78.5203776], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '',
+    }).addTo(map);
+
+    filteredProperties.forEach(property => {
+      if (!property.lat || !property.lng) return;
+
+      const marker = L.marker([property.lat, property.lng], { icon: redIcon }).addTo(map);
+
+      marker.on('click', () => {
+        setSelectedProperty(property);
+      });
+    });
+
+    return () => {
+      map.remove();
+    };
+  }, [filteredProperties]);
 
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
-    let updated;
-
-    if (isSaved) {
-      updated = saved.filter((p) => p.id !== property.id);
-    } else {
-      updated = [...saved, property];
-    }
-
+    const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
     setSaved(updated);
-    localStorage.setItem('savedRent', JSON.stringify(updated));
+    localStorage.setItem('saveRent', JSON.stringify(updated));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -99,158 +156,97 @@ console.log("rentproperties",rentProperties);
     }));
   };
 
-  if (loading) {
-    return (
-      <Box sx={{ 
-        height: '100vh', 
-        maxWidth: 480, 
-        mx: 'auto', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        backgroundColor: 'rgb(239, 231, 221)'
-      }}>
-        <Typography>Loading properties...</Typography>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box sx={{ 
-        height: '100vh', 
-        maxWidth: 480, 
-        mx: 'auto', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        backgroundColor: 'rgb(239, 231, 221)'
-      }}>
-        <Typography color="error">Error: {error}</Typography>
-      </Box>
-    );
-  }
-
   return (
     <Box
       sx={{
-        height: '100vh',
+        pb: 7,
         maxWidth: 480,
-        mx: 'auto',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'rgb(239, 231, 221)',
+        mx: "auto",
         position: 'relative',
+        backgroundColor: 'rgb(239, 231, 221)',
+        minHeight: '100vh'
       }}
     >
-      {/* Sticky Search Bar */}
+      {/* 🔍 Search Bar */}
       <Box
         sx={{
           position: 'sticky',
           top: 0,
           zIndex: 1000,
-          bgcolor: '#fff',
+          bgcolor: 'rgb(239, 231, 221)',
           px: 1,
           py: 1,
-          backgroundColor: 'rgb(239, 231, 221)'
         }}
       >
         <CustomSearchBar />
       </Box>
 
-      {/* Rental Type Chips */}
-      <Box sx={{ px: 2, flexShrink: 0 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Property Rental Type</Typography>
+      {/* 📌 Property Types */}
+      <Box sx={{ px: 2 }}>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Rent Property Types</Typography>
         <Box
           sx={{
             display: 'flex',
             gap: 1,
             overflowX: 'auto',
             whiteSpace: 'nowrap',
-            pb: 1
+            pb: 1,
           }}
         >
           {rentalTypes.map((type, index) => (
-            <Chip 
-              key={index} 
-              label={type} 
-              variant="outlined" 
-              sx={{ 
-                flexShrink: 0,
-                border: '1px solid black',
-              }} 
+            <Chip
+              key={index}
+              label={type}
+              variant={selectedType === type ? "filled" : "outlined"}
+              color={selectedType === type ? "black" : "default"}
+              onClick={() => setSelectedType(prev => (prev === type ? null : type))}
+              sx={{ flexShrink: 0, border: '1px solid black' }}
             />
           ))}
         </Box>
       </Box>
 
-      {/* Google Map */}
-      {isLoaded ? (
-        <Box sx={{ px: 2, pb: 10 }}>
-          <Box sx={{ width: '100%', height: '100%' }}>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={14}
-              options={{
-                gestureHandling: 'greedy',
-                zoomControl: true,
-                mapTypeControl: false,
-                streetViewControl: false,
-                fullscreenControl: false
-              }}
-            >
-              {properties.map(property => (
-                <Marker
-                  key={property.id}
-                  position={{ 
-                    lat: parseFloat(property.latitude) || 0, 
-                    lng: parseFloat(property.longitude) || 0 
-                  }}
-                  onClick={() => setSelectedProperty(property)}
-                />
-              ))}
-            </GoogleMap>
-          </Box>
-
-          {selectedProperty && (
-            <Box sx={{
-              position: 'absolute',
-              bottom: 62,
-              left: 0,
-              right: 0,
-              margin: '0 auto',
-              width: '100%',
-              maxWidth: 480,
-              zIndex: 999
-            }}>
-              <ReUsableCard
-                property={selectedProperty}
-                onCardClick={() => {
-                  console.log('Selected property:', selectedProperty); // Debug log
-                  if (selectedProperty && selectedProperty.id) {
-                    navigate('/rent-description', {
-                      state: { propertyId: selectedProperty.id }
-                    });
-                  } else {
-                    console.warn('selectedProperty or property_id is undefined');
-                  }
-                }}
-                isSaved={isSaved}
-                toggleSave={toggleSave}
-                likedCards={likedCards}
-                toggleLike={toggleLike}
-                onClose={() => setSelectedProperty(null)}
-              />
-            </Box>
-          )}
+      {/* 🗺️ Leaflet Map */}
+      <Box sx={{ px: 2, pb: 10 }}>
+        <Box sx={{ width: '100%', height: 'calc(100vh - 240px)' }}>
+          <div id="leaflet-map" style={{ height: '100%', width: '100%', borderRadius: '8px' }}></div>
         </Box>
-      ) : (
-        <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
-      )}
 
-      <BottomNavbar/>
+        {/* 🏠 Property Card Popup */}
+        {selectedProperty && (
+          <Box sx={{
+            position: 'absolute',
+            bottom: 115,
+            left: 0,
+            right: 0,
+            margin: '0 auto',
+            width: '100%',
+            maxWidth: 480,
+            zIndex: 999
+          }}>
+            <ReUsableCard
+              property={selectedProperty}
+              onCardClick={() => {
+                if (selectedProperty && selectedProperty.id) {
+                  navigate('/rent-description', {
+                    state: { propertyId: selectedProperty.id }
+                  });
+                }
+              }}
+              isSaved={isSaved}
+              toggleSave={toggleSave}
+              likedCards={likedCards}
+              toggleLike={toggleLike}
+              onClose={() => setSelectedProperty(null)}
+            />
+          </Box>
+        )}
+      </Box>
+
+      {/* 📱 Bottom Navigation */}
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <CustomBottomNav />
+      </Paper>
     </Box>
   );
 };

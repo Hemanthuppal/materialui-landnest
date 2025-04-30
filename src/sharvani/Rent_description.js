@@ -18,10 +18,10 @@ import CompassCalibrationOutlinedIcon from '@mui/icons-material/CompassCalibrati
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import buildingImage from '../Images/house.jpeg';
-import CustomBottomNav from './CustomNav';
+import CustomBottomNav from './BottomNavbar/BottomNavbar';
 import { BASE_URL } from './../Api/ApiUrls';
 
-const Buy_description = () => {
+const Rent_description = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { propertyId } = location.state || {};
@@ -84,7 +84,7 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
         </IconButton>
         <Typography variant="h6" fontWeight="bold">
           {/* {type?.replace(/"/g, '') || 'Property'} */}
-          Buy
+          Rent
         </Typography>
       </Box>
 
@@ -263,4 +263,4 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
   );
 };
 
-export default Buy_description;
+export default Rent_description;

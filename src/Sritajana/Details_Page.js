@@ -81,6 +81,9 @@ const PropertyCard = () => {
             listedBy: item.list?.replace(/"/g, '') || 'Agent',
             lat: parseCoord(item.lat),
             long: parseCoord(item.long),
+            length:item.length,
+            width:item.width,
+            mobile_no:item.mobile_no,
             image: imageUrl,
             propertyData: item // Store the full property data for description page
           };
@@ -306,7 +309,7 @@ const PropertyCard = () => {
                 >
                   {[
                     { label: 'Facing', value: property.facing },
-                    { label: `Area (${property.dimensions})`, value: property.area },
+                    { label: 'Area', value: `${property.area} (${property.length} × ${property.width})` },
                     { label: 'Listed By', value: property.listedBy },
                   ].map((item, index) => (
                     <Box

@@ -15,6 +15,51 @@ import {
 import { Favorite, FavoriteBorder, Share,Close, ThumbUpAlt, ThumbUpAltOutlined, Call, LocationOn } from '@mui/icons-material';
 
 const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, toggleLike,onClose }) => {
+
+  const handleLocationClick = (e) => {
+    e.stopPropagation();
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          
+          // Check if property has valid coordinates
+          if (property.lat && property.lng) {
+            // Open maps with directions
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${property.lat},${property.lng}&travelmode=driving`;
+            window.open(mapsUrl, '_blank');
+          } else {
+            // Fallback to just showing the property location if coordinates are missing
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+            window.open(mapsUrl, '_blank');
+          }
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+          // Fallback without user location if permission denied
+          if (property.lat && property.lng) {
+            const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.lng}`;
+            window.open(mapsUrl, '_blank');
+          } else {
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+            window.open(mapsUrl, '_blank');
+          }
+        }
+      );
+    } else {
+      // Geolocation not supported - just open maps with property location
+      if (property.lat && property.lng) {
+        const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.lng}`;
+        window.open(mapsUrl, '_blank');
+      } else {
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+        window.open(mapsUrl, '_blank');
+      }
+    }
+  };
+  
   return (
     <Card
       sx={{
@@ -152,27 +197,40 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
 
   {/* Location verified + Call Button */}
   <Box display="flex" alignItems="center" mt={0.5}>
-    <LocationOn fontSize="small" color="action" />
-    <Typography variant="body2" color="text.primary" ml={0.5}>
-      Location Verified
-    </Typography>
-    <Box sx={{ flexGrow: 1 }} />
-    <Button
-      size="small"
-      variant="outlined"
-      color="success"
-      startIcon={<Call />}
-      sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.2, px: 1.5 }}
-    >
-      Call
-    </Button>
-  </Box>
+        <Tooltip title="View directions in Google Maps">
+          <IconButton 
+            size="small" 
+            onClick={handleLocationClick}
+            sx={{ p: 0, color: 'primary.main' }}
+          >
+            <LocationOn fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Typography variant="body2" color="text.primary" ml={0.5}>
+          Location Verified
+        </Typography>
+        <Box sx={{ flexGrow: 1 }} />
+        <Button
+          size="small"
+          variant="outlined"
+          color="success"
+          startIcon={<Call />}
+          sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.2, px: 1.5 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `tel:${property.mobile_no}`;
+          }}
+        >
+          Call
+        </Button>
+      </Box>
 
   {/* Property Info Columns */}
   <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
     {[
       { label: 'Facing', value: property.facing },
-      { label: `Area`, value: property.area },
+      { label: 'Area', value: `${property.area} (${property.length} × ${property.width})` },
+
       { label: 'Listed By', value: property.listedBy }
     ].map((item, index) => (
       <Box

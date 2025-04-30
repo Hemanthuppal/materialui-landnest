@@ -22,14 +22,14 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import buildingImage from '../Images/house.jpeg';
-import CustomSearchBar from './CustomSearchBar';
-import BottomNavbar from './CustomBottomNav';
+import CustomSearchBar from '../Rajesh/CustomSearchBar';
+import BottomNavbar from './BottomNavbar/BottomNavbar';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('saveLease');
+    const stored = localStorage.getItem('saveRent');
     return stored ? JSON.parse(stored) : [];
   });
   const [likedCards, setLikedCards] = useState({});
@@ -47,7 +47,7 @@ const PropertyCard = () => {
         // Then fetch properties
         const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
         const filtered = propertiesResponse.data.filter(item =>
-          item.type && item.type.toLowerCase().includes("lease")
+          item.type && item.type.toLowerCase().includes("rent")
         );
 
         const parsed = filtered.map(item => {
@@ -132,7 +132,7 @@ const PropertyCard = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('saveLease', JSON.stringify(updated));
+    localStorage.setItem('saveRent', JSON.stringify(updated));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -196,7 +196,7 @@ const PropertyCard = () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/lease-description', { state: { propertyId: property.id, property: property.propertyData } });
+                  navigate('/rent-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >

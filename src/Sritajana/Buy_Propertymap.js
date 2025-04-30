@@ -16,9 +16,9 @@ import ReUsableCard from './../sharvani/ReUsableCard';
 import CustomBottomNav from './CustomNav';
 
 const rentalTypes = [
-  "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
-  "COMMERCIAL LAND", "COMMERCIAL BUILDING/ Space", "VILLA",
-  "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
+  "PLOT/LAND", "COMMERCIAL LAND/PLOT", "RENT WITH DUPLEX BUILDING",  "DUPLEX HOUSE",
+  "RENTAL BUILDING", "PG-OFFICES", "FLAT","VILLA",
+  "COMMERCIAL BUILDING", "APPARTMENT","OTHERS"
 ];
 
 // Fix Leaflet marker icon issue
@@ -29,9 +29,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-const Rent_Property_Map = () => {
+const Buy_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
+  const [selectedType, setSelectedType] = useState(null);
+
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedBuy');
     return stored ? JSON.parse(stored) : [];
@@ -80,10 +82,12 @@ const Rent_Property_Map = () => {
             listedBy: item.list?.replace(/"/g, '') || 'Agent',
             lat: parseCoord(item.lat),
             lng: parseCoord(item.long),
+            length:item.length,
+            width:item.width,
+            mobile_no:item.mobile_no,
             image: imageUrl
           };
         });
-
 
         setProperties(parsed);
       } catch (error) {
@@ -93,6 +97,12 @@ const Rent_Property_Map = () => {
 
     fetchProperties();
   }, []);
+
+  // 🔍 Filter based on selected type
+  const filteredProperties = selectedType
+    ? properties.filter(p => p.title.toLowerCase().includes(selectedType.toLowerCase()))
+    : properties;
+
   const redIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
     iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -102,35 +112,34 @@ const Rent_Property_Map = () => {
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   });
-  
 
   useEffect(() => {
-    if (properties.length === 0) return;
-  
-    // Check if map container exists
+    if (filteredProperties.length === 0) return;
+
     const mapContainer = document.getElementById('leaflet-map');
-    if (!mapContainer || mapContainer._leaflet_id) return; // Skip if already initialized
-   
+    if (!mapContainer || mapContainer._leaflet_id) return;
+
     const map = L.map('leaflet-map').setView([17.9358528, 78.5203776], 13);
-  
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '',
     }).addTo(map);
-  
-    properties.forEach(property => {
+
+    filteredProperties.forEach(property => {
       if (!property.lat || !property.lng) return;
-  
+
       const marker = L.marker([property.lat, property.lng], { icon: redIcon }).addTo(map);
 
       marker.on('click', () => {
         setSelectedProperty(property);
       });
     });
-  
+
     return () => {
       map.remove();
     };
-  }, [properties]);
+  }, [filteredProperties]);
+
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
@@ -174,7 +183,7 @@ const Rent_Property_Map = () => {
 
       {/* 📌 Property Types */}
       <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property </Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property</Typography>
         <Box
           sx={{
             display: 'flex',
@@ -185,7 +194,14 @@ const Rent_Property_Map = () => {
           }}
         >
           {rentalTypes.map((type, index) => (
-            <Chip key={index} label={type} variant="outlined" sx={{ flexShrink: 0, border: '1px solid black' }} />
+            <Chip
+              key={index}
+              label={type}
+              variant={selectedType === type ? "filled" : "outlined"}
+              color={selectedType === type ? "black" : "default"}
+              onClick={() => setSelectedType(prev => (prev === type ? null : type))}
+              sx={{ flexShrink: 0, border: '1px solid black' }}
+            />
           ))}
         </Box>
       </Box>
@@ -235,4 +251,4 @@ const Rent_Property_Map = () => {
   );
 };
 
-export default Rent_Property_Map;
+export default Buy_Property_Map;
