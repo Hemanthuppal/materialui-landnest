@@ -137,7 +137,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           display: 'block',
-          maxWidth: '50%',
+          maxWidth: '70%',
         }}
       >
         {property.location}
