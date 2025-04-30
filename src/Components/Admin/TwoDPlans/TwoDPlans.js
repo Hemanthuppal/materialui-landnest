@@ -11,12 +11,7 @@ const TwoDPlansPage = () => {
   const [plans, setPlans] = useState([]);
   const [editPlan, setEditPlan] = useState(null);
 
-  useEffect(() => {
-    const storedPlans = JSON.parse(localStorage.getItem("plans"));
-    if (storedPlans) {
-      setPlans(storedPlans);
-    }
-  }, []);
+  
 
   const toggleForm = () => {
     setEditPlan(null);

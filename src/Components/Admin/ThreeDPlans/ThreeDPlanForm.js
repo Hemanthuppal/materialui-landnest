@@ -1,133 +1,117 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Container, TextField, Typography, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Button,
+  TextField,
+  Stack,
+  Box,
+  Typography,
+} from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../AuthContext/AuthContext"; // adjust path as needed
 
-const ThreeDPlanForm = ({ addOrUpdatePlan, editPlan }) => {
-  const [planName, setPlanName] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+const API_BASE_URL = "http://46.37.122.105:89";
+const IMAGE_BASE_URL = `${API_BASE_URL}/construction-content`;
+
+const ThreeDPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
+  const { userId } = useContext(AuthContext); // assuming context provides user object
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
   useEffect(() => {
     if (editPlan) {
-      setPlanName(editPlan.name);
-      setImagePreview(editPlan.image);
+      setName(editPlan.content || "");
+      setPreview(`${API_BASE_URL}${editPlan.image}`);
+      setImage(null);
+    } else {
+      setName("");
+      setImage(null);
+      setPreview("");
     }
   }, [editPlan]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!planName || (!imageFile && !imagePreview)) return;
-
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newPlan = {
-          id: editPlan ? editPlan.id : Date.now(),
-          name: planName,
-          image: reader.result,
-          date: editPlan ? editPlan.date : new Date().toISOString().slice(0, 10),
-        };
-        addOrUpdatePlan(newPlan);
-      };
-      reader.readAsDataURL(imageFile);
-    } else {
-      const newPlan = {
-        id: editPlan ? editPlan.id : Date.now(),
-        name: planName,
-        image: imagePreview,
-        date: editPlan ? editPlan.date : new Date().toISOString().slice(0, 10),
-      };
-      addOrUpdatePlan(newPlan);
-    }
-  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name) {
+      toast.error("Name is required");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("content", name);
+    formData.append("category_id", 2); // 2D Plan category
+    formData.append("user_id", 1); // assuming user has an 'id' field
+    if (image) formData.append("image", image);
+
+    try {
+      if (editPlan) {
+        await axios.put(`${IMAGE_BASE_URL}/${editPlan.content_id}/`, formData);
+        toast.success("Plan updated successfully");
+      } else {
+        await axios.post(`${IMAGE_BASE_URL}/`, formData);
+        toast.success("Plan added successfully");
+      }
+      fetchPlans();
+      onCancel();
+    } catch (error) {
+      console.error("Error saving plan:", error);
+      toast.error("Failed to save plan");
+    }
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        {editPlan ? "Edit 3D Plan" : "Upload 3D Plan"}
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Stack spacing={2}>
         <TextField
           label="Plan Name"
-          variant="outlined"
           fullWidth
-          size="small"
-          value={planName}
-          onChange={(e) => setPlanName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
 
-        <Button variant="outlined" component="label">
-          {imagePreview ? "Change Image" : "Upload Image"}
-          <input hidden type="file" accept="image/*" onChange={handleImageChange} />
+        <Button variant="contained" component="label">
+          {image ? "Change Image" : "Upload Image"}
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={handleImageChange}
+          />
         </Button>
 
-        {imagePreview && (
-          <Box
-            sx={{
-              position: "relative",
-              width: "100%",
-              maxHeight: 200,
-              overflow: "hidden",
-              borderRadius: 2,
-              mt: 1,
-            }}
-          >
+        {/* Preview of selected or existing image */}
+        {preview && (
+          <Box>
+            <Typography variant="subtitle2">Preview:</Typography>
             <img
-              src={imagePreview}
+              src={preview}
               alt="Preview"
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+              style={{ width: 120, height: 100, objectFit: "contain", border: "1px solid #ccc" }}
             />
-            <IconButton
-              size="small"
-              sx={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                bgcolor: "white",
-                ":hover": { bgcolor: "grey.200" },
-              }}
-              onClick={handleRemoveImage}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
           </Box>
         )}
 
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={!planName || (!imageFile && !imagePreview)}
-        >
-          {editPlan ? "Update" : "Submit"}
-        </Button>
-      </Box>
-    </Container>
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Button onClick={onCancel} variant="outlined" color="secondary">
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" color="primary">
+            {editPlan ? "Update" : "Add"}
+          </Button>
+        </Stack>
+      </Stack>
+    </Box>
   );
 };
 

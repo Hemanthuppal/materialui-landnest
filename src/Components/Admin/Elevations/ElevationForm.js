@@ -1,136 +1,102 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Container, TextField, Typography, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Button,
+  TextField,
+  Stack,
+  Box,
+  Typography,
+} from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../AuthContext/AuthContext";
 
-const ElevationForm = ({ addElevation, editData }) => {
-  const [elevationName, setElevationName] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+const API_BASE_URL = "http://46.37.122.105:89";
+const IMAGE_BASE_URL = `${API_BASE_URL}/construction-content`;
+
+const ElevationPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
+  const { userId } = useContext(AuthContext);
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
   useEffect(() => {
-    if (editData) {
-      setElevationName(editData.name);
-      setImagePreview(editData.image);
-    }
-  }, [editData]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!elevationName || (!imageFile && !imagePreview)) return;
-
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newElevation = {
-          id: editData ? editData.id : Date.now(),
-          name: elevationName,
-          image: reader.result,
-          date: editData ? editData.date : new Date().toISOString().slice(0, 10),
-        };
-        addElevation(newElevation);
-      };
-      reader.readAsDataURL(imageFile);
+    if (editPlan) {
+      setName(editPlan.content || "");
+      setPreview(`${API_BASE_URL}${editPlan.image}`);
     } else {
-      const newElevation = {
-        id: editData ? editData.id : Date.now(),
-        name: elevationName,
-        image: imagePreview,
-        date: editData ? editData.date : new Date().toISOString().slice(0, 10),
-      };
-      addElevation(newElevation);
+      setName("");
+      setImage(null);
+      setPreview("");
     }
-  };
+  }, [editPlan]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name) {
+      toast.error("Name is required");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("content", name);
+    formData.append("category_id", 3); // Elevation category
+    formData.append("user_id", 1);
+    if (image) formData.append("image", image);
+
+    try {
+      if (editPlan) {
+        await axios.put(`${IMAGE_BASE_URL}/${editPlan.content_id}/`, formData);
+        toast.success("Updated successfully");
+      } else {
+        await axios.post(`${IMAGE_BASE_URL}/`, formData);
+        toast.success("Added successfully");
+      }
+      fetchPlans();
+      onCancel();
+    } catch (error) {
+      toast.error("Failed to save");
+    }
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        {editData ? "Edit Elevation" : "Upload Elevation"}
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          maxWidth: 500,
-          mx: "auto",
-        }}
-      >
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Stack spacing={2}>
         <TextField
-          label="Elevation Name"
-          variant="outlined"
+          label="Plan Name"
           fullWidth
-          size="small"
-          value={elevationName}
-          onChange={(e) => setElevationName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
 
-        <Button variant="outlined" component="label">
-          Upload Image
-          <input hidden type="file" accept="image/*" onChange={handleImageChange} />
+        <Button variant="contained" component="label">
+          {image ? "Change Image" : "Upload Image"}
+          <input type="file" hidden accept="image/*" onChange={handleImageChange} />
         </Button>
 
-        {imagePreview && (
-          <Box
-            sx={{
-              position: "relative",
-              width: "100%",
-              maxHeight: 200,
-              overflow: "hidden",
-              borderRadius: 2,
-              mt: 1,
-            }}
-          >
-            <img
-              src={imagePreview}
-              alt="Preview"
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
-            />
-            <IconButton
-              size="small"
-              sx={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                bgcolor: "white",
-                ":hover": { bgcolor: "grey.200" },
-              }}
-              onClick={handleRemoveImage}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
+        {preview && (
+          <Box>
+            <Typography variant="subtitle2">Preview:</Typography>
+            <img src={preview} alt="Preview" style={{ width: 120, height: 100, objectFit: "contain" }} />
           </Box>
         )}
 
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={!elevationName || (!imageFile && !imagePreview)}
-        >
-          {editData ? "Update" : "Submit"}
-        </Button>
-      </Box>
-    </Container>
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Button onClick={onCancel} variant="outlined" color="secondary">Cancel</Button>
+          <Button type="submit" variant="contained" color="primary">{editPlan ? "Update" : "Add"}</Button>
+        </Stack>
+      </Stack>
+    </Box>
   );
 };
 
-export default ElevationForm;
+export default ElevationPlanForm;
