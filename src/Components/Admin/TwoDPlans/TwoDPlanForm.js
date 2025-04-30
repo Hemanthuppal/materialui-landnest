@@ -50,7 +50,7 @@ const TwoDPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
     const formData = new FormData();
     formData.append("content", name);
     formData.append("category_id", 1); // 2D Plan category
-    formData.append("user_id", userId); // assuming user has an 'id' field
+    formData.append("user_id", 1); // assuming user has an 'id' field
     if (image) formData.append("image", image);
 
     try {
