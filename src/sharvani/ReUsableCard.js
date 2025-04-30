@@ -111,68 +111,91 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
       </Box>
 
       <CardContent sx={{ px: 2, py: 0.5, pb: '7px !important' }}>
- {/* 🔽 Reduced padding from 2.5 to 2 */}
-        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ fontSize: '1rem' }}> {/* 🔽 Slightly smaller font */}
-          {property.title}
+  {/* First row: Title and Price */}
+  <Grid container justifyContent="space-between" alignItems="center">
+    <Grid item xs={8}>
+      <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ fontSize: '1rem' }}>
+        {property.title}
+      </Typography>
+    </Grid>
+    <Grid item xs="auto">
+      <Typography variant="subtitle1" fontWeight="bold" color="primary" sx={{ fontSize: '0.9rem' }}>
+        {property.price}
+      </Typography>
+    </Grid>
+  </Grid>
+
+  {/* Second row: Location and Date */}
+  <Grid container justifyContent="space-between" alignItems="center">
+    <Grid item xs={8}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        mb={0.2}
+        sx={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: 'block',
+          maxWidth: '70%',
+        }}
+      >
+        {property.location}
+      </Typography>
+    </Grid>
+    <Grid item xs="auto" >
+      <Typography variant="caption" color="text.secondary">
+    {property.date}
+      </Typography>
+    </Grid>
+  </Grid>
+
+  {/* Location verified + Call Button */}
+  <Box display="flex" alignItems="center" mt={0.5}>
+    <LocationOn fontSize="small" color="action" />
+    <Typography variant="body2" color="text.primary" ml={0.5}>
+      Location Verified
+    </Typography>
+    <Box sx={{ flexGrow: 1 }} />
+    <Button
+      size="small"
+      variant="outlined"
+      color="success"
+      startIcon={<Call />}
+      sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.2, px: 1.5 }}
+    >
+      Call
+    </Button>
+  </Box>
+
+  {/* Property Info Columns */}
+  <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+    {[
+      { label: 'Facing', value: property.facing },
+      { label: `Area`, value: property.area },
+      { label: 'Listed By', value: property.listedBy }
+    ].map((item, index) => (
+      <Box
+        key={index}
+        sx={{
+          flex: 1,
+          px: 1.2,
+          py: 0.5,
+          textAlign: 'center',
+          borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+        }}
+      >
+        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+          {item.label}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={0.2}> {/* 🔽 Reduced bottom margin */}
-          {property.location}
+        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '0.8rem' }}>
+          {item.value}
         </Typography>
+      </Box>
+    ))}
+  </Box>
+</CardContent>
 
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Typography variant="subtitle1" fontWeight="bold" color="primary" sx={{ fontSize: '0.9rem' }}> {/* 🔽 Font tweak */}
-            {property.price}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Listed on: {property.date}
-          </Typography>
-        </Grid>
-
-        <Box display="flex" alignItems="center" mt={0.5}> {/* 🔽 Reduced top margin */}
-          <LocationOn fontSize="small" color="action" />
-          <Typography variant="body2" color="text.primary" ml={0.5}>
-            Location Verified
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <Button
-            size="small"
-            variant="outlined"
-            color="success"
-            startIcon={<Call />}
-            sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.2, px: 1.5 }} // 🔽 Compressed button
-          >
-            Call
-          </Button>
-        </Box>
-
-        {/* <Divider sx={{ my: 1.2 }} /> 🔽 Reduced divider spacing */}
-
-        <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
-          {[
-            { label: 'Facing', value: property.facing },
-            { label: `Area `, value: property.area },
-            { label: 'Listed By', value: property.listedBy }
-          ].map((item, index) => (
-            <Box
-              key={index}
-              sx={{
-                flex: 1,
-                px: 1.2,
-                py: 0.5, // 🔽 Reduced padding inside info columns
-                textAlign: 'center',
-                borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
-              }}
-            >
-              <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-                {item.label}
-              </Typography>
-              <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '0.8rem' }}>
-                {item.value}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </CardContent>
       
     </Card>
   );

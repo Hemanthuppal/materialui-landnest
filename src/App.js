@@ -51,6 +51,12 @@ import Buy_Details_Page from './Sritajana/Details_Page';
 import BuySaves from './Sritajana/Buy_Saves';
 import Buy_Postdeal from './Sritajana/Buy_Postdeal';
 import Buy_Posttable from './Sritajana/Buy_Posttable';
+import W_Buy from './Woker/W_Buy';
+import W_Lease from './Woker/W_Lease';
+import W_Rent from './Woker/W_Rent';
+import W_Vendors from './Woker/W_Vendors';
+import W_Post from './Woker/W_Post';
+import W_Navbar from '././Woker/W_Navbar';
 
 
 // import AdminCategory from './Components/Admin/AdminUploadedProperties/Category';
@@ -81,6 +87,12 @@ import AdminUploadPropertiesTable from './Components/Admin/AdminUploadedProperti
 import Category from "./Components/Admin/Material/Category";
 import Construction from "./Components/Admin/Material/Construction"
 import MapWithPoints from './hemanth/MapWithPoints';
+
+import UserBuy from './Userproperties/Buy/Buy';
+import UserRent from './Userproperties/Rent/Rent';
+import UserLease from './Userproperties/Lease/Lease';
+import UserVendor from './Userproperties/Vendor/Vendor';
+import UserBestdeals from './Userproperties/BestDeals/Bestdeals';
 
 
 function App() {
@@ -165,9 +177,21 @@ function App() {
         <Route path="/Buy-saves" element={<BuySaves/>} />
         <Route path="/Buy-Postdeal" element={<Buy_Postdeal/>} />
         <Route path="/Buy-Posttable" element={<Buy_Posttable/>} />
+
+        <Route path="/W_Buy" element={<W_Buy/>} />
+        <Route path="/W_Lease" element={<W_Lease/>} />
+        <Route path="/W_Rent" element={<W_Rent/>} />
+        <Route path="/W_Vendors" element={<W_Vendors/>} />
+        <Route path="/W_Post" element={<W_Post/>} />
+        <Route path="/W_Navbar" element={<W_Navbar/>} />
+        
+
+        
+
         <Route path="/Category" element={<Category/>} />
         <Route path="/Material" element={<Material/>} />
         <Route path="/map" element={<MapWithPoints/>} />
+
        
 
 
@@ -183,8 +207,8 @@ function App() {
         <Route path="/admin-elevation" element={<AdminElevation />} />
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
-        <Route path="/Material" element={<Material/>} />
-        <Route path="/Addcategory" element={<Addcategory/>} />
+        <Route path="/Material" element={<Material/>} />     //sritha
+        <Route path="/Addcategory" element={<Addcategory/>} />     //sritha
         
 
         {/* <Route path="/view" element={<CustomerList />} /> */}
@@ -203,7 +227,11 @@ function App() {
             element={<Construction />}
           /> */}
 
-
+<Route path="/user-buy" element={<UserBuy/>} />
+<Route path="/user-rent" element={<UserRent/>} />
+<Route path="/user-lease" element={<UserLease/>} />
+<Route path="/user-deals" element={<UserBestdeals/>} />
+<Route path="/user-vendors" element={<UserVendor/>} />
 
       </Routes>
     </BrowserRouter>

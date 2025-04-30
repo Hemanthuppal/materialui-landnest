@@ -93,31 +93,44 @@ const Rent_Property_Map = () => {
 
     fetchProperties();
   }, []);
+  const redIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+  
 
   useEffect(() => {
     if (properties.length === 0) return;
-
-    const map = L.map('leaflet-map').setView([26.8467, 80.9462], 13);
-
+  
+    // Check if map container exists
+    const mapContainer = document.getElementById('leaflet-map');
+    if (!mapContainer || mapContainer._leaflet_id) return; // Skip if already initialized
+   
+    const map = L.map('leaflet-map').setView([17.9358528, 78.5203776], 13);
+  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '',
     }).addTo(map);
-
+  
     properties.forEach(property => {
       if (!property.lat || !property.lng) return;
-
-      const marker = L.marker([property.lat, property.lng]).addTo(map);
+  
+      const marker = L.marker([property.lat, property.lng], { icon: redIcon }).addTo(map);
 
       marker.on('click', () => {
         setSelectedProperty(property);
       });
     });
-
+  
     return () => {
       map.remove();
     };
   }, [properties]);
-
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
