@@ -208,7 +208,7 @@ const ThreeDPlanTable = () => {
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
           <Typography variant="h6">
-            {currentPlan ? "Edit 2D Plan" : "Add 2D Plan"}
+            {currentPlan ? "Edit 3D Plan" : "Add 3D Plan"}
           </Typography>
           <IconButton
             aria-label="close"

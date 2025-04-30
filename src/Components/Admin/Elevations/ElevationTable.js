@@ -208,7 +208,7 @@ const ElevationPlanTable = () => {
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
           <Typography variant="h6">
-            {currentPlan ? "Edit 2D Plan" : "Add 2D Plan"}
+            {currentPlan ? "Edit Elevation Plan" : "Add Elevation Plan"}
           </Typography>
           <IconButton
             aria-label="close"
