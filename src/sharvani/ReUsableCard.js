@@ -178,17 +178,17 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
       {property.title}
     </Typography>
     <Typography 
-      variant="subtitle1" 
-      fontWeight="bold" 
-      color="primary" 
-      sx={{ 
-        fontSize: '0.9rem',
-        whiteSpace: 'nowrap',
-        ml: 1
-      }}
-    >
-      {property.price}
-    </Typography>
+  variant="subtitle1" 
+  fontWeight="bold" 
+  color="primary" 
+  sx={{ 
+    fontSize: '0.9rem',
+    whiteSpace: 'nowrap',
+    ml: 1
+  }}
+>
+  ₹{Number(String(property.price).replace(/[^0-9]/g, '')).toLocaleString('en-IN')}
+</Typography>
   </Box>
 
   {/* Location and Date - Strictly aligned */}
