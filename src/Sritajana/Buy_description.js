@@ -57,7 +57,7 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
     site_area, buildup_area,
     facing, roadwidth, list,length,width,
     nearby, created_at, bedrooms_count,
-    bathrooms_count, parking, balcony
+    bathrooms_count, parking, balcony,property_name
   } = property;
 
   const imageUrl = property_images?.[0]?.image
@@ -105,16 +105,17 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
             <Grid container justifyContent="space-between" alignItems="center" sx={{ pb: 2 }}>
               <Grid item xs={8}>
                 <Typography fontWeight="bold" fontSize="18px">
-                  {categoryName?.replace(/"/g, '') || 'Property Type'}
+                  {categoryName?.replace(/"/g, '') || 'Property Type'}-{property_name}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {loc || 'Not Specified'}
                 </Typography>
               </Grid>
               <Grid item sx={{ textAlign: 'right' }}>
-                <Typography fontWeight="bold" fontSize="18px" color="rgb(240, 65, 30)">
-                  ₹{price?.toLocaleString()}
-                </Typography>
+              <Typography fontWeight="bold" fontSize="18px" color="rgb(240, 65, 30)">
+    ₹{price?.toLocaleString('en-IN')}
+  </Typography>
+
                 <Typography variant="caption" color="text.secondary">
                   Listed by {list?.replace(/"/g, '') || 'Owner'}
                 </Typography>

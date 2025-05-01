@@ -212,7 +212,7 @@ const BuySaves = () => {
                         pr: 1 
                       }}
                     >
-                      {property.title}
+                      {property.title}-{property.property_name}
                     </Typography>
                     <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
                     ₹{Number(String(property.price).replace(/[^0-9]/g, '')).toLocaleString('en-IN')}

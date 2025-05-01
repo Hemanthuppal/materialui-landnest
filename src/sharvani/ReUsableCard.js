@@ -175,7 +175,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
         textOverflow: 'ellipsis'
       }}
     >
-      {property.title}
+      {property.title}-{property.property_name}
     </Typography>
     <Typography 
   variant="subtitle1" 
