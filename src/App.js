@@ -208,7 +208,7 @@ function App() {
         <Route path="/admin-customers" element={<AdminCustomers />} />
         <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
         <Route path="/Material" element={<Material/>} />     //sritha
-        <Route path="/Addcategory" element={<Addcategory/>} />     //sritha
+        <Route path="/admin-addcategory" element={<Addcategory/>} />     //sritha
         
 
         {/* <Route path="/view" element={<CustomerList />} /> */}
