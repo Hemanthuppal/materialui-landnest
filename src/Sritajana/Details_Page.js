@@ -385,7 +385,7 @@ const PropertyCard = () => {
       {property.title}-{property.property_name}
     </Typography>
     <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
-      {property.price}
+    ₹{Number(String(property.price).replace(/[^0-9]/g, '')).toLocaleString('en-IN')}
     </Typography>
   </Box>
 
