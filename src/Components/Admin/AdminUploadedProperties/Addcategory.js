@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, InputAdornment } from '@mui/material';  // <-- Import InputAdornment
+import {
+  Button, TextField, Box, Typography, Paper, FormControl,
+  InputLabel, Select, MenuItem, InputAdornment, Table,
+  TableBody, TableCell, TableContainer, TableHead, TableRow
+} from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTable, usePagination, useGlobalFilter, useSortBy } from 'react-table';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Add, Edit, Delete } from '@mui/icons-material'; // Add the Add icon
+import { Add, Edit, Delete } from '@mui/icons-material';
 import AdminDashboard from "../Dashboard/Dashboard";
+import TablePagination from '@mui/material/TablePagination';
+
 
 // Global Search Filter Component
 function GlobalFilter({ globalFilter, setGlobalFilter }) {
   return (
-    <Box mb={2} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
+    <Box mb={2} sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 1 }}>
       <TextField
         variant="outlined"
         placeholder="Search..."
@@ -19,14 +24,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
         onChange={(e) => setGlobalFilter(e.target.value)}
         sx={{ width: 250 }}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setGlobalFilter('')} // Clear search on button click
-        size="small"
-      >
-        Search
-      </Button>
+     
     </Box>
   );
 }
@@ -34,9 +32,8 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [categoryName, setCategoryName] = useState('');
-  const [editing, setEditing] = useState(null); // Track if we're editing a category
-  
-  // Columns configuration for the table
+  const [editing, setEditing] = useState(null);
+
   const columns = React.useMemo(
     () => [
       {
@@ -57,16 +54,12 @@ const Category = () => {
               onClick={() => handleEdit(row.index)}
               startIcon={<Edit />}
               style={{ marginRight: '10px' }}
-            >
-             
-            </Button>
+            />
             <Button
               color="secondary"
               onClick={() => handleDelete(row.index)}
               startIcon={<Delete />}
-            >
-             
-            </Button>
+            />
           </Box>
         ),
       },
@@ -74,7 +67,6 @@ const Category = () => {
     [categories]
   );
 
-  // Global Filter logic for searching across all columns
   const filterAllColumns = (rows, id, filterValue) => {
     if (!filterValue) return rows;
     const lowercasedFilter = filterValue.toLowerCase();
@@ -86,7 +78,6 @@ const Category = () => {
     );
   };
 
-  // Table setup using react-table hooks
   const {
     getTableProps,
     getTableBodyProps,
@@ -98,10 +89,12 @@ const Category = () => {
     pageOptions,
     nextPage,
     previousPage,
+    gotoPage, // <-- Add this line
     setPageSize,
     setGlobalFilter,
     state: { pageIndex, pageSize, globalFilter },
   } = useTable(
+  
     {
       columns,
       data: categories,
@@ -118,30 +111,25 @@ const Category = () => {
     }
   }, [editing, categories]);
 
-  // Handle Add or Update Category
   const handleAddOrUpdateCategory = () => {
     if (editing !== null) {
-      // Update existing category
       const updatedCategories = categories.map((cat, index) =>
         index === editing ? { ...cat, name: categoryName } : cat
       );
       setCategories(updatedCategories);
-      setEditing(null); // Reset editing state
+      setEditing(null);
       toast.success('Category updated successfully!');
     } else {
-      // Add new category
       setCategories([...categories, { name: categoryName }]);
       toast.success('Category added successfully!');
     }
-    setCategoryName(''); // Clear the input field
+    setCategoryName('');
   };
 
-  // Handle Editing a Category
   const handleEdit = (index) => {
-    setEditing(index); // Set the category being edited
+    setEditing(index);
   };
 
-  // Handle Deleting a Category
   const handleDelete = (index) => {
     setCategories(categories.filter((_, i) => i !== index));
     toast.error('Category deleted successfully!');
@@ -150,12 +138,10 @@ const Category = () => {
   return (
     <>
       <AdminDashboard />
-      
 
       <div style={{ width: '80%', margin: '0 auto', textAlign: 'center' }}>
         <h2>{editing !== null ? 'Update Category' : 'Add Category'}</h2>
 
-        {/* Input and Button for Add/Update Category */}
         <Box mb={3} sx={{ maxWidth: 400, mx: 'auto' }}>
           <TextField
             label="Category Name"
@@ -172,7 +158,7 @@ const Category = () => {
                     color="primary"
                     onClick={handleAddOrUpdateCategory}
                     size="small"
-                    sx={{ ml: 1, height: '100%' }}  // Make sure button height matches input field height
+                    sx={{ ml: 1, height: '100%' }}
                     startIcon={editing !== null ? <Edit /> : <Add />}
                   >
                     {editing !== null ? 'Update' : 'Add'}
@@ -183,13 +169,11 @@ const Category = () => {
           />
         </Box>
 
-        {/* Global Filter */}
         <GlobalFilter
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
 
-        {/* Table */}
         <Paper sx={{ overflow: 'hidden' }}>
           <TableContainer>
             <Table {...getTableProps()}>
@@ -205,6 +189,8 @@ const Category = () => {
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           maxWidth: 200,
+                          backgroundColor: '#1976d2',
+                          color: 'white',
                         }}
                       >
                         {column.render('Header')}
@@ -236,49 +222,20 @@ const Category = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+  component="div"
+  count={categories.length}
+  page={pageIndex}
+  onPageChange={(e, newPage) => gotoPage(newPage)}
+  rowsPerPage={pageSize}
+  onRowsPerPageChange={(e) => {
+    setPageSize(Number(e.target.value));
+  }}
+  rowsPerPageOptions={[5, 10, 20]}
+/>
 
-          {/* Pagination */}
-          <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-            <Typography>
-              Page {pageIndex + 1} of {pageOptions.length}
-            </Typography>
-
-            <Box>
-              <Button
-                variant="contained"
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-                sx={{ mr: 1 }}
-              >
-                Prev
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => nextPage()}
-                disabled={!canNextPage}
-              >
-                Next
-              </Button>
-            </Box>
-
-            <FormControl size="small" sx={{ minWidth: 100 }}>
-              <InputLabel>Rows</InputLabel>
-              <Select
-                value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
-                label="Rows"
-              >
-                {[5, 10, 20].map((size) => (
-                  <MenuItem key={size} value={size}>
-                    Show {size}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
         </Paper>
 
-        {/* ToastContainer to display toast notifications */}
         <ToastContainer />
       </div>
     </>
