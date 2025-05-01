@@ -84,6 +84,7 @@ const Buy_Property_Map = () => {
             lng: parseCoord(item.long),
             length:item.length,
             width:item.width,
+            property_name:item.property_name,
             mobile_no:item.mobile_no,
             image: imageUrl
           };
@@ -182,35 +183,41 @@ const Buy_Property_Map = () => {
       </Box>
 
       {/* 📌 Property Types */}
-      <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property</Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1,
-            overflowX: 'auto',
-            whiteSpace: 'nowrap',
-            pb: 1,
-          }}
-        >
-          {rentalTypes.map((type, index) => (
-           <Chip
-           key={index}
-           label={type}
-           variant={selectedType === type ? "filled" : "outlined"}
-           onClick={() => setSelectedType(prev => (prev === type ? null : type))}
-           sx={{
-             flexShrink: 0,
-             border: '1px solid black',
-             bgcolor: selectedType === type ? '#000000' : 'transparent', // Pure black
-             color: selectedType === type ? '#ffffff' : '#000000',       // White text if selected, else black
-             fontWeight: 'bold'
-           }}
-         />
-         
-          ))}
-        </Box>
-      </Box>
+<Box sx={{ px: 2 }}>
+  <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property</Typography>
+  <Box
+    sx={{
+      display: 'flex',
+      gap: 1,
+      overflowX: 'auto',
+      whiteSpace: 'nowrap',
+      pb: 1,
+    }}
+  >
+    {rentalTypes.map((type, index) => (
+      <Chip
+        key={index}
+        label={type}
+        variant="filled"
+        onClick={() => {
+          // Clear any property selection when clicking a type
+          setSelectedProperty(null);
+          setSelectedType(prev => (prev === type ? null : type));
+        }}
+        sx={{
+          flexShrink: 0,
+          bgcolor: selectedType === type ? '#000000' : 'transparent',
+          color: selectedType === type ? '#ffffff' : '#000000',
+          border: '1px solid black',
+          fontWeight: 'bold',
+          '&:hover': {
+            bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+          },
+        }}
+      />
+    ))}
+  </Box>
+</Box>
 
       {/* 🗺️ Leaflet Map */}
       <Box sx={{ px: 2, pb: 10 }}>
