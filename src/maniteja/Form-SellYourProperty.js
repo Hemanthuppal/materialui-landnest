@@ -66,16 +66,16 @@ const GreenButton = styled(Button)({
 
 const fieldMap = {
     'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
-    'plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
-    'rent with duplex building': ['Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
-    'duplex house': ['Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
-    'rental building': ['Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
-    'pg-offices': ['Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth'],
-    'flat': ['Site Area', 'Facing',  'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Roadwidth'],
-    'villa': ['Site Area', 'Facing', 'Price', 'Bedrooms-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
-    'commercial building': ['Site Area', 'Facing',  'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth'],
-    'Apartment': ['Site Area', 'Facing',  'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth'],
-    'others': ['Price', 'Roadwidth'],
+    'Plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
+    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
+    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
+    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth', 'Buildup area'],
+    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'Parking', 'Borewell', 'Roadwidth', 'Buildup area'],
+    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'Parking', 'Borewell', 'Floors', 'Roadwidth', 'Buildup area'],
+    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth', 'Buildup area'],
+    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth', 'Buildup area'],
+    'Others': ['Price', 'Roadwidth'],
 };
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
@@ -108,7 +108,7 @@ const SellYourProperty = () => {
         lat: '',
         long: '',
         units: 'ft', // Add this line
-        nearby: '',
+        nearby: 'Gandi Hospital',
         length: '',
         width: '',
         no_of_flores: '',
@@ -117,14 +117,17 @@ const SellYourProperty = () => {
         _3bhk_count: '',
         _4bhk_count: '',
         bedrooms_count: '',
+        bathrooms_count: '4',
         balcony: '',
-        gated_security: '',
+        gated_security: 'yes',
         parking: '',
         advance_payment: '',
         duplex_bedrooms: '',
+        power_backup: 'yes',
         rooms_count: '',
         shop_count: '',
-        house_count: ''
+        house_count: '',
+        property_name: ''
     });
 
     const { isLoaded } = useJsApiLoader({
@@ -284,6 +287,7 @@ const SellYourProperty = () => {
         'Roadwidth': 'roadwidth',
         'Length': 'length',
         'Width': 'width',
+        'Property Name': 'property_name'
     };
 
     const handleBackClick = () => navigate(-1);
