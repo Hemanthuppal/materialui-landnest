@@ -135,6 +135,18 @@ const SellYourProperty = () => {
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
+    const [markerIcon, setMarkerIcon] = useState(null);
+
+useEffect(() => {
+  if (isLoaded && window.google) {
+    setMarkerIcon({
+      url: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23ff0000%22%20d%3D%22M12%202C8.13%202%205%205.13%205%209c0%205.25%207%2013%207%2013s7-7.75%207-13c0-3.87-3.13-7-7-7zm0%209.5c-1.38%200-2.5-1.12-2.5-2.5s1.12-2.5%202.5-2.5%202.5%201.12%202.5%202.5-1.12%202.5-2.5%202.5z%22%2F%3E%3C%2Fsvg%3E",
+      scaledSize: new window.google.maps.Size(40, 40),
+      origin: new window.google.maps.Point(0, 0),
+      anchor: new window.google.maps.Point(20, 40)
+    });
+  }
+}, [isLoaded]);
 
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
@@ -219,22 +231,21 @@ const SellYourProperty = () => {
           alert("Geolocation is not supported by this browser.");
         }
       };
-
-    const onPlaceChanged = () => {
+      const onPlaceChanged = () => {
         if (autocompleteRef.current) {
-            const place = autocompleteRef.current.getPlace();
-            if (place && place.geometry) {
-                incrementApiHit(); // This uses Google Maps API
-                setUsingCurrentLocation(false);
-                const newLoc = {
-                    lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng(),
-                };
-                setLocation(newLoc);
-                setAddress(place.formatted_address);
-            }
+          const place = autocompleteRef.current.getPlace();
+          if (place && place.geometry) {
+            incrementApiHit();
+            setUsingCurrentLocation(false);
+            const newLoc = {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+            };
+            setLocation(newLoc);
+            setAddress(place.formatted_address);
+          }
         }
-    };
+      };
 
     const geocodeAddress = async () => {
         if (!address) return;
@@ -303,19 +314,19 @@ const SellYourProperty = () => {
         const lng = e.latLng.lng();
         setLocation({ lat, lng });
         setUsingCurrentLocation(false);
-        incrementApiHit(); // Clicking on map uses Google Maps API
-
+        incrementApiHit();
+      
         if (window.google && window.google.maps) {
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                if (status == 'OK' && results[0]) {
-                    setAddress(results[0].formatted_address);
-                } else {
-                    setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
-                }
-            });
+          const geocoder = new window.google.maps.Geocoder();
+          geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            if (status == 'OK' && results[0]) {
+              setAddress(results[0].formatted_address);
+            } else {
+              setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
+            }
+          });
         }
-    };
+      };
 
     useEffect(() => {
         axios.get('http://46.37.122.105:89/property-category/')
@@ -544,55 +555,61 @@ const SellYourProperty = () => {
                         })}
 
                         {/* Location Section */}
-                        <Box sx={{ mb: 2 }}>
-    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-        Location
-    </Typography>
+                    {/* Location Section */}
+<Box sx={{ mb: 2 }}>
+  <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
+    Location
+  </Typography>
 
+  {isLoaded && (
     <Autocomplete
-        onLoad={(ref) => (autocompleteRef.current = ref)}
-        onPlaceChanged={onPlaceChanged}
+      onLoad={(autocomplete) => {
+        autocompleteRef.current = autocomplete;
+      }}
+      onPlaceChanged={onPlaceChanged}
     >
-        <TextField
-            fullWidth
-            label="Search Location"
-            variant="outlined"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            onBlur={geocodeAddress}
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <IconButton onClick={getCurrentLocation} edge="end">
-                            <MyLocationIcon />
-                        </IconButton>
-                    </InputAdornment>
-                ),
-            }}
-        />
+      <TextField
+        fullWidth
+        label="Search Location"
+        variant="outlined"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        onBlur={geocodeAddress}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={getCurrentLocation} edge="end">
+                <MyLocationIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
     </Autocomplete>
+  )}
 
-    {/* <Typography variant="caption" sx={{ alignSelf: 'center', mt: 1, display: 'block' }}>
-        {usingCurrentLocation ? "Using browser geolocation" : "Using Google Maps API"}
-    </Typography> */}
+  {/* Map with marker */}
+  <div style={containerStyle}>
+  <GoogleMap
+    mapContainerStyle={{ width: '100%', height: '100%' }}
+    center={location}
+    zoom={15}
+    onClick={handleMapClick}
+  >
+    {markerIcon && (
+      <Marker 
+        position={location} 
+        icon={markerIcon}
+      />
+    )}
+  </GoogleMap>
+</div>
 </Box>
 
-                        {/* Map with marker */}
-                        <div style={containerStyle}>
-                            <GoogleMap
-                                mapContainerStyle={{ width: '100%', height: '100%' }}
-                                center={location}
-                                zoom={15}
-                                onClick={handleMapClick}
-                            >
-                                <Marker position={location} />
-                            </GoogleMap>
-                        </div>
-
                         {/* API Hit Counter (for debugging) */}
-                        <Typography variant="caption" sx={{ display: 'block', textAlign: 'right', mt: 1 }}>
+                        {/* <Typography variant="caption" sx={{ display: 'block', textAlign: 'right', mt: 1 }}>
                             Google Maps API hits: {apiHitCount}
-                        </Typography>
+                        </Typography> */}
 
                         {/* Image Upload */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>Uploaded Images</Typography>
