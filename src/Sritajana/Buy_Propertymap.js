@@ -18,7 +18,7 @@ import CustomBottomNav from './CustomNav';
 const rentalTypes = [
   "PLOT/LAND", "COMMERCIAL LAND/PLOT", "RENT WITH DUPLEX BUILDING",  "DUPLEX HOUSE",
   "RENTAL BUILDING", "PG-OFFICES", "FLAT","VILLA",
-  "COMMERCIAL BUILDING", "APPARTMENT","OTHERS"
+  "COMMERCIAL BUILDING", "APARTMENT","OTHERS"
 ];
 
 // Fix Leaflet marker icon issue
@@ -119,7 +119,7 @@ const Buy_Property_Map = () => {
     const mapContainer = document.getElementById('leaflet-map');
     if (!mapContainer || mapContainer._leaflet_id) return;
 
-    const map = L.map('leaflet-map').setView([17.9358528, 78.5203776], 13);
+    const map = L.map('leaflet-map').setView([17.429299 , 78.499021 ], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '',
@@ -194,14 +194,20 @@ const Buy_Property_Map = () => {
           }}
         >
           {rentalTypes.map((type, index) => (
-            <Chip
-              key={index}
-              label={type}
-              variant={selectedType === type ? "filled" : "outlined"}
-              color={selectedType === type ? "black" : "default"}
-              onClick={() => setSelectedType(prev => (prev === type ? null : type))}
-              sx={{ flexShrink: 0, border: '1px solid black' }}
-            />
+           <Chip
+           key={index}
+           label={type}
+           variant={selectedType === type ? "filled" : "outlined"}
+           onClick={() => setSelectedType(prev => (prev === type ? null : type))}
+           sx={{
+             flexShrink: 0,
+             border: '1px solid black',
+             bgcolor: selectedType === type ? '#000000' : 'transparent', // Pure black
+             color: selectedType === type ? '#ffffff' : '#000000',       // White text if selected, else black
+             fontWeight: 'bold'
+           }}
+         />
+         
           ))}
         </Box>
       </Box>
