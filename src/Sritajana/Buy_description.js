@@ -170,7 +170,7 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
             <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
               Overview:
             </Typography>
-            <Box sx={{
+            {/* <Box sx={{
               border: '2px solid #424242',
               borderRadius: 2,
               overflow: 'hidden',
@@ -213,6 +213,79 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
                           {item.title}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
+                          {item.subtitle}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              ))}
+            </Box> */}
+            <Box sx={{
+              border: '2px solid #424242',
+              borderRadius: 2,
+              overflow: 'hidden',
+            }}>
+              {[
+                [
+                  { icon: <BedIcon />, title: <span style={{ fontSize: '14px' }}>{`${bedrooms_count || 'NA'} Bedroom${bedrooms_count !== 1 ? 's' : ''}`}</span>,  subtitle: 'No. of Bedrooms' },
+                  {
+                    icon: <CalendarTodayIcon />,
+                    title: <span style={{ fontSize: '14px' }}>{created_at ? new Date(created_at).toLocaleDateString('en-IN') : 'NA'}</span>,
+                    subtitle: 'Posted on'
+                  },
+                ],
+                [
+                  { icon: <BathtubIcon />, title: <span style={{ fontSize: '14px' }}>{`${bathrooms_count || 'NA'} Bathroom${bathrooms_count !== 1 ? 's' : ''}`}</span>,  subtitle: 'No. of Bathrooms' },
+                  { icon: <AccessTimeIcon />,   title: <span style={{ fontSize: '14px' }}>Immediately</span>, 
+                   subtitle: 'Available From' },
+                ],
+                [
+                  { icon: <BalconyIcon />, title: <span style={{ fontSize: '14px' }}>{balcony ? 'Available' : 'NA'}</span>,  subtitle: 'Balcony' },
+                  { icon: <HomeWorkIcon />,  title: <span style={{ fontSize: '14px' }}>{type?.replace(/"/g, '') || 'NA'}</span>, subtitle: 'Property Type' },
+                ],
+                [
+                  { icon: <DirectionsCarIcon />,  title: <span style={{ fontSize: '14px' }}>{parking ? 'Available' : 'NA'}</span>,  subtitle: 'Parking' },
+                  { icon: <PowerIcon />,   title: <span style={{ fontSize: '14px' }}>None</span>,  subtitle: 'Power Backup' },
+                ],
+              ].map((row, rowIndex) => (
+                <Box key={rowIndex} sx={{
+                  display: 'flex',
+                  width: '100%'
+                }}>
+                  {row.map((item, colIndex) => (
+                    <Box
+                      key={colIndex}
+                      sx={{
+                        flex: '0 0 50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        p: 2,
+                        boxSizing: 'border-box',
+                        borderRight: colIndex === 0 ? '1px solid #9e9e9e' : 'none',
+                        borderBottom: rowIndex < 3 ? '1px solid #9e9e9e' : 'none',
+                        minWidth: 0,
+                      }}
+                    >
+                      <Box sx={{
+                        color: 'rgb(50, 47, 52)',
+                        flexShrink: 0
+                      }}>{item.icon}</Box>
+                      <Box sx={{
+                        minWidth: 0,
+                        overflow: 'hidden',
+                      }}>
+                        <Typography fontWeight={600} fontSize="15px" sx={{
+                          whiteSpace: 'normal',
+                          wordBreak: 'break-word'
+                        }}>
+                          {item.title}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{
+                          whiteSpace: 'normal',
+                          wordBreak: 'break-word'
+                        }}>
                           {item.subtitle}
                         </Typography>
                       </Box>
