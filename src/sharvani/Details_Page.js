@@ -22,14 +22,14 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import buildingImage from '../Images/house.jpeg';
-import CustomSearchBar from './CustomSearchBar';
-import BottomNavbar from './CustomBottomNav';
+import CustomSearchBar from '../Rajesh/CustomSearchBar';
+import BottomNavbar from './BottomNavbar/BottomNavbar';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('saveLease');
+    const stored = localStorage.getItem('saveRent');
     return stored ? JSON.parse(stored) : [];
   });
   const [likedCards, setLikedCards] = useState({});
@@ -47,7 +47,7 @@ const PropertyCard = () => {
         // Then fetch properties
         const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
         const filtered = propertiesResponse.data.filter(item =>
-          item.type && item.type.toLowerCase().includes("lease")
+          item.type && item.type.toLowerCase().includes("rent")
         );
 
         const parsed = filtered.map(item => {
@@ -132,7 +132,7 @@ const PropertyCard = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('saveLease', JSON.stringify(updated));
+    localStorage.setItem('saveRent', JSON.stringify(updated));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -196,7 +196,7 @@ const PropertyCard = () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/lease-description', { state: { propertyId: property.id, property: property.propertyData } });
+                  navigate('/rent-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >
@@ -254,147 +254,147 @@ const PropertyCard = () => {
                 </Box>
               </Box>
 
-              <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
-                           {/* Title and Price row */}
-                           <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
-                             <Typography 
-                               variant="subtitle1" 
-                               fontWeight="bold" 
-                               noWrap 
-                               sx={{ 
-                                 flex: 1,
-                                 overflow: 'hidden',
-                                 textOverflow: 'ellipsis',
-                                 pr: 1 
-                               }}
-                             >
-                               {property.title}
-                             </Typography>
-                             <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
-                               {property.price}
-                             </Typography>
-                           </Box>
-                         
-                           {/* Location and Date row */}
-                           <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
-                             <Typography 
-                               variant="caption" 
-                               color="text.secondary" 
-                               noWrap
-                               sx={{
-                                 flex: 1,
-                                 overflow: 'hidden',
-                                 textOverflow: 'ellipsis',
-                                 pr: 1
-                               }}
-                             >
-                               {property.location}
-                             </Typography>
-                             <Typography variant="caption" color="text.secondary" noWrap>
-                               {new Date(property.date).toLocaleDateString('en-IN', {
-                                 day: '2-digit',
-                                 month: '2-digit',
-                                 year: 'numeric'
-                               })}
-                             </Typography>
-                           </Box>
-                         
-                           {/* Location Verified and Call button */}
-                           <Box display="flex" alignItems="center" mb={1}>
-                             <IconButton
-                               onClick={(e) => {
-                                 e.stopPropagation();
-                                 if (property.lat && property.long) {
-                                   openGoogleMapsWithDirections(property.lat, property.long);
-                                 }
-                               }}
-                               size="small"
-                               sx={{ p: 0.5 }}
-                             >
-                               <LocationOn fontSize="small" color="action" />
-                             </IconButton>
-                             <Typography variant="caption" color="text.primary" ml={0.5}>
-                               Location Verified
-                             </Typography>
-                             <Box sx={{ flexGrow: 1 }} />
-                             <Button
-                               size="small"
-                               variant="outlined"
-                               color="success"
-                               startIcon={<Call fontSize="small" />}
-                               sx={{ 
-                                 textTransform: 'none', 
-                                 px: 1, 
-                                 py: 0.2, 
-                                 fontSize: '0.7rem',
-                                 minWidth: 'auto'
-                               }}
-                               onClick={(e) => e.stopPropagation()}
-                             >
-                               Call
-                             </Button>
-                           </Box>
-                         
-                           {/* Property details */}
-                           <Box
-                             sx={{
-                               display: 'flex',
-                               border: '1px solid #e0e0e0',
-                               borderRadius: 1,
-                               overflow: 'hidden',
-                             }}
-                           >
-                             {[
-                               { label: 'Facing', value: property.facing || 'N/A' },
-                               { 
-                                 label: 'Area', 
-                                 value: (
-                                   <Box>
-                                     <Box component="span">{property.area || 'N/A'}</Box>
-                                     {property.length && property.width && (
-                                       <Typography 
-                                         component="span" 
-                                         variant="caption" 
-                                         color="text.secondary"
-                                         sx={{ display: ['none', 'inline'], ml: 0.5 }}
-                                       >
-                                         ({property.length} × {property.width})
-                                       </Typography>
-                                     )}
-                                   </Box>
-                                 ) 
-                               },
-                               { label: 'Listed By', value: property.listedBy || 'N/A' },
-                             ].map((item, index) => (
-                               <Box
-                                 key={index}
-                                 sx={{
-                                   flex: 1,
-                                   px: 0.5,
-                                   py: 0.2,
-                                   textAlign: 'center',
-                                   borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
-                                   minWidth: 0
-                                 }}
-                               >
-                                 <Typography variant="caption" color="text.secondary" noWrap>
-                                   {item.label}
-                                 </Typography>
-                                 <Typography 
-                                   variant="body2" 
-                                   fontWeight="bold" 
-                                   noWrap={index !== 1} // Allow area to wrap if needed
-                                   sx={{
-                                     fontSize: '0.8rem',
-                                     lineHeight: 1.2
-                                   }}
-                                 >
-                                   {item.value}
-                                 </Typography>
-                               </Box>
-                             ))}
-                           </Box>
-                         </CardContent>
+                 <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
+              {/* Title and Price row */}
+              <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
+                <Typography 
+                  variant="subtitle1" 
+                  fontWeight="bold" 
+                  noWrap 
+                  sx={{ 
+                    flex: 1,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    pr: 1 
+                  }}
+                >
+                  {property.title}
+                </Typography>
+                <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
+                  {property.price}
+                </Typography>
+              </Box>
+            
+              {/* Location and Date row */}
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+                <Typography 
+                  variant="caption" 
+                  color="text.secondary" 
+                  noWrap
+                  sx={{
+                    flex: 1,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    pr: 1
+                  }}
+                >
+                  {property.location}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" noWrap>
+                  {new Date(property.date).toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                  })}
+                </Typography>
+              </Box>
+            
+              {/* Location Verified and Call button */}
+              <Box display="flex" alignItems="center" mb={1}>
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (property.lat && property.long) {
+                      openGoogleMapsWithDirections(property.lat, property.long);
+                    }
+                  }}
+                  size="small"
+                  sx={{ p: 0.5 }}
+                >
+                  <LocationOn fontSize="small" color="action" />
+                </IconButton>
+                <Typography variant="caption" color="text.primary" ml={0.5}>
+                  Location Verified
+                </Typography>
+                <Box sx={{ flexGrow: 1 }} />
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="success"
+                  startIcon={<Call fontSize="small" />}
+                  sx={{ 
+                    textTransform: 'none', 
+                    px: 1, 
+                    py: 0.2, 
+                    fontSize: '0.7rem',
+                    minWidth: 'auto'
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Call
+                </Button>
+              </Box>
+            
+              {/* Property details */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                }}
+              >
+                {[
+                  { label: 'Facing', value: property.facing || 'N/A' },
+                  { 
+                    label: 'Area', 
+                    value: (
+                      <Box>
+                        <Box component="span">{property.area || 'N/A'}</Box>
+                        {property.length && property.width && (
+                          <Typography 
+                            component="span" 
+                            variant="caption" 
+                            color="text.secondary"
+                            sx={{ display: ['none', 'inline'], ml: 0.5 }}
+                          >
+                            ({property.length} × {property.width})
+                          </Typography>
+                        )}
+                      </Box>
+                    ) 
+                  },
+                  { label: 'Listed By', value: property.listedBy || 'N/A' },
+                ].map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      flex: 1,
+                      px: 0.5,
+                      py: 0.2,
+                      textAlign: 'center',
+                      borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
+                      minWidth: 0
+                    }}
+                  >
+                    <Typography variant="caption" color="text.secondary" noWrap>
+                      {item.label}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      fontWeight="bold" 
+                      noWrap={index !== 1} // Allow area to wrap if needed
+                      sx={{
+                        fontSize: '0.8rem',
+                        lineHeight: 1.2
+                      }}
+                    >
+                      {item.value}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </CardContent>
             </Card>
           ))
         ) : (

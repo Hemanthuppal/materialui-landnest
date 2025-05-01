@@ -81,6 +81,9 @@ const PropertyCard = () => {
             listedBy: item.list?.replace(/"/g, '') || 'Agent',
             lat: parseCoord(item.lat),
             long: parseCoord(item.long),
+            length:item.length,
+            width:item.width,
+            mobile_no:item.mobile_no,
             image: imageUrl,
             propertyData: item // Store the full property data for description page
           };
@@ -252,83 +255,146 @@ const PropertyCard = () => {
               </Box>
 
               <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
-                  {property.title}
-                </Typography>
-                <Typography variant="caption" color="text.secondary" mb={0.2} noWrap>
-                  {property.location}
-                </Typography>
+  {/* Title and Price row */}
+  <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
+    <Typography 
+      variant="subtitle1" 
+      fontWeight="bold" 
+      noWrap 
+      sx={{ 
+        flex: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        pr: 1 
+      }}
+    >
+      {property.title}
+    </Typography>
+    <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
+      {property.price}
+    </Typography>
+  </Box>
 
-                <Grid container justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2" fontWeight="bold" color="primary">
-                    {property.price}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {property.date}
-                  </Typography>
-                </Grid>
+  {/* Location and Date row */}
+  <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+    <Typography 
+      variant="caption" 
+      color="text.secondary" 
+      noWrap
+      sx={{
+        flex: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        pr: 1
+      }}
+    >
+      {property.location}
+    </Typography>
+    <Typography variant="caption" color="text.secondary" noWrap>
+      {new Date(property.date).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      })}
+    </Typography>
+  </Box>
 
-                <Box display="flex" alignItems="center" mt={0.2}>
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (property.lat && property.long) {
-                        openGoogleMapsWithDirections(property.lat, property.long);
-                      }
-                    }}
-                  >
-                    <LocationOn fontSize="small" color="action" />
-                  </IconButton>
+  {/* Location Verified and Call button */}
+  <Box display="flex" alignItems="center" mb={1}>
+    <IconButton
+      onClick={(e) => {
+        e.stopPropagation();
+        if (property.lat && property.long) {
+          openGoogleMapsWithDirections(property.lat, property.long);
+        }
+      }}
+      size="small"
+      sx={{ p: 0.5 }}
+    >
+      <LocationOn fontSize="small" color="action" />
+    </IconButton>
+    <Typography variant="caption" color="text.primary" ml={0.5}>
+      Location Verified
+    </Typography>
+    <Box sx={{ flexGrow: 1 }} />
+    <Button
+      size="small"
+      variant="outlined"
+      color="success"
+      startIcon={<Call fontSize="small" />}
+      sx={{ 
+        textTransform: 'none', 
+        px: 1, 
+        py: 0.2, 
+        fontSize: '0.7rem',
+        minWidth: 'auto'
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      Call
+    </Button>
+  </Box>
 
-                  <Typography variant="caption" color="text.primary" ml={0.5}>
-                    Location Verified
-                  </Typography>
-                  <Box sx={{ flexGrow: 1 }} />
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="success"
-                    startIcon={<Call />}
-                    sx={{ textTransform: 'none', px: 1.2, py: 0.3, fontSize: '0.7rem' }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Call
-                  </Button>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {[
-                    { label: 'Facing', value: property.facing },
-                    { label: `Area (${property.dimensions})`, value: property.area },
-                    { label: 'Listed By', value: property.listedBy },
-                  ].map((item, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        flex: 1,
-                        px: 1,
-                        py: 0.2,
-                        textAlign: 'center',
-                        borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
-                      }}
-                    >
-                      <Typography variant="caption" color="text.secondary" noWrap>
-                        {item.label}
-                      </Typography>
-                      <Typography variant="body2" fontWeight="bold" noWrap>
-                        {item.value}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </CardContent>
+  {/* Property details */}
+  <Box
+    sx={{
+      display: 'flex',
+      border: '1px solid #e0e0e0',
+      borderRadius: 1,
+      overflow: 'hidden',
+    }}
+  >
+    {[
+      { label: 'Facing', value: property.facing || 'N/A' },
+      { 
+        label: 'Area', 
+        value: (
+          <Box>
+            <Box component="span">{property.area || 'N/A'}</Box>
+            {property.length && property.width && (
+              <Typography 
+                component="span" 
+                variant="caption" 
+                color="text.secondary"
+                sx={{ display: ['none', 'inline'], ml: 0.5 }}
+              >
+                ({property.length} × {property.width})
+              </Typography>
+            )}
+          </Box>
+        ) 
+      },
+      { label: 'Listed By', value: property.listedBy || 'N/A' },
+    ].map((item, index) => (
+      <Box
+        key={index}
+        sx={{
+          flex: 1,
+          px: 0.5,
+          py: 0.2,
+          textAlign: 'center',
+          borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
+          minWidth: 0
+        }}
+      >
+        <Typography variant="caption" color="text.secondary" noWrap>
+          {item.label}
+        </Typography>
+        <Typography 
+          variant="body2" 
+          fontWeight="bold" 
+          noWrap={index !== 1} // Allow area to wrap if needed
+          sx={{
+            fontSize: '0.8rem',
+            lineHeight: 1.2
+          }}
+        >
+          {item.value}
+        </Typography>
+      </Box>
+    ))}
+  </Box>
+</CardContent>
             </Card>
           ))
         ) : (

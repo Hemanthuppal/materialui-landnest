@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AuthProvider from './AuthContext/AuthContext';
 import Dashboard from './bharath/Dashboard';
-import Details_Page from './sharvani/PropertyList/Details_Page';
+import Details_Page from './sharvani/Details_Page';
 import Vendor_Registration from './maniteja/Vendor_Registration';
 import Property_Map from './Sritajana/Property_Map';
 import Saved_Buy from './Sritajana/Savedbuy';
@@ -31,7 +31,7 @@ import Lease_discription from './Rajesh/Lease_description';
 import Rent_Property_Map from './sharvani/Rent_Propertymap';
 
 
-import Rent_description from './sharvani/Discription/Rent_description';
+import Rent_description from './sharvani/Rent_description';
 import Forms from './maniteja/Forms';
 import LeaseSave from './Rajesh/LeaseSave';
 import RentSaves from './sharvani/Rent_Saves';

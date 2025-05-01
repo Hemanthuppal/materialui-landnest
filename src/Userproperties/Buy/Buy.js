@@ -284,21 +284,51 @@ const PropertyCard = () => {
               </Box>
 
               <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
-                  {property.title}
-                </Typography>
-                <Typography variant="caption" color="text.secondary" mb={0.2} noWrap>
-                  {property.location}
-                </Typography>
+                  {/* Title and Price row */}
+                  <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
+                    <Typography 
+                      variant="subtitle1" 
+                      fontWeight="bold" 
+                      noWrap 
+                      sx={{ 
+                        flex: 1,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        pr: 1 
+                      }}
+                    >
+                      {property.title}
+                    </Typography>
+                    <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
+                      {property.price}
+                    </Typography>
+                  </Box>
 
-                <Grid container justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2" fontWeight="bold" color="primary">
-                    {property.price}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {property.date}
-                  </Typography>
-                </Grid>
+               
+                  {/* Location and Date row */}
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+                      <Typography 
+                        variant="caption" 
+                        color="text.secondary" 
+                        noWrap
+                        sx={{
+                          flex: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          pr: 1
+                        }}
+                      >
+                        {property.location}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" noWrap>
+                        {new Date(property.date).toLocaleDateString('en-IN', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric'
+                        })}
+                      </Typography>
+                    </Box>
+               
 
                 <Box display="flex" alignItems="center" mt={0.2}>
                   <IconButton
@@ -338,7 +368,7 @@ const PropertyCard = () => {
                 >
                   {[
                     { label: 'Facing', value: property.facing },
-                    { label: `Area (${property.dimensions})`, value: property.area },
+                    { label: `Area `, value: property.area },
                     { label: 'Listed By', value: property.listedBy },
                   ].map((item, index) => (
                     <Box

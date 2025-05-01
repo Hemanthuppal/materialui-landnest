@@ -15,6 +15,51 @@ import {
 import { Favorite, FavoriteBorder, Share,Close, ThumbUpAlt, ThumbUpAltOutlined, Call, LocationOn } from '@mui/icons-material';
 
 const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, toggleLike,onClose }) => {
+
+  const handleLocationClick = (e) => {
+    e.stopPropagation();
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          
+          // Check if property has valid coordinates
+          if (property.lat && property.lng) {
+            // Open maps with directions
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${property.lat},${property.lng}&travelmode=driving`;
+            window.open(mapsUrl, '_blank');
+          } else {
+            // Fallback to just showing the property location if coordinates are missing
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+            window.open(mapsUrl, '_blank');
+          }
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+          // Fallback without user location if permission denied
+          if (property.lat && property.lng) {
+            const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.lng}`;
+            window.open(mapsUrl, '_blank');
+          } else {
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+            window.open(mapsUrl, '_blank');
+          }
+        }
+      );
+    } else {
+      // Geolocation not supported - just open maps with property location
+      if (property.lat && property.lng) {
+        const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.lng}`;
+        window.open(mapsUrl, '_blank');
+      } else {
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${property.location}`;
+        window.open(mapsUrl, '_blank');
+      }
+    }
+  };
+  
   return (
     <Card
       sx={{
@@ -111,49 +156,94 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
       </Box>
 
       <CardContent sx={{ px: 2, py: 0.5, pb: '7px !important' }}>
-  {/* First row: Title and Price */}
-  <Grid container justifyContent="space-between" alignItems="center">
-    <Grid item xs={8}>
-      <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ fontSize: '1rem' }}>
-        {property.title}
-      </Typography>
-    </Grid>
-    <Grid item xs="auto">
-      <Typography variant="subtitle1" fontWeight="bold" color="primary" sx={{ fontSize: '0.9rem' }}>
-        {property.price}
-      </Typography>
-    </Grid>
-  </Grid>
+  {/* Title and Price - Strictly aligned */}
+  <Box sx={{ 
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 1,
+    mb: 0.5
+  }}>
+    <Typography 
+      variant="subtitle1" 
+      fontWeight="bold" 
+      sx={{ 
+        fontSize: '1rem',
+        flex: 1,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}
+    >
+      {property.title}
+    </Typography>
+    <Typography 
+      variant="subtitle1" 
+      fontWeight="bold" 
+      color="primary" 
+      sx={{ 
+        fontSize: '0.9rem',
+        whiteSpace: 'nowrap',
+        ml: 1
+      }}
+    >
+      {property.price}
+    </Typography>
+  </Box>
 
-  {/* Second row: Location and Date */}
-  <Grid container justifyContent="space-between" alignItems="center">
-    <Grid item xs={8}>
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        mb={0.2}
-        sx={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          display: 'block',
-          maxWidth: '70%',
-        }}
-      >
-        {property.location}
-      </Typography>
-    </Grid>
-    <Grid item xs="auto" >
-      <Typography variant="caption" color="text.secondary">
-    {property.date}
-      </Typography>
-    </Grid>
-  </Grid>
+  {/* Location and Date - Strictly aligned */}
+  <Box sx={{ 
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 1,
+    mb: 0.5
+  }}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      sx={{
+        flex: 1,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}
+    >
+      {property.location}
+    </Typography>
+    <Typography 
+      variant="caption" 
+      color="text.secondary"
+      sx={{ 
+        whiteSpace: 'nowrap',
+        ml: 1
+      }}
+    >
+      {new Date(property.date).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      })}
+    </Typography>
+  </Box>
 
   {/* Location verified + Call Button */}
-  <Box display="flex" alignItems="center" mt={0.5}>
-    <LocationOn fontSize="small" color="action" />
-    <Typography variant="body2" color="text.primary" ml={0.5}>
+  <Box sx={{ 
+    display: 'flex', 
+    alignItems: 'center', 
+    mt: 0.5,
+    mb: 1
+  }}>
+    <Tooltip title="View directions in Google Maps">
+      <IconButton 
+        size="small" 
+        onClick={handleLocationClick}
+        sx={{ p: 0, color: 'primary.main' }}
+      >
+        <LocationOn fontSize="small" />
+      </IconButton>
+    </Tooltip>
+    <Typography variant="body2" color="text.primary" sx={{ ml: 0.5 }}>
       Location Verified
     </Typography>
     <Box sx={{ flexGrow: 1 }} />
@@ -161,34 +251,83 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
       size="small"
       variant="outlined"
       color="success"
-      startIcon={<Call />}
-      sx={{ textTransform: 'none', fontSize: '0.75rem', py: 0.2, px: 1.5 }}
+      startIcon={<Call fontSize="small" />}
+      sx={{ 
+        textTransform: 'none', 
+        fontSize: '0.75rem', 
+        py: 0.2, 
+        px: 1.5,
+        minWidth: 'fit-content'
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        window.location.href = `tel:${property.mobile_no}`;
+      }}
     >
       Call
     </Button>
   </Box>
 
-  {/* Property Info Columns */}
-  <Box sx={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 2, overflow: 'hidden' }}>
+  {/* Property Info Columns - Compact and Consistent */}
+  <Box sx={{ 
+    display: 'flex', 
+    border: '1px solid #e0e0e0', 
+    borderRadius: 1, 
+    overflow: 'hidden',
+    '& > div:not(:last-child)': {
+      borderRight: '1px solid #e0e0e0'
+    }
+  }}>
     {[
-      { label: 'Facing', value: property.facing },
-      { label: `Area`, value: property.area },
-      { label: 'Listed By', value: property.listedBy }
+      { 
+        label: 'Facing', 
+        value: property.facing || 'N/A',
+        width: '30%'
+      },
+      { 
+        label: 'Area Sqft', 
+        value: property.length && property.width 
+          ? `${property.length * property.width} sqft`
+          : 'N/A',
+        width: '40%'
+      },
+      { 
+        label: 'Listed By', 
+        value: property.listedBy || 'N/A',
+        width: '30%'
+      }
     ].map((item, index) => (
       <Box
         key={index}
         sx={{
-          flex: 1,
-          px: 1.2,
+          width: item.width,
+          px: 0.5,
           py: 0.5,
-          textAlign: 'center',
-          borderRight: index < 2 ? '1px solid #e0e0e0' : 'none'
+          textAlign: 'center'
         }}
       >
-        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+        <Typography 
+          variant="caption" 
+          color="text.secondary" 
+          sx={{ 
+            fontSize: '0.65rem',
+            lineHeight: 1.2,
+            display: 'block'
+          }}
+        >
           {item.label}
         </Typography>
-        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '0.8rem' }}>
+        <Typography 
+          variant="body2" 
+          fontWeight="bold" 
+          sx={{ 
+            fontSize: '0.75rem',
+            lineHeight: 1.2,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }}
+        >
           {item.value}
         </Typography>
       </Box>

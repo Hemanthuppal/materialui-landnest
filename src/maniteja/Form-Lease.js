@@ -186,7 +186,7 @@ const LeaseForm = () => {
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        list: '',
+        list: 'Owner',
         mobile_no: '',
         price: '',
         location: '',
