@@ -18,10 +18,13 @@ import CompassCalibrationOutlinedIcon from '@mui/icons-material/CompassCalibrati
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import buildingImage from '../Images/house.jpeg';
 import CustomBottomNav from './CustomNav';
+
+
+
 
 const Buy_description = () => {
   const navigate = useNavigate();
