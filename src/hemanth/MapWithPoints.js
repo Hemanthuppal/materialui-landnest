@@ -3,6 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { BASE_URL } from '../Api/ApiUrls'; // Adjust the import path as necessary
 
 // Fix missing marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,7 +24,7 @@ function MapWithMarkers() {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);
 
-    axios.get('http://46.37.122.105:89/property/')
+    axios.get(`${BASE_URL}/property/`)
       .then(response => {
         const properties = Array.isArray(response.data) ? response.data : [response.data];
 

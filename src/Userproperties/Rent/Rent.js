@@ -25,6 +25,7 @@ import buildingImage from '../../Images/house.jpeg';
 import CustomSearchBar from '../../Rajesh/CustomSearchBar';
 import BottomNavbar from '../../maniteja/FormsBottomNavbar';
 import {AuthContext} from '../../AuthContext/AuthContext';
+import { BASE_URL } from '../../Api/ApiUrls';
 const PropertyCard = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -42,11 +43,11 @@ const PropertyCard = () => {
     const fetchData = async () => {
       try {
         // Fetch categories first
-        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
         setCategories(categoriesResponse.data);
 
         // Then fetch properties
-        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
          // Filter based on user_id and type == "sell"
       const filtered = propertiesResponse.data.filter(item =>
         item.user_id == userId &&
@@ -70,7 +71,7 @@ const PropertyCard = () => {
 
           // Fixed image URL construction
           const imageUrl = item.property_images?.[0]?.image
-            ? `http://46.37.122.105:89${item.property_images[0].image}`
+            ? `${BASE_URL}${item.property_images[0].image}`
             : buildingImage;
 
           return {

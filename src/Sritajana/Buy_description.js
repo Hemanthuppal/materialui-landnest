@@ -22,6 +22,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import buildingImage from '../Images/house.jpeg';
 import CustomBottomNav from './CustomNav';
+import { BASE_URL } from '../Api/ApiUrls';
 
 const Buy_description = () => {
   const navigate = useNavigate();
@@ -38,12 +39,12 @@ const Buy_description = () => {
     const fetchData = async () => {
       try {
         // Fetch categories first
-        const categoriesRes = await axios.get('http://46.37.122.105:89/property-category/');
+        const categoriesRes = await axios.get(`${BASE_URL}/property-category/`);
         setCategories(categoriesRes.data);
         
         // Then fetch property if propertyId exists
         if (propertyId) {
-          const propertyRes = await axios.get(`http://46.37.122.105:89/property/${propertyId}/`);
+          const propertyRes = await axios.get(`${BASE_URL}/property/${propertyId}/`);
           setProperty(propertyRes.data);
         }
       } catch (err) {
@@ -81,7 +82,7 @@ const Buy_description = () => {
   } = property;
 
   const images = property_images.length > 0 
-    ? property_images.map(img => `http://46.37.122.105:89${img.image}`)
+    ? property_images.map(img => `${BASE_URL}${img.image}`)
     : [buildingImage];
 
   return (

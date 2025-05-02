@@ -31,12 +31,12 @@ const Lease_description = () => {
 
   useEffect(() => {
     // Fetch categories first
-    axios.get('http://46.37.122.105:89/property-category/')
+    axios.get(`${BASE_URL}/property-category/`)
       .then((res) => {
         setCategories(res.data);
         // Then fetch property if propertyId exists
         if (propertyId) {
-          axios.get(`http://46.37.122.105:89/property/${propertyId}/`)
+          axios.get(`${BASE_URL}/property/${propertyId}/`)
             .then((propertyRes) => setProperty(propertyRes.data))
             .catch((err) => console.error('Failed to fetch property:', err));
         }
@@ -61,7 +61,7 @@ const categoryName = propertyCategory ? propertyCategory.category : property.typ
   } = property;
 
   const imageUrl = property_images?.[0]?.image
-    ? `http://46.37.122.105:89${property_images[0].image}`
+    ? `${BASE_URL}${property_images[0].image}`
     : buildingImage;
 
   return (

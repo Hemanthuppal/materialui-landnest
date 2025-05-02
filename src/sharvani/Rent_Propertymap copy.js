@@ -13,6 +13,7 @@ import buildingImage2 from '../Images/house1.jpg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './ReUsableCard';
 import BottomNavbar from './BottomNavbar/BottomNavbar';
+import { BASE_URL } from '../Api/ApiUrls';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -45,7 +46,7 @@ const Rent_Property_Map = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://46.37.122.105:89/property/');
+        const response = await axios.get(`${BASE_URL}/property/`);
         // Filter properties where type is "rent/lease"
         const rentProperties = response.data.filter(property => 
           property.type && property.type.toLowerCase() === "rent"

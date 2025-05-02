@@ -25,6 +25,7 @@ import axios from 'axios';
 import AdminDashboard from '../../Admin/Dashboard/Dashboard';
 import UserDetailModal from "./CustomerModel";
 
+import { BASE_URL } from '../../../Api/ApiUrls'; // adjust path as needed
 const Customer = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +38,7 @@ const Customer = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://46.37.122.105:89/users/");
+        const res = await axios.get(`${BASE_URL}/users/`);
         const transformedUsers = res.data.map((user) => ({
           id: user.user_id,
           name: `${user.first_name} ${user.last_name}`,
@@ -71,7 +72,7 @@ const Customer = () => {
   const handleDelete = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await axios.delete(`http://46.37.122.105:89/users/${userId}/`);
+        await axios.delete(`${BASE_URL}/users/${userId}/`);
         setUsers((prev) => prev.filter((u) => u.id !== userId));
         alert("User deleted successfully");
       } catch (error) {
