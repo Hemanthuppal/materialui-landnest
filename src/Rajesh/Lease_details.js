@@ -24,6 +24,7 @@ import axios from 'axios';
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from './CustomSearchBar';
 import BottomNavbar from './CustomBottomNav';
+import { BASE_URL } from '../Api/ApiUrls';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
@@ -41,11 +42,11 @@ const PropertyCard = () => {
     const fetchData = async () => {
       try {
         // Fetch categories first
-        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
         setCategories(categoriesResponse.data);
 
         // Then fetch properties
-        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
           item.type && item.type.toLowerCase().includes("lease")
         );
@@ -66,7 +67,7 @@ const PropertyCard = () => {
 
           // Fixed image URL construction
           const imageUrl = item.property_images?.[0]?.image
-            ? `http://46.37.122.105:89${item.property_images[0].image}`
+            ? `${BASE_URL}${item.property_images[0].image}`
             : buildingImage;
 
           return {

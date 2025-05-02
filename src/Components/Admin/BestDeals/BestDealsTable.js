@@ -27,8 +27,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { toast } from "react-toastify";
 import BestDealsForm from "./BestDealsForm";
+import { BASE_URL } from "../../../Api/ApiUrls"; // adjust path as needed
 
-const API_BASE_URL = "http://46.37.122.105:89";
+const API_BASE_URL = `${BASE_URL}`;
 const IMAGE_BASE_URL = `${API_BASE_URL}/construction-content`;
 
 const BestPlanTable = () => {

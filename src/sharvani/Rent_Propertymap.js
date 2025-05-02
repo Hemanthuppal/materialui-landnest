@@ -14,6 +14,7 @@ import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import ReUsableCard from './ReUsableCard';
 import CustomBottomNav from './BottomNavbar/BottomNavbar';
+import { BASE_URL } from '../Api/ApiUrls';
 
 const rentalTypes = [
   "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -45,10 +46,10 @@ const Rent_Property_Map = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
         setCategories(categoriesResponse.data);
 
-        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
           item.type && item.type.toLowerCase().includes("rent")
         );
@@ -67,7 +68,7 @@ const Rent_Property_Map = () => {
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
 
           const imageUrl = item.property_images?.[0]?.image
-            ? `http://46.37.122.105:89${item.property_images[0].image}`
+            ? `${BASE_URL}${item.property_images[0].image}`
             : buildingImage;
 
           return {

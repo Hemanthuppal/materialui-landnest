@@ -28,6 +28,7 @@ import axios from 'axios';
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import BottomNavbar from './CustomNav';
+import { BASE_URL } from '../Api/ApiUrls';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
@@ -45,10 +46,10 @@ const PropertyCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoriesResponse = await axios.get('http://46.37.122.105:89/property-category/');
+        const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
         setCategories(categoriesResponse.data);
 
-        const propertiesResponse = await axios.get('http://46.37.122.105:89/property/');
+        const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
           item.type && item.type.toLowerCase().includes("sell")
         );
@@ -68,7 +69,7 @@ const PropertyCard = () => {
 
           // Get all images or default to buildingImage
           const images = item.property_images?.length > 0 
-            ? item.property_images.map(img => `http://46.37.122.105:89${img.image}`)
+            ? item.property_images.map(img => `${BASE_URL}${img.image}`)
             : [buildingImage];
 
           return {
