@@ -401,7 +401,7 @@ function App() {
             }}
           >
             {/* Vertical "Hot Properties" */}
-            <Box
+            {/* <Box
               sx={{
                 // background: 'rgba(0,0,0,0.25)',
                 borderRadius: '8px',
@@ -427,7 +427,36 @@ function App() {
               >
                 Hot Properties
               </Typography>
-            </Box>
+            </Box> */}
+            <Link to="/hot-property-map" style={{ textDecoration: 'none' }}>
+      <Box
+        sx={{
+          borderRadius: '8px',
+          px: 0.5,
+          py: 1.5,
+          cursor: 'pointer',
+          '&:hover': {
+            background: 'rgba(0,0,0,0.1)',
+          },
+          transition: 'background 0.2s ease',
+        }}
+      >
+        <Typography
+          sx={{
+            writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)',
+            fontSize: { xs: '0.75rem', sm: '0.85rem' },
+            color: '#ffffff',
+            fontWeight: 800,
+            letterSpacing: '1.5px',
+            textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+            py: 0.5
+          }}
+        >
+          Hot Properties
+        </Typography>
+      </Box>
+    </Link>
 
             {/* "Best Deals" Tag */}
             <Box

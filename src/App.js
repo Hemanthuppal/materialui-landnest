@@ -28,6 +28,14 @@ import Packages from './bharath/Packages'
 import HowItWorks from './bharath/HowItWorks'
 import Lease_discription from './Rajesh/Lease_description';
 
+import HotProperitiesMap from './bharath/HotProperitiesMap';
+import HotProperties_description from './bharath/HotProperties_description';
+import Hot_Property_Details from './bharath/HotProperty_Details';
+import HotProperty_Saves from './bharath/HotProperty_Saves';
+
+
+
+
 import Rent_Property_Map from './sharvani/Rent_Propertymap';
 
 
@@ -147,6 +155,12 @@ function App() {
         <Route path="/elevations" element={<Elevations />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+
+        <Route path="/hot-property-map" element={<HotProperitiesMap />} />
+
+        <Route path="/hot-property-description" element={<HotProperties_description />} />
+        <Route path="/hot-property-details" element={<Hot_Property_Details />} />
+        <Route path="/hot-property-saves" element={<HotProperty_Saves />} />
 
 
 

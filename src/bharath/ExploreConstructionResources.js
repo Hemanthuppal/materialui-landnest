@@ -1,253 +1,6 @@
-// import React, { useState } from 'react';
-// import {
-//   Box,
-//   Drawer,
-//   List,
-//   ListItem,
-//   ListItemIcon,
-//   ListItemText,
-//   Card,
-//   CardMedia,
-//   CardContent,
-//   Typography,
-//   Divider,
-//   useMediaQuery,
-//   IconButton
-// } from '@mui/material';
-// import {
-//   Kitchen as KitchenIcon,
-//   Home as StructureIcon,
-//   Bathtub as BathroomIcon,
-//   DoorFront as DoorsIcon
-// } from '@mui/icons-material';
-// import { useTheme } from '@mui/material/styles';
-// import { useNavigate } from 'react-router-dom';
-// import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-// import BottomNavbar from '../sharvani/BottomNavbar';
-
-// const chunkArray = (array, chunkSize) => {
-//   const result = [];
-//   for (let i = 0; i < array.length; i += chunkSize) {
-//     result.push(array.slice(i, i + chunkSize));
-//   }
-//   return result;
-// };
-
-// const ExploreConstructionResources = () => {
-//   const [activeCategory, setActiveCategory] = useState('kitchen'); // Set kitchen as default
-//   const [selectedItemId, setSelectedItemId] = useState(null);
-//   const theme = useTheme();
-//   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-//   const navigate = useNavigate();
-
-//   const drawerWidth = 80;
-
-//   const categories = {
-//     kitchen: [
-//       { id: 1, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 2, title: 'Island Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 3, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1583845112203-29329902330b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 4, title: 'Minimal Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 5, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 6, title: 'Island Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 7, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1583845112203-29329902330b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 8, title: 'Minimal Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-//     ],
-//     structure: [
-//       { id: 1, title: 'Modern House', imageUrl: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 2, title: 'Wooden Cabin', imageUrl: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 3, title: 'Brick House', imageUrl: 'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 4, title: 'Concrete Building', imageUrl: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 5, title: 'Modern House', imageUrl: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 6, title: 'Wooden Cabin', imageUrl: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 7, title: 'Brick House', imageUrl: 'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 8, title: 'Concrete Building', imageUrl: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-//     ],
-//     bathroom: [
-//       { id: 1, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566752355-35792bedcfe3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 2, title: 'Modern Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 3, title: 'Small Bathroom', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 4, title: 'Stone Bathroom', imageUrl: 'https://images.unsplash.com/photo-1566669437687-7040a6926753?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 5, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566752355-35792bedcfe3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 6, title: 'Modern Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 7, title: 'Small Bathroom', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 8, title: 'Stone Bathroom', imageUrl: 'https://images.unsplash.com/photo-1566669437687-7040a6926753?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-//     ],
-//     doors: [
-//       { id: 1, title: 'Modern Door', imageUrl: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 2, title: 'Wooden Door', imageUrl: 'https://images.unsplash.com/photo-1595624871930-6e8537998592?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 3, title: 'Glass Door', imageUrl: 'https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 4, title: 'Barn Door', imageUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 5, title: 'Modern Door', imageUrl: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 6, title: 'Wooden Door', imageUrl: 'https://images.unsplash.com/photo-1595624871930-6e8537998592?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 7, title: 'Glass Door', imageUrl: 'https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-//       { id: 8, title: 'Barn Door', imageUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-//     ]
-//   };
-
-//   const rows = chunkArray(categories[activeCategory], 2);
-
-//   return (
-//     <>
-//       <Box display="flex" alignItems="center" padding="10px" position='sticky'>
-//         <IconButton onClick={() => navigate('/interiors')}>
-//           <ArrowBackIosIcon />
-//         </IconButton>
-//       </Box>
-
-//       <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-//         <Drawer
-//           variant="permanent"
-//           anchor="left"
-//           sx={{
-//             width: drawerWidth,
-//             flexShrink: 0,
-//             '& .MuiDrawer-paper': {
-//               width: drawerWidth,
-//               boxSizing: 'border-box',
-//               backgroundColor: '#577BC1',
-//               borderRight: 'none',
-//               height: '80vh',
-//               marginTop: '12vh',  
-//               borderTopLeftRadius: '40px',
-//               borderBottomRightRadius: '40px',
-//             },
-//           }}
-//         >
-//           <List dense sx={{ p: 0 }}>
-//             {[
-//               { id: 'kitchen', icon: <KitchenIcon />, label: 'Kitchen' },
-//               { id: 'structure', icon: <StructureIcon />, label: 'Structure' },
-//               { id: 'bathroom', icon: <BathroomIcon />, label: 'Bathroom' },
-//               { id: 'doors', icon: <DoorsIcon />, label: 'Doors' }
-//             ].map((item) => (
-//               <React.Fragment key={item.id}>
-//                 <ListItem
-//                   button
-//                   selected={activeCategory == item.id}
-//                   onClick={() => setActiveCategory(item.id)}
-//                   sx={{
-//                     py: 1.5,
-//                     '&.Mui-selected': {
-//                       backgroundColor: '#1976d2',
-//                       color: 'white',
-//                       '& .MuiListItemIcon-root': { 
-//                         color: 'white',
-//                         '& svg': { fontSize: '1.5rem' } // Make icon larger when selected
-//                       },
-//                     },
-//                     '&:hover': {
-//                       backgroundColor: '#e3f2fd',
-//                       '& .MuiListItemIcon-root': { color: '#1976d2' },
-//                     },
-//                     '& .MuiListItemIcon-root': {
-//                       minWidth: 'auto',
-//                       justifyContent: 'center',
-//                       color: activeCategory == item.id ? 'white' : 'rgba(255, 255, 255, 0.7)',
-//                       transition: 'color 0.2s, transform 0.2s',
-//                     }
-//                   }}
-//                 >
-//                   <ListItemIcon>
-//                     {item.icon}
-//                   </ListItemIcon>
-//                   {!isMobile && <ListItemText primary={item.label} />}
-//                 </ListItem>
-//                 <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} />
-//               </React.Fragment>
-//             ))}
-//           </List>
-//         </Drawer>
-
-//         <Box
-//           component="main"
-//           sx={{
-//             flexGrow: 1,
-//             overflowY: 'auto',
-//             bgcolor: '#fff',
-//           }}
-//         >
-//           <Typography variant="h6" align="center" sx={{ mb: 2, fontWeight: 500, color: '#1a237e' }}>
-//             Explore Construction Resources
-//           </Typography>
-
-//           <Box display="flex" flexDirection="column" gap={2}>
-//             {rows.map((row, rowIndex) => (
-//               <Box key={rowIndex} display="flex" gap={2} padding={1}>
-//                 {row.map((item) => (
-//                   <Card
-//                     key={item.id}
-//                     onClick={() => setSelectedItemId(item.id)}
-//                     sx={{
-//                       width: '100%',
-//                       borderRadius: 2,
-//                       boxShadow: selectedItemId == item.id ? 6 : 2,
-//                       border: selectedItemId == item.id ? '2px solid #00C4B4' : '1px solid #ddd',
-//                       cursor: 'pointer',
-//                       transition: '0.2s',
-//                       overflow: 'hidden',
-//                     }}
-//                   >
-//                     <CardMedia
-//                       component="img"
-//                       image={item.imageUrl}
-//                       alt={item.title}
-//                       sx={{ height: 100, objectFit: 'cover' }}
-//                     />
-//                     <CardContent sx={{ p: 1 }}>
-//                       <Typography variant="body2" align="center" fontWeight="500">
-//                         {item.title}
-//                       </Typography>
-//                     </CardContent>
-//                   </Card>
-//                 ))}
-//               </Box>
-//             ))}
-//           </Box>
-//         </Box>
-//       </Box>
-
-//         <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
-//                     <BottomNavbar />
-//                   </Box>
-//     </>
-//   );
-// };
-
-// export default ExploreConstructionResources;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Drawer,
@@ -262,26 +15,28 @@ import {
   Divider,
   useMediaQuery,
   IconButton,
-  Grid, BottomNavigation,
-  BottomNavigationAction, Paper
+  CircularProgress
 } from '@mui/material';
 import {
-  Kitchen as KitchenIcon,
-  Home as StructureIcon,
-  Bathtub as BathroomIcon,
-  DoorFront as DoorsIcon
+  Construction as ConstructionIcon,
+  AcUnit as SteelIcon,
+  Square as BrickIcon,
+  Grain as SandIcon,
+  Terrain as StoneIcon,
+  Window as WoodWindowsIcon,
+  Bolt as ElectricalIcon,
+  Build as FabricationIcon,
+  Plumbing as PlumbingIcon,
+  GridOn as TilesGraniteIcon,
+  FormatPaint as PaintIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
-import BuildIcon from '@mui/icons-material/Build';
-import AddIcon from '@mui/icons-material/Add';
-import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
-import logotop from './Images/landnest-logo.jpg'
+import logotop from './Images/landnest-logo.jpg';
+import axios from 'axios';
 
 const chunkArray = (array, chunkSize) => {
   const result = [];
@@ -292,89 +47,126 @@ const chunkArray = (array, chunkSize) => {
 };
 
 const ExploreConstructionResources = () => {
-  const [activeCategory, setActiveCategory] = React.useState('kitchen')
+  const [activeCategory, setActiveCategory] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
-  const [value, setValue] = useState('construction');
-
 
   const drawerWidth = '15%';
 
-  const categories = {
-    kitchen: [
-      { id: 1, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 2, title: 'Island Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 3, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 4, title: 'Minimal Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 5, title: 'Modern Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 6, title: 'Island Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 7, title: 'Rustic Kitchen', imageUrl: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 8, title: 'Minimal Kitchen', imageUrl: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-    ],
-    structure: [
-      { id: 1, title: 'Modern House', imageUrl: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 2, title: 'Wooden Cabin', imageUrl: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 3, title: 'Brick House', imageUrl: 'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 4, title: 'Concrete Building', imageUrl: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 5, title: 'Modern House', imageUrl: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 6, title: 'Wooden Cabin', imageUrl: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 7, title: 'Brick House', imageUrl: 'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 8, title: 'Concrete Building', imageUrl: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-    ],
-    bathroom: [
-      { id: 1, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 2, title: 'Modern Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 3, title: 'Small Bathroom', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 4, title: 'Stone Bathroom', imageUrl: 'https://images.unsplash.com/photo-1566669437687-7040a6926753?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 5, title: 'Luxury Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 6, title: 'Modern Bathroom', imageUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 7, title: 'Small Bathroom', imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 8, title: 'Stone Bathroom', imageUrl: 'https://images.unsplash.com/photo-1566669437687-7040a6926753?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-    ],
-    doors: [
-      { id: 1, title: 'Modern Door', imageUrl: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 2, title: 'Wooden Door', imageUrl: 'https://images.unsplash.com/photo-1595624871930-6e8537998592?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 3, title: 'Glass Door', imageUrl: 'https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 4, title: 'Barn Door', imageUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 5, title: 'Modern Door', imageUrl: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 6, title: 'Wooden Door', imageUrl: 'https://images.unsplash.com/photo-1595624871930-6e8537998592?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 7, title: 'Glass Door', imageUrl: 'https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-      { id: 8, title: 'Barn Door', imageUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' }
-    ]
-  };
+  // Default categories with icons (fallback if API fails)
+  const defaultCategories = [
+    { category_id: 1, category: 'Cement' },
+    { category_id: 2, category: 'Steel' },
+    { category_id: 3, category: 'Brick' },
+    { category_id: 4, category: 'Sand' },
+    { category_id: 5, category: 'Stone' },
+    { category_id: 6, category: 'Wood and Windows' },
+    { category_id: 7, category: 'Electrical' },
+    { category_id: 8, category: 'Fabrication Works' },
+    { category_id: 9, category: 'Plumbing Works' },
+    { category_id: 10, category: 'Tiles and Granite' },
+    { category_id: 11, category: 'Paint Work' }
+  ];
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    // Navigate to the corresponding route
-    switch (newValue) {
-      case 'home':
-        navigate('/dashboard');
-        break;
-      case 'construction':
-        navigate('/constructions');
-        break;
-      case 'post':
-        navigate('/post');
-        break;
-      case 'services':
-        navigate('/home-service');
-        break;
-      case 'profile':
-        navigate('/work-detail');
-        break;
-      default:
-        navigate('/');
+  // Fetch categories and materials
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch categories from API
+        const categoriesResponse = await axios.get('http://46.37.122.105:89/material-categories/');
+        const fetchedCategories = categoriesResponse.data.length > 0 ? 
+          categoriesResponse.data : defaultCategories;
+        
+        setCategories(fetchedCategories);
+        
+        // Set the first category as active by default
+        if (fetchedCategories.length > 0) {
+          setActiveCategory(fetchedCategories[0].category_id);
+          await fetchMaterials(fetchedCategories[0].category_id);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Fallback to default categories if API fails
+        setCategories(defaultCategories);
+        if (defaultCategories.length > 0) {
+          setActiveCategory(defaultCategories[0].category_id);
+          fetchMaterials(defaultCategories[0].category_id);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Fetch materials when active category changes
+  useEffect(() => {
+    if (activeCategory) {
+      fetchMaterials(activeCategory);
+    }
+  }, [activeCategory]);
+
+  const fetchMaterials = async (categoryId) => {
+    try {
+      setLoading(true);
+      const response = await axios.get('http://46.37.122.105:89/material-content/');
+      const filteredMaterials = response.data
+        .filter(item => item.category_id === categoryId)
+        .map(item => ({
+          id: item.content_id,
+          title: item.content,
+          imageUrl: `http://46.37.122.105:89${item.image}`
+        }));
+      setMaterials(filteredMaterials);
+    } catch (error) {
+      console.error('Error fetching materials:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const rows = chunkArray(categories[activeCategory], 2);
+  const getCategoryIcon = (categoryName) => {
+    switch (categoryName.toLowerCase()) {
+      case 'cement':
+        return <ConstructionIcon />;
+      case 'steel':
+        return <SteelIcon />;
+      case 'brick':
+        return <BrickIcon />;
+      case 'sand':
+        return <SandIcon />;
+      case 'stone':
+        return <StoneIcon />;
+      case 'wood and windows':
+        return <WoodWindowsIcon />;
+      case 'electrical':
+        return <ElectricalIcon />;
+      case 'fabrication works':
+        return <FabricationIcon />;
+      case 'plumbing works':
+        return <PlumbingIcon />;
+      case 'tiles and granite':
+        return <TilesGraniteIcon />;
+      case 'paint work':
+        return <PaintIcon />;
+      default:
+        return <ConstructionIcon />;
+    }
+  };
+
+  const rows = chunkArray(materials, 2);
 
   return (
     <>
       {/* Sticky Header Section */}
-
       <Box sx={{
         position: 'sticky',
         top: 0,
@@ -438,32 +230,30 @@ const ExploreConstructionResources = () => {
           <Box
             component={Link}
             to="/constructions"
-
             sx={{
               flex: 1,
               textAlign: 'center',
               py: 2,
               textDecoration: 'none',
-
               background: `
-           linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
-           url('https://www.transparenttextures.com/patterns/cream-paper.png')
-         `,
+                linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
+                url('https://www.transparenttextures.com/patterns/cream-paper.png')
+              `,
               backgroundBlendMode: 'overlay',
               borderRight: '1px solid rgba(0,0,0,0.1)',
               borderTopLeftRadius: '30px',
               boxShadow: `
-           inset 0 0 15px rgba(0,0,0,0.1),
-           0 2px 5px rgba(0,0,0,0.08)
-         `,
+                inset 0 0 15px rgba(0,0,0,0.1),
+                0 2px 5px rgba(0,0,0,0.08)
+              `,
               transform: 'scale(0.98)',
               transition: 'all 0.3s ease',
               '&:hover': {
                 transform: 'scale(1)',
                 boxShadow: `
-             inset 0 0 20px rgba(0,0,0,0.15),
-             0 3px 8px rgba(0,0,0,0.15)
-           `
+                  inset 0 0 20px rgba(0,0,0,0.15),
+                  0 3px 8px rgba(0,0,0,0.15)
+                `
               }
             }}>
             <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
@@ -484,28 +274,28 @@ const ExploreConstructionResources = () => {
               textAlign: 'center',
               py: 2,
               background: `
-             linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
-             url('https://www.transparenttextures.com/patterns/dark-matter.png')
-           `,
+                linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
+                url('https://www.transparenttextures.com/patterns/dark-matter.png')
+              `,
               backgroundBlendMode: 'overlay',
               textDecoration: 'none',
               borderBottomRightRadius: '30px',
               boxShadow: `
-             inset 0 0 15px rgba(0,0,0,0.2),
-             0 2px 5px rgba(0,0,0,0.1)
-           `,
+                inset 0 0 15px rgba(0,0,0,0.2),
+                0 2px 5px rgba(0,0,0,0.1)
+              `,
               transform: 'scale(0.98)',
               transition: 'all 0.3s ease',
               '&:hover': {
                 background: `
-               linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
-               url('https://www.transparenttextures.com/patterns/dark-matter.png')
-             `,
+                  linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
+                  url('https://www.transparenttextures.com/patterns/dark-matter.png')
+                `,
                 transform: 'scale(1)',
                 boxShadow: `
-               inset 0 0 20px rgba(0,0,0,0.3),
-               0 3px 8px rgba(0,0,0,0.2)
-             `
+                  inset 0 0 20px rgba(0,0,0,0.3),
+                  0 3px 8px rgba(0,0,0,0.2)
+                `
               }
             }}
           >
@@ -515,7 +305,6 @@ const ExploreConstructionResources = () => {
               letterSpacing: '1px',
               textShadow: '0 1px 5px rgba(0,0,0,0.7)',
               fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
-              // textTransform: 'uppercase'
             }}>
               Interiors
             </Typography>
@@ -524,89 +313,87 @@ const ExploreConstructionResources = () => {
       </Box>
 
       <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden' }}>
-      <Drawer
-  variant="permanent"
-  anchor="left"
-  sx={{
-    width: drawerWidth,
-    flexShrink: 0,
-    '& .MuiDrawer-paper': {
-      width: drawerWidth,
-      boxSizing: 'border-box',
-      backgroundColor: '#e7dbc9',
-      borderRight: 'none',
-      borderTopLeftRadius: '40px',
-      borderBottomRightRadius: '40px',
-      marginTop: '155px',
-      height: '70vh',
-      marginLeft: '1px',
-      border: '1px solid black',
-    },
-  }}
->
-  <List dense sx={{ p: 0 }}>
-    {[
-      { id: 'kitchen', icon: <KitchenIcon />, label: 'Kitchen' },
-      { id: 'structure', icon: <StructureIcon />, label: 'Structure' },
-      { id: 'bathroom', icon: <BathroomIcon />, label: 'Bathroom' },
-      { id: 'doors', icon: <DoorsIcon />, label: 'Doors' },
-    ].map((item) => {
-      const isSelected = activeCategory === item.id;
+        <Drawer
+          variant="permanent"
+          anchor="left"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              backgroundColor: '#e7dbc9',
+              borderRight: 'none',
+              borderTopLeftRadius: '40px',
+              borderBottomRightRadius: '40px',
+              marginTop: '155px',
+              height: '70vh',
+              marginLeft: '1px',
+              border: '1px solid black',
+            },
+          }}
+        >
+          {loading && categories.length === 0 ? (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+              <CircularProgress />
+            </Box>
+          ) : (
+            <List dense sx={{ p: 0 }}>
+              {categories.map((category) => {
+                const isSelected = activeCategory === category.category_id;
 
-      return (
-        <React.Fragment key={item.id}>
-          <ListItem
-            button
-            selected={isSelected}
-            onClick={() => setActiveCategory(item.id)}
-            sx={{
-              py: 1.5,
-              flexDirection: 'column',
-              // backgroundColor: isSelected ? '#3A56A8' : 'transparent',
-              backgroundColor: isSelected ? 'black' : 'transparent',
-              color: isSelected ? 'white' : 'rgba(5, 4, 4, 0.7)',
-              '&:hover': {
-                // backgroundColor: isSelected ? '#3A56A8' : '#e3f2fd',
-                backgroundColor: isSelected ? 'black' : '#e3f2fd',
-              },
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 'auto',
-                justifyContent: 'center',
-                color: isSelected ? 'white' : 'rgba(5, 4, 4, 0.7)',
-                '& svg': {
-                  fontSize: '1.5rem',
-                },
-              }}
-            >
-              {item.icon}
-            </ListItemIcon>
+                return (
+                  <React.Fragment key={category.category_id}>
+                    <ListItem
+                      button
+                      selected={isSelected}
+                      onClick={() => setActiveCategory(category.category_id)}
+                      sx={{
+                        py: 1.5,
+                        flexDirection: 'column',
+                        backgroundColor: isSelected ? 'black' : 'transparent',
+                        color: isSelected ? 'white' : 'rgba(5, 4, 4, 0.7)',
+                        '&:hover': {
+                          backgroundColor: isSelected ? 'black' : '#e3f2fd',
+                        },
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 'auto',
+                          justifyContent: 'center',
+                          color: isSelected ? 'white' : 'rgba(5, 4, 4, 0.7)',
+                          '& svg': {
+                            fontSize: '1.5rem',
+                          },
+                        }}
+                      >
+                        {getCategoryIcon(category.category)}
+                      </ListItemIcon>
 
-            <ListItemText
-              primary={item.label}
-              primaryTypographyProps={{
-                fontSize: '0.7rem',
-                textAlign: 'center',
-                fontWeight: isSelected ? '600' : '400',
-                color: isSelected ? '#ffffff' : 'rgba(10, 10, 10, 0.9)',
-              }}
-              sx={{
-                marginTop: '4px',
-                '& .MuiTypography-root': {
-                  display: 'block',
-                },
-              }}
-            />
-          </ListItem>
-          <Divider sx={{ backgroundColor: 'rgba(9, 9, 9, 0.2)' }} />
-        </React.Fragment>
-      );
-    })}
-  </List>
-</Drawer>
-
+                      <ListItemText
+                        primary={category.category}
+                        primaryTypographyProps={{
+                          fontSize: '0.7rem',
+                          textAlign: 'center',
+                          fontWeight: isSelected ? '600' : '400',
+                          color: isSelected ? '#ffffff' : 'rgba(10, 10, 10, 0.9)',
+                        }}
+                        sx={{
+                          marginTop: '4px',
+                          '& .MuiTypography-root': {
+                            display: 'block',
+                          },
+                        }}
+                      />
+                    </ListItem>
+                    <Divider sx={{ backgroundColor: 'rgba(9, 9, 9, 0.2)' }} />
+                  </React.Fragment>
+                );
+              })}
+            </List>
+          )}
+        </Drawer>
 
         <Box
           component="main"
@@ -622,103 +409,55 @@ const ExploreConstructionResources = () => {
             Explore Construction Resources
           </Typography>
 
-          <Box display="flex" flexDirection="column" gap={1} marginBottom='20px'>
-            {rows.map((row, rowIndex) => (
-              <Box key={rowIndex} display="flex" gap={1} padding={1}>
-                {row.map((item) => (
-                  <Card
-                    key={item.id}
-                    onClick={() => setSelectedItemId(item.id)}
-                    sx={{
-                      width: '100%',
-                      borderRadius: 2,
-                      border: '0.5px solid #000',
-                      boxShadow: selectedItemId == item.id ? 6 : 2,
-                      cursor: 'pointer',
-                      transition: '0.2s',
-                      overflow: 'hidden',
-                      height: '135px',
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      image={item.imageUrl}
-                      alt={item.title}
-                      sx={{ height: 100, objectFit: 'cover' }}
-                    />
-                    <CardContent sx={{ padding: 1 }}>
-                      <Typography variant="body2" align="center" fontWeight="500">
-                        {item.title}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                ))}
-              </Box>
-            ))}
-          </Box>
+          {loading ? (
+            <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box display="flex" flexDirection="column" gap={1} marginBottom='20px'>
+              {rows.length > 0 ? (
+                rows.map((row, rowIndex) => (
+                  <Box key={rowIndex} display="flex" gap={1} padding={1}>
+                    {row.map((item) => (
+                      <Card
+                        key={item.id}
+                        onClick={() => setSelectedItemId(item.id)}
+                        sx={{
+                          width: '100%',
+                          borderRadius: 2,
+                          border: '0.5px solid #000',
+                          boxShadow: selectedItemId === item.id ? 6 : 2,
+                          cursor: 'pointer',
+                          transition: '0.2s',
+                          overflow: 'hidden',
+                          height: '135px',
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          image={item.imageUrl}
+                          alt={item.title}
+                          sx={{ height: 100, objectFit: 'cover' }}
+                        />
+                        <CardContent sx={{ padding: 1 }}>
+                          <Typography variant="body2" align="center" fontWeight="500">
+                            {item.title}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </Box>
+                ))
+              ) : (
+                <Typography variant="body1" align="center" sx={{ mt: 4 }}>
+                  No materials found for this category
+                </Typography>
+              )}
+            </Box>
+          )}
         </Box>
       </Box>
-
-      {/* <Paper
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-        }}
-        elevation={3}
-      >
-        <BottomNavigation
-          value={value}
-          onChange={handleChange}
-          showLabels
-          sx={{
-            borderTop: '1px solid #e0e0e0',
-            height: '60px',
-            '& .MuiBottomNavigationAction-root': {
-              minWidth: 'auto',
-              padding: '6px 0',
-              color: 'black',
-            },
-            '& .MuiBottomNavigationAction-label': {
-              fontSize: '0.7rem',
-            },
-          }}
-        >
-          <BottomNavigationAction
-            value="home"
-            label="Home"
-            icon={<HomeIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="construction"
-            label="Construction & Interiors"
-            icon={<BuildIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="post"
-            label="Post"
-            icon={<AddIcon sx={{ fontSize: '1.3rem' }} />}
-            sx={{
-              '& .MuiSvgIcon-root': { color: '#2196f3' },
-              '& .MuiBottomNavigationAction-label': { color: '#2196f3' }
-            }}
-          />
-          <BottomNavigationAction
-            value="services"
-            label="Home Services"
-            icon={<CleaningServicesIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-          <BottomNavigationAction
-            value="profile"
-            label="Profile"
-            icon={<AccountCircleIcon sx={{ fontSize: '1.3rem' }} />}
-          />
-        </BottomNavigation>
-      </Paper> */}
       <FormsBottomNavbar />
-
     </>
   );
 };
