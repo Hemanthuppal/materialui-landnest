@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -21,12 +21,8 @@ import {
 } from '@mui/material';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import AdminDashboard from '../../Admin/Dashboard/Dashboard';
-import {
-  useTable,
-  usePagination,
-  useGlobalFilter,
-  useSortBy,
-} from 'react-table';
+import { useTable, usePagination, useGlobalFilter, useSortBy } from 'react-table';
+import axios from 'axios';
 
 function GlobalFilter({ globalFilter, setGlobalFilter }) {
   return (
@@ -45,6 +41,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
 
 const Material = () => {
   const [materials, setMaterials] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [currentMaterial, setCurrentMaterial] = useState(null);
   const [category, setCategory] = useState('');
@@ -52,6 +49,47 @@ const Material = () => {
   const [image, setImage] = useState(null);
   const [imageFileName, setImageFileName] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+
+  // Function to get category name by ID
+  const getCategoryName = (categoryId) => {
+    const foundCategory = categories.find(cat => cat.category_id === categoryId);
+    return foundCategory ? foundCategory.category : 'N/A';
+  };
+
+  useEffect(() => {
+    // Fetch categories first
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://46.37.122.105:89/material-categories/');
+        setCategories(response.data);
+        
+        // Then fetch materials after categories are loaded
+        fetchMaterials(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    // Fetch materials with category mapping
+    const fetchMaterials = async (categories) => {
+      try {
+        const response = await axios.get('http://46.37.122.105:89/material-content/');
+        const fetchedMaterials = response.data.map((item) => ({
+          id: item.content_id,
+          category: getCategoryName(item.category_id),
+          category_id: item.category_id, // Keep the ID for editing
+          materialName: item.content,
+          image: `http://46.37.122.105:89${item.image}`,
+        }));
+        setMaterials(fetchedMaterials);
+      } catch (error) {
+        console.error('Error fetching materials:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleAddClick = () => {
     setOpenDialog(true);
@@ -60,46 +98,84 @@ const Material = () => {
     setMaterialName('');
     setImage(null);
     setImageFileName('');
+    setCurrentMaterial(null);
+  };
+
+  const handleSaveMaterial = async () => {
+    const formData = new FormData();
+    formData.append('user_id', 1);
+    formData.append('category_id', category);
+    formData.append('content', materialName);
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+
+    try {
+      if (isEditing && currentMaterial) {
+        // Update existing material
+        await axios.put(
+          `http://46.37.122.105:89/material-content/${currentMaterial.id}/`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+      } else {
+        // Create new material
+        await axios.post('http://46.37.122.105:89/material-content/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+      
+      // Refresh the materials list
+      const categoriesResponse = await axios.get('http://46.37.122.105:89/material-categories/');
+      const materialsResponse = await axios.get('http://46.37.122.105:89/material-content/');
+      
+      const updatedMaterials = materialsResponse.data.map((item) => ({
+        id: item.content_id,
+        category: getCategoryName(item.category_id),
+        category_id: item.category_id,
+        materialName: item.content,
+        image: `http://46.37.122.105:89${item.image}`,
+      }));
+      
+      setCategories(categoriesResponse.data);
+      setMaterials(updatedMaterials);
+      setOpenDialog(false);
+    } catch (error) {
+      console.error('Error saving material:', error);
+    }
   };
 
   const handleEditClick = (material) => {
     setOpenDialog(true);
     setIsEditing(true);
-    setCategory(material.category);
+    setCategory(material.category_id);
     setMaterialName(material.materialName);
     setImage(material.image);
-    setImageFileName(material.imageFileName);
+    setImageFileName(material.image.split('/').pop());
     setCurrentMaterial(material);
   };
 
-  const handleSaveMaterial = () => {
-    if (isEditing) {
-      const updatedMaterials = materials.map((material) =>
-        material.id === currentMaterial.id
-          ? { ...material, category, materialName, image, imageFileName }
-          : material
-      );
-      setMaterials(updatedMaterials);
-    } else {
-      const newMaterial = {
-        id: Date.now(),
-        category,
-        materialName,
-        image,
-        imageFileName,
-      };
-      setMaterials([...materials, newMaterial]);
-    }
-    setOpenDialog(false);
-  };
+  const handleDeleteClick = async (materialId) => {
+    if (!window.confirm("Are you sure you want to delete this material?")) return;
 
-  const handleDeleteClick = (id) => {
-    setMaterials(materials.filter((material) => material.id !== id));
+    try {
+      await axios.delete(`http://46.37.122.105:89/material-content/${materialId}/`);
+      setMaterials(prev => prev.filter(mat => mat.id !== materialId));
+    } catch (error) {
+      console.error("Error deleting material:", error);
+    }
   };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setImageFile(file);
       setImageFileName(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -146,18 +222,20 @@ const Material = () => {
         ),
       },
     ],
-    [materials]
+    []
   );
-
   const filterAllColumns = (rows, id, filterValue) => {
     if (!filterValue) return rows;
+  
     const lowerFilter = filterValue.toLowerCase();
+  
     return rows.filter((row) =>
-      Object.values(row.original).some(
-        (value) => value && value.toString().toLowerCase().includes(lowerFilter)
+      Object.values(row.original || {}).some((value) =>
+        String(value).toLowerCase().includes(lowerFilter)
       )
     );
   };
+  
 
   const {
     getTableProps,
@@ -244,7 +322,6 @@ const Material = () => {
             </TableBody>
           </Table>
 
-          {/* TablePagination */}
           <TablePagination
             component="div"
             count={materials.length}
@@ -258,16 +335,21 @@ const Material = () => {
           />
         </Box>
 
-        {/* Add/Edit Dialog */}
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>{isEditing ? 'Edit Material' : 'Add Material'}</DialogTitle>
           <DialogContent>
             <FormControl fullWidth sx={{ mb: 2 }}>
               <InputLabel>Category</InputLabel>
-              <Select value={category} onChange={(e) => setCategory(e.target.value)} label="Category">
-                <MenuItem value="Category 1">Category 1</MenuItem>
-                <MenuItem value="Category 2">Category 2</MenuItem>
-                <MenuItem value="Category 3">Category 3</MenuItem>
+              <Select 
+                value={category} 
+                onChange={(e) => setCategory(e.target.value)} 
+                label="Category"
+              >
+                {categories.map((cat) => (
+                  <MenuItem key={cat.category_id} value={cat.category_id}>
+                    {cat.category}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <TextField
@@ -278,27 +360,26 @@ const Material = () => {
               onChange={(e) => setMaterialName(e.target.value)}
               sx={{ mb: 2 }}
             />
-            <TextField
-              label="Upload Image"
-              variant="outlined"
-              fullWidth
-              value={imageFileName}
-              InputProps={{
-                endAdornment: (
-                  <Button variant="outlined" component="label">
-                    Upload
-                    <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
-                  </Button>
-                ),
-              }}
-              sx={{ mb: 2 }}
-            />
+            <Box sx={{ mb: 2 }}>
+              {image && (
+                <img 
+                  src={image} 
+                  alt="Preview" 
+                  style={{ maxWidth: '100%', maxHeight: '200px', marginBottom: '10px' }} 
+                />
+              )}
+              <Button variant="outlined" component="label">
+                Upload Image
+                <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
+              </Button>
+              {imageFileName && <Box sx={{ mt: 1 }}>{imageFileName}</Box>}
+            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)} color="secondary">
               Cancel
             </Button>
-            <Button onClick={handleSaveMaterial} color="primary">
+            <Button onClick={handleSaveMaterial} variant="contained" color="primary">
               {isEditing ? 'Update' : 'Save'}
             </Button>
           </DialogActions>
