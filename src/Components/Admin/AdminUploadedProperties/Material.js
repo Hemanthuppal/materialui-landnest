@@ -27,6 +27,7 @@ import {
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import axios from 'axios';
+import { BASE_URL } from '../../../Api/ApiUrls';
 
 const Material = () => {
   const [materials, setMaterials] = useState([]);
@@ -43,7 +44,7 @@ const Material = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const API_URL = 'http://46.37.122.105:89';
+  const API_URL = `${BASE_URL}`;
 
   const getCategoryName = (categoryId) => {
     const found = categories.find(cat => cat.category_id === categoryId);
