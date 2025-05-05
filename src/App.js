@@ -200,10 +200,7 @@ function App() {
         <Route path="/W_Navbar" element={<W_Navbar/>} />
         
 
-        
-
-        <Route path="/Category" element={<Category/>} />
-        <Route path="/Material" element={<Material/>} />
+  
         <Route path="/map" element={<MapWithPoints/>} />
 
        
