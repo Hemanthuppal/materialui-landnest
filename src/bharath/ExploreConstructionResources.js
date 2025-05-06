@@ -37,7 +37,7 @@ import { Link } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import logotop from './Images/landnest-logo.jpg';
 import axios from 'axios';
-import { BASE_URL } from '../../Api/ApiUrls';
+import { BASE_URL } from '../../src/Api/ApiUrls';
 
 const chunkArray = (array, chunkSize) => {
   const result = [];

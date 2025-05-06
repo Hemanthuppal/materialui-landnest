@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -23,32 +23,35 @@ import {
   Table,
   Paper,
   Stack,
-  CircularProgress
-} from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
-import axios from 'axios';
-import { BASE_URL } from '../../../Api/ApiUrls';
+  CircularProgress,
+} from "@mui/material";
+import { Edit, Delete } from "@mui/icons-material";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "../../../Api/ApiUrls";
+import AdminDashboard from "../../Admin/Dashboard/Dashboard"
 
 const Material = () => {
   const [materials, setMaterials] = useState([]);
   const [categories, setCategories] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [currentMaterial, setCurrentMaterial] = useState(null);
-  const [category, setCategory] = useState('');
-  const [materialName, setMaterialName] = useState('');
+  const [category, setCategory] = useState("");
+  const [materialName, setMaterialName] = useState("");
   const [image, setImage] = useState(null);
-  const [imageFileName, setImageFileName] = useState('');
+  const [imageFileName, setImageFileName] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const API_URL = `${BASE_URL}`;
 
   const getCategoryName = (categoryId) => {
-    const found = categories.find(cat => cat.category_id === categoryId);
-    return found ? found.category : 'N/A';
+    const found = categories.find((cat) => cat.category_id === categoryId);
+    return found ? found.category : "N/A";
   };
 
   const fetchAll = async () => {
@@ -56,7 +59,7 @@ const Material = () => {
       setLoading(true);
       const [catRes, matRes] = await Promise.all([
         axios.get(`${API_URL}/material-categories/`),
-        axios.get(`${API_URL}/material-content/`)
+        axios.get(`${API_URL}/material-content/`),
       ]);
 
       const fetchedCategories = catRes.data;
@@ -64,14 +67,16 @@ const Material = () => {
 
       const formattedMaterials = matRes.data.map((item) => ({
         id: item.content_id,
-        category: fetchedCategories.find(cat => cat.category_id === item.category_id)?.category || 'N/A',
+        category:
+          fetchedCategories.find((cat) => cat.category_id === item.category_id)
+            ?.category || "N/A",
         category_id: item.category_id,
         materialName: item.content,
         image: `${API_URL}${item.image}`,
       }));
       setMaterials(formattedMaterials);
     } catch (err) {
-      console.error('Error fetching materials:', err);
+      console.error("Error fetching materials:", err);
     } finally {
       setLoading(false);
     }
@@ -83,11 +88,11 @@ const Material = () => {
 
   const handleAddClick = () => {
     setCurrentMaterial(null);
-    setCategory('');
-    setMaterialName('');
+    setCategory("");
+    setMaterialName("");
     setImage(null);
     setImageFile(null);
-    setImageFileName('');
+    setImageFileName("");
     setOpenDialog(true);
   };
 
@@ -96,7 +101,7 @@ const Material = () => {
     setCategory(material.category_id);
     setMaterialName(material.materialName);
     setImage(material.image);
-    setImageFileName(material.image.split('/').pop());
+    setImageFileName(material.image.split("/").pop());
     setOpenDialog(true);
   };
 
@@ -104,37 +109,50 @@ const Material = () => {
     if (window.confirm("Are you sure you want to delete this material?")) {
       try {
         await axios.delete(`${API_URL}/material-content/${id}/`);
-        setMaterials(prev => prev.filter(mat => mat.id !== id));
+        setMaterials((prev) => prev.filter((mat) => mat.id !== id));
+        toast.success("Deleted Material successfully");
       } catch (err) {
         console.error("Delete error:", err);
+        toast.error("Failed to delete Material");
       }
     }
   };
 
   const handleSave = async () => {
     const formData = new FormData();
-    formData.append('user_id', 1);
-    formData.append('category_id', category);
-    formData.append('content', materialName);
-    if (imageFile) formData.append('image', imageFile);
-
+    formData.append("user_id", 1);
+    formData.append("category_id", category);
+    formData.append("content", materialName);
+    if (imageFile) formData.append("image", imageFile);
+  
     try {
       if (currentMaterial) {
-        await axios.put(`${API_URL}/material-content/${currentMaterial.id}/`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        await axios.put(
+          `${API_URL}/material-content/${currentMaterial.id}/`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
       } else {
         await axios.post(`${API_URL}/material-content/`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: { "Content-Type": "multipart/form-data" },
         });
       }
+  
       setOpenDialog(false);
-      fetchAll(); // Refetch materials
+      setCurrentMaterial(null);
+      fetchAll();
+  
+      setTimeout(() => {
+        toast.success(currentMaterial ? "Updated Material successfully" : "Added Material successfully");
+      }, 100);
     } catch (err) {
       console.error("Save error:", err);
+      toast.error("Failed to save Material");
     }
   };
-
+  
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -168,12 +186,18 @@ const Material = () => {
 
   return (
     <Container sx={{ mt: 2 }}>
-      <Box sx={{ p: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#fff' }}>
-        <Typography variant="h4" sx={{ mb: 2, textAlign: 'center', color: 'primary.main' }}>
+       <AdminDashboard />
+      <Box
+        sx={{ p: 2, borderRadius: 2, boxShadow: 3, backgroundColor: "#fff" }}
+      >
+        <Typography
+          variant="h4"
+          sx={{ mb: 2, textAlign: "center", color: "primary.main" }}
+        >
           Material List
         </Typography>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
           <TextField
             label="Search Material"
             variant="outlined"
@@ -189,37 +213,63 @@ const Material = () => {
 
         <TableContainer component={Paper}>
           <Table>
-            <TableHead sx={{ backgroundColor: '#1976d2' }}>
+            <TableHead sx={{ backgroundColor: "#1976d2" }}>
               <TableRow>
-                {['S.No', 'Category', 'Material Name', 'Image', 'Actions'].map((head) => (
-                  <TableCell key={head} sx={{ color: 'white', textAlign: 'center' }}>
-                    <strong>{head}</strong>
-                  </TableCell>
-                ))}
+                {["S.No", "Category", "Material Name", "Image", "Actions"].map(
+                  (head) => (
+                    <TableCell
+                      key={head}
+                      sx={{ color: "white", textAlign: "center" }}
+                    >
+                      <strong>{head}</strong>
+                    </TableCell>
+                  )
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredMaterials.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {filteredMaterials
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((mat, index) => (
                   <TableRow key={mat.id}>
-                    <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{mat.category}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{mat.materialName}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>
-                      <img src={mat.image} alt={mat.materialName} style={{ width: 60, height: 50, objectFit: 'contain' }} />
+                    <TableCell sx={{ textAlign: "center" }}>
+                      {page * rowsPerPage + index + 1}
                     </TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>
-                      <Stack direction="row" justifyContent="center" spacing={1}>
-                        <IconButton onClick={() => handleEditClick(mat)} color="primary">
+                    <TableCell sx={{ textAlign: "center" }}>
+                      {mat.category}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: "center" }}>
+                      {mat.materialName}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: "center" }}>
+                      <img
+                        src={mat.image}
+                        alt={mat.materialName}
+                        style={{ width: 60, height: 50, objectFit: "contain" }}
+                      />
+                    </TableCell>
+                    <TableCell sx={{ textAlign: "center" }}>
+                      <Stack
+                        direction="row"
+                        justifyContent="center"
+                        spacing={1}
+                      >
+                        <IconButton
+                          onClick={() => handleEditClick(mat)}
+                          color="primary"
+                        >
                           <Edit />
                         </IconButton>
-                        <IconButton onClick={() => handleDeleteClick(mat.id)} color="error">
+                        <IconButton
+                          onClick={() => handleDeleteClick(mat.id)}
+                          color="error"
+                        >
                           <Delete />
                         </IconButton>
                       </Stack>
                     </TableCell>
                   </TableRow>
-              ))}
+                ))}
             </TableBody>
           </Table>
 
@@ -236,14 +286,23 @@ const Material = () => {
       </Box>
 
       {/* Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>
           {currentMaterial ? "Edit Material" : "Add Material"}
         </DialogTitle>
         <DialogContent dividers>
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>Category</InputLabel>
-            <Select value={category} onChange={(e) => setCategory(e.target.value)} label="Category">
+            <Select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              label="Category"
+            >
               {categories.map((cat) => (
                 <MenuItem key={cat.category_id} value={cat.category_id}>
                   {cat.category}
@@ -260,21 +319,46 @@ const Material = () => {
             sx={{ mb: 2 }}
           />
           <Box sx={{ mb: 2 }}>
-            {image && <img src={image} alt="preview" style={{ width: '100%', maxHeight: 200, marginBottom: 8 }} />}
+            {image && (
+              <img
+                src={image}
+                alt="preview"
+                style={{ width: "100%", maxHeight: 200, marginBottom: 8 }}
+              />
+            )}
             <Button variant="outlined" component="label">
               Upload Image
-              <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleFileUpload}
+              />
             </Button>
-            {imageFileName && <Typography variant="caption">{imageFileName}</Typography>}
+            {imageFileName && (
+              <Typography variant="caption">{imageFileName}</Typography>
+            )}
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="secondary">Cancel</Button>
+          <Button onClick={() => setOpenDialog(false)} color="secondary">
+            Cancel
+          </Button>
           <Button onClick={handleSave} variant="contained" color="primary">
-            {currentMaterial ? 'Update' : 'Save'}
+            {currentMaterial ? "Update" : "Save"}
           </Button>
         </DialogActions>
       </Dialog>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
