@@ -50,18 +50,18 @@ const GreenButton = styled(Button)({
     '&:hover': { backgroundColor: '#008000' },
 });
 
-const fieldMap  = {
-    '1BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    '2BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    '3BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    '4+ BHK': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    'plot/land': ['Facing', 'Price', 'Approx Area'],
-    'duplex house': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    'commercial land': ['Facing', 'Price', 'Approx Area'],
-    'commercial building/space': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
-    'Villa': ['Facing', 'Price', 'Parking', 'Approx Area'],
-    'pg-school-office': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
-    'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Approx Area', 'No.of floors'],
+const fieldMap  = { 
+    '1BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    '2BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    '3BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    '4+BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    'Plot/land': ['Property Name', 'Facing', 'Price', 'Approx Area'],
+    'Duplex house': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    'Commercial land': ['Property Name', 'Facing', 'Price', 'Approx Area'],
+    'Commercial building/space': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors'],
+    'Villa': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    'Pg-school-office': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
+    'Shopping mall/shop': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors'],
 }; 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
@@ -71,6 +71,16 @@ const LeaseForm = () => {
     const { userId, logout } = useContext(AuthContext);
      const [apiHitCount, setApiHitCount] = useState(0);
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
+     const [postedBy, setPostedBy] = useState('');
+    
+        const handleChange = (event) => {
+            const value = event.target.value;
+            setPostedBy(value);
+            setFormData((prevData) => ({
+              ...prevData,
+              posted_by: value
+            }));
+          };
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -84,6 +94,19 @@ const LeaseForm = () => {
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
+
+        const [markerIcon, setMarkerIcon] = useState(null);
+    
+    useEffect(() => {
+      if (isLoaded && window.google) {
+        setMarkerIcon({
+          url: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23ff0000%22%20d%3D%22M12%202C8.13%202%205%205.13%205%209c0%205.25%207%2013%207%2013s7-7.75%207-13c0-3.87-3.13-7-7-7zm0%209.5c-1.38%200-2.5-1.12-2.5-2.5s1.12-2.5%202.5-2.5%202.5%201.12%202.5%202.5-1.12%202.5-2.5%202.5z%22%2F%3E%3C%2Fsvg%3E",
+          scaledSize: new window.google.maps.Size(40, 40),
+          origin: new window.google.maps.Point(0, 0),
+          anchor: new window.google.maps.Point(20, 40)
+        });
+      }
+    }, [isLoaded]);
 
     
     const incrementApiHit = () => {
@@ -180,13 +203,13 @@ const LeaseForm = () => {
     const [formData, setFormData] = useState({
         user_id: userId, // This should probably come from user auth
         category_id: '2', // This should be mapped from your category selection
-        type: 'lease', // or 'sell' based on your form
+        // type: 'lease', // or 'sell' based on your form
         facing: '',
         mobile_no: '',
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        list: 'Owner',
+        posted_by: '',
         mobile_no: '',
         price: '',
         location: '',
@@ -276,10 +299,11 @@ const LeaseForm = () => {
     const labelKeyMap = {
         'Facing': 'facing',
         'Price': 'price',
-        'Parking': 'parking',
+        'No.of Cars Parking': 'parking',
         'Approx Area': 'site_area',
         'No.of floors': 'no_of_flores',
-        'Rooms-Count': 'rooms_count', // or whatever field matches
+        'Rooms-Count': 'rooms_count', 
+        'Property Name': 'property_name'
         // Add others as needed
     };
 
@@ -310,6 +334,7 @@ const LeaseForm = () => {
             lat: location.lat,
             long: location.lng,
             location: address, // Optional, depending on your backend
+            type: 'lease',
         };
         console.log('Updated formData with location:', updatedFormData);
     
@@ -479,7 +504,12 @@ const LeaseForm = () => {
                             zoom={15}
                             onClick={handleMapClick}
                         >
-                            <Marker position={location} />
+                            {markerIcon && ( 
+                                 <Marker 
+                                   position={location} 
+                                   icon={markerIcon}
+                                 />
+                               )}
                         </GoogleMap>
 
                         {/* Upload Section */}
@@ -500,6 +530,20 @@ const LeaseForm = () => {
                                 Selected: {workPhotos.length} file(s)
                             </Typography>
                         )}
+
+                        <FormControl fullWidth margin="normal">
+                                <InputLabel id="posted-by-label">Posted By</InputLabel>
+                                <Select
+                                  labelId="posted-by-label"
+                                  value={postedBy}
+                                  label="Posted by"
+                                  onChange={handleChange}
+                                >
+                                  <MenuItem value="Owner">Owner</MenuItem>
+                                  <MenuItem value="Agent">Agent</MenuItem>
+                                  <MenuItem value="Builder">Builder</MenuItem>
+                                </Select>
+                              </FormControl>
 
                         {/* Description */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>

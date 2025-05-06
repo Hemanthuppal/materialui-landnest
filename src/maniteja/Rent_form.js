@@ -50,17 +50,17 @@ const GreenButton = styled(Button)({
 });
 
 const fieldMap = {
-    '1BHK': ['Facing', 'Price', 'Parking', 'Area'],
-    '2BHK': ['Facing', 'Price', 'Parking', 'Area'],
-    '3BHK': ['Facing', 'Price', 'Parking', 'Area'],
-    '4+ BHK': ['Facing', 'Price', 'Parking', 'Area'],
-    'plot/land': ['Facing', 'Price', 'Area'],
-    'duplex house': ['Facing', 'Price', 'Parking', 'Area'],
-    'commercial land': ['Facing', 'Price', 'Area'],
-    'commercial building/space': ['Facing', 'Price', 'Parking', 'Area', 'No.of floors'],
-    'Villa': ['Facing', 'Price', 'Parking', 'Area'],
-    'pg-school-office': ['Facing', 'Price', 'Parking', 'Area', 'No.of floors', 'Rooms-Count'],
-    'Shopping mall/shop': ['Facing', 'Price', 'Parking', 'Area', 'No.of floors'],
+    '1BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'], 
+    '2BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    '3BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    '4+BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    'Plot/land': ['Property Name', 'Facing', 'Price', 'Area'],
+    'Duplex house': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    'Commercial land': ['Property Name', 'Facing', 'Price', 'Area'],
+    'Commercial building/space': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area', 'No.of floors'],
+    'Villa': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    'Pg-school-office': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area', 'No.of floors', 'Rooms-Count'],
+    'Shopping mall/shop': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area', 'No.of floors'],
 };
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
@@ -71,12 +71,35 @@ const RentForm = () => {
     const { userId, logout } = useContext(AuthContext);
      const [apiHitCount, setApiHitCount] = useState(0);
         const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
+         const [postedBy, setPostedBy] = useState('');
+            
+                const handleChange = (event) => {
+                    const value = event.target.value;
+                    setPostedBy(value);
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      posted_by: value
+                    }));
+                  };
     
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
+
+        const [markerIcon, setMarkerIcon] = useState(null);
+    
+    useEffect(() => {
+      if (isLoaded && window.google) {
+        setMarkerIcon({
+          url: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23ff0000%22%20d%3D%22M12%202C8.13%202%205%205.13%205%209c0%205.25%207%2013%207%2013s7-7.75%207-13c0-3.87-3.13-7-7-7zm0%209.5c-1.38%200-2.5-1.12-2.5-2.5s1.12-2.5%202.5-2.5%202.5%201.12%202.5%202.5-1.12%202.5-2.5%202.5z%22%2F%3E%3C%2Fsvg%3E",
+          scaledSize: new window.google.maps.Size(40, 40),
+          origin: new window.google.maps.Point(0, 0),
+          anchor: new window.google.maps.Point(20, 40)
+        });
+      }
+    }, [isLoaded]);
 
     const handleWorkPhotosChange = (e) => {
         if (e.target.files) {
@@ -87,13 +110,13 @@ const RentForm = () => {
     const [formData, setFormData] = useState({
         user_id: userId, // This should probably come from user auth
         category_id: '2', // This should be mapped from your category selection
-        type: 'rent',
+        // type: 'rent',
         facing: '',
         mobile_no: '',
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        list: 'Owner',
+        posted_by: '',
         price: '',
         location: '',
         lat: '',
@@ -285,10 +308,11 @@ const getCurrentLocation = () => {
     const labelKeyMap = {
         'Facing': 'facing',
         'Price': 'price',
-        'Parking': 'parking',
+        'No.of Cars Parking': 'parking',
         'Area': 'site_area',
         'No.of floors': 'no_of_flores',
-        'Rooms-Count': 'rooms_count', // or whatever field matches
+        'Rooms-Count': 'rooms_count',
+        'Property Name': 'property_name'
         // Add others as needed
     };
     
@@ -325,6 +349,7 @@ const getCurrentLocation = () => {
             lat: location.lat,
             long: location.lng,
             location: address, // Optional, depending on your backend
+            type: 'rent',
         };
     
         const formDataToSend = new FormData();
@@ -345,6 +370,7 @@ const getCurrentLocation = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log("form data=", formDataToSend);
     
             if (response.status == 201 || response.status == 200) {
                 alert('Property submitted successfully!');
@@ -476,7 +502,12 @@ const getCurrentLocation = () => {
                             zoom={15}
                             onClick={handleMapClick}
                         >
-                            <Marker position={location} />
+                             {markerIcon && (
+                                  <Marker 
+                                    position={location} 
+                                    icon={markerIcon}
+                                  />
+                                )}
                         </GoogleMap>
 
                         {/* Upload Section */}
@@ -497,6 +528,20 @@ const getCurrentLocation = () => {
                                 Selected: {workPhotos.length} file(s)
                             </Typography>
                         )}
+
+                           <FormControl fullWidth margin="normal">
+                                                        <InputLabel id="posted-by-label">Posted By</InputLabel>
+                                                        <Select
+                                                          labelId="posted-by-label"
+                                                          value={postedBy}
+                                                          label="Posted by"
+                                                          onChange={handleChange}
+                                                        >
+                                                          <MenuItem value="Owner">Owner</MenuItem>
+                                                          <MenuItem value="Agent">Agent</MenuItem>
+                                                          <MenuItem value="Builder">Builder</MenuItem>
+                                                        </Select>
+                                                      </FormControl>
                         {/* Description */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                         <TextField fullWidth variant="outlined" multiline rows={4} sx={{ mb: 3 }} />

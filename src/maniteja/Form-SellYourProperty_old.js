@@ -67,14 +67,14 @@ const GreenButton = styled(Button)({
 const fieldMap = {
     'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
     'Plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
-    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms','lift', 'Roadwidth'],
-    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', 'Duplex bedrooms','lift', 'Roadwidth'],
-    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', '3bhk-count','lift', 'Roadwidth'],
-    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'No.of Cars Parking', 'lift', 'Roadwidth', 'Buildup area'],
-    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'lift', 'Roadwidth', 'Buildup area'],
-    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
-    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
-    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'lift', 'Roadwidth', 'Buildup area'],
+    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
+    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
+    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
+    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth', 'Buildup area'],
+    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'Parking', 'Borewell', 'Roadwidth', 'Buildup area'],
+    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'Parking', 'Borewell', 'Floors', 'Roadwidth', 'Buildup area'],
+    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth', 'Buildup area'],
+    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth', 'Buildup area'],
     'Others': ['Price', 'Roadwidth'],
 };
 
@@ -85,17 +85,6 @@ const SellYourProperty = () => {
     const { userId, logout } = useContext(AuthContext);
     const [apiHitCount, setApiHitCount] = useState(0);
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
-    const [postedBy, setPostedBy] = useState('');
-
-    const handleChange = (event) => {
-        const value = event.target.value;
-        setPostedBy(value);
-        setFormData((prevData) => ({
-          ...prevData,
-          posted_by: value
-        }));
-      };
-      
 
     const handleWorkPhotosChange = (e) => {
         if (e.target.files) {
@@ -112,7 +101,7 @@ const SellYourProperty = () => {
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        posted_by: '',
+        list: 'Owner',
         price: '',
         borewell: '',
         location: '',
@@ -146,18 +135,6 @@ const SellYourProperty = () => {
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
-    const [markerIcon, setMarkerIcon] = useState(null);
-
-useEffect(() => {
-  if (isLoaded && window.google) {
-    setMarkerIcon({
-      url: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23ff0000%22%20d%3D%22M12%202C8.13%202%205%205.13%205%209c0%205.25%207%2013%207%2013s7-7.75%207-13c0-3.87-3.13-7-7-7zm0%209.5c-1.38%200-2.5-1.12-2.5-2.5s1.12-2.5%202.5-2.5%202.5%201.12%202.5%202.5-1.12%202.5-2.5%202.5z%22%2F%3E%3C%2Fsvg%3E",
-      scaledSize: new window.google.maps.Size(40, 40),
-      origin: new window.google.maps.Point(0, 0),
-      anchor: new window.google.maps.Point(20, 40)
-    });
-  }
-}, [isLoaded]);
 
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
@@ -170,7 +147,7 @@ useEffect(() => {
     useEffect(() => {
         const fetchMobileNo = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/users/`);
+                const response = await axios.get(`http://46.37.122.105:89/users/`);
                 const users = response.data;
                 
                 console.log('All users from API:', users);
@@ -242,21 +219,22 @@ useEffect(() => {
           alert("Geolocation is not supported by this browser.");
         }
       };
-      const onPlaceChanged = () => {
+
+    const onPlaceChanged = () => {
         if (autocompleteRef.current) {
-          const place = autocompleteRef.current.getPlace();
-          if (place && place.geometry) {
-            incrementApiHit();
-            setUsingCurrentLocation(false);
-            const newLoc = {
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
-            };
-            setLocation(newLoc);
-            setAddress(place.formatted_address);
-          }
+            const place = autocompleteRef.current.getPlace();
+            if (place && place.geometry) {
+                incrementApiHit(); // This uses Google Maps API
+                setUsingCurrentLocation(false);
+                const newLoc = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                };
+                setLocation(newLoc);
+                setAddress(place.formatted_address);
+            }
         }
-      };
+    };
 
     const geocodeAddress = async () => {
         if (!address) return;
@@ -287,11 +265,12 @@ useEffect(() => {
     const labelKeyMap = {
         'Site Area': 'site_area',
         'Facing': 'facing',
+        'List': 'list',
         'Price': 'price',
         'No.of floors': 'no_of_flores',
         'Buildup area': 'buildup_area',
         'Borewell': 'borewell',
-        'No.of Cars Parking': 'parking',
+        'Parking': 'parking',
         '1bhk-count': '_1bhk_count',
         '2bhk-count': '_2bhk_count',
         '3bhk-count': '_3bhk_count',
@@ -324,22 +303,22 @@ useEffect(() => {
         const lng = e.latLng.lng();
         setLocation({ lat, lng });
         setUsingCurrentLocation(false);
-        incrementApiHit();
-      
+        incrementApiHit(); // Clicking on map uses Google Maps API
+
         if (window.google && window.google.maps) {
-          const geocoder = new window.google.maps.Geocoder();
-          geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-            if (status == 'OK' && results[0]) {
-              setAddress(results[0].formatted_address);
-            } else {
-              setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
-            }
-          });
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                if (status == 'OK' && results[0]) {
+                    setAddress(results[0].formatted_address);
+                } else {
+                    setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
+                }
+            });
         }
-      };
+    };
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/property-category/`)
+        axios.get('http://46.37.122.105:89/property-category/')
             .then(response => {
                 const rentCategories = response.data.filter(
                     cat => cat.category_type.toLowerCase() == 'sell'
@@ -404,9 +383,9 @@ useEffect(() => {
         console.log('FormData prepared, sending to server...');
     
         try {
-            console.log('Making POST request to:', `${BASE_URL}/property/`);
+            console.log('Making POST request to:', 'http://46.37.122.105:89/property/');
             
-            const response = await axios.post(`${BASE_URL}/property/`, formDataToSend, {
+            const response = await axios.post('http://46.37.122.105:89/property/', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -565,59 +544,53 @@ useEffect(() => {
                         })}
 
                         {/* Location Section */}
-                    {/* Location Section */}
-<Box sx={{ mb: 2 }}>
-  <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-    Location
-  </Typography>
+                        <Box sx={{ mb: 2 }}>
+    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
+        Location
+    </Typography>
 
-  {isLoaded && (
     <Autocomplete
-      onLoad={(autocomplete) => {
-        autocompleteRef.current = autocomplete;
-      }}
-      onPlaceChanged={onPlaceChanged}
+        onLoad={(ref) => (autocompleteRef.current = ref)}
+        onPlaceChanged={onPlaceChanged}
     >
-      <TextField
-        fullWidth
-        label="Search Location"
-        variant="outlined"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        onBlur={geocodeAddress}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={getCurrentLocation} edge="end">
-                <MyLocationIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
+        <TextField
+            fullWidth
+            label="Search Location"
+            variant="outlined"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            onBlur={geocodeAddress}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton onClick={getCurrentLocation} edge="end">
+                            <MyLocationIcon />
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }}
+        />
     </Autocomplete>
-  )}
 
-  {/* Map with marker */}
-  <div style={containerStyle}>
-  <GoogleMap
-    mapContainerStyle={{ width: '100%', height: '100%' }}
-    center={location}
-    zoom={15}
-    onClick={handleMapClick}
-  >
-    {markerIcon && (
-      <Marker 
-        position={location} 
-        icon={markerIcon}
-      />
-    )}
-  </GoogleMap>
-</div>
+    {/* <Typography variant="caption" sx={{ alignSelf: 'center', mt: 1, display: 'block' }}>
+        {usingCurrentLocation ? "Using browser geolocation" : "Using Google Maps API"}
+    </Typography> */}
 </Box>
 
+                        {/* Map with marker */}
+                        <div style={containerStyle}>
+                            <GoogleMap
+                                mapContainerStyle={{ width: '100%', height: '100%' }}
+                                center={location}
+                                zoom={15}
+                                onClick={handleMapClick}
+                            >
+                                <Marker position={location} />
+                            </GoogleMap>
+                        </div>
+
                         {/* API Hit Counter (for debugging) */}
-                        {/* <Typography variant="caption" sx={{ display: 'block', textAlign: 'right', mt: 1 }}>
+                         { /* <Typography variant="caption" sx={{ display: 'block', textAlign: 'right', mt: 1 }}>
                             Google Maps API hits: {apiHitCount}
                         </Typography> */}
 
@@ -637,20 +610,6 @@ useEffect(() => {
                                 Selected: {workPhotos.length} file(s)
                             </Typography>
                         )}
-
-<FormControl fullWidth margin="normal">
-        <InputLabel id="posted-by-label">Posted By</InputLabel>
-        <Select
-          labelId="posted-by-label"
-          value={postedBy}
-          label="Posted by"
-          onChange={handleChange}
-        >
-          <MenuItem value="owner">Owner</MenuItem>
-          <MenuItem value="agent">Agent</MenuItem>
-          <MenuItem value="builder">Builder</MenuItem>
-        </Select>
-      </FormControl>
 
                         {/* Description */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
