@@ -21,7 +21,8 @@ import {
   ThumbUpAlt,
   Call,
   LocationOn,
- 
+  ChevronLeft,
+  ChevronRight,
       MoreVert,
 } from '@mui/icons-material';
 import axios from 'axios';
@@ -45,7 +46,7 @@ const PropertyCard = () => {
   const [properties, setProperties] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [currentImageIndex, setCurrentImageIndex] = useState({});
 
 
   
@@ -75,7 +76,7 @@ const PropertyCard = () => {
     handleMenuClose();
   };
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch categories first
@@ -90,59 +91,94 @@ const PropertyCard = () => {
         item.type &&
         item.type.toLowerCase() == "sell"
       );
-
-        const parsed = filtered.map(item => {
-          const parseCoord = (coord) => {
-            if (!coord) return null;
-            const cleaned = coord.replace(/"/g, '').replace(':', '.');
-            return parseFloat(cleaned);
-          };
-
-          // Find matching category
-          const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id == item.category_id
-          );
-          
-          const categoryName = matchedCategory ? matchedCategory.category : 'Property';
-
-          // Fixed image URL construction
-          const imageUrl = item.property_images?.[0]?.image
-            ? `${BASE_URL}${item.property_images[0].image}`
-            : buildingImage;
-
-          return {
-            id: item.property_id,
-            title: categoryName,
-            location: item.location || 'Not specified',
-            price: `₹${item.price?.toLocaleString()}`,
-            date: item.created_at?.split('T')[0],
-            facing: item.facing?.replace(/"/g, '') || 'N/A',
-            area: item.site_area ? `${item.site_area} sq ft` : 'N/A',
-            dimensions: item.roadwidth ? `${item.roadwidth} ft road` : 'N/A',
-            listedBy: item.list?.replace(/"/g, '') || 'Agent',
-            lat: parseCoord(item.lat),
-            long: parseCoord(item.long),
-            image: imageUrl,
-            propertyData: item // Store the full property data for description page
-          };
-        });
-
-        setProperties(parsed);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+ 
+         const parsed = filtered.map(item => {
+           const parseCoord = (coord) => {
+             if (!coord) return null;
+             const cleaned = coord.replace(/"/g, '').replace(':', '.');
+             return parseFloat(cleaned);
+           };
+ 
+           const matchedCategory = categoriesResponse.data.find(
+             cat => cat.category_id === item.category_id
+           );
+           
+           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
+ 
+           // Get all images or default to buildingImage
+           const images = item.property_images?.length > 0 
+             ? item.property_images.map(img => `${BASE_URL}${img.image}`)
+             : [buildingImage];
+ 
+           return {
+             id: item.property_id,
+             title: categoryName,
+             location: item.location || 'Not specified',
+             price: `₹${item.price?.toLocaleString()}`,
+             date: item.created_at?.split('T')[0],
+             facing: item.facing?.replace(/"/g, '') || 'N/A',
+             area: item.site_area ? `${item.site_area} sq ft` : 'N/A',
+             dimensions: item.roadwidth ? `${item.roadwidth} ft road` : 'N/A',
+             listedBy: item.list?.replace(/"/g, '') || 'Agent',
+             lat: parseCoord(item.lat),
+             long: parseCoord(item.long),
+             length: item.length,
+             width: item.width,
+             mobile_no: item.mobile_no,
+             property_name:item.property_name,
+             images: images, // Now using all images
+             propertyData: item
+           };
+         });
+ 
+         setProperties(parsed);
+         // Initialize current image index for each property
+         const initialIndexes = {};
+         parsed.forEach(property => {
+           initialIndexes[property.id] = 0;
+         });
+         setCurrentImageIndex(initialIndexes);
+       } catch (error) {
+         console.error('Error fetching data:', error);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchData();
+   }, []);
+ 
+   const handleNextImage = (propertyId, e) => {
+     e.stopPropagation();
+     setCurrentImageIndex(prev => {
+       const currentIndex = prev[propertyId];
+       const property = properties.find(p => p.id === propertyId);
+       const nextIndex = (currentIndex + 1) % property.images.length;
+       return {
+         ...prev,
+         [propertyId]: nextIndex
+       };
+     });
+   };
+ 
+   const handlePrevImage = (propertyId, e) => {
+     e.stopPropagation();
+     setCurrentImageIndex(prev => {
+       const currentIndex = prev[propertyId];
+       const property = properties.find(p => p.id === propertyId);
+       const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
+       return {
+         ...prev,
+         [propertyId]: prevIndex
+       };
+     });
+   };
+ 
   const openGoogleMapsWithDirections = (destLat, destLng) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const currentLat = position.coords.latitude;
+          const currentLat = position.coords.latitude
           const currentLng = position.coords.longitude;
   
           const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${destLat},${destLng}&travelmode=driving`;
@@ -159,33 +195,14 @@ const PropertyCard = () => {
     }
   };
   
-  const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id == property.id);
-    let updated;
-
-    if (isSaved) {
-      updated = saved.filter((p) => p.id !== property.id);
-    } else {
-      updated = [...saved, property];
-    }
-
-    setSaved(updated);
-    localStorage.setItem('savedBuy', JSON.stringify(updated));
-  };
-
-  const isSaved = (property) => saved.some((p) => p.id == property.id);
+  
 
   const filteredProperties = properties.filter((property) =>
     property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     property.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const toggleLike = (id) => {
-    setLikedCards((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+ 
 
   if (loading) {
     return (
@@ -240,17 +257,95 @@ const PropertyCard = () => {
             >
               <Box position="relative">
                 <CardMedia
-                  component="img"
-                  image={property.image}
-                  alt="Property"
-                  sx={{
-                    width: '100%',
-                    height: '140px',
-                    objectFit: 'cover',
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
-                  }}
-                />
+                    component="img"
+                    image={property.images[currentImageIndex[property.id]]}
+                    alt="Property"
+                    sx={{
+                      width: '100%',
+                      height: '140px',
+                      objectFit: 'cover',
+                      borderTopLeftRadius: 12,
+                      borderTopRightRadius: 12,
+                    }}
+                  />
+                  
+                  {/* Left/Right Carousel Arrows (hidden by default) */}
+                  {property.images.length > 1 && (
+                    <>
+                      <IconButton
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: 8,
+                          opacity: 0,
+                          transform: 'translateY(-50%)',
+                          backgroundColor: 'rgba(255,255,255,0.3)',
+                          backdropFilter: 'blur(2px)',
+                          '&:hover': { 
+                            opacity: 1,
+                            backgroundColor: 'rgba(255,255,255,0.5)' 
+                          }
+                        }}
+                        onClick={(e) => handlePrevImage(property.id, e)}
+                      >
+                        <ChevronLeft fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          right: 8,
+                          opacity: 0,
+                          transform: 'translateY(-50%)',
+                          backgroundColor: 'rgba(255,255,255,0.3)',
+                          backdropFilter: 'blur(2px)',
+                          '&:hover': { 
+                            opacity: 1,
+                            backgroundColor: 'rgba(255,255,255,0.5)' 
+                          }
+                        }}
+                        onClick={(e) => handleNextImage(property.id, e)}
+                      >
+                        <ChevronRight fontSize="small" />
+                      </IconButton>
+                    </>
+                  )}
+                  
+                  {/* Dot Indicators */}
+                  {property.images.length > 1 && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        bottom: 10,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        display: 'flex',
+                        gap: 1
+                      }}
+                    >
+                      {property.images.map((_, index) => (
+                        <Box
+                          key={index}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex(prev => ({
+                              ...prev,
+                              [property.id]: index
+                            }));
+                          }}
+                          sx={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.3s'
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  )}
+
                 <Box sx={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 1 }}>
                                <Tooltip title="Share">
                                  <IconButton
