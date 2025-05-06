@@ -67,14 +67,14 @@ const GreenButton = styled(Button)({
 const fieldMap = {
     'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
     'Plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
-    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'Roadwidth'],
-    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', 'Duplex bedrooms', 'Roadwidth'],
-    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'Roadwidth'],
-    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'Parking', 'Roadwidth', 'Buildup area'],
-    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'Parking', 'Borewell', 'Roadwidth', 'Buildup area'],
-    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'Parking', 'Borewell', 'Floors', 'Roadwidth', 'Buildup area'],
-    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'Parking', 'Borewell', 'Floors', 'Roadwidth', 'Buildup area'],
-    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'Roadwidth', 'Buildup area'],
+    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms','lift', 'Roadwidth'],
+    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', 'Duplex bedrooms','lift', 'Roadwidth'],
+    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', '3bhk-count','lift', 'Roadwidth'],
+    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'No.of Cars Parking', 'lift', 'Roadwidth', 'Buildup area'],
+    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'lift', 'Roadwidth', 'Buildup area'],
+    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'lift', 'Roadwidth', 'Buildup area'],
     'Others': ['Price', 'Roadwidth'],
 };
 
@@ -85,6 +85,17 @@ const SellYourProperty = () => {
     const { userId, logout } = useContext(AuthContext);
     const [apiHitCount, setApiHitCount] = useState(0);
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
+    const [postedBy, setPostedBy] = useState('');
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setPostedBy(value);
+        setFormData((prevData) => ({
+          ...prevData,
+          posted_by: value
+        }));
+      };
+      
 
     const handleWorkPhotosChange = (e) => {
         if (e.target.files) {
@@ -101,7 +112,7 @@ const SellYourProperty = () => {
         roadwidth: '',
         site_area: '',
         buildup_area: '',
-        list: 'Owner',
+        posted_by: '',
         price: '',
         borewell: '',
         location: '',
@@ -276,12 +287,11 @@ useEffect(() => {
     const labelKeyMap = {
         'Site Area': 'site_area',
         'Facing': 'facing',
-        'List': 'list',
         'Price': 'price',
         'No.of floors': 'no_of_flores',
         'Buildup area': 'buildup_area',
         'Borewell': 'borewell',
-        'Parking': 'parking',
+        'No.of Cars Parking': 'parking',
         '1bhk-count': '_1bhk_count',
         '2bhk-count': '_2bhk_count',
         '3bhk-count': '_3bhk_count',
@@ -627,6 +637,20 @@ useEffect(() => {
                                 Selected: {workPhotos.length} file(s)
                             </Typography>
                         )}
+
+<FormControl fullWidth margin="normal">
+        <InputLabel id="posted-by-label">Posted By</InputLabel>
+        <Select
+          labelId="posted-by-label"
+          value={postedBy}
+          label="Posted by"
+          onChange={handleChange}
+        >
+          <MenuItem value="owner">Owner</MenuItem>
+          <MenuItem value="agent">Agent</MenuItem>
+          <MenuItem value="builder">Builder</MenuItem>
+        </Select>
+      </FormControl>
 
                         {/* Description */}
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>

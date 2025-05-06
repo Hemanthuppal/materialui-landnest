@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Card,
   CardHeader,
@@ -11,6 +12,8 @@ import {
   Fade,
   Grow,
   TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -19,12 +22,122 @@ import {
   Save as SaveIcon,
 } from "@mui/icons-material";
 import AdminDashboard from "../../Admin/Dashboard/Dashboard";
+import Packages2 from "./Packages2";
+// import Package3 from "./Packages3";
 
 const ConstructionPackages = () => {
   const [expanded, setExpanded] = useState({});
   const [editableContent, setEditableContent] = useState({});
   const [editingField, setEditingField] = useState(null);
   const [tempContent, setTempContent] = useState({});
+  const [packageData, setPackageData] = useState({});
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+   const [editingPackageCost, setEditingPackageCost] = useState(false);
+    const [tempPackageCost, setTempPackageCost] = useState("");
+
+  // Fetch data from API
+  useEffect(() => {
+    const fetchPackageData = async () => {
+      try {
+        const response = await axios.get("https://landnest.net:81/packages/2/");
+        setPackageData(response.data);
+        updateSectionContent(response.data);
+      } catch (error) {
+        console.error("Error fetching package data:", error);
+        setSnackbar({
+          open: true,
+          message: "Failed to fetch package data",
+          severity: "error",
+        });
+      }
+    };
+    fetchPackageData();
+  }, []);
+
+  const handleEditPackageCost = () => {
+    setTempPackageCost(packageData.package_cost?.toString() || "");
+    setEditingPackageCost(true);
+  };
+
+
+   const handleSavePackageCost = async () => {
+      try {
+        const response = await axios.put(`https://landnest.net:81/packages/2/`, {
+          package_cost: parseInt(tempPackageCost) || 0,
+        });
+  
+        setPackageData(response.data);
+        setEditingPackageCost(false);
+        setSnackbar({
+          open: true,
+          message: "Package cost updated successfully",
+          severity: "success",
+        });
+      } catch (error) {
+        console.error("Error updating package cost:", error);
+        setSnackbar({
+          open: true,
+          message: "Failed to update package cost",
+          severity: "error",
+        });
+      }
+    };
+  
+
+
+  const updateSectionContent = (data) => {
+    const updatedSectionContent = {
+      package2500: {
+        design: sectionContent.package2500.design,
+        materials: sectionContent.package2500.materials,
+        flooring: sectionContent.package2500.flooring
+          .replace(/₹60\/sq\. ft\./, `₹${data.tile_general || 0}/sq. ft.`)
+          .replace(/₹80\/sq\. ft\./, `₹${data.tile_stair || 0}/sq. ft.`)
+          .replace(/₹60\/sq\. ft\./g, `₹${data.tile_balcony || 0}/sq. ft.`)
+          .replace(/₹60\/sq\. ft\./g, `₹${data.title_bathroom || 0}/sq. ft.`)
+          .replace(/₹50\/sq\. ft\./, `₹${data.tile_parking || 0}/sq. ft.`)
+          .replace(
+            /₹100\/sq\. ft\./g,
+            `₹${data.tile_kitchen_countertop || 0}/sq. ft.`
+          )
+          .replace(
+            /₹50\/sq\. ft\./,
+            `₹${data.tile_kitchen_backsplash || 0}/sq. ft.`
+          ),
+        windows: sectionContent.package2500.windows.replace(
+          /₹550\/sq\. ft\./,
+          `₹${data.window_standered || 0}/sq. ft.`
+        ),
+        doors: sectionContent.package2500.doors
+          .replace(/₹22,000/, `₹${data.doors_main || 0}`)
+          .replace(/₹20,000/, `₹${data.doors_pooja || 0}`)
+          .replace(/₹8,000/, `₹${data.doors_internal || 0}`),
+        fabrication: sectionContent.package2500.fabrication
+          .replace(
+            /₹300 per sq\. ft\./,
+            `₹${data.fabrication_stair_rail || 0} per sq. ft.`
+          )
+          .replace(
+            /₹350 per sq\. ft\./,
+            `₹${data.fabrication_gate || 0} per sq. ft.`
+          ),
+        plumbing: sectionContent.package2500.plumbing
+          .replace(/₹1,000/, `₹${data.sanitary_overheadtank || 0}`)
+          .replace(/₹6,500/, `₹${data.sanitary_commode || 0}`)
+          .replace(/₹3,500/, `₹${data.sanitary_wallmixer || 0}`),
+        extra: sectionContent.package2500.extra,
+        sanctions: sectionContent.package2500.sanctions,
+        elevation: sectionContent.package2500.elevation,
+        audit: sectionContent.package2500.audit,
+      },
+    };
+    setSectionContent(updatedSectionContent);
+  };
 
   const handleChange = (panel, packageType) => (event, newExpanded) => {
     setExpanded((prev) => ({
@@ -34,7 +147,7 @@ const ConstructionPackages = () => {
   };
 
   const extractRupeeValues = (content) => {
-    const rupeeRegex = /₹(\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\d+)/g;
+    const rupeeRegex = /₹(\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\d+|null)/g;
     const matches = [...content.matchAll(rupeeRegex)];
     return matches.map((match) => ({
       value: match[0],
@@ -51,12 +164,106 @@ const ConstructionPackages = () => {
     setEditingField(`${pkgId}-${sectionId}`);
   };
 
-  const handleSave = (pkgId, sectionId) => {
-    setEditableContent((prev) => ({
-      ...prev,
-      [`${pkgId}-${sectionId}`]: tempContent[`${pkgId}-${sectionId}`],
-    }));
-    setEditingField(null);
+  const handleSave = async (pkgId, sectionId) => {
+    try {
+      const content = tempContent[`${pkgId}-${sectionId}`];
+      const rupeeValues = extractRupeeValues(content);
+
+      if (rupeeValues.length === 0) {
+        setEditableContent((prev) => ({
+          ...prev,
+          [`${pkgId}-${sectionId}`]: content,
+        }));
+        setEditingField(null);
+        return;
+      }
+
+      let updatePayload = {};
+      switch (sectionId) {
+        case "pkg2500Three": // Flooring section for 2500
+          const flooringValues = content.match(/₹([\d,null]+)/g) || [];
+          updatePayload = {
+            tile_general: extractNumber(flooringValues[0]),
+            tile_stair: extractNumber(flooringValues[1]),
+            tile_balcony: extractNumber(flooringValues[2]),
+            title_bathroom: extractNumber(flooringValues[3]),
+            tile_parking: extractNumber(flooringValues[4]),
+            tile_kitchen_countertop: extractNumber(flooringValues[5]),
+            tile_kitchen_backsplash: extractNumber(flooringValues[6]),
+          };
+          break;
+        case "pkg2500Four": // Windows section for 2500
+          updatePayload = {
+            window_standered: extractNumber(
+              content.match(/₹([\d,null]+)/)?.[0]
+            ),
+          };
+          break;
+        case "pkg2500Five": // Doors section for 2500
+          const doorValues = content.match(/₹([\d,null]+)/g) || [];
+          updatePayload = {
+            doors_main: extractNumber(doorValues[0]),
+            doors_pooja: extractNumber(doorValues[1]),
+            doors_internal: extractNumber(doorValues[2]),
+          };
+          break;
+        case "pkg2500Seven": // Fabrication section for 2500
+          const fabricationValues = content.match(/₹([\d,null]+)/g) || [];
+          updatePayload = {
+            fabrication_stair_rail: extractNumber(fabricationValues[0]),
+            fabrication_gate: extractNumber(fabricationValues[1]),
+          };
+          break;
+        case "pkg2500Eight": // Plumbing section for 2500
+          const plumbingValues = content.match(/₹([\d,null]+)/g) || [];
+          updatePayload = {
+            sanitary_overheadtank: extractNumber(plumbingValues[0]) || 0,
+            sanitary_commode: extractNumber(plumbingValues[1]) || 0,
+            sanitary_wallmixer: extractNumber(plumbingValues[2]) || 0,
+          };
+          break;
+      }
+
+      // Filter out undefined values
+      const filteredPayload = Object.fromEntries(
+        Object.entries(updatePayload).filter(([_, v]) => v !== undefined)
+      );
+
+      if (Object.keys(filteredPayload).length > 0) {
+        const response = await axios.put(
+          `https://landnest.net:81/packages/2/`,
+          filteredPayload
+        );
+
+        setPackageData(response.data);
+        updateSectionContent(response.data);
+
+        setSnackbar({
+          open: true,
+          message: "Package updated successfully",
+          severity: "success",
+        });
+      }
+
+      setEditableContent((prev) => ({
+        ...prev,
+        [`${pkgId}-${sectionId}`]: content,
+      }));
+      setEditingField(null);
+    } catch (error) {
+      console.error("Error updating package:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update package",
+        severity: "error",
+      });
+    }
+  };
+
+  const extractNumber = (value) => {
+    if (!value) return 0;
+    const num = value.replace(/[^0-9]/g, "");
+    return num ? parseInt(num, 10) : 0;
   };
 
   const handleRupeeValueChange = (
@@ -67,6 +274,13 @@ const ConstructionPackages = () => {
     length,
     newValue
   ) => {
+    // Ensure the value starts with ₹ and has a number or 0
+    if (!newValue.startsWith("₹")) {
+      newValue = "₹" + (newValue.replace(/[^0-9]/g, "") || "0");
+    } else {
+      newValue = "₹" + (newValue.substring(1).replace(/[^0-9]/g, "") || "0");
+    }
+
     const newContent =
       content.substring(0, index) +
       newValue +
@@ -145,60 +359,7 @@ const ConstructionPackages = () => {
     return elements;
   };
 
-
-  const sectionContent = {
-    package2000: {
-      design:
-        "• <strong>2D Floor Plans:</strong> \n• <strong>3D Elevation:</strong> \n• <strong>Plumbing & Electrical Layout:</strong> \n• <strong>Working Drawings for Execution, Schedule of Openings:</strong> ",
-      materials:
-        "• <strong>Steel:</strong> Fe500/550 Grade TMT (Meenakshi, Prime Gold, Turbo, Indus, or Equivalent)\n• <strong>Cement:</strong> 53 & 43 Grade (Zuari, ACC, Ramco, Birla super or Equivalent)\n• <strong>Aggregates:</strong> 20mm & 40mm\n• <strong>Sand:</strong> M-Sand for Blockwork, P-Sand for Plastering\n• <strong>Blocks:</strong> 6″ {42 per pic} & 4″ {32 per pic}\n• <strong>Concrete Mix:</strong> RMC or handmix– M25 Grade\n• <strong>Underground Sump:</strong> 6″ solid block with waterproof plastering\n• <strong>Plinth Foundation:</strong> Three-course size stone masonry\n• <strong>Ceiling Height:</strong> 10 feet (floor to floor)\n• <strong>Waterproofing:</strong> Dr. Fixit or Fosroc",
-      flooring:
-        "• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹100/sq. ft.\n• <strong>Staircase:</strong> Granite up to ₹100/sq. ft.\n• <strong>Balconies & Sitout Areas:</strong> Anti-skid tiles up to ₹100/sq. ft.\n• <strong>Bathroom Wall & Flooring:</strong> Tiles up to ₹100/sq. ft.\n• <strong>Parking Area:</strong> Flooring up to ₹100/sq. ft.\n• <strong>Kitchen Countertop:</strong> Granite up to ₹100/sq. ft.\n• <strong>Kitchen Backsplash (Dadoing, 4ft height):</strong> Tiles up to ₹100/sq. ft.\n• <strong>Bathroom Wall Tiling:</strong> Up to 8 feet height\n• <strong>Terrace Finishing:</strong> Screed concrete",
-      windows:
-        "• <strong>Standard Windows:</strong> 2.5-3 track UPVC with 5mm glass & MS grill (₹750/sq. ft.)\n• <strong>Maximum Window Openings:</strong> 3-track UPVC with 5mm glass & MS grill (₹700/sq. ft.) or Sal wood frames with shutters\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
-      doors:
-        "• <strong>Main Door:</strong> Teakwood frame (6″x4″) with teak shutter & fittings (₹30,000 per door)\n• <strong>Pooja Room Door:</strong> Frame (5″x3″) with readymade shutter & fittings (₹25,000 per door)\n• <strong>Internal Doors:</strong> WPC or Sal wood frame (4″x3″) with membrane shutter & fittings (₹10,000 per door)\n• <strong>Bathroom Doors:</strong> WPC doors",
-      painting:
-        "• <strong>Interior Walls & Ceilings:</strong> 2 coats putty + 1 coat primer + 2 coats of Asian Tractor Emulsion\n• <strong>Exterior Walls:</strong> 1 coat primer + 2 coats of Apex Emulsion\n• <strong>Windows & MS Grills:</strong> 2 coats of enamel paint\n• <strong>Paint Brands:</strong> Asian, Berger, Dulux (as per owner preference)",
-      fabrication:
-        "• <strong>MS Staircase Railing:</strong> ₹450 per sq. ft. (3′ height)\n• <strong>MS Standard Gate:</strong> ₹450 per sq. ft. (5′ height)",
-      plumbing:
-        "• <strong>Pipes:</strong> CPVC (Ashirwad, Supreme, Astral)\n• <strong>Overhead Tank:</strong> PVC (Ganga or Kaveri) with MS support (6ft height)\n• <strong>Solar & Geyser Provision:</strong> Diverter and mixer-ready\n• <strong>Sanitary Installations:</strong>\n  o <strong>Overhead tank:</strong> ₹2000\n  o <strong>Commode:</strong> ₹10000\n  o <strong>Wall mixer set:</strong> ₹6000",
-      extra:
-        "• <strong>BBMP/BDA Approvals & Liaison Fees:</strong>  \n• <strong>Building Plinth Level Above 18″ from Road:</strong>  \n• <strong>External Ramps & Landscaping:</strong>  \n• <strong>Extra Depth for Sump Tank,Rain water sump, gas lines:</strong>  \n• <strong>Interior Works (Wardrobes, False Ceiling, etc.):</strong>  \n• <strong>External Elevation Cladding:</strong>  \n• <strong>Security Fabrication Works:</strong>  \n• <strong>Any Civil Works Outside the Main House,Road cutting:</strong>  \n• <strong>Additional Height for Compound Wall:</strong>  \n• <strong>Electrical Fixtures (Lights, Fans, Bulbs, etc.):</strong>  \n• <strong>Additional Charges for Soil Bearing Capacity < 180 SBC:</strong>  ",
-      sanctions:
-        "We assist with obtaining permissions, approvals, and sanction fees for:\n• <strong>Construction Plan Sanction:</strong> Assistance provided\n• <strong>Temporary Electricity Connection:</strong> Assistance provided\n• <strong>Permanent Electrical Connection:</strong> Assistance provided\n• <strong>Water Connection:</strong> Assistance provided\n• <strong>Sewage Connection:</strong> Assistance provided",
-      elevation:
-        "<strong>Elevation Budget:</strong> 0.5% of the Project's Super Built-Up Cost",
-      audit:
-        "• <strong>Soil Testing:</strong> Additional charges\n• <strong>Site Supervision:</strong> Civil Engineer & Project Manager assigned\n• <strong>Architect Visits:</strong> Additional charges",
-    },
-    package2300: {
-      design:
-        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevation</strong> \n• <strong>Structural Drawing</strong> \n• <strong>Plumbing & Electrical Layout</strong> \n• <strong>Working Drawings for Execution & Schedule of Openings</strong> ",
-      materials:
-        "• <strong>Steel:</strong> Fe500/550 Grade TMT – Indus, Prime Gold, JSW, or Tata Equivalent\n• <strong>Cement:</strong> 53 & 43 Grades (Birla, ACC, Ultratech, or Equivalent)\n• <strong>Aggregates:</strong> 20MM & 40MM\n• <strong>Sand:</strong> M-Sand for Blockwork & P-Sand for Plastering\n• <strong>Blocks:</strong> Solid Blocks : 6″ {55 per pic} & 4″ {45 per pic}\n• <strong>Concrete Mix:</strong> RMC – M20 Grade",
-      foundation:
-        "• <strong>Underground Sump</strong> 6″ Solid Block, Waterproof Plastered\n• <strong>Plinth Foundation</strong> Two-Course Size Stone Masonry Under Plinth\n• <strong>Ceiling Height:</strong> 10 Feet (Floor to Floor)\n• <strong>Waterproofing:</strong> Dr. Fixit or Fosroc",
-      flooring:
-        "• <strong>Living, Kitchen, Dining & Bedroom:</strong> ₹150/- per sq. ft.\n• <strong>Staircase:</strong> Granite up to ₹120/- per sq. ft.\n• <strong>Balconies & Sitouts:</strong> Anti-skid tiles up to ₹150/- per sq. ft.\n• <strong>Bathroom/Toilet Wall & Flooring:</strong> ₹150/- per sq. ft.\n• <strong>Parking Floor:</strong> ₹150/- per sq. ft.\n• <strong>Kitchen Countertop:</strong> ₹450/- per sq. ft.\n• <strong>Kitchen Dadoing (2 feet tiles):</strong> ₹150/- per sq. ft.\n• <strong>Bathroom Dadoing (10 feet height):</strong> Included\n• <strong>Terrace:</strong> Screed Concreting",
-      windows:
-        "• <strong>Windows:</strong> 3-Track UPVC with 5mm Glass & MS Grill (Budget ₹850/- per sq. ft.)\n• <strong>Maximum Opening Percentage:</strong> 15%",
-      doors:
-        "• <strong>Main Door:</strong> Teak Wood Frame (6″X6″) + Teak Door Shutter (₹40,000 per door)\n• <strong>Pooja Door:</strong> 5″X3″ Readymade Door (₹35,000 per door)\n• <strong>Internal Doors:</strong> WPC/Sal Frame (4″X3″) + Membrane Door Shutter (₹12,000 per door)\n• <strong>Bathroom Doors:</strong> WPC",
-      painting:
-        "• <strong>Interior Walls & Ceiling:</strong> 2 Coats Putty + 1 Coat Primer + 2 Coats of Asian Royale\n• <strong>Exterior Walls:</strong> 1 Coat Primer + 2 Coats of Apex ultima\n• <strong>Windows MS Grills:</strong> 2 Coats of Enamel Paint\n• <strong>Brands Considered:</strong> Asian, Berger, Dulux (Owner's Choice)",
-      fabrication:
-        "• <strong>MS Staircase Railing:</strong> ₹1000 per sq. ft. (3'6” height)\n• <strong>MS Standard Gate:</strong> ₹550 per sq. ft. (6' height)",
-      plumbing:
-        "• <strong>Pipes:</strong> Ashirwad / Supreme / Astral CPVC\n• <strong>Water Tank:</strong> PVC Overhead Tank (Ganga/Kaveri) with MS Structure (6' height)\n• <strong>Solar & Geyser Provision:</strong> Provided for Diverters/Mixtures Only\n• <strong>Sewage Chambers:</strong> PVC Cover Inside Plot Area (Overhead Tank: ₹4000, Commode: ₹12,000, Wall Mixer: ₹8000)",
-      extra:
-        "• <strong>Liaison Work:</strong> BBMP/BDA or other approving bodies\n• <strong>Extra Civil Work:</strong>\n  o Floor Level more than 18″ above Road Level\n  o Outside Ramping & Extra Sump Depth, Rain water sump\n  o Interior Works (Wardrobe, False Ceiling, etc.)\n  o External Cladding for Elevation\n  o Landscaping & Security Fabrication Work\n  o Any Civil Work outside House Area Road cutting\n  o Additional Height for Compound\n• <strong>Electrical Fittings:</strong> Light Tubes, Bulbs, Fans, etc., not included\n• <strong>Soil Bearing Capacity (SBC):</strong> Extra charges if SBC < 180",
-      sanctions:
-        "Assistance for:\n• <strong>Construction Plan Sanction:</strong> Included\n• <strong>Temporary Electricity Connection:</strong> Included\n• <strong>Permanent Electrical Connection:</strong> Included\n• <strong>Water Connection:</strong> Included\n• <strong>Sewage Connection:</strong> Included",
-      additional:
-        "• <strong>Elevation Budget:</strong> 1.25% of Project Super built Cost\n• <strong>Soil Testing:</strong> Extra charges\n• <strong>Site Supervision:</strong> Civil Engineer & PM assigned\n• <strong>Architect Visits:</strong> Extra charges",
-    },
+  const [sectionContent, setSectionContent] = useState({
     package2500: {
       design:
         "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong>",
@@ -215,7 +376,7 @@ const ConstructionPackages = () => {
       fabrication:
         "• <strong>MS Staircase Railing:</strong> ₹300 per sq. ft. (3′ height)\n• <strong>MS Standard Gate:</strong> ₹350 per sq. ft. (5′ height)",
       plumbing:
-        "• <strong>Pipes:</strong> CPVC (Ashirwad, Supreme, Astral)\n• <strong>Overhead Tank:</strong> PVC (Ganga or Kaveri) with MS support (6ft height)\n• <strong>Solar & Geyser Provision:</strong> Diverter and mixer-ready\n• <strong>Sanitary Installations:</strong>\n  o <strong>Overhead tank:</strong> ₹1,000\n  o <strong>Commode:</strong> ₹6,500\n  o <strong>Wall mixer:</strong> ₹3,500",
+        "• <strong>Pipes:</strong> CPVC (Ashirwad, Supreme, Astral)\n• <strong>Overhead Tank:</strong> PVC (Ganga or Kaveri) with MS support (6ft height)\n• <strong>Solar & Geyser Provision:</strong> Diverter and mixer-ready\n• <strong>Sanitary Installations:</strong>\n o <strong>Overhead tank:</strong> ₹1,000\n o <strong>Commode:</strong> ₹6,500\n o <strong>Wall mixer:</strong> ₹3,500",
       extra:
         "• <strong>Compound Wall Construction</strong>\n• <strong>BBMP/BDA Approvals & Liaison Fees</strong>\n• <strong>Building Plinth Level Above 18″ from Road</strong>\n• <strong>External Ramps & Landscaping, road cutting works</strong>\n• <strong>Extra Depth for Sump Tank, Rain water sump</strong>\n• <strong>Interior Works (Wardrobes, False Ceiling, etc.)</strong>\n• <strong>External Elevation Cladding</strong>\n• <strong>Security Fabrication Works</strong>\n• <strong>Any Civil Works Outside the Main House</strong>\n• <strong>Additional Height for Compound Wall</strong>\n• <strong>Electrical Fixtures (Lights, Fans, Bulbs, etc.)</strong>\n• <strong>Additional Charges for Soil Bearing Capacity < 180 SBC</strong>",
       sanctions:
@@ -225,15 +386,19 @@ const ConstructionPackages = () => {
       audit:
         "• <strong>Soil Testing:</strong> Additional charges\n• <strong>Site Supervision:</strong> Civil Engineer & Project Manager assigned\n• <strong>Architect Visits:</strong> Additional charges",
     },
-  };
+  });
 
   const packages = [
     {
       id: "package2500",
       title: "Basic Package Details",
-      price: "Rs 1850/sqft",
-      color: "", // White text for better contrast
-      gradient: "linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))", // Coffee to black gradient
+      price: `Rs ${
+        packageData.package_cost
+          ? (packageData.package_cost / 1000).toFixed(0) + "K"
+          : "Loading..."
+      }`,
+      color: "",
+      gradient: "linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))",
       sections: [
         {
           id: "pkg2500One",
@@ -297,173 +462,11 @@ const ConstructionPackages = () => {
         },
       ],
     },
-    {
-      id: "package2000",
-      title: "Premium Package Details",
-      price: "Rs 2000/sqft",
-      color: "", // White text for better contrast
-      gradient: "linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))",
-      sections: [
-        {
-          id: "pkg2000One",
-          title: "Design & Drawings",
-          content: sectionContent.package2000.design,
-        },
-        {
-          id: "pkg2000Two",
-          title: "Core Construction Materials",
-          content: sectionContent.package2000.materials,
-        },
-        {
-          id: "pkg2000Three",
-          title: "Flooring & Wall Tiling",
-          content: sectionContent.package2000.flooring,
-        },
-        {
-          id: "pkg2000Four",
-          title: "Windows",
-          content: sectionContent.package2000.windows,
-        },
-        {
-          id: "pkg2000Five",
-          title: "Doors",
-          content: sectionContent.package2000.doors,
-        },
-        {
-          id: "pkg2000Six",
-          title: "Painting & Finishing",
-          content: sectionContent.package2000.painting,
-        },
-        {
-          id: "pkg2000Seven",
-          title: "Fabrication Works",
-          content: sectionContent.package2000.fabrication,
-        },
-        {
-          id: "pkg2000Eight",
-          title: "Plumbing & Sanitary",
-          content: sectionContent.package2000.plumbing,
-        },
-        {
-          id: "pkg2000Nine",
-          title: "Extra Charges",
-          content: sectionContent.package2000.extra,
-        },
-        {
-          id: "pkg2000Ten",
-          title: "Government Sanctions & Electrical Assistance",
-          content: sectionContent.package2000.sanctions,
-        },
-        {
-          id: "pkg2000Eleven",
-          title: "Elevation Budget",
-          content: sectionContent.package2000.elevation,
-        },
-        {
-          id: "pkg2000Twelve",
-          title: "Site Audit & Reporting",
-          content: sectionContent.package2000.audit,
-        },
-      ],
-    },
-    {
-      id: "package2300",
-      title: "Construction Package Details",
-      price: "Rs 2300/sqft",
-      color: "", // White text for better contrast
-      gradient: "linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))",
-      sections: [
-        {
-          id: "pkg2300One",
-          title: "Design & Drawings",
-          content: sectionContent.package2300.design,
-        },
-        {
-          id: "pkg2300Two",
-          title: "Materials & Construction",
-          content: sectionContent.package2300.materials,
-        },
-        {
-          id: "pkg2300Three",
-          title: "Foundation & Waterproofing",
-          content: sectionContent.package2300.foundation,
-        },
-        {
-          id: "pkg2300Four",
-          title: "Flooring & Finishing",
-          content: sectionContent.package2300.flooring,
-        },
-        {
-          id: "pkg2300Five",
-          title: "Windows",
-          content: sectionContent.package2300.windows,
-        },
-        {
-          id: "pkg2300Six",
-          title: "Doors",
-          content: sectionContent.package2300.doors,
-        },
-        {
-          id: "pkg2300Seven",
-          title: "Painting & Finishing",
-          content: sectionContent.package2300.painting,
-        },
-        {
-          id: "pkg2300Eight",
-          title: "Railings & Gates",
-          content: sectionContent.package2300.fabrication,
-        },
-        {
-          id: "pkg2300Nine",
-          title: "Plumbing & Sanitation",
-          content: sectionContent.package2300.plumbing,
-        },
-        {
-          id: "pkg2300Ten",
-          title: "Exclusions & Additional Charges",
-          content: sectionContent.package2300.extra,
-        },
-        {
-          id: "pkg2300Eleven",
-          title: "Government Approvals & Utilities",
-          content: sectionContent.package2300.sanctions,
-        },
-        {
-          id: "pkg2300Twelve",
-          title: "Additional Charges",
-          content: sectionContent.package2300.additional,
-        },
-      ],
-    },
   ];
 
-  // const handleChangebottom = (event, newValue) => {
-  //   setValue(newValue);
-  //   // Navigate to the corresponding route
-  //   switch (newValue) {
-  //     case "home":
-  //       navigate("/dashboard");
-  //       break;
-  //     case "construction":
-  //       navigate("/constructions");
-  //       break;
-  //     case "post":
-  //       navigate("/post");
-  //       break;
-  //     case "services":
-  //       navigate("/home-service");
-  //       break;
-  //     case "profile":
-  //       navigate("/work-detail");
-  //       break;
-  //     default:
-  //       navigate("/");
-  //   }
-  // };
-
- 
-
- 
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   return (
     <>
@@ -481,185 +484,236 @@ const ConstructionPackages = () => {
             gap: "20px",
           }}
         >
-          {packages.map((pkg, index) => (
-            <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
-              <Card
-                sx={{
-                  borderRadius: "16px",
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                  overflow: "hidden",
-                  transition: "transform 0.4s, box-shadow 0.4s",
-                  "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
-                  },
-                  border: "none",
-                }}
-              >
-                <CardHeader
-                  title={
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        fontWeight: 700,
-                        color: "white",
-                        fontSize: "1.6rem",
-                        letterSpacing: "0.5px",
-                      }}
-                    >
-                      {pkg.title}
-                    </Typography>
-                  }
-                  subheader={
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        fontWeight: 700,
-                        color: "white",
-                        mt: 1.5,
-                        background: "rgba(255,255,255,0.2)",
-                        display: "inline-block",
-                        px: 3,
-                        py: 1,
-                        borderRadius: "20px",
-                        backdropFilter: "blur(5px)",
-                        fontSize: "1.5rem",
-                      }}
-                    >
-                      {pkg.price}
-                    </Typography>
-                  }
-                  sx={{
-                    background: pkg.gradient,
-                    padding: "30px 20px",
-                    textAlign: "center",
-                    position: "relative",
-                    "&:after": {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "100px",
-                      height: "4px",
-                      backgroundColor: "rgba(255,255,255,0.5)",
-                      borderRadius: "2px",
-                    },
-                  }}
-                />
-                <Box sx={{ background: "#fff" }}>
-                  {pkg.sections.map((section) => (
-                    <Accordion
-                      key={section.id}
-                      expanded={expanded[pkg.id] === section.id}
-                      onChange={handleChange(section.id, pkg.id)}
-                      sx={{
-                        "&:before": { display: "none" },
-                        boxShadow: "none",
-                        borderBottom: "1px solid rgba(0,0,0,0.05)",
-                        backgroundColor:
-                          expanded[pkg.id] === section.id
-                            ? "rgba(74, 0, 224, 0.03)"
-                            : "transparent",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          backgroundColor: "rgba(74, 0, 224, 0.03)",
-                        },
-                      }}
-                    >
-                      <AccordionSummary
-                        expandIcon={
-                          expanded[pkg.id] === section.id ? (
-                            <RemoveIcon sx={{ color: pkg.color }} />
-                          ) : (
-                            <AddIcon sx={{ color: "#666" }} />
-                          )
-                        }
-                        aria-controls={`${section.id}-content`}
-                        id={`${section.id}-header`}
-                        sx={{
-                          padding: "0 25px",
-                          minHeight: "68px !important",
-                          "& .MuiAccordionSummary-content": {
-                            margin: "12px 0",
-                            alignItems: "center",
-                          },
-                        }}
-                      >
-                        <Typography
+            {packages.map((pkg, index) => (
+                      <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
+                        <Card
                           sx={{
-                            fontWeight: 600,
-                            color:
-                              expanded[pkg.id] === section.id
-                                ? pkg.color
-                                : "#444",
-                            fontSize: "1.2rem",
-                            letterSpacing: "0.2px",
+                            borderRadius: "16px",
+                            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                            overflow: "hidden",
+                            transition: "transform 0.4s, box-shadow 0.4s",
+                            "&:hover": {
+                              transform: "translateY(-8px)",
+                              boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
+                            },
+                            border: "none",
                           }}
                         >
-                          {section.title}
-                        </Typography>
-                        <IconButton
-                          onClick={() => {
-                            if (editingField === `${pkg.id}-${section.id}`) {
-                              handleSave(pkg.id, section.id);
-                            } else {
-                              handleEdit(
-                                pkg.id,
-                                section.id,
-                                editableContent[`${pkg.id}-${section.id}`] ||
-                                  section.content
-                              );
+                          <CardHeader
+                            title={
+                              <Typography
+                                variant="h5"
+                                sx={{
+                                  fontWeight: 700,
+                                  color: "white",
+                                  fontSize: "1.6rem",
+                                  letterSpacing: "0.5px",
+                                }}
+                              >
+                                {pkg.title}
+                              </Typography>
                             }
-                          }}
-                          sx={{ marginLeft: "auto" }}
-                        >
-                          {editingField === `${pkg.id}-${section.id}` ? (
-                            <SaveIcon />
-                          ) : (
-                            <EditIcon />
-                          )}
-                        </IconButton>
-                      </AccordionSummary>
-                      <AccordionDetails
-                        sx={{
-                          padding: "0 25px 25px",
-                          backgroundColor: "#fff",
-                          borderLeft: `3px solid ${pkg.color}`,
-                          marginLeft: "25px",
-                          marginBottom: "15px",
-                          borderRadius: "0 8px 8px 0",
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            color: "#555",
-                            textAlign: "left",
-                            lineHeight: "1.8",
-                            fontSize: "0.95rem",
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {renderContentWithEditableRupeeValues(
-                            pkg.id,
-                            section.id,
-                            editingField === `${pkg.id}-${section.id}`
-                              ? tempContent[`${pkg.id}-${section.id}`]
-                              : editableContent[`${pkg.id}-${section.id}`] ||
-                                  section.content
-                          )}
-                        </Typography>
-                      </AccordionDetails>
-                    </Accordion>
-                  ))}
-                </Box>
-              </Card>
-            </Grow>
-          ))}
+                            subheader={
+                              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                {editingPackageCost ? (
+                                  <TextField
+                                    value={tempPackageCost}
+                                    onChange={(e) => setTempPackageCost(e.target.value.replace(/\D/g, ""))}
+                                    size="small"
+                                    sx={{
+                                      width: "120px",
+                                      mr: 1,
+                                      "& .MuiInputBase-input": {
+                                        color: "white",
+                                        textAlign: "center",
+                                      },
+                                      "& .MuiOutlinedInput-root": {
+                                        "& fieldset": {
+                                          borderColor: "rgba(255,255,255,0.5)",
+                                        },
+                                        "&:hover fieldset": {
+                                          borderColor: "rgba(255,255,255,0.8)",
+                                        },
+                                      },
+                                    }}
+                                  />
+                                ) : (
+                                  <Typography
+                                    variant="h4"
+                                    sx={{
+                                      fontWeight: 700,
+                                      color: "white",
+                                      mt: 1.5,
+                                      background: "rgba(255,255,255,0.2)",
+                                      display: "inline-block",
+                                      px: 3,
+                                      py: 1,
+                                      borderRadius: "20px",
+                                      backdropFilter: "blur(5px)",
+                                      fontSize: "1.5rem",
+                                    }}
+                                  >
+                                    Rs {(packageData.package_cost / 1000).toFixed(0)}K
+                                  </Typography>
+                                )}
+                                <IconButton
+                                  onClick={editingPackageCost ? handleSavePackageCost : handleEditPackageCost}
+                                  sx={{ color: "white", ml: 1 }}
+                                >
+                                  {editingPackageCost ? <SaveIcon /> : <EditIcon />}
+                                </IconButton>
+                              </Box>
+                            }
+                            sx={{
+                              background: pkg.gradient,
+                              padding: "30px 20px",
+                              textAlign: "center",
+                              position: "relative",
+                              "&:after": {
+                                content: '""',
+                                position: "absolute",
+                                bottom: 0,
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                width: "100px",
+                                height: "4px",
+                                backgroundColor: "rgba(255,255,255,0.5)",
+                                borderRadius: "2px",
+                              },
+                            }}
+                          />
+                          <Box sx={{ background: "#fff" }}>
+                            {pkg.sections.map((section) => (
+                              <Accordion
+                                key={section.id}
+                                expanded={expanded[pkg.id] === section.id}
+                                onChange={handleChange(section.id, pkg.id)}
+                                sx={{
+                                  "&:before": { display: "none" },
+                                  boxShadow: "none",
+                                  borderBottom: "1px solid rgba(0,0,0,0.05)",
+                                  backgroundColor:
+                                    expanded[pkg.id] === section.id
+                                      ? "rgba(74, 0, 224, 0.03)"
+                                      : "transparent",
+                                  transition: "all 0.3s ease",
+                                  "&:hover": {
+                                    backgroundColor: "rgba(74, 0, 224, 0.03)",
+                                  },
+                                }}
+                              >
+                                <AccordionSummary
+                                  expandIcon={
+                                    expanded[pkg.id] === section.id ? (
+                                      <RemoveIcon sx={{ color: pkg.color }} />
+                                    ) : (
+                                      <AddIcon sx={{ color: "#666" }} />
+                                    )
+                                  }
+                                  aria-controls={`${section.id}-content`}
+                                  id={`${section.id}-header`}
+                                  sx={{
+                                    padding: "0 25px",
+                                    minHeight: "68px !important",
+                                    "& .MuiAccordionSummary-content": {
+                                      margin: "12px 0",
+                                      alignItems: "center",
+                                    },
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontWeight: 600,
+                                      color:
+                                        expanded[pkg.id] === section.id
+                                          ? pkg.color
+                                          : "#444",
+                                      fontSize: "1.2rem",
+                                      letterSpacing: "0.2px",
+                                    }}
+                                  >
+                                    {section.title}
+                                  </Typography>
+                                  <IconButton
+                                    onClick={() => {
+                                      if (editingField === `${pkg.id}-${section.id}`) {
+                                        handleSave(pkg.id, section.id);
+                                      } else {
+                                        handleEdit(
+                                          pkg.id,
+                                          section.id,
+                                          editableContent[`${pkg.id}-${section.id}`] ||
+                                            section.content
+                                        );
+                                      }
+                                    }}
+                                    sx={{ marginLeft: "auto" }}
+                                  >
+                                    {editingField === `${pkg.id}-${section.id}` ? (
+                                      <SaveIcon />
+                                    ) : (
+                                      <EditIcon />
+                                    )}
+                                  </IconButton>
+                                </AccordionSummary>
+                                <AccordionDetails
+                                  sx={{
+                                    padding: "0 25px 25px",
+                                    backgroundColor: "#fff",
+                                    borderLeft: `3px solid ${pkg.color}`,
+                                    marginLeft: "25px",
+                                    marginBottom: "15px",
+                                    borderRadius: "0 8px 8px 0",
+                                    transition: "all 0.3s ease",
+                                  }}
+                                >
+                                  <Typography
+                                    variant="body1"
+                                    sx={{
+                                      color: "#555",
+                                      textAlign: "left",
+                                      lineHeight: "1.8",
+                                      fontSize: "0.95rem",
+                                      whiteSpace: "pre-line",
+                                    }}
+                                  >
+                                    {renderContentWithEditableRupeeValues(
+                                      pkg.id,
+                                      section.id,
+                                      editingField === `${pkg.id}-${section.id}`
+                                        ? tempContent[`${pkg.id}-${section.id}`]
+                                        : editableContent[`${pkg.id}-${section.id}`] ||
+                                            section.content
+                                    )}
+                                  </Typography>
+                                </AccordionDetails>
+                              </Accordion>
+                            ))}
+                          </Box>
+                        </Card>
+                      </Grow>
+                    ))}
         </Box>
       </Fade>
+      <div>
+        <Packages2 />
+      </div>
+      {/* <div>
+        <Package3 />
+      </div>  */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

@@ -37,6 +37,7 @@ import { Link } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import logotop from './Images/landnest-logo.jpg';
 import axios from 'axios';
+import { BASE_URL } from '../../src/Api/ApiUrls';
 
 const chunkArray = (array, chunkSize) => {
   const result = [];
@@ -80,7 +81,7 @@ const ExploreConstructionResources = () => {
         setLoading(true);
         
         // Fetch categories from API
-        const categoriesResponse = await axios.get('http://46.37.122.105:89/material-categories/');
+        const categoriesResponse = await axios.get(`${BASE_URL}/material-categories/`);
         const fetchedCategories = categoriesResponse.data.length > 0 ? 
           categoriesResponse.data : defaultCategories;
         
@@ -117,13 +118,13 @@ const ExploreConstructionResources = () => {
   const fetchMaterials = async (categoryId) => {
     try {
       setLoading(true);
-      const response = await axios.get('http://46.37.122.105:89/material-content/');
+      const response = await axios.get(`${BASE_URL}/material-content/`);
       const filteredMaterials = response.data
         .filter(item => item.category_id === categoryId)
         .map(item => ({
           id: item.content_id,
           title: item.content,
-          imageUrl: `http://46.37.122.105:89${item.image}`
+          imageUrl: `${BASE_URL}${item.image}`
         }));
       setMaterials(filteredMaterials);
     } catch (error) {
