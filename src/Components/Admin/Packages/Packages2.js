@@ -22,8 +22,6 @@ import {
   Save as SaveIcon,
 } from "@mui/icons-material";
 import AdminDashboard from "../../Admin/Dashboard/Dashboard";
-import Packages2 from "./Packages2";
-// import Package3 from "./Packages3";
 
 const ConstructionPackages = () => {
   const [expanded, setExpanded] = useState({});
@@ -36,15 +34,14 @@ const ConstructionPackages = () => {
     message: "",
     severity: "success",
   });
-
-   const [editingPackageCost, setEditingPackageCost] = useState(false);
-    const [tempPackageCost, setTempPackageCost] = useState("");
+  const [editingPackageCost, setEditingPackageCost] = useState(false);
+  const [tempPackageCost, setTempPackageCost] = useState("");
 
   // Fetch data from API
   useEffect(() => {
     const fetchPackageData = async () => {
       try {
-        const response = await axios.get("https://landnest.net:81/packages/2/");
+        const response = await axios.get("https://landnest.net:81/packages/4/");
         setPackageData(response.data);
         updateSectionContent(response.data);
       } catch (error) {
@@ -64,38 +61,35 @@ const ConstructionPackages = () => {
     setEditingPackageCost(true);
   };
 
+  const handleSavePackageCost = async () => {
+    try {
+      const response = await axios.put(`https://landnest.net:81/packages/4/`, {
+        package_cost: parseInt(tempPackageCost) || 0,
+      });
 
-   const handleSavePackageCost = async () => {
-      try {
-        const response = await axios.put(`https://landnest.net:81/packages/2/`, {
-          package_cost: parseInt(tempPackageCost) || 0,
-        });
-  
-        setPackageData(response.data);
-        setEditingPackageCost(false);
-        setSnackbar({
-          open: true,
-          message: "Package cost updated successfully",
-          severity: "success",
-        });
-      } catch (error) {
-        console.error("Error updating package cost:", error);
-        setSnackbar({
-          open: true,
-          message: "Failed to update package cost",
-          severity: "error",
-        });
-      }
-    };
-  
-
+      setPackageData(response.data);
+      setEditingPackageCost(false);
+      setSnackbar({
+        open: true,
+        message: "Package cost updated successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error updating package cost:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update package cost",
+        severity: "error",
+      });
+    }
+  };
 
   const updateSectionContent = (data) => {
     const updatedSectionContent = {
-      package2500: {
-        design: sectionContent.package2500.design,
-        materials: sectionContent.package2500.materials,
-        flooring: sectionContent.package2500.flooring
+      package2300: {
+        design: sectionContent.package2300.design,
+        materials: sectionContent.package2300.materials,
+        flooring: sectionContent.package2300.flooring
           .replace(/₹60\/sq\. ft\./, `₹${data.tile_general || 0}/sq. ft.`)
           .replace(/₹80\/sq\. ft\./, `₹${data.tile_stair || 0}/sq. ft.`)
           .replace(/₹60\/sq\. ft\./g, `₹${data.tile_balcony || 0}/sq. ft.`)
@@ -109,15 +103,15 @@ const ConstructionPackages = () => {
             /₹50\/sq\. ft\./,
             `₹${data.tile_kitchen_backsplash || 0}/sq. ft.`
           ),
-        windows: sectionContent.package2500.windows.replace(
+        windows: sectionContent.package2300.windows.replace(
           /₹550\/sq\. ft\./,
           `₹${data.window_standered || 0}/sq. ft.`
         ),
-        doors: sectionContent.package2500.doors
+        doors: sectionContent.package2300.doors
           .replace(/₹22,000/, `₹${data.doors_main || 0}`)
           .replace(/₹20,000/, `₹${data.doors_pooja || 0}`)
           .replace(/₹8,000/, `₹${data.doors_internal || 0}`),
-        fabrication: sectionContent.package2500.fabrication
+        fabrication: sectionContent.package2300.fabrication
           .replace(
             /₹300 per sq\. ft\./,
             `₹${data.fabrication_stair_rail || 0} per sq. ft.`
@@ -126,14 +120,14 @@ const ConstructionPackages = () => {
             /₹350 per sq\. ft\./,
             `₹${data.fabrication_gate || 0} per sq. ft.`
           ),
-        plumbing: sectionContent.package2500.plumbing
+        plumbing: sectionContent.package2300.plumbing
           .replace(/₹1,000/, `₹${data.sanitary_overheadtank || 0}`)
           .replace(/₹6,500/, `₹${data.sanitary_commode || 0}`)
           .replace(/₹3,500/, `₹${data.sanitary_wallmixer || 0}`),
-        extra: sectionContent.package2500.extra,
-        sanctions: sectionContent.package2500.sanctions,
-        elevation: sectionContent.package2500.elevation,
-        audit: sectionContent.package2500.audit,
+        extra: sectionContent.package2300.extra,
+        sanctions: sectionContent.package2300.sanctions,
+        elevation: sectionContent.package2300.elevation,
+        audit: sectionContent.package2300.audit,
       },
     };
     setSectionContent(updatedSectionContent);
@@ -180,7 +174,7 @@ const ConstructionPackages = () => {
 
       let updatePayload = {};
       switch (sectionId) {
-        case "pkg2500Three": // Flooring section for 2500
+        case "pkg2300Three": // Flooring section for 2500
           const flooringValues = content.match(/₹([\d,null]+)/g) || [];
           updatePayload = {
             tile_general: extractNumber(flooringValues[0]),
@@ -192,14 +186,14 @@ const ConstructionPackages = () => {
             tile_kitchen_backsplash: extractNumber(flooringValues[6]),
           };
           break;
-        case "pkg2500Four": // Windows section for 2500
+        case "pkg2300Four": // Windows section for 2500
           updatePayload = {
             window_standered: extractNumber(
               content.match(/₹([\d,null]+)/)?.[0]
             ),
           };
           break;
-        case "pkg2500Five": // Doors section for 2500
+        case "pkg2300Five": // Doors section for 2500
           const doorValues = content.match(/₹([\d,null]+)/g) || [];
           updatePayload = {
             doors_main: extractNumber(doorValues[0]),
@@ -207,14 +201,14 @@ const ConstructionPackages = () => {
             doors_internal: extractNumber(doorValues[2]),
           };
           break;
-        case "pkg2500Seven": // Fabrication section for 2500
+        case "pkg2300Seven": // Fabrication section for 2500
           const fabricationValues = content.match(/₹([\d,null]+)/g) || [];
           updatePayload = {
             fabrication_stair_rail: extractNumber(fabricationValues[0]),
             fabrication_gate: extractNumber(fabricationValues[1]),
           };
           break;
-        case "pkg2500Eight": // Plumbing section for 2500
+        case "pkg2300Eight": // Plumbing section for 2500
           const plumbingValues = content.match(/₹([\d,null]+)/g) || [];
           updatePayload = {
             sanitary_overheadtank: extractNumber(plumbingValues[0]) || 0,
@@ -231,7 +225,7 @@ const ConstructionPackages = () => {
 
       if (Object.keys(filteredPayload).length > 0) {
         const response = await axios.put(
-          `https://landnest.net:81/packages/2/`,
+          `https://landnest.net:81/packages/4/`,
           filteredPayload
         );
 
@@ -360,15 +354,15 @@ const ConstructionPackages = () => {
   };
 
   const [sectionContent, setSectionContent] = useState({
-    package2500: {
+    package2300: {
       design:
-        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong>",
+        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong> \n• <strong>Plumbing & Electrical Layout</strong> \n• <strong> Working Drawings for Execution, Schedule of Openings</strong>",
       materials:
         "• <strong>Steel:</strong> Fe500/550 Grade TMT (A-One Gold, Prime Gold, or Equivalent)\n• <strong>Cement:</strong> 53 & 43 Grade (Bharathi, Dalmia, Maha, or Equivalent)\n• <strong>Aggregates:</strong> 20mm & 40mm\n• <strong>Sand:</strong> M-Sand for blockwork, P-Sand for plastering\n• <strong>Blocks:</strong> Solid Blocks (6″ {36 per pic} & 4″ {28 per pic})\n• <strong>Concrete Mix:</strong> RMC or hand mix – M20 Grade\n• <strong>Underground Sump:</strong> 6″ solid block with waterproof plastering\n• <strong>Plinth Foundation:</strong> One course of size stone masonry\n• <strong>Ceiling Height:</strong> 10 feet (floor to floor)\n• <strong>Waterproofing:</strong> Dr. Fixit or Fosroc",
       flooring:
         "• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹60/sq. ft.\n• <strong>Staircase:</strong> Granite up to ₹80/sq. ft.\n• <strong>Balconies & Sitouts:</strong> Anti-skid tiles up to ₹60/sq. ft.\n• <strong>Bathrooms/Toilets:</strong> Wall & floor tiles up to ₹60/sq. ft.\n• <strong>Parking Area:</strong> Flooring up to ₹50/sq. ft.\n• <strong>Kitchen Countertop:</strong> Granite up to ₹100/sq. ft.\n• <strong>Kitchen Backsplash (Dadoing, 4ft height):</strong> Tiles up to ₹50/sq. ft.\n• <strong>Bathroom Wall Tiling:</strong> Up to 7 feet height\n• <strong>Terrace Finishing:</strong> Screed concrete",
       windows:
-        "• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹550/sq. ft.)\n• <strong>Maximum Window Openings:</strong> 2.5-track Aluminum with 4mm glass & MS grill\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
+        "• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹550/sq. ft.)\n• <strong>3-track UPVC with 5mm glass & MS grill (₹700/sq. ft.) or Sal wood frames with shutters\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
       doors:
         "• <strong>Main Door:</strong> Teakwood frame (5″x3″) with teak shutter & fittings (₹22,000 per door)\n• <strong>Pooja Room Door:</strong> Frame (5″x3″) with readymade shutter & fittings (₹20,000 per door)\n• <strong>Internal Doors:</strong> WPC or neem wood frame (4″x3″) with membrane shutter & fittings (₹8,000 per door)\n• <strong>Bathroom Doors:</strong> PVC/WPC doors",
       painting:
@@ -380,9 +374,9 @@ const ConstructionPackages = () => {
       extra:
         "• <strong>Compound Wall Construction</strong>\n• <strong>BBMP/BDA Approvals & Liaison Fees</strong>\n• <strong>Building Plinth Level Above 18″ from Road</strong>\n• <strong>External Ramps & Landscaping, road cutting works</strong>\n• <strong>Extra Depth for Sump Tank, Rain water sump</strong>\n• <strong>Interior Works (Wardrobes, False Ceiling, etc.)</strong>\n• <strong>External Elevation Cladding</strong>\n• <strong>Security Fabrication Works</strong>\n• <strong>Any Civil Works Outside the Main House</strong>\n• <strong>Additional Height for Compound Wall</strong>\n• <strong>Electrical Fixtures (Lights, Fans, Bulbs, etc.)</strong>\n• <strong>Additional Charges for Soil Bearing Capacity < 180 SBC</strong>",
       sanctions:
-        "Assistance with approvals from government agencies, including:\n• <strong>Construction Plan Sanction</strong>\n• <strong>Temporary Electricity Connection</strong>\n• <strong>Permanent Electrical Connection</strong>\n• <strong>Water Connection</strong>\n• <strong>Sewage Connection</strong>",
+        "We assist with obtaining permissions, approvals, and sanction fees for:\n• <strong>Construction Plan Sanction</strong>\n• <strong>Temporary Electricity Connection</strong>\n• <strong>Permanent Electrical Connection</strong>\n• <strong>Water Connection</strong>\n• <strong>Sewage Connection</strong>",
       elevation:
-        "<strong>Elevation Budget:</strong> 0.25% of the Project's Super Built-Up Cost",
+        "<strong>Elevation Budget:</strong> 0.5% of the Project's Super Built-Up Cost",
       audit:
         "• <strong>Soil Testing:</strong> Additional charges\n• <strong>Site Supervision:</strong> Civil Engineer & Project Manager assigned\n• <strong>Architect Visits:</strong> Additional charges",
     },
@@ -390,8 +384,8 @@ const ConstructionPackages = () => {
 
   const packages = [
     {
-      id: "package2500",
-      title: "Basic Package Details",
+      id: "package2300",
+      title: "Construction Package Details",
       price: `Rs ${
         packageData.package_cost
           ? (packageData.package_cost / 1000).toFixed(0) + "K"
@@ -401,64 +395,64 @@ const ConstructionPackages = () => {
       gradient: "linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))",
       sections: [
         {
-          id: "pkg2500One",
+          id: "pkg2300One",
           title: "Design & Drawings",
-          content: sectionContent.package2500.design,
+          content: sectionContent.package2300.design,
         },
         {
-          id: "pkg2500Two",
+          id: "pkg2300Two",
           title: "Construction Materials",
-          content: sectionContent.package2500.materials,
+          content: sectionContent.package2300.materials,
         },
         {
-          id: "pkg2500Three",
+          id: "pkg2300Three",
           title: "Flooring & Wall Tiling",
-          content: sectionContent.package2500.flooring,
+          content: sectionContent.package2300.flooring,
         },
         {
-          id: "pkg2500Four",
+          id: "pkg2300Four",
           title: "Windows",
-          content: sectionContent.package2500.windows,
+          content: sectionContent.package2300.windows,
         },
         {
-          id: "pkg2500Five",
+          id: "pkg2300Five",
           title: "Doors",
-          content: sectionContent.package2500.doors,
+          content: sectionContent.package2300.doors,
         },
         {
-          id: "pkg2500Six",
+          id: "pkg2300Six",
           title: "Painting & Finishing",
-          content: sectionContent.package2500.painting,
+          content: sectionContent.package2300.painting,
         },
         {
-          id: "pkg2500Seven",
+          id: "pkg2300Seven",
           title: "Fabrication Works",
-          content: sectionContent.package2500.fabrication,
+          content: sectionContent.package2300.fabrication,
         },
         {
-          id: "pkg2500Eight",
+          id: "pkg2300Eight",
           title: "Plumbing & Sanitary",
-          content: sectionContent.package2500.plumbing,
+          content: sectionContent.package2300.plumbing,
         },
         {
-          id: "pkg2500Nine",
+          id: "pkg2300Nine",
           title: "Extra Charges",
-          content: sectionContent.package2500.extra,
+          content: sectionContent.package2300.extra,
         },
         {
-          id: "pkg2500Ten",
+          id: "pkg2300Ten",
           title: "Government Sanctions & Electrical Assistance",
-          content: sectionContent.package2500.sanctions,
+          content: sectionContent.package2300.sanctions,
         },
         {
-          id: "pkg2500Eleven",
+          id: "pkg2300Eleven",
           title: "Elevation Budget",
-          content: sectionContent.package2500.elevation,
+          content: sectionContent.package2300.elevation,
         },
         {
-          id: "pkg2500Twelve",
+          id: "pkg2300Twelve",
           title: "Site Audit & Reporting",
-          content: sectionContent.package2500.audit,
+          content: sectionContent.package2300.audit,
         },
       ],
     },
@@ -470,7 +464,6 @@ const ConstructionPackages = () => {
 
   return (
     <>
-      <AdminDashboard />
       <Fade in={true} timeout={800}>
         <Box
           sx={{
@@ -484,223 +477,217 @@ const ConstructionPackages = () => {
             gap: "20px",
           }}
         >
-            {packages.map((pkg, index) => (
-                      <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
-                        <Card
+          {packages.map((pkg, index) => (
+            <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
+              <Card
+                sx={{
+                  borderRadius: "16px",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                  overflow: "hidden",
+                  transition: "transform 0.4s, box-shadow 0.4s",
+                  "&:hover": {
+                    transform: "translateY(-8px)",
+                    boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
+                  },
+                  border: "none",
+                }}
+              >
+                <CardHeader
+                  title={
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 700,
+                        color: "white",
+                        fontSize: "1.6rem",
+                        letterSpacing: "0.5px",
+                      }}
+                    >
+                      {pkg.title}
+                    </Typography>
+                  }
+                  subheader={
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {editingPackageCost ? (
+                        <TextField
+                          value={tempPackageCost}
+                          onChange={(e) => setTempPackageCost(e.target.value.replace(/\D/g, ""))}
+                          size="small"
                           sx={{
-                            borderRadius: "16px",
-                            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                            overflow: "hidden",
-                            transition: "transform 0.4s, box-shadow 0.4s",
-                            "&:hover": {
-                              transform: "translateY(-8px)",
-                              boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
+                            width: "120px",
+                            mr: 1,
+                            "& .MuiInputBase-input": {
+                              color: "white",
+                              textAlign: "center",
                             },
-                            border: "none",
+                            "& .MuiOutlinedInput-root": {
+                              "& fieldset": {
+                                borderColor: "rgba(255,255,255,0.5)",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "rgba(255,255,255,0.8)",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: 700,
+                            color: "white",
+                            mt: 1.5,
+                            background: "rgba(255,255,255,0.2)",
+                            display: "inline-block",
+                            px: 3,
+                            py: 1,
+                            borderRadius: "20px",
+                            backdropFilter: "blur(5px)",
+                            fontSize: "1.5rem",
                           }}
                         >
-                          <CardHeader
-                            title={
-                              <Typography
-                                variant="h5"
-                                sx={{
-                                  fontWeight: 700,
-                                  color: "white",
-                                  fontSize: "1.6rem",
-                                  letterSpacing: "0.5px",
-                                }}
-                              >
-                                {pkg.title}
-                              </Typography>
+                          Rs {(packageData.package_cost / 1000).toFixed(0)}K
+                        </Typography>
+                      )}
+                      <IconButton
+                        onClick={editingPackageCost ? handleSavePackageCost : handleEditPackageCost}
+                        sx={{ color: "white", ml: 1 }}
+                      >
+                        {editingPackageCost ? <SaveIcon /> : <EditIcon />}
+                      </IconButton>
+                    </Box>
+                  }
+                  sx={{
+                    background: pkg.gradient,
+                    padding: "30px 20px",
+                    textAlign: "center",
+                    position: "relative",
+                    "&:after": {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: "100px",
+                      height: "4px",
+                      backgroundColor: "rgba(255,255,255,0.5)",
+                      borderRadius: "2px",
+                    },
+                  }}
+                />
+                <Box sx={{ background: "#fff" }}>
+                  {pkg.sections.map((section) => (
+                    <Accordion
+                      key={section.id}
+                      expanded={expanded[pkg.id] === section.id}
+                      onChange={handleChange(section.id, pkg.id)}
+                      sx={{
+                        "&:before": { display: "none" },
+                        boxShadow: "none",
+                        borderBottom: "1px solid rgba(0,0,0,0.05)",
+                        backgroundColor:
+                          expanded[pkg.id] === section.id
+                            ? "rgba(74, 0, 224, 0.03)"
+                            : "transparent",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          backgroundColor: "rgba(74, 0, 224, 0.03)",
+                        },
+                      }}
+                    >
+                      <AccordionSummary
+                        expandIcon={
+                          expanded[pkg.id] === section.id ? (
+                            <RemoveIcon sx={{ color: pkg.color }} />
+                          ) : (
+                            <AddIcon sx={{ color: "#666" }} />
+                          )
+                        }
+                        aria-controls={`${section.id}-content`}
+                        id={`${section.id}-header`}
+                        sx={{
+                          padding: "0 25px",
+                          minHeight: "68px !important",
+                          "& .MuiAccordionSummary-content": {
+                            margin: "12px 0",
+                            alignItems: "center",
+                          },
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            color:
+                              expanded[pkg.id] === section.id
+                                ? pkg.color
+                                : "#444",
+                            fontSize: "1.2rem",
+                            letterSpacing: "0.2px",
+                          }}
+                        >
+                          {section.title}
+                        </Typography>
+                        <IconButton
+                          onClick={() => {
+                            if (editingField === `${pkg.id}-${section.id}`) {
+                              handleSave(pkg.id, section.id);
+                            } else {
+                              handleEdit(
+                                pkg.id,
+                                section.id,
+                                editableContent[`${pkg.id}-${section.id}`] ||
+                                  section.content
+                              );
                             }
-                            subheader={
-                              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                {editingPackageCost ? (
-                                  <TextField
-                                    value={tempPackageCost}
-                                    onChange={(e) => setTempPackageCost(e.target.value.replace(/\D/g, ""))}
-                                    size="small"
-                                    sx={{
-                                      width: "120px",
-                                      mr: 1,
-                                      "& .MuiInputBase-input": {
-                                        color: "white",
-                                        textAlign: "center",
-                                      },
-                                      "& .MuiOutlinedInput-root": {
-                                        "& fieldset": {
-                                          borderColor: "rgba(255,255,255,0.5)",
-                                        },
-                                        "&:hover fieldset": {
-                                          borderColor: "rgba(255,255,255,0.8)",
-                                        },
-                                      },
-                                    }}
-                                  />
-                                ) : (
-                                  <Typography
-                                    variant="h4"
-                                    sx={{
-                                      fontWeight: 700,
-                                      color: "white",
-                                      mt: 1.5,
-                                      background: "rgba(255,255,255,0.2)",
-                                      display: "inline-block",
-                                      px: 3,
-                                      py: 1,
-                                      borderRadius: "20px",
-                                      backdropFilter: "blur(5px)",
-                                      fontSize: "1.5rem",
-                                    }}
-                                  >
-                                    Rs {(packageData.package_cost / 1000).toFixed(0)}K
-                                  </Typography>
-                                )}
-                                <IconButton
-                                  onClick={editingPackageCost ? handleSavePackageCost : handleEditPackageCost}
-                                  sx={{ color: "white", ml: 1 }}
-                                >
-                                  {editingPackageCost ? <SaveIcon /> : <EditIcon />}
-                                </IconButton>
-                              </Box>
-                            }
-                            sx={{
-                              background: pkg.gradient,
-                              padding: "30px 20px",
-                              textAlign: "center",
-                              position: "relative",
-                              "&:after": {
-                                content: '""',
-                                position: "absolute",
-                                bottom: 0,
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                width: "100px",
-                                height: "4px",
-                                backgroundColor: "rgba(255,255,255,0.5)",
-                                borderRadius: "2px",
-                              },
-                            }}
-                          />
-                          <Box sx={{ background: "#fff" }}>
-                            {pkg.sections.map((section) => (
-                              <Accordion
-                                key={section.id}
-                                expanded={expanded[pkg.id] === section.id}
-                                onChange={handleChange(section.id, pkg.id)}
-                                sx={{
-                                  "&:before": { display: "none" },
-                                  boxShadow: "none",
-                                  borderBottom: "1px solid rgba(0,0,0,0.05)",
-                                  backgroundColor:
-                                    expanded[pkg.id] === section.id
-                                      ? "rgba(74, 0, 224, 0.03)"
-                                      : "transparent",
-                                  transition: "all 0.3s ease",
-                                  "&:hover": {
-                                    backgroundColor: "rgba(74, 0, 224, 0.03)",
-                                  },
-                                }}
-                              >
-                                <AccordionSummary
-                                  expandIcon={
-                                    expanded[pkg.id] === section.id ? (
-                                      <RemoveIcon sx={{ color: pkg.color }} />
-                                    ) : (
-                                      <AddIcon sx={{ color: "#666" }} />
-                                    )
-                                  }
-                                  aria-controls={`${section.id}-content`}
-                                  id={`${section.id}-header`}
-                                  sx={{
-                                    padding: "0 25px",
-                                    minHeight: "68px !important",
-                                    "& .MuiAccordionSummary-content": {
-                                      margin: "12px 0",
-                                      alignItems: "center",
-                                    },
-                                  }}
-                                >
-                                  <Typography
-                                    sx={{
-                                      fontWeight: 600,
-                                      color:
-                                        expanded[pkg.id] === section.id
-                                          ? pkg.color
-                                          : "#444",
-                                      fontSize: "1.2rem",
-                                      letterSpacing: "0.2px",
-                                    }}
-                                  >
-                                    {section.title}
-                                  </Typography>
-                                  <IconButton
-                                    onClick={() => {
-                                      if (editingField === `${pkg.id}-${section.id}`) {
-                                        handleSave(pkg.id, section.id);
-                                      } else {
-                                        handleEdit(
-                                          pkg.id,
-                                          section.id,
-                                          editableContent[`${pkg.id}-${section.id}`] ||
-                                            section.content
-                                        );
-                                      }
-                                    }}
-                                    sx={{ marginLeft: "auto" }}
-                                  >
-                                    {editingField === `${pkg.id}-${section.id}` ? (
-                                      <SaveIcon />
-                                    ) : (
-                                      <EditIcon />
-                                    )}
-                                  </IconButton>
-                                </AccordionSummary>
-                                <AccordionDetails
-                                  sx={{
-                                    padding: "0 25px 25px",
-                                    backgroundColor: "#fff",
-                                    borderLeft: `3px solid ${pkg.color}`,
-                                    marginLeft: "25px",
-                                    marginBottom: "15px",
-                                    borderRadius: "0 8px 8px 0",
-                                    transition: "all 0.3s ease",
-                                  }}
-                                >
-                                  <Typography
-                                    variant="body1"
-                                    sx={{
-                                      color: "#555",
-                                      textAlign: "left",
-                                      lineHeight: "1.8",
-                                      fontSize: "0.95rem",
-                                      whiteSpace: "pre-line",
-                                    }}
-                                  >
-                                    {renderContentWithEditableRupeeValues(
-                                      pkg.id,
-                                      section.id,
-                                      editingField === `${pkg.id}-${section.id}`
-                                        ? tempContent[`${pkg.id}-${section.id}`]
-                                        : editableContent[`${pkg.id}-${section.id}`] ||
-                                            section.content
-                                    )}
-                                  </Typography>
-                                </AccordionDetails>
-                              </Accordion>
-                            ))}
-                          </Box>
-                        </Card>
-                      </Grow>
-                    ))}
+                          }}
+                          sx={{ marginLeft: "auto" }}
+                        >
+                          {editingField === `${pkg.id}-${section.id}` ? (
+                            <SaveIcon />
+                          ) : (
+                            <EditIcon />
+                          )}
+                        </IconButton>
+                      </AccordionSummary>
+                      <AccordionDetails
+                        sx={{
+                          padding: "0 25px 25px",
+                          backgroundColor: "#fff",
+                          borderLeft: `3px solid ${pkg.color}`,
+                          marginLeft: "25px",
+                          marginBottom: "15px",
+                          borderRadius: "0 8px 8px 0",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color: "#555",
+                            textAlign: "left",
+                            lineHeight: "1.8",
+                            fontSize: "0.95rem",
+                            whiteSpace: "pre-line",
+                          }}
+                        >
+                          {renderContentWithEditableRupeeValues(
+                            pkg.id,
+                            section.id,
+                            editingField === `${pkg.id}-${section.id}`
+                              ? tempContent[`${pkg.id}-${section.id}`]
+                              : editableContent[`${pkg.id}-${section.id}`] ||
+                                  section.content
+                          )}
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>
+                  ))}
+                </Box>
+              </Card>
+            </Grow>
+          ))}
         </Box>
       </Fade>
-      <div>
-        <Packages2 />
-      </div>
-      {/* <div>
-        <Package3 />
-      </div>  */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
