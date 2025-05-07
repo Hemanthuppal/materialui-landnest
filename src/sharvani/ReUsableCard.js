@@ -222,12 +222,14 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
     sx={{ bgcolor: 'white', boxShadow: 1 }}
     onClick={(e) => {
       e.stopPropagation();
-      window.location.href = `https://wa.me/${property.mobile_no}`;
+      const phone = `91${property.mobile_no}`; // Indian country code
+      window.location.href = `https://wa.me/${phone}`;
     }}
   >
     <Share />
   </IconButton>
 </Tooltip>
+
 
         </Box>
         
