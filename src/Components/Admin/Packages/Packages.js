@@ -58,102 +58,111 @@ const ConstructionPackages = () => {
   const [editingPackageCost, setEditingPackageCost] = useState(false);
   const [tempPackageCost, setTempPackageCost] = useState("0");
   const [isLoading, setIsLoading] = useState(true);
+  const [sectionContent, setSectionContent] = useState({
+    package2500: {
+      design:
+        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong>",
+      materials:
+        "• <strong>Steel:</strong> Fe500/550 Grade TMT (A-One Gold, Prime Gold, or Equivalent)\n• <strong>Cement:</strong> 53 & 43 Grade (Bharathi, Dalmia, Maha, or Equivalent)\n• <strong>Aggregates:</strong> 20mm & 40mm\n• <strong>Sand:</strong> M-Sand for blockwork, P-Sand for plastering\n• <strong>Blocks:</strong> Solid Blocks (6″ {36 per pic} & 4″ {28 per pic})\n• <strong>Concrete Mix:</strong> RMC or hand mix – M20 Grade\n• <strong>Underground Sump:</strong> 6″ solid block with waterproof plastering\n• <strong>Plinth Foundation:</strong> One course of size stone masonry\n• <strong>Ceiling Height:</strong> 10 feet (floor to floor)\n• <strong>Waterproofing:</strong> Dr. Fixit or Fosroc",
+      flooring:
+        "• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹60/sq. ft.\n• <strong>Staircase:</strong> Granite up to ₹80/sq. ft.\n• <strong>Balconies & Sitouts:</strong> Anti-skid tiles up to ₹60/sq. ft.\n• <strong>Bathrooms/Toilets:</strong> Wall & floor tiles up to ₹60/sq. ft.\n• <strong>Parking Area:</strong> Flooring up to ₹50/sq. ft.\n• <strong>Kitchen Countertop:</strong> Granite up to ₹100/sq. ft.\n• <strong>Kitchen Backsplash (Dadoing, 4ft height):</strong> Tiles up to ₹50/sq. ft.\n• <strong>Bathroom Wall Tiling:</strong> Up to 7 feet height\n• <strong>Terrace Finishing:</strong> Screed concrete",
+      windows:
+        "• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹550/sq. ft.)\n• <strong>Maximum Window Openings:</strong> 2.5-track Aluminum with 4mm glass & MS grill\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
+      doors:
+        "• <strong>Main Door:</strong> Teakwood frame (5″x3″) with teak shutter & fittings (₹22,000 per door)\n• <strong>Pooja Room Door:</strong> Frame (5″x3″) with readymade shutter & fittings (₹20,000 per door)\n• <strong>Internal Doors:</strong> WPC or neem wood frame (4″x3″) with membrane shutter & fittings (₹8,000 per door)\n• <strong>Bathroom Doors:</strong> PVC/WPC doors",
+      painting:
+        "• <strong>Interior Walls & Ceilings:</strong> 2 coats putty + 1 coat primer + 2 coats of Asian Tractor Emulsion\n• <strong>Exterior Walls:</strong> 1 coat primer + 2 coats of ACE Emulsion\n• <strong>Windows & MS Grills:</strong> 2 coats of enamel paint\n• <strong>Paint Brands:</strong> Asian, Berger, Dulux (as per owner preference)",
+      fabrication:
+        "• <strong>MS Staircase Railing:</strong> ₹300 per sq. ft. (3′ height)\n• <strong>MS Standard Gate:</strong> ₹350 per sq. ft. (5′ height)",
+      plumbing:
+        "• <strong>Pipes:</strong> CPVC (Ashirwad, Supreme, Astral)\n• <strong>Overhead Tank:</strong> PVC (Ganga or Kaveri) with MS support (6ft height)\n• <strong>Solar & Geyser Provision:</strong> Diverter and mixer-ready\n• <strong>Sanitary Installations:</strong>\n o <strong>Overhead tank:</strong> ₹1,000\n o <strong>Commode:</strong> ₹6,500\n o <strong>Wall mixer:</strong> ₹3,500",
+      extra:
+        "• <strong>Compound Wall Construction</strong>\n• <strong>BBMP/BDA Approvals & Liaison Fees</strong>\n• <strong>Building Plinth Level Above 18″ from Road</strong>\n• <strong>External Ramps & Landscaping, road cutting works</strong>\n• <strong>Extra Depth for Sump Tank, Rain water sump</strong>\n• <strong>Interior Works (Wardrobes, False Ceiling, etc.)</strong>\n• <strong>External Elevation Cladding</strong>\n• <strong>Security Fabrication Works</strong>\n• <strong>Any Civil Works Outside the Main House</strong>\n• <strong>Additional Height for Compound Wall</strong>\n• <strong>Electrical Fixtures (Lights, Fans, Bulbs, etc.)</strong>\n• <strong>Additional Charges for Soil Bearing Capacity < 180 SBC</strong>",
+      sanctions:
+        "Assistance with approvals from government agencies, including:\n• <strong>Construction Plan Sanction</strong>\n• <strong>Temporary Electricity Connection</strong>\n• <strong>Permanent Electrical Connection</strong>\n• <strong>Water Connection</strong>\n• <strong>Sewage Connection</strong>",
+      elevation:
+        "<strong>Elevation Budget:</strong> 0.25% of the Project's Super Built-Up Cost",
+      audit:
+        "• <strong>Soil Testing:</strong> Additional charges\n• <strong>Site Supervision:</strong> Civil Engineer & Project Manager assigned\n• <strong>Architect Visits:</strong> Additional charges",
+    },
+  });
 
   // Fetch data from API
-  useEffect(() => {
-    const fetchPackageData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get("https://landnest.net:81/packages/2/");
-        setPackageData(response.data);
-        updateSectionContent(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching package data:", error);
-        setSnackbar({
-          open: true,
-          message: "Failed to fetch package data",
-          severity: "error",
-        });
-        setIsLoading(false);
-      }
-    };
-    fetchPackageData();
-  }, []);
-
-  const handleEditPackageCost = () => {
-    setTempPackageCost(packageData.package_cost?.toString() || "0");
-    setEditingPackageCost(true);
-  };
-
-  const handleSavePackageCost = async () => {
+  const fetchPackageData = async () => {
     try {
-      const response = await axios.put(`https://landnest.net:81/packages/2/`, {
-        ...packageData,
-        package_cost: parseInt(tempPackageCost) || 0,
-      });
-
+      setIsLoading(true);
+      const response = await axios.get("https://landnest.net:81/packages/2/");
       setPackageData(response.data);
-      setEditingPackageCost(false);
-      setSnackbar({
-        open: true,
-        message: "Package cost updated successfully",
-        severity: "success",
-      });
+      updateSectionContent(response.data);
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error updating package cost:", error);
+      console.error("Error fetching package data:", error);
       setSnackbar({
         open: true,
-        message: "Failed to update package cost",
+        message: "Failed to fetch package data",
         severity: "error",
       });
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchPackageData();
+  }, []);
 
   const updateSectionContent = (data) => {
     const updatedSectionContent = {
       package2500: {
-        design: sectionContent.package2500.design,
-        materials: sectionContent.package2500.materials,
-        flooring: sectionContent.package2500.flooring
-          .replace(/₹60\/sq\. ft\./, `₹${data.tile_general || 0}/sq. ft.`)
-          .replace(/₹80\/sq\. ft\./, `₹${data.tile_stair || 0}/sq. ft.`)
-          .replace(/₹60\/sq\. ft\./g, `₹${data.tile_balcony || 0}/sq. ft.`)
-          .replace(/₹60\/sq\. ft\./g, `₹${data.title_bathroom || 0}/sq. ft.`)
-          .replace(/₹50\/sq\. ft\./, `₹${data.tile_parking || 0}/sq. ft.`)
-          .replace(
-            /₹100\/sq\. ft\./g,
-            `₹${data.tile_kitchen_countertop || 0}/sq. ft.`
-          )
-          .replace(
-            /₹50\/sq\. ft\./,
-            `₹${data.tile_kitchen_backsplash || 0}/sq. ft.`
-          ),
-        windows: sectionContent.package2500.windows.replace(
-          /₹550\/sq\. ft\./,
-          `₹${data.window_standered || 0}/sq. ft.`
-        ),
-        doors: sectionContent.package2500.doors
-          .replace(/₹22,000/, `₹${data.doors_main || 0}`)
-          .replace(/₹20,000/, `₹${data.doors_pooja || 0}`)
-          .replace(/₹8,000/, `₹${data.doors_internal || 0}`),
-        fabrication: sectionContent.package2500.fabrication
-          .replace(
-            /₹300 per sq\. ft\./,
-            `₹${data.fabrication_stair_rail || 0} per sq. ft.`
-          )
-          .replace(
-            /₹350 per sq\. ft\./,
-            `₹${data.fabrication_gate || 0} per sq. ft.`
-          ),
-        plumbing: sectionContent.package2500.plumbing
-          .replace(/₹1,000/, `₹${data.sanitary_overheadtank || 0}`)
-          .replace(/₹6,500/, `₹${data.sanitary_commode || 0}`)
-          .replace(/₹3,500/, `₹${data.sanitary_wallmixer || 0}`),
-        extra: sectionContent.package2500.extra,
-        sanctions: sectionContent.package2500.sanctions,
-        elevation: sectionContent.package2500.elevation,
-        audit: sectionContent.package2500.audit,
+        ...sectionContent.package2500,
+        flooring: `• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹${
+          data.tile_general || 0
+        }/sq. ft.
+• <strong>Staircase:</strong> Granite up to ₹${data.tile_stair || 0}/sq. ft.
+• <strong>Balconies & Sitouts:</strong> Anti-skid tiles up to ₹${
+          data.tile_balcony || 0
+        }/sq. ft.
+• <strong>Bathrooms/Toilets:</strong> Wall & floor tiles up to ₹${
+          data.title_bathroom || 0
+        }/sq. ft.
+• <strong>Parking Area:</strong> Flooring up to ₹${
+          data.tile_parking || 0
+        }/sq. ft.
+• <strong>Kitchen Countertop:</strong> Granite up to ₹${
+          data.tile_kitchen_countertop || 0
+        }/sq. ft.
+• <strong>Kitchen Backsplash (Dadoing, 4ft height):</strong> Tiles up to ₹${
+          data.tile_kitchen_backsplash || 0
+        }/sq. ft.
+• <strong>Bathroom Wall Tiling:</strong> Up to 7 feet height
+• <strong>Terrace Finishing:</strong> Screed concrete`,
+        windows: `• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹${
+          data.window_standered || 0
+        }/sq. ft.)
+• <strong>Maximum Window Openings:</strong> 2.5-track Aluminum with 4mm glass & MS grill
+• <strong>Maximum Window Coverage:</strong> 10% of total wall space`,
+        doors: `• <strong>Main Door:</strong> Teakwood frame (5″x3″) with teak shutter & fittings (₹${
+          data.doors_main || 0
+        } per door)
+• <strong>Pooja Room Door:</strong> Frame (5″x3″) with readymade shutter & fittings (₹${
+          data.doors_pooja || 0
+        } per door)
+• <strong>Internal Doors:</strong> WPC or neem wood frame (4″x3″) with membrane shutter & fittings (₹${
+          data.doors_internal || 0
+        } per door)
+• <strong>Bathroom Doors:</strong> PVC/WPC doors`,
+        fabrication: `• <strong>MS Staircase Railing:</strong> ₹${
+          data.fabrication_stair_rail || 0
+        } per sq. ft. (3′ height)
+• <strong>MS Standard Gate:</strong> ₹${
+          data.fabrication_gate || 0
+        } per sq. ft. (5′ height)`,
+        plumbing: `• <strong>Pipes:</strong> CPVC (Ashirwad, Supreme, Astral)
+• <strong>Overhead Tank:</strong> PVC (Ganga or Kaveri) with MS support (6ft height)
+• <strong>Solar & Geyser Provision:</strong> Diverter and mixer-ready
+• <strong>Sanitary Installations:</strong>
+ o <strong>Overhead tank:</strong> ₹${data.sanitary_overheadtank || 0}
+ o <strong>Commode:</strong> ₹${data.sanitary_commode || 0}
+ o <strong>Wall mixer:</strong> ₹${data.sanitary_wallmixer || 0}`,
       },
     };
     setSectionContent(updatedSectionContent);
@@ -186,7 +195,11 @@ const ConstructionPackages = () => {
 
   const handleSave = async (pkgId, sectionId) => {
     try {
-      const content = tempContent[`${pkgId}-${sectionId}`];
+      const content =
+        tempContent[`${pkgId}-${sectionId}`] ||
+        sectionContent.package2500[
+          sectionId.replace("pkg2500", "").toLowerCase()
+        ];
       const rupeeValues = extractRupeeValues(content);
 
       if (rupeeValues.length === 0) {
@@ -199,9 +212,11 @@ const ConstructionPackages = () => {
       }
 
       let updatePayload = {};
-      switch (sectionId) {
-        case "pkg2500Three": // Flooring section for 2500
-          const flooringValues = content.match(/₹([\d,null]+)/g) || [];
+      const sectionKey = sectionId.replace("pkg2500", "").toLowerCase();
+
+      switch (sectionKey) {
+        case "three": // Flooring section
+          const flooringValues = content.match(/₹(\d+)/g) || [];
           updatePayload = {
             tile_general: extractNumber(flooringValues[0]),
             tile_stair: extractNumber(flooringValues[1]),
@@ -212,30 +227,29 @@ const ConstructionPackages = () => {
             tile_kitchen_backsplash: extractNumber(flooringValues[6]),
           };
           break;
-        case "pkg2500Four": // Windows section for 2500
+        case "four": // Windows section
+          const windowValue = content.match(/₹(\d+)/);
           updatePayload = {
-            window_standered: extractNumber(
-              content.match(/₹([\d,null]+)/)?.[0]
-            ),
+            window_standered: windowValue ? extractNumber(windowValue[0]) : 0,
           };
           break;
-        case "pkg2500Five": // Doors section for 2500
-          const doorValues = content.match(/₹([\d,null]+)/g) || [];
+        case "five": // Doors section
+          const doorValues = content.match(/₹(\d+)/g) || [];
           updatePayload = {
             doors_main: extractNumber(doorValues[0]),
             doors_pooja: extractNumber(doorValues[1]),
             doors_internal: extractNumber(doorValues[2]),
           };
           break;
-        case "pkg2500Seven": // Fabrication section for 2500
-          const fabricationValues = content.match(/₹([\d,null]+)/g) || [];
+        case "seven": // Fabrication section
+          const fabricationValues = content.match(/₹(\d+)/g) || [];
           updatePayload = {
             fabrication_stair_rail: extractNumber(fabricationValues[0]),
             fabrication_gate: extractNumber(fabricationValues[1]),
           };
           break;
-        case "pkg2500Eight": // Plumbing section for 2500
-          const plumbingValues = content.match(/₹([\d,null]+)/g) || [];
+        case "eight": // Plumbing section
+          const plumbingValues = content.match(/₹(\d+)/g) || [];
           updatePayload = {
             sanitary_overheadtank: extractNumber(plumbingValues[0]) || 0,
             sanitary_commode: extractNumber(plumbingValues[1]) || 0,
@@ -244,19 +258,15 @@ const ConstructionPackages = () => {
           break;
       }
 
-      // Filter out undefined values
       const filteredPayload = Object.fromEntries(
         Object.entries(updatePayload).filter(([_, v]) => v !== undefined)
       );
 
       if (Object.keys(filteredPayload).length > 0) {
-        const response = await axios.put(
-          `https://landnest.net:81/packages/2/`,
-          filteredPayload
-        );
+        await axios.put(`https://landnest.net:81/packages/2/`, filteredPayload);
 
-        setPackageData(response.data);
-        updateSectionContent(response.data);
+        // Refresh data after successful update
+        await fetchPackageData();
 
         setSnackbar({
           open: true,
@@ -286,6 +296,36 @@ const ConstructionPackages = () => {
     return num ? parseInt(num, 10) : 0;
   };
 
+  const handleEditPackageCost = () => {
+    setTempPackageCost(packageData.package_cost?.toString() || "0");
+    setEditingPackageCost(true);
+  };
+
+  const handleSavePackageCost = async () => {
+    try {
+      await axios.put(`https://landnest.net:81/packages/2/`, {
+        package_cost: parseInt(tempPackageCost) || 0,
+      });
+
+      // Refresh data after successful update
+      await fetchPackageData();
+
+      setEditingPackageCost(false);
+      setSnackbar({
+        open: true,
+        message: "Package cost updated successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error updating package cost:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update package cost",
+        severity: "error",
+      });
+    }
+  };
+
   const handleRupeeValueChange = (
     pkgId,
     sectionId,
@@ -294,7 +334,6 @@ const ConstructionPackages = () => {
     length,
     newValue
   ) => {
-    // Ensure the value starts with ₹ and has a number or 0
     if (!newValue.startsWith("₹")) {
       newValue = "₹" + (newValue.replace(/[^0-9]/g, "") || "0");
     } else {
@@ -378,35 +417,6 @@ const ConstructionPackages = () => {
 
     return elements;
   };
-
-  const [sectionContent, setSectionContent] = useState({
-    package2500: {
-      design:
-        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong>",
-      materials:
-        "• <strong>Steel:</strong> Fe500/550 Grade TMT (A-One Gold, Prime Gold, or Equivalent)\n• <strong>Cement:</strong> 53 & 43 Grade (Bharathi, Dalmia, Maha, or Equivalent)\n• <strong>Aggregates:</strong> 20mm & 40mm\n• <strong>Sand:</strong> M-Sand for blockwork, P-Sand for plastering\n• <strong>Blocks:</strong> Solid Blocks (6″ {36 per pic} & 4″ {28 per pic})\n• <strong>Concrete Mix:</strong> RMC or hand mix – M20 Grade\n• <strong>Underground Sump:</strong> 6″ solid block with waterproof plastering\n• <strong>Plinth Foundation:</strong> One course of size stone masonry\n• <strong>Ceiling Height:</strong> 10 feet (floor to floor)\n• <strong>Waterproofing:</strong> Dr. Fixit or Fosroc",
-      flooring:
-        "• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹60/sq. ft.\n• <strong>Staircase:</strong> Granite up to ₹80/sq. ft.\n• <strong>Balconies & Sitouts:</strong> Anti-skid tiles up to ₹60/sq. ft.\n• <strong>Bathrooms/Toilets:</strong> Wall & floor tiles up to ₹60/sq. ft.\n• <strong>Parking Area:</strong> Flooring up to ₹50/sq. ft.\n• <strong>Kitchen Countertop:</strong> Granite up to ₹100/sq. ft.\n• <strong>Kitchen Backsplash (Dadoing, 4ft height):</strong> Tiles up to ₹50/sq. ft.\n• <strong>Bathroom Wall Tiling:</strong> Up to 7 feet height\n• <strong>Terrace Finishing:</strong> Screed concrete",
-      windows:
-        "• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹550/sq. ft.)\n• <strong>Maximum Window Openings:</strong> 2.5-track Aluminum with 4mm glass & MS grill\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
-      doors:
-        "• <strong>Main Door:</strong> Teakwood frame (5″x3″) with teak shutter & fittings (₹22,000 per door)\n• <strong>Pooja Room Door:</strong> Frame (5″x3″) with readymade shutter & fittings (₹20,000 per door)\n• <strong>Internal Doors:</strong> WPC or neem wood frame (4″x3″) with membrane shutter & fittings (₹8,000 per door)\n• <strong>Bathroom Doors:</strong> PVC/WPC doors",
-      painting:
-        "• <strong>Interior Walls & Ceilings:</strong> 2 coats putty + 1 coat primer + 2 coats of Asian Tractor Emulsion\n• <strong>Exterior Walls:</strong> 1 coat primer + 2 coats of ACE Emulsion\n• <strong>Windows & MS Grills:</strong> 2 coats of enamel paint\n• <strong>Paint Brands:</strong> Asian, Berger, Dulux (as per owner preference)",
-      fabrication:
-        "• <strong>MS Staircase Railing:</strong> ₹300 per sq. ft. (3′ height)\n• <strong>MS Standard Gate:</strong> ₹350 per sq. ft. (5′ height)",
-      plumbing:
-        "• <strong>Pipes:</strong> CPVC (Ashirwad, Supreme, Astral)\n• <strong>Overhead Tank:</strong> PVC (Ganga or Kaveri) with MS support (6ft height)\n• <strong>Solar & Geyser Provision:</strong> Diverter and mixer-ready\n• <strong>Sanitary Installations:</strong>\n o <strong>Overhead tank:</strong> ₹1,000\n o <strong>Commode:</strong> ₹6,500\n o <strong>Wall mixer:</strong> ₹3,500",
-      extra:
-        "• <strong>Compound Wall Construction</strong>\n• <strong>BBMP/BDA Approvals & Liaison Fees</strong>\n• <strong>Building Plinth Level Above 18″ from Road</strong>\n• <strong>External Ramps & Landscaping, road cutting works</strong>\n• <strong>Extra Depth for Sump Tank, Rain water sump</strong>\n• <strong>Interior Works (Wardrobes, False Ceiling, etc.)</strong>\n• <strong>External Elevation Cladding</strong>\n• <strong>Security Fabrication Works</strong>\n• <strong>Any Civil Works Outside the Main House</strong>\n• <strong>Additional Height for Compound Wall</strong>\n• <strong>Electrical Fixtures (Lights, Fans, Bulbs, etc.)</strong>\n• <strong>Additional Charges for Soil Bearing Capacity < 180 SBC</strong>",
-      sanctions:
-        "Assistance with approvals from government agencies, including:\n• <strong>Construction Plan Sanction</strong>\n• <strong>Temporary Electricity Connection</strong>\n• <strong>Permanent Electrical Connection</strong>\n• <strong>Water Connection</strong>\n• <strong>Sewage Connection</strong>",
-      elevation:
-        "<strong>Elevation Budget:</strong> 0.25% of the Project's Super Built-Up Cost",
-      audit:
-        "• <strong>Soil Testing:</strong> Additional charges\n• <strong>Site Supervision:</strong> Civil Engineer & Project Manager assigned\n• <strong>Architect Visits:</strong> Additional charges",
-    },
-  });
 
   const packages = [
     {
@@ -540,7 +550,7 @@ const ConstructionPackages = () => {
                       },
                       border: "none",
                       width: "100%",
-                      height: "700px", // ✅ Force consistent height
+                      height: "700px",
                       display: "flex",
                       flexDirection: "column",
                     }}
@@ -707,7 +717,8 @@ const ConstructionPackages = () => {
                               {section.title}
                             </Typography>
                             <IconButton
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 if (
                                   editingField === `${pkg.id}-${section.id}`
                                 ) {
@@ -772,14 +783,12 @@ const ConstructionPackages = () => {
               ))
             )}
           </Box>
-
-          {/* Second Card */}
           <Box
             sx={{
               flex: 1,
               minWidth: { xs: "100%", md: "400px" },
               maxWidth: { xs: "100%", md: "500px" },
-              height: "700px", // ✅ Match the card height
+              height: "700px",
             }}
           >
             <Packages2 />
@@ -816,3 +825,19 @@ const ConstructionPackages = () => {
 };
 
 export default ConstructionPackages;
+
+{
+  /* Second Card */
+}
+{
+  /* <Box
+            sx={{
+              flex: 1,
+              minWidth: { xs: "100%", md: "400px" },
+              maxWidth: { xs: "100%", md: "500px" },
+              height: "700px",
+            }}
+          >
+            <Packages2 />
+          </Box> */
+}
