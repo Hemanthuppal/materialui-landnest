@@ -218,13 +218,19 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
             </IconButton>
           </Tooltip>
           <Tooltip title="Share">
-            <IconButton
-              sx={{ bgcolor: 'white', boxShadow: 1 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Share />
-            </IconButton>
-          </Tooltip>
+  <IconButton
+    sx={{ bgcolor: 'white', boxShadow: 1 }}
+    onClick={(e) => {
+      e.stopPropagation();
+      const phone = `91${property.mobile_no}`; // Indian country code
+      window.location.href = `https://wa.me/${phone}`;
+    }}
+  >
+    <Share />
+  </IconButton>
+</Tooltip>
+
+
         </Box>
         
         <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
