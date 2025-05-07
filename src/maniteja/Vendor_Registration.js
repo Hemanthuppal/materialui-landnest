@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import {
     Box, Typography, TextField, Button, Select, MenuItem,
     InputLabel, FormControl, Paper, Stack, styled
@@ -8,8 +8,8 @@ import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-m
 import SearchBar from './FormsSearchBar';
 import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext  } from '../AuthContext/AuthContext';
-import {BASE_URL} from './../Api/ApiUrls';
+import { AuthContext } from '../AuthContext/AuthContext';
+import { BASE_URL } from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
@@ -57,13 +57,26 @@ const VendorRegister = () => {
         libraries: ['places'],
     });
 
+    const [markerIcon, setMarkerIcon] = useState(null);
+
+    useEffect(() => {
+        if (isLoaded && window.google) {
+            setMarkerIcon({
+                url: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23ff0000%22%20d%3D%22M12%202C8.13%202%205%205.13%205%209c0%205.25%207%2013%207%2013s7-7.75%207-13c0-3.87-3.13-7-7-7zm0%209.5c-1.38%200-2.5-1.12-2.5-2.5s1.12-2.5%202.5-2.5%202.5%201.12%202.5%202.5-1.12%202.5-2.5%202.5z%22%2F%3E%3C%2Fsvg%3E",
+                scaledSize: new window.google.maps.Size(40, 40),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(20, 40)
+            });
+        }
+    }, [isLoaded]);
+
 
     // const { user_id } = useContext( useAuth );
-    
+
     // const [formData, setFormData] = useState({
     //     name: '',
     //     user_id: 1,
-    
+
     const [formData, setFormData] = useState({
         name: '',
         user_id: '',
@@ -76,7 +89,7 @@ const VendorRegister = () => {
         lat: '',
         long: ''
     });
-    
+
     const [profilePhoto, setProfilePhoto] = useState(null);
     const [workPhotos, setWorkPhotos] = useState([]);
     const [location, setLocation] = useState(centerDefault);
@@ -109,9 +122,9 @@ const VendorRegister = () => {
             if (place && place.geometry) {
                 const newLat = place.geometry.location.lat();
                 const newLng = place.geometry.location.lng();
-    
+
                 setLocation({ lat: newLat, lng: newLng });
-    
+
                 setFormData(prev => ({
                     ...prev,
                     address: place.formatted_address,
@@ -121,7 +134,7 @@ const VendorRegister = () => {
             }
         }
     };
-    
+
 
     const geocodeAddress = async () => {
         if (window.google && window.google.maps) {
@@ -131,9 +144,9 @@ const VendorRegister = () => {
                     const location = results[0].geometry.location;
                     const lat = location.lat();
                     const lng = location.lng();
-    
+
                     setLocation({ lat, lng });
-    
+
                     setFormData(prev => ({
                         ...prev,
                         address: results[0].formatted_address,
@@ -146,49 +159,49 @@ const VendorRegister = () => {
             });
         }
     };
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-      
+
         const formDataToSend = new FormData();
-      
+
         // Inject userId dynamically before sending
         const updatedFormData = { ...formData, user_id: userId };
-      
+
         Object.keys(updatedFormData).forEach(key => {
-          formDataToSend.append(key, updatedFormData[key]);
+            formDataToSend.append(key, updatedFormData[key]);
         });
-      
+
         if (profilePhoto) {
-          formDataToSend.append('profile', profilePhoto);
+            formDataToSend.append('profile', profilePhoto);
         }
-      
+
         workPhotos.forEach((photo) => {
-          formDataToSend.append('new_work_images', photo);
+            formDataToSend.append('new_work_images', photo);
         });
-      
+
         try {
-          const response = await fetch(`${BASE_URL}/vendors/`, {
-            method: 'POST',
-            body: formDataToSend,
-          });
-      
-          if (response.ok) {
-            const data = await response.json();
-            console.log('Success:', data);
-            alert('Vendor registered successfully!');
-            navigate('/dashboard');
-          } else {
-            throw new Error('Network response was not ok');
-          }
+            const response = await fetch(`${BASE_URL}/vendors/`, {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Success:', data);
+                alert('Vendor registered successfully!');
+                navigate('/dashboard');
+            } else {
+                throw new Error('Network response was not ok');
+            }
         } catch (error) {
-          console.error('Error:', error);
-          alert('Error submitting form. Please try again.');
+            console.error('Error:', error);
+            alert('Error submitting form. Please try again.');
         }
-      };
-      
-    
+    };
+
+
 
     const handleBackClick = () => {
         navigate(-1);
@@ -215,7 +228,7 @@ const VendorRegister = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'10px', backgroundColor: 'rgb(239, 231, 221)'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
                 <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Vendor Registration
@@ -292,9 +305,15 @@ const VendorRegister = () => {
                             center={location}
                             zoom={15}
                         >
-                            <Marker position={location} />
+                            {markerIcon && (
+                                <Marker
+                                    position={location}
+                                    icon={markerIcon}
+                                />
+                            )}
+
                         </GoogleMap>
-                       
+
                         <TextField
                             fullWidth
                             label="Work Experience (years)"
