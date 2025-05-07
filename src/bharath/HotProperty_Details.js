@@ -34,7 +34,7 @@ const Hot_Property_Details = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('savedBuy');
+    const stored = localStorage.getItem('savedHot');
     return stored ? JSON.parse(stored) : [];
   });
   const [likedCards, setLikedCards] = useState({});
@@ -51,8 +51,9 @@ const Hot_Property_Details = () => {
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-          item.type && item.type.toLowerCase().includes("sell")
+          item.type === "best-deal" && item.Admin_status === "Approved"
         );
+        
 
         const parsed = filtered.map(item => {
           const parseCoord = (coord) => {
@@ -168,7 +169,7 @@ const Hot_Property_Details = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('savedBuy', JSON.stringify(updated));
+    localStorage.setItem('savedHot', JSON.stringify(updated));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);

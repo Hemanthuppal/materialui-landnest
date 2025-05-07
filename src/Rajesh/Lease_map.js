@@ -67,9 +67,11 @@ const Lease_Property_Map = () => {
 
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
 
-          const imageUrl = item.property_images?.[0]?.image
-            ? `${BASE_URL}${item.property_images[0].image}`
-            : buildingImage;
+          // Get all images or default to buildingImage
+          // Ensure images is always an array
+          const images = item.property_images?.length > 0
+            ? item.property_images.map(img => `${BASE_URL}${img.image}`)
+            : [buildingImage];
 
           return {
             id: item.property_id,
@@ -83,10 +85,12 @@ const Lease_Property_Map = () => {
             listedBy: item.list?.replace(/"/g, '') || 'Agent',
             lat: parseCoord(item.lat),
             lng: parseCoord(item.long),
-            length:item.length,
-            width:item.width,
-            mobile_no:item.mobile_no,
-            image: imageUrl
+            length: item.length,
+            width: item.width,
+            property_name: item.property_name,
+            mobile_no: item.mobile_no,
+            images: images, // Make sure this is always an array
+            propertyData: item
           };
         });
 
@@ -120,7 +124,7 @@ const Lease_Property_Map = () => {
     const mapContainer = document.getElementById('leaflet-map');
     if (!mapContainer || mapContainer._leaflet_id) return;
 
-    const map = L.map('leaflet-map').setView([17.9358528, 78.5203776], 13);
+    const map = L.map('leaflet-map').setView([17.429299, 78.499021], 9);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '',
@@ -145,7 +149,10 @@ const Lease_Property_Map = () => {
     const isSaved = saved.find((p) => p.id === property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
     setSaved(updated);
-    localStorage.setItem('saveLease', JSON.stringify(updated));
+    localStorage.setItem('saveLease', JSON.stringify([...saved, {
+      ...property,
+      images: property.images || [property.image] // Fallback to single image if no array
+    }]));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -184,7 +191,7 @@ const Lease_Property_Map = () => {
 
       {/* 📌 Property Types */}
       <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Lease Property Types</Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Lease Property</Typography>
         <Box
           sx={{
             display: 'flex',
@@ -198,10 +205,22 @@ const Lease_Property_Map = () => {
             <Chip
               key={index}
               label={type}
-              variant={selectedType === type ? "filled" : "outlined"}
-              color={selectedType === type ? "black" : "default"}
-              onClick={() => setSelectedType(prev => (prev === type ? null : type))}
-              sx={{ flexShrink: 0, border: '1px solid black' }}
+              variant="filled"
+              onClick={() => {
+                // Clear any property selection when clicking a type
+                setSelectedProperty(null);
+                setSelectedType(prev => (prev === type ? null : type));
+              }}
+              sx={{
+                flexShrink: 0,
+                bgcolor: selectedType === type ? '#000000' : 'transparent',
+                color: selectedType === type ? '#ffffff' : '#000000',
+                border: '1px solid black',
+                fontWeight: 'bold',
+                '&:hover': {
+                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                },
+              }}
             />
           ))}
         </Box>

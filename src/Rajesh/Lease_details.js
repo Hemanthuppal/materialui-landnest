@@ -19,6 +19,8 @@ import {
   ThumbUpAlt,
   Call,
   LocationOn,
+  ChevronLeft,
+  ChevronRight
 } from '@mui/icons-material';
 import axios from 'axios';
 import buildingImage from '../Images/house.jpeg';
@@ -37,15 +39,14 @@ const PropertyCard = () => {
   const [properties, setProperties] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch categories first
         const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
         setCategories(categoriesResponse.data);
 
-        // Then fetch properties
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
           item.type && item.type.toLowerCase().includes("lease")
@@ -58,17 +59,16 @@ const PropertyCard = () => {
             return parseFloat(cleaned);
           };
 
-          // Find matching category
           const matchedCategory = categoriesResponse.data.find(
             cat => cat.category_id === item.category_id
           );
-
+          
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
 
-          // Fixed image URL construction
-          const imageUrl = item.property_images?.[0]?.image
-            ? `${BASE_URL}${item.property_images[0].image}`
-            : buildingImage;
+          // Get all images or default to buildingImage
+          const images = item.property_images?.length > 0 
+            ? item.property_images.map(img => `${BASE_URL}${img.image}`)
+            : [buildingImage];
 
           return {
             id: item.property_id,
@@ -85,12 +85,19 @@ const PropertyCard = () => {
             length: item.length,
             width: item.width,
             mobile_no: item.mobile_no,
-            image: imageUrl,
-            propertyData: item // Store the full property data for description page
+            property_name:item.property_name,
+            images: images, // Now using all images
+            propertyData: item
           };
         });
 
         setProperties(parsed);
+        // Initialize current image index for each property
+        const initialIndexes = {};
+        parsed.forEach(property => {
+          initialIndexes[property.id] = 0;
+        });
+        setCurrentImageIndex(initialIndexes);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -101,15 +108,41 @@ const PropertyCard = () => {
     fetchData();
   }, []);
 
+  const handleNextImage = (propertyId, e) => {
+    e.stopPropagation();
+    setCurrentImageIndex(prev => {
+      const currentIndex = prev[propertyId];
+      const property = properties.find(p => p.id === propertyId);
+      const nextIndex = (currentIndex + 1) % property.images.length;
+      return {
+        ...prev,
+        [propertyId]: nextIndex
+      };
+    });
+  };
+
+  const handlePrevImage = (propertyId, e) => {
+    e.stopPropagation();
+    setCurrentImageIndex(prev => {
+      const currentIndex = prev[propertyId];
+      const property = properties.find(p => p.id === propertyId);
+      const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
+      return {
+        ...prev,
+        [propertyId]: prevIndex
+      };
+    });
+  };
+
   const openGoogleMapsWithDirections = (destLat, destLng) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const currentLat = position.coords.latitude;
           const currentLng = position.coords.longitude;
-
+  
           const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${destLat},${destLng}&travelmode=driving`;
-
+  
           window.open(googleMapsUrl, '_blank');
         },
         (error) => {
@@ -121,7 +154,7 @@ const PropertyCard = () => {
       alert("Geolocation is not supported by your browser.");
     }
   };
-
+  
   const toggleSave = (property) => {
     const isSaved = saved.find((p) => p.id === property.id);
     let updated;
@@ -133,7 +166,10 @@ const PropertyCard = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('saveLease', JSON.stringify(updated));
+    localStorage.setItem('saveLease', JSON.stringify([...saved, {
+      ...property,
+      images: property.images || [property.image] // Fallback to single image if no array
+    }]));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
@@ -152,8 +188,8 @@ const PropertyCard = () => {
 
   if (loading) {
     return (
-      <Box sx={{
-        backgroundColor: 'rgb(239, 231, 221)',
+      <Box sx={{ 
+        backgroundColor: 'rgb(239, 231, 221)', 
         minHeight: '100vh',
         display: 'flex',
         justifyContent: 'center',
@@ -180,7 +216,6 @@ const PropertyCard = () => {
         <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       </Box>
 
-      {/* Property List */}
       <Box sx={{ pb: 8 }}>
         {filteredProperties.length > 0 ? (
           filteredProperties.map((property) => (
@@ -202,18 +237,98 @@ const PropertyCard = () => {
               }}
             >
               <Box position="relative">
-                <CardMedia
-                  component="img"
-                  image={property.image}
-                  alt="Property"
-                  sx={{
-                    width: '100%',
-                    height: '140px',
-                    objectFit: 'cover',
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
-                  }}
-                />
+                {/* Carousel */}
+                <Box sx={{ position: 'relative', width: '100%', height: '140px' }}>
+  <CardMedia
+    component="img"
+    image={property.images[currentImageIndex[property.id]]}
+    alt="Property"
+    sx={{
+      width: '100%',
+      height: '140px',
+      objectFit: 'cover',
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
+    }}
+  />
+  
+  {/* Left/Right Carousel Arrows (hidden by default) */}
+  {property.images.length > 1 && (
+    <>
+      <IconButton
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: 8,
+          opacity: 0,
+          transform: 'translateY(-50%)',
+          backgroundColor: 'rgba(255,255,255,0.3)',
+          backdropFilter: 'blur(2px)',
+          '&:hover': { 
+            opacity: 1,
+            backgroundColor: 'rgba(255,255,255,0.5)' 
+          }
+        }}
+        onClick={(e) => handlePrevImage(property.id, e)}
+      >
+        <ChevronLeft fontSize="small" />
+      </IconButton>
+      <IconButton
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          right: 8,
+          opacity: 0,
+          transform: 'translateY(-50%)',
+          backgroundColor: 'rgba(255,255,255,0.3)',
+          backdropFilter: 'blur(2px)',
+          '&:hover': { 
+            opacity: 1,
+            backgroundColor: 'rgba(255,255,255,0.5)' 
+          }
+        }}
+        onClick={(e) => handleNextImage(property.id, e)}
+      >
+        <ChevronRight fontSize="small" />
+      </IconButton>
+    </>
+  )}
+  
+  {/* Dot Indicators */}
+  {property.images.length > 1 && (
+    <Box
+      sx={{
+        position: 'absolute',
+        bottom: 10,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        gap: 1
+      }}
+    >
+      {property.images.map((_, index) => (
+        <Box
+          key={index}
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentImageIndex(prev => ({
+              ...prev,
+              [property.id]: index
+            }));
+          }}
+          sx={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s'
+          }}
+        />
+      ))}
+    </Box>
+  )}
+
                 <Box sx={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 0.8 }}>
                   <Tooltip title="Add to Wishlist">
                     <IconButton
@@ -227,7 +342,7 @@ const PropertyCard = () => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Share">
-                    <IconButton
+                    <IconButton 
                       sx={{ bgcolor: 'white', boxShadow: 1, p: 0.8 }}
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -254,155 +369,155 @@ const PropertyCard = () => {
                   </Tooltip>
                 </Box>
               </Box>
-
+</Box>
               <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
-                           {/* Title and Price row */}
-                           <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
-                             <Typography 
-                               variant="subtitle1" 
-                               fontWeight="bold" 
-                               noWrap 
-                               sx={{ 
-                                 flex: 1,
-                                 overflow: 'hidden',
-                                 textOverflow: 'ellipsis',
-                                 pr: 1 
-                               }}
-                             >
-                               {property.title}
-                             </Typography>
-                             <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
-                               {property.price}
-                             </Typography>
-                           </Box>
-                         
-                           {/* Location and Date row */}
-                           <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
-                             <Typography 
-                               variant="caption" 
-                               color="text.secondary" 
-                               noWrap
-                               sx={{
-                                 flex: 1,
-                                 overflow: 'hidden',
-                                 textOverflow: 'ellipsis',
-                                 pr: 1
-                               }}
-                             >
-                               {property.location}
-                             </Typography>
-                             <Typography variant="caption" color="text.secondary" noWrap>
-                               {new Date(property.date).toLocaleDateString('en-IN', {
-                                 day: '2-digit',
-                                 month: '2-digit',
-                                 year: 'numeric'
-                               })}
-                             </Typography>
-                           </Box>
-                         
-                           {/* Location Verified and Call button */}
-                           <Box display="flex" alignItems="center" mb={1}>
-                             <IconButton
-                               onClick={(e) => {
-                                 e.stopPropagation();
-                                 if (property.lat && property.long) {
-                                   openGoogleMapsWithDirections(property.lat, property.long);
-                                 }
-                               }}
-                               size="small"
-                               sx={{ p: 0.5 }}
-                             >
-                               <LocationOn fontSize="small" color="action" />
-                             </IconButton>
-                             <Typography variant="caption" color="text.primary" ml={0.5}>
-                               Location Verified
-                             </Typography>
-                             <Box sx={{ flexGrow: 1 }} />
-                             <Button
-                               size="small"
-                               variant="outlined"
-                               color="success"
-                               startIcon={<Call fontSize="small" />}
-                               sx={{ 
-                                 textTransform: 'none', 
-                                 px: 1, 
-                                 py: 0.2, 
-                                 fontSize: '0.7rem',
-                                 minWidth: 'auto'
-                               }}
-                               onClick={(e) => e.stopPropagation()}
-                             >
-                               Call
-                             </Button>
-                           </Box>
-                         
-                           {/* Property details */}
-                           <Box
-                             sx={{
-                               display: 'flex',
-                               border: '1px solid #e0e0e0',
-                               borderRadius: 1,
-                               overflow: 'hidden',
-                             }}
-                           >
-                             {[
-                               { label: 'Facing', value: property.facing || 'N/A' },
-                               { 
-                                 label: 'Area', 
-                                 value: (
-                                   <Box>
-                                     <Box component="span">{property.area || 'N/A'}</Box>
-                                     {property.length && property.width && (
-                                       <Typography 
-                                         component="span" 
-                                         variant="caption" 
-                                         color="text.secondary"
-                                         sx={{ display: ['none', 'inline'], ml: 0.5 }}
-                                       >
-                                         ({property.length} × {property.width})
-                                       </Typography>
-                                     )}
-                                   </Box>
-                                 ) 
-                               },
-                               { label: 'Listed By', value: property.listedBy || 'N/A' },
-                             ].map((item, index) => (
-                               <Box
-                                 key={index}
-                                 sx={{
-                                   flex: 1,
-                                   px: 0.5,
-                                   py: 0.2,
-                                   textAlign: 'center',
-                                   borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
-                                   minWidth: 0
-                                 }}
-                               >
-                                 <Typography variant="caption" color="text.secondary" noWrap>
-                                   {item.label}
-                                 </Typography>
-                                 <Typography 
-                                   variant="body2" 
-                                   fontWeight="bold" 
-                                   noWrap={index !== 1} // Allow area to wrap if needed
-                                   sx={{
-                                     fontSize: '0.8rem',
-                                     lineHeight: 1.2
-                                   }}
-                                 >
-                                   {item.value}
-                                 </Typography>
-                               </Box>
-                             ))}
-                           </Box>
-                         </CardContent>
+  {/* Title and Price row */}
+  <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
+    <Typography 
+      variant="subtitle1" 
+      fontWeight="bold" 
+      noWrap 
+      sx={{ 
+        flex: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        pr: 1 
+      }}
+    >
+      {property.title}-{property.property_name}
+    </Typography>
+    <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
+    ₹{Number(String(property.price).replace(/[^0-9]/g, '')).toLocaleString('en-IN')}
+    </Typography>
+  </Box>
+
+  {/* Location and Date row */}
+  <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+    <Typography 
+      variant="caption" 
+      color="text.secondary" 
+      noWrap
+      sx={{
+        flex: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        pr: 1
+      }}
+    >
+      {property.location}
+    </Typography>
+    <Typography variant="caption" color="text.secondary" noWrap>
+      {new Date(property.date).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      })}
+    </Typography>
+  </Box>
+
+  {/* Location Verified and Call button */}
+  <Box display="flex" alignItems="center" mb={1}>
+    <IconButton
+      onClick={(e) => {
+        e.stopPropagation();
+        if (property.lat && property.long) {
+          openGoogleMapsWithDirections(property.lat, property.long);
+        }
+      }}
+      size="small"
+      sx={{ p: 0.5 }}
+    >
+      <LocationOn fontSize="small" color="action" />
+    </IconButton>
+    <Typography variant="caption" color="text.primary" ml={0.5}>
+      Location Verified
+    </Typography>
+    <Box sx={{ flexGrow: 1 }} />
+    <Button
+      size="small"
+      variant="outlined"
+      color="success"
+      startIcon={<Call fontSize="small" />}
+      sx={{ 
+        textTransform: 'none', 
+        px: 1, 
+        py: 0.2, 
+        fontSize: '0.7rem',
+        minWidth: 'auto'
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      Call
+    </Button>
+  </Box>
+
+  {/* Property details */}
+  <Box
+    sx={{
+      display: 'flex',
+      border: '1px solid #e0e0e0',
+      borderRadius: 1,
+      overflow: 'hidden',
+    }}
+  >
+    {[
+      { label: 'Facing', value: property.facing || 'N/A' },
+      { 
+        label: 'Area', 
+        value: (
+          <Box>
+            <Box component="span">{property.area || 'N/A'}</Box>
+            {property.length && property.width && (
+              <Typography 
+                component="span" 
+                variant="caption" 
+                color="text.secondary"
+                sx={{ display: ['none', 'inline'], ml: 0.5 }}
+              >
+                ({property.length} × {property.width})
+              </Typography>
+            )}
+          </Box>
+        ) 
+      },
+      { label: 'Listed By', value: property.listedBy || 'N/A' },
+    ].map((item, index) => (
+      <Box
+        key={index}
+        sx={{
+          flex: 1,
+          px: 0.5,
+          py: 0.2,
+          textAlign: 'center',
+          borderRight: index < 2 ? '1px solid #e0e0e0' : 'none',
+          minWidth: 0
+        }}
+      >
+        <Typography variant="caption" color="text.secondary" noWrap>
+          {item.label}
+        </Typography>
+        <Typography 
+          variant="body2" 
+          fontWeight="bold" 
+          noWrap={index !== 1} // Allow area to wrap if needed
+          sx={{
+            fontSize: '0.8rem',
+            lineHeight: 1.2
+          }}
+        >
+          {item.value}
+        </Typography>
+      </Box>
+    ))}
+  </Box>
+</CardContent>
             </Card>
           ))
         ) : (
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
             height: '200px',
             px: 2
           }}>
@@ -410,10 +525,10 @@ const PropertyCard = () => {
           </Box>
         )}
       </Box>
-
+<Box sx={{mt:2}}></Box>
       <BottomNavbar />
+      
     </Box>
   );
 };
-
 export default PropertyCard;

@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import AdminDashboard from "../Dashboard/Dashboard";
+import { BASE_URL } from '../../../Api/ApiUrls'
 
 // Global Filter Component
 function GlobalFilter({ globalFilter, setGlobalFilter }) {
@@ -88,7 +89,7 @@ const Category = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('http://46.37.122.105:89/material-categories/');
+      const res = await axios.get(`${BASE_URL}/material-categories/`);
       const formatted = res.data.map(item => ({
         id: item.category_id,
         name: item.category
@@ -111,12 +112,12 @@ const Category = () => {
 
     try {
       if (editing) {
-        await axios.put(`http://46.37.122.105:89/material-categories/${editing.id}/`, {
+        await axios.put(`${BASE_URL}/material-categories/${editing.id}/`, {
           category: categoryName.trim()
         });
         toast.success('Category updated!');
       } else {
-        await axios.post('http://46.37.122.105:89/material-categories/', {
+        await axios.post(`${BASE_URL}/material-categories/`, {
           user_id: 1,
           category: categoryName.trim()
         });
@@ -142,7 +143,7 @@ const Category = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
-        await axios.delete(`http://46.37.122.105:89/material-categories/${id}/`);
+        await axios.delete(`${BASE_URL}/material-categories/${id}/`);
         toast.success('Category deleted!');
         fetchCategories();
       } catch (err) {

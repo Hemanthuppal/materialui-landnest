@@ -18,7 +18,7 @@ import CompassCalibrationOutlinedIcon from '@mui/icons-material/CompassCalibrati
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import { Carousel } from 'react-responsive-carousel';
-
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import buildingImage from '../Images/house.jpeg';
 import CustomBottomNav from './CustomNav';
@@ -113,48 +113,65 @@ const Buy_description = () => {
 
       {/* Property Content */}
       <Box sx={{ pt: '80px', px: 2 }}>
-        <Card sx={{
-          borderRadius: '20px',
-          background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
-          boxShadow: 5,
-        }}>
-          {/* Image Carousel */}
-          <Carousel
-           
+  <Card sx={{
+    borderRadius: '20px',
+    background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
+    boxShadow: 5,
+  }}>
+    {/* Main Image Display */}
+    {images.length > 1 ? (
+      <Carousel
+        selectedItem={images.indexOf(selectedImage)}
+        showThumbs={false}
+        showArrows={false}
+        autoPlay
+        infiniteLoop
+        interval={3000}
+        showIndicators={true}
+        showStatus={false}
+        swipeable
+        emulateTouch
+        dynamicHeight
+        stopOnHover
+        transitionTime={600}
+        swipeScrollTolerance={5}
+        useKeyboardArrows
+      >
+        {images.map((image, index) => (
+          <Box
+            key={index}
+            component="img"
+            src={image}
+            alt="Property"
+            loading="lazy"
+            sx={{
+              width: '100%',
+              height: { xs: 250, sm: 300, md: 400 },
+              objectFit: 'cover',
+              borderTopLeftRadius: '20px',
+              borderTopRightRadius: '20px',
+            }}
+          />
+        ))}
+      </Carousel>
+    ) : (
+      <Box
+        component="img"
+        src={images[0]}
+        alt="Property"
+        loading="lazy"
+        sx={{
+          width: '100%',
+          height: { xs: 250, sm: 300, md: 400 },
+          objectFit: 'cover',
+          borderTopLeftRadius: '20px',
+          borderTopRightRadius: '20px',
+        }}
+      />
+    )}
 
-            selectedItem={images.indexOf(selectedImage)}
-            showThumbs={false}
-            showArrows={false}
-            autoPlay
-            infiniteLoop
-            interval={3000}
-            showIndicators={true} // Always show bottom indicators (dots)
-            showStatus={false}
-            swipeable
-            emulateTouch
-            dynamicHeight
-            stopOnHover
-            transitionTime={600}
-            swipeScrollTolerance={5}
-            useKeyboardArrows
-          >
-            {images.map((image, index) => (
-              <Box
-                key={index}
-                component="img"
-                src={image}
-                alt="Property"
-                loading="lazy"
-                sx={{
-                  width: '100%',
-                  height: { xs: 250, sm: 300, md: 400 },
-                  objectFit: 'cover',
-                  borderTopLeftRadius: '20px',
-                  borderTopRightRadius: '20px',
-                }}
-              />
-            ))}
-          </Carousel>
+    {/* Thumbnail Images */}
+    
           <Container sx={{ mt: 3 }}>
   <Box
     sx={{

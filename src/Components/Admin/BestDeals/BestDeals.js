@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import BestDealsForm from "./BestDealsForm";
 import BestDealsTable from "./BestDealsTable";
 import { Box, Modal } from "@mui/material";
 import AdminDashboard from "../../Admin/Dashboard/Dashboard";
@@ -11,25 +10,10 @@ const BestDealsPage = () => {
   const [plans, setPlans] = useState([]);
   const [editPlan, setEditPlan] = useState(null);
 
-  
 
   const toggleForm = () => {
     setEditPlan(null);
     setShowForm((prev) => !prev);
-  };
-
-  const addOrUpdatePlan = (plan) => {
-    let updatedPlans;
-    if (editPlan) {
-      updatedPlans = plans.map((p) => (p.id === editPlan.id ? plan : p));
-      toast.success("Plan updated successfully!");
-    } else {
-      updatedPlans = [...plans, plan];
-      toast.success("Plan added successfully!");
-    }
-    setPlans(updatedPlans);
-    localStorage.setItem("plans", JSON.stringify(updatedPlans));
-    setShowForm(false);
   };
 
   const handleEdit = (id) => {
@@ -82,7 +66,6 @@ const BestDealsPage = () => {
               p: 4,
             }}
           >
-            <BestDealsForm addOrUpdatePlan={addOrUpdatePlan} editPlan={editPlan} />
           </Box>
         </Modal>
            <ToastContainer position="top-right" autoClose={2000} />

@@ -118,7 +118,9 @@ const HotProperties_description = () => {
           background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
           boxShadow: 5,
         }}>
-          {/* Image Carousel */}
+           {/* Image Carousel */}
+          {images.length > 1 ? (
+         
           <Carousel
            
 
@@ -155,6 +157,21 @@ const HotProperties_description = () => {
               />
             ))}
           </Carousel>
+           ) : (
+                <Box
+                  component="img"
+                  src={images[0]}
+                  alt="Property"
+                  loading="lazy"
+                  sx={{
+                    width: '100%',
+                    height: { xs: 250, sm: 300, md: 400 },
+                    objectFit: 'cover',
+                    borderTopLeftRadius: '20px',
+                    borderTopRightRadius: '20px',
+                  }}
+                />
+              )}
           <Container sx={{ mt: 3 }}>
   <Box
     sx={{

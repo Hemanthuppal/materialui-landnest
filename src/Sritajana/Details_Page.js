@@ -168,7 +168,10 @@ const PropertyCard = () => {
     }
 
     setSaved(updated);
-    localStorage.setItem('savedBuy', JSON.stringify(updated));
+    localStorage.setItem('savedBuy', JSON.stringify([...saved, {
+      ...property,
+      images: property.images || [property.image] // Fallback to single image if no array
+    }]));
   };
 
   const isSaved = (property) => saved.some((p) => p.id === property.id);
