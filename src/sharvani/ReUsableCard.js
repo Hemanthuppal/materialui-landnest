@@ -218,13 +218,17 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
             </IconButton>
           </Tooltip>
           <Tooltip title="Share">
-            <IconButton
-              sx={{ bgcolor: 'white', boxShadow: 1 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Share />
-            </IconButton>
-          </Tooltip>
+  <IconButton
+    sx={{ bgcolor: 'white', boxShadow: 1 }}
+    onClick={(e) => {
+      e.stopPropagation();
+      window.location.href = `https://wa.me/${property.mobile_no}`;
+    }}
+  >
+    <Share />
+  </IconButton>
+</Tooltip>
+
         </Box>
         
         <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
