@@ -14,6 +14,7 @@ import {
   TextField,
   Snackbar,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -23,30 +24,50 @@ import {
 } from "@mui/icons-material";
 import AdminDashboard from "../../Admin/Dashboard/Dashboard";
 import Packages2 from "./Packages2";
-// import Package3 from "./Packages3";
+import Packages3 from "./Packages3";
 
 const ConstructionPackages = () => {
   const [expanded, setExpanded] = useState({});
   const [editableContent, setEditableContent] = useState({});
   const [editingField, setEditingField] = useState(null);
   const [tempContent, setTempContent] = useState({});
-  const [packageData, setPackageData] = useState({});
+  const [packageData, setPackageData] = useState({
+    package_cost: 0,
+    tile_general: 0,
+    tile_stair: 0,
+    tile_balcony: 0,
+    title_bathroom: 0,
+    tile_parking: 0,
+    tile_kitchen_countertop: 0,
+    tile_kitchen_backsplash: 0,
+    window_standered: 0,
+    doors_main: 0,
+    doors_pooja: 0,
+    doors_internal: 0,
+    fabrication_stair_rail: 0,
+    fabrication_gate: 0,
+    sanitary_overheadtank: 0,
+    sanitary_commode: 0,
+    sanitary_wallmixer: 0,
+  });
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-
-   const [editingPackageCost, setEditingPackageCost] = useState(false);
-    const [tempPackageCost, setTempPackageCost] = useState("");
+  const [editingPackageCost, setEditingPackageCost] = useState(false);
+  const [tempPackageCost, setTempPackageCost] = useState("0");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch data from API
   useEffect(() => {
     const fetchPackageData = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get("https://landnest.net:81/packages/2/");
         setPackageData(response.data);
         updateSectionContent(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching package data:", error);
         setSnackbar({
@@ -54,41 +75,40 @@ const ConstructionPackages = () => {
           message: "Failed to fetch package data",
           severity: "error",
         });
+        setIsLoading(false);
       }
     };
     fetchPackageData();
   }, []);
 
   const handleEditPackageCost = () => {
-    setTempPackageCost(packageData.package_cost?.toString() || "");
+    setTempPackageCost(packageData.package_cost?.toString() || "0");
     setEditingPackageCost(true);
   };
 
+  const handleSavePackageCost = async () => {
+    try {
+      const response = await axios.put(`https://landnest.net:81/packages/2/`, {
+        ...packageData,
+        package_cost: parseInt(tempPackageCost) || 0,
+      });
 
-   const handleSavePackageCost = async () => {
-      try {
-        const response = await axios.put(`https://landnest.net:81/packages/2/`, {
-          package_cost: parseInt(tempPackageCost) || 0,
-        });
-  
-        setPackageData(response.data);
-        setEditingPackageCost(false);
-        setSnackbar({
-          open: true,
-          message: "Package cost updated successfully",
-          severity: "success",
-        });
-      } catch (error) {
-        console.error("Error updating package cost:", error);
-        setSnackbar({
-          open: true,
-          message: "Failed to update package cost",
-          severity: "error",
-        });
-      }
-    };
-  
-
+      setPackageData(response.data);
+      setEditingPackageCost(false);
+      setSnackbar({
+        open: true,
+        message: "Package cost updated successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error updating package cost:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update package cost",
+        severity: "error",
+      });
+    }
+  };
 
   const updateSectionContent = (data) => {
     const updatedSectionContent = {
@@ -476,231 +496,308 @@ const ConstructionPackages = () => {
           sx={{
             px: { xs: 2, sm: 4, md: 6 },
             pt: 4,
-            maxWidth: "1200px",
+            maxWidth: "800px",
             margin: "0 auto",
             pb: 2,
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: "20px",
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: "30px",
+            justifyContent: "center",
+            alignItems: "flex-start",
           }}
         >
-            {packages.map((pkg, index) => (
-                      <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
-                        <Card
+          {/* First Card */}
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: { xs: "100%", md: "400px" },
+              maxWidth: { xs: "100%", md: "500px" },
+            }}
+          >
+            {isLoading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ) : (
+              packages.map((pkg, index) => (
+                <Grow in={true} timeout={index * 200 + 400} key={pkg.id}>
+                  <Card
+                    sx={{
+                      borderRadius: "16px",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                      overflow: "hidden",
+                      transition: "transform 0.4s, box-shadow 0.4s",
+                      "&:hover": {
+                        transform: "translateY(-8px)",
+                        boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
+                      },
+                      border: "none",
+                      width: "100%",
+                      height: "700px", // ✅ Force consistent height
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardHeader
+                      title={
+                        <Typography
+                          variant="h5"
                           sx={{
-                            borderRadius: "16px",
-                            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                            overflow: "hidden",
-                            transition: "transform 0.4s, box-shadow 0.4s",
-                            "&:hover": {
-                              transform: "translateY(-8px)",
-                              boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
-                            },
-                            border: "none",
+                            fontWeight: 700,
+                            color: "white",
+                            fontSize: "1.6rem",
+                            letterSpacing: "0.5px",
                           }}
                         >
-                          <CardHeader
-                            title={
-                              <Typography
-                                variant="h5"
-                                sx={{
-                                  fontWeight: 700,
+                          {pkg.title}
+                        </Typography>
+                      }
+                      subheader={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {editingPackageCost ? (
+                            <TextField
+                              value={tempPackageCost}
+                              onChange={(e) =>
+                                setTempPackageCost(
+                                  e.target.value.replace(/\D/g, "")
+                                )
+                              }
+                              size="small"
+                              sx={{
+                                width: "120px",
+                                mr: 1,
+                                "& .MuiInputBase-input": {
                                   color: "white",
-                                  fontSize: "1.6rem",
-                                  letterSpacing: "0.5px",
-                                }}
-                              >
-                                {pkg.title}
-                              </Typography>
+                                  textAlign: "center",
+                                },
+                                "& .MuiOutlinedInput-root": {
+                                  "& fieldset": {
+                                    borderColor: "rgba(255,255,255,0.5)",
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: "rgba(255,255,255,0.8)",
+                                  },
+                                },
+                              }}
+                            />
+                          ) : (
+                            <Typography
+                              variant="h4"
+                              sx={{
+                                fontWeight: 700,
+                                color: "white",
+                                mt: 1.5,
+                                background: "rgba(255,255,255,0.2)",
+                                display: "inline-block",
+                                px: 3,
+                                py: 1,
+                                borderRadius: "20px",
+                                backdropFilter: "blur(5px)",
+                                fontSize: "1.5rem",
+                              }}
+                            >
+                              {packageData.package_cost
+                                ? `Rs ${(
+                                    packageData.package_cost / 1000
+                                  ).toFixed(0)}K`
+                                : "Loading..."}
+                            </Typography>
+                          )}
+                          <IconButton
+                            onClick={
+                              editingPackageCost
+                                ? handleSavePackageCost
+                                : handleEditPackageCost
                             }
-                            subheader={
-                              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                {editingPackageCost ? (
-                                  <TextField
-                                    value={tempPackageCost}
-                                    onChange={(e) => setTempPackageCost(e.target.value.replace(/\D/g, ""))}
-                                    size="small"
-                                    sx={{
-                                      width: "120px",
-                                      mr: 1,
-                                      "& .MuiInputBase-input": {
-                                        color: "white",
-                                        textAlign: "center",
-                                      },
-                                      "& .MuiOutlinedInput-root": {
-                                        "& fieldset": {
-                                          borderColor: "rgba(255,255,255,0.5)",
-                                        },
-                                        "&:hover fieldset": {
-                                          borderColor: "rgba(255,255,255,0.8)",
-                                        },
-                                      },
-                                    }}
-                                  />
-                                ) : (
-                                  <Typography
-                                    variant="h4"
-                                    sx={{
-                                      fontWeight: 700,
-                                      color: "white",
-                                      mt: 1.5,
-                                      background: "rgba(255,255,255,0.2)",
-                                      display: "inline-block",
-                                      px: 3,
-                                      py: 1,
-                                      borderRadius: "20px",
-                                      backdropFilter: "blur(5px)",
-                                      fontSize: "1.5rem",
-                                    }}
-                                  >
-                                    Rs {(packageData.package_cost / 1000).toFixed(0)}K
-                                  </Typography>
-                                )}
-                                <IconButton
-                                  onClick={editingPackageCost ? handleSavePackageCost : handleEditPackageCost}
-                                  sx={{ color: "white", ml: 1 }}
-                                >
-                                  {editingPackageCost ? <SaveIcon /> : <EditIcon />}
-                                </IconButton>
-                              </Box>
+                            sx={{ color: "white", ml: 1 }}
+                            disabled={isLoading}
+                          >
+                            {editingPackageCost ? <SaveIcon /> : <EditIcon />}
+                          </IconButton>
+                        </Box>
+                      }
+                      sx={{
+                        background: pkg.gradient,
+                        padding: "30px 20px",
+                        textAlign: "center",
+                        position: "relative",
+                        "&:after": {
+                          content: '""',
+                          position: "absolute",
+                          bottom: 0,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "100px",
+                          height: "4px",
+                          backgroundColor: "rgba(255,255,255,0.5)",
+                          borderRadius: "2px",
+                        },
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        background: "#fff",
+                        flexGrow: 1,
+                        overflowY: "auto",
+                        paddingBottom: 2,
+                      }}
+                    >
+                      {pkg.sections.map((section) => (
+                        <Accordion
+                          key={section.id}
+                          expanded={expanded[pkg.id] === section.id}
+                          onChange={handleChange(section.id, pkg.id)}
+                          sx={{
+                            "&:before": { display: "none" },
+                            boxShadow: "none",
+                            borderBottom: "1px solid rgba(0,0,0,0.05)",
+                            backgroundColor:
+                              expanded[pkg.id] === section.id
+                                ? "rgba(74, 0, 224, 0.03)"
+                                : "transparent",
+                            transition: "all 0.3s ease",
+                            "&:hover": {
+                              backgroundColor: "rgba(74, 0, 224, 0.03)",
+                            },
+                          }}
+                        >
+                          <AccordionSummary
+                            expandIcon={
+                              expanded[pkg.id] === section.id ? (
+                                <RemoveIcon sx={{ color: pkg.color }} />
+                              ) : (
+                                <AddIcon sx={{ color: "#666" }} />
+                              )
                             }
+                            aria-controls={`${section.id}-content`}
+                            id={`${section.id}-header`}
                             sx={{
-                              background: pkg.gradient,
-                              padding: "30px 20px",
-                              textAlign: "center",
-                              position: "relative",
-                              "&:after": {
-                                content: '""',
-                                position: "absolute",
-                                bottom: 0,
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                width: "100px",
-                                height: "4px",
-                                backgroundColor: "rgba(255,255,255,0.5)",
-                                borderRadius: "2px",
+                              padding: "0 25px",
+                              minHeight: "68px !important",
+                              "& .MuiAccordionSummary-content": {
+                                margin: "12px 0",
+                                alignItems: "center",
                               },
                             }}
-                          />
-                          <Box sx={{ background: "#fff" }}>
-                            {pkg.sections.map((section) => (
-                              <Accordion
-                                key={section.id}
-                                expanded={expanded[pkg.id] === section.id}
-                                onChange={handleChange(section.id, pkg.id)}
-                                sx={{
-                                  "&:before": { display: "none" },
-                                  boxShadow: "none",
-                                  borderBottom: "1px solid rgba(0,0,0,0.05)",
-                                  backgroundColor:
-                                    expanded[pkg.id] === section.id
-                                      ? "rgba(74, 0, 224, 0.03)"
-                                      : "transparent",
-                                  transition: "all 0.3s ease",
-                                  "&:hover": {
-                                    backgroundColor: "rgba(74, 0, 224, 0.03)",
-                                  },
-                                }}
-                              >
-                                <AccordionSummary
-                                  expandIcon={
-                                    expanded[pkg.id] === section.id ? (
-                                      <RemoveIcon sx={{ color: pkg.color }} />
-                                    ) : (
-                                      <AddIcon sx={{ color: "#666" }} />
-                                    )
-                                  }
-                                  aria-controls={`${section.id}-content`}
-                                  id={`${section.id}-header`}
-                                  sx={{
-                                    padding: "0 25px",
-                                    minHeight: "68px !important",
-                                    "& .MuiAccordionSummary-content": {
-                                      margin: "12px 0",
-                                      alignItems: "center",
-                                    },
-                                  }}
-                                >
-                                  <Typography
-                                    sx={{
-                                      fontWeight: 600,
-                                      color:
-                                        expanded[pkg.id] === section.id
-                                          ? pkg.color
-                                          : "#444",
-                                      fontSize: "1.2rem",
-                                      letterSpacing: "0.2px",
-                                    }}
-                                  >
-                                    {section.title}
-                                  </Typography>
-                                  <IconButton
-                                    onClick={() => {
-                                      if (editingField === `${pkg.id}-${section.id}`) {
-                                        handleSave(pkg.id, section.id);
-                                      } else {
-                                        handleEdit(
-                                          pkg.id,
-                                          section.id,
-                                          editableContent[`${pkg.id}-${section.id}`] ||
-                                            section.content
-                                        );
-                                      }
-                                    }}
-                                    sx={{ marginLeft: "auto" }}
-                                  >
-                                    {editingField === `${pkg.id}-${section.id}` ? (
-                                      <SaveIcon />
-                                    ) : (
-                                      <EditIcon />
-                                    )}
-                                  </IconButton>
-                                </AccordionSummary>
-                                <AccordionDetails
-                                  sx={{
-                                    padding: "0 25px 25px",
-                                    backgroundColor: "#fff",
-                                    borderLeft: `3px solid ${pkg.color}`,
-                                    marginLeft: "25px",
-                                    marginBottom: "15px",
-                                    borderRadius: "0 8px 8px 0",
-                                    transition: "all 0.3s ease",
-                                  }}
-                                >
-                                  <Typography
-                                    variant="body1"
-                                    sx={{
-                                      color: "#555",
-                                      textAlign: "left",
-                                      lineHeight: "1.8",
-                                      fontSize: "0.95rem",
-                                      whiteSpace: "pre-line",
-                                    }}
-                                  >
-                                    {renderContentWithEditableRupeeValues(
-                                      pkg.id,
-                                      section.id,
-                                      editingField === `${pkg.id}-${section.id}`
-                                        ? tempContent[`${pkg.id}-${section.id}`]
-                                        : editableContent[`${pkg.id}-${section.id}`] ||
-                                            section.content
-                                    )}
-                                  </Typography>
-                                </AccordionDetails>
-                              </Accordion>
-                            ))}
-                          </Box>
-                        </Card>
-                      </Grow>
-                    ))}
+                          >
+                            <Typography
+                              sx={{
+                                fontWeight: 600,
+                                color:
+                                  expanded[pkg.id] === section.id
+                                    ? pkg.color
+                                    : "#444",
+                                fontSize: "1.2rem",
+                                letterSpacing: "0.2px",
+                              }}
+                            >
+                              {section.title}
+                            </Typography>
+                            <IconButton
+                              onClick={() => {
+                                if (
+                                  editingField === `${pkg.id}-${section.id}`
+                                ) {
+                                  handleSave(pkg.id, section.id);
+                                } else {
+                                  handleEdit(
+                                    pkg.id,
+                                    section.id,
+                                    editableContent[
+                                      `${pkg.id}-${section.id}`
+                                    ] || section.content
+                                  );
+                                }
+                              }}
+                              sx={{ marginLeft: "auto" }}
+                              disabled={isLoading}
+                            >
+                              {editingField === `${pkg.id}-${section.id}` ? (
+                                <SaveIcon />
+                              ) : (
+                                <EditIcon />
+                              )}
+                            </IconButton>
+                          </AccordionSummary>
+                          <AccordionDetails
+                            sx={{
+                              padding: "0 25px 25px",
+                              backgroundColor: "#fff",
+                              borderLeft: `3px solid ${pkg.color}`,
+                              marginLeft: "25px",
+                              marginBottom: "15px",
+                              borderRadius: "0 8px 8px 0",
+                              transition: "all 0.3s ease",
+                            }}
+                          >
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                color: "#555",
+                                textAlign: "left",
+                                lineHeight: "1.8",
+                                fontSize: "0.95rem",
+                                whiteSpace: "pre-line",
+                              }}
+                            >
+                              {renderContentWithEditableRupeeValues(
+                                pkg.id,
+                                section.id,
+                                editingField === `${pkg.id}-${section.id}`
+                                  ? tempContent[`${pkg.id}-${section.id}`]
+                                  : editableContent[
+                                      `${pkg.id}-${section.id}`
+                                    ] || section.content
+                              )}
+                            </Typography>
+                          </AccordionDetails>
+                        </Accordion>
+                      ))}
+                    </Box>
+                  </Card>
+                </Grow>
+              ))
+            )}
+          </Box>
+
+          {/* Second Card */}
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: { xs: "100%", md: "400px" },
+              maxWidth: { xs: "100%", md: "500px" },
+              height: "700px", // ✅ Match the card height
+            }}
+          >
+            <Packages2 />
+          </Box>
+
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: { xs: "100%", md: "400px" },
+              maxWidth: { xs: "100%", md: "500px" },
+              height: "700px",
+            }}
+          >
+            <Packages3 />
+          </Box>
         </Box>
       </Fade>
-      <div>
-        <Packages2 />
-      </div>
-      {/* <div>
-        <Package3 />
-      </div>  */}
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
