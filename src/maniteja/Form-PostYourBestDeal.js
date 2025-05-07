@@ -273,9 +273,9 @@ const PostYourBestDeal = () => {
     };
     
     const [formData, setFormData] = useState({
-        user_id: userId,
+        user_id: userId, 
         category_id: '1', 
-        type: 'sell',
+        // type: 'sell',
         mobile_no: '',
         facing: '',
         roadwidth: '',
@@ -551,6 +551,8 @@ useEffect(() => {
             long: location.lng.toString(),
             location: address,
             site_area: site_area.toString(),
+            type: 'best-deal',
+            Admin_status: 'Pending'
             // mobile_no: formData.mobile_no
         };
     
