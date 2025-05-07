@@ -32,7 +32,7 @@ const HotProperty_Saves = () => {
     const navigate = useNavigate();
   
     useEffect(() => {
-      const stored = localStorage.getItem('savedBuy');
+      const stored = localStorage.getItem('savedHot');
       if (stored) {
         const savedProperties = JSON.parse(stored);
         setSaved(savedProperties);
@@ -49,7 +49,7 @@ const HotProperty_Saves = () => {
     const handleRemove = (id) => {
       const updated = saved.filter((item) => item.id !== id);
       setSaved(updated);
-      localStorage.setItem('savedBuy', JSON.stringify(updated));
+      localStorage.setItem('savedHot', JSON.stringify(updated));
     };
   
     const toggleLike = (id) => {

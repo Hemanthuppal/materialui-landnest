@@ -12,7 +12,7 @@ import 'leaflet/dist/leaflet.css';
 
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
-import ReUsableCard from './../sharvani/ReUsableCard';
+import ReUsableCard from './ReUsableCard';
 import CustomBottomNav from './CustomNavbarHotProperties';
 import { BASE_URL } from '../Api/ApiUrls';
 
@@ -36,7 +36,7 @@ const Hot_Property_Map = () => {
     const [selectedType, setSelectedType] = useState(null);
   
     const [saved, setSaved] = useState(() => {
-      const stored = localStorage.getItem('savedBuy');
+      const stored = localStorage.getItem('savedHot');
       return stored ? JSON.parse(stored) : [];
     });
     const [categories, setCategories] = useState([]);
@@ -50,9 +50,10 @@ const Hot_Property_Map = () => {
           setCategories(categoriesResponse.data);
   
           const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
-          const filtered = propertiesResponse.data.filter(item =>
-            item.type && item.type.toLowerCase().includes("sell")
-          );
+const filtered = propertiesResponse.data.filter(item =>
+  item.type === "best-deal" && item.Admin_status === "Approved"
+);
+
   
           const parsed = filtered.map(item => {
             const parseCoord = (coord) => {
@@ -89,6 +90,7 @@ const Hot_Property_Map = () => {
               width: item.width,
               property_name: item.property_name,
               mobile_no: item.mobile_no,
+              admin_mobile: item.admin_mobile,
               images: images, // Make sure this is always an array
               propertyData: item
             };
@@ -149,7 +151,7 @@ const Hot_Property_Map = () => {
       const isSaved = saved.find((p) => p.id === property.id);
       const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
       setSaved(updated);
-      localStorage.setItem('savedBuy', JSON.stringify([...saved, {
+      localStorage.setItem('savedHot', JSON.stringify([...saved, {
         ...property,
         images: property.images || [property.image] // Fallback to single image if no array
       }]));
@@ -191,7 +193,7 @@ const Hot_Property_Map = () => {
   
         {/* 📌 Property Types */}
         <Box sx={{ px: 2 }}>
-          <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Property</Typography>
+          <Typography variant="subtitle1" sx={{ mb: 1 }}>Hot Properties </Typography>
           <Box
             sx={{
               display: 'flex',
