@@ -157,7 +157,7 @@ const Category = () => {
       <Container sx={{ mt: 2 }}>
         <Box sx={{ maxWidth: 1300, mx: 'auto', p: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#fff' }}>
           <Typography variant="h4" sx={{ textAlign: 'center', color: 'primary.main', mb: 2 }}>
-            Material Categories
+             Categories
           </Typography>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
