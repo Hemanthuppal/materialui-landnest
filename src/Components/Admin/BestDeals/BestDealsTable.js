@@ -247,7 +247,7 @@ const BestPlanTable = () => {
                 <TableCell sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                   <strong>Select</strong>
                 </TableCell>
-                {['S.No', 'Name', 'User Mobile', 'Admin Mobile', 'Posted By', 'Price', 'Status', 'Actions'].map((head) => (
+                {['S.No', 'Name', 'User Mobile', 'Admin Mobile', 'Posted By', 'Facing', 'Site Area', 'Price', 'Location', 'Status', 'Actions'].map((head) => (
                   <TableCell key={head} sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                     <strong>{head}</strong>
                   </TableCell>
@@ -271,7 +271,10 @@ const BestPlanTable = () => {
                     <TableCell sx={{ textAlign: 'center' }}>{property.mobile_no}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.admin_mobile}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.posted_by}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>{property.facing}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>{property.site_area}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.price}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>{property.location}</TableCell>
                     
                     {/* Status Column with Dropdown */}
                     <TableCell sx={{ textAlign: 'center' }}>

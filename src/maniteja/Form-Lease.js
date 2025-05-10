@@ -90,7 +90,7 @@ const LeaseForm = () => {
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
     const [formValues, setFormValues] = useState({});
-    const [selectedCategory, setSelectedCategory] = useState('Villa');
+    const [selectedCategory, setSelectedCategory] = useState('1BHK');
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
@@ -184,12 +184,26 @@ const LeaseForm = () => {
                 const rentCategories = response.data.filter(
                     cat => cat.category_type.toLowerCase() == 'rent/lease'
                 );
-                setCategories(rentCategories);
+    
+                const customOrder = [
+                    "1BHK", "2BHK", "3BHK", "4+BHK", 
+                    "Plot/land", "Duplex house", "Commercial land", 
+                    "Commercial building/space", "Villa", 
+                    "Pg-school-office", "Shopping mall/shop"
+                ];
+    
+                // Sort rentCategories according to customOrder
+                const sortedCategories = rentCategories.sort((a, b) => {
+                    return customOrder.indexOf(a.category) - customOrder.indexOf(b.category);
+                });
+    
+                setCategories(sortedCategories);
             })
             .catch(error => {
                 console.error("Error fetching categories:", error);
             });
     }, []);
+    
 
     const groupedCategories = categories.reduce((acc, curr) => {
         const type = curr.category_type;
@@ -202,7 +216,7 @@ const LeaseForm = () => {
 
     const [formData, setFormData] = useState({
         user_id: userId, // This should probably come from user auth
-        category_id: '2', // This should be mapped from your category selection
+        category_id: '24', // This should be mapped from your category selection
         // type: 'lease', // or 'sell' based on your form
         facing: '',
         mobile_no: '',
