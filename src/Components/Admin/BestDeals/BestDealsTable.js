@@ -9,7 +9,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Avatar,
   Paper,
   Stack,
   TextField,
@@ -25,14 +24,27 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../../Api/ApiUrls";
-import ViewModal from "./ViewModal"; // Import the ViewModal component
+import ViewModal from "./ViewModal";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Carousel from 'react-material-ui-carousel';
+import { styled } from '@mui/material/styles';
+
+const StyledCarousel = styled(Carousel)({
+  width: '200px',
+  height: '150px',
+  borderRadius: '8px',
+  '& img': {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+ 
+});
 
 const BestPlanTable = () => {
   const [properties, setProperties] = useState([]);
@@ -46,6 +58,10 @@ const BestPlanTable = () => {
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [changeMobileDialogOpen, setChangeMobileDialogOpen] = useState(false);
   const [newMobile, setNewMobile] = useState('');
+
+   const getImageUrl = (imagePath) => {
+    return `${BASE_URL}${imagePath}`;
+  };
 
   const fetchProperties = async () => {
     try {
@@ -215,7 +231,8 @@ const BestPlanTable = () => {
 
   return (
     <Container sx={{ mt: 2 }}>
-      <Box sx={{ maxWidth: 1300, mx: 'auto', p: 1, borderRadius: 2, boxShadow: 3, backgroundColor: '#fff' }}>
+      <Box sx={{  mx: 'auto', p: 1, borderRadius: 2, boxShadow: 3, backgroundColor: '#fff',    width: "128%",
+    marginLeft: "-14%" }}>
         <Typography variant="h4" sx={{ textAlign: 'center', color: 'primary.main', mb: 2 }}>
           Best Deal Properties
         </Typography>
@@ -247,66 +264,92 @@ const BestPlanTable = () => {
                 <TableCell sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                   <strong>Select</strong>
                 </TableCell>
-                {['S.No', 'Name', 'User Mobile', 'Admin Mobile', 'Posted By', 'Facing', 'Site Area', 'Price', 'Location', 'Status', 'Actions'].map((head) => (
+                {['S.No', 'Name', 'images','User Mobile', 'Admin Mobile', 'Posted By', 'Facing', 'Site Area', 'Price', 'Location', 'Status', 'Actions'].map((head) => (
                   <TableCell key={head} sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                     <strong>{head}</strong>
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
+<TableBody>
+        {filteredProperties
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((property, index) => (
+            <TableRow key={property.property_id}>
+              <TableCell sx={{ textAlign: 'center' }}>
+                <Checkbox
+                  checked={selectedProperties.includes(property.property_id)}
+                  onChange={() => handleSelectProperty(property.property_id)}
+                />
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <Typography>{property.property_name}</Typography>
+                 
+                </Box>
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center' }}> 
+                {property.property_images && property.property_images.length > 0 && (
+                    <StyledCarousel
+                      autoPlay={true}
+                      animation="slide"
+                      navButtonsAlwaysVisible ={false}
+                      indicators={property.property_images.length > 1}
+                      sx={{ mt: 1 }}
+                    >
+                      {property.property_images.map((imageObj, imgIndex) => (
+                        <img
+                          key={imageObj.id}
+                          src={getImageUrl(imageObj.image)}
+                          alt={`${property.property_name} ${imgIndex + 1}`}
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/150'; // Fallback image
+                          }}
+                        />
+                      ))}
+                    </StyledCarousel>
+                  )}
+                  </TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.mobile_no}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.admin_mobile}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.posted_by}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.facing}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.site_area}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.price}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{property.location}</TableCell>
+              
+              <TableCell sx={{ textAlign: 'center' }}>
+                <Select
+                  value={property.Admin_status || 'Pending'}
+                  onChange={(e) => handleStatusChange(property.property_id, e.target.value)}
+                  sx={{ minWidth: 120 }}
+                >
+                  <MenuItem value="Pending">Pending</MenuItem>
+                  <MenuItem value="Approved">Approved</MenuItem>
+                </Select>
+              </TableCell>
+              
+              <TableCell sx={{ textAlign: 'center' }}>
+                <Stack direction="row" spacing={1} justifyContent="center">
+                  <IconButton color="info" onClick={() => handleViewClick(property)}>
+                    <VisibilityIcon />
+                  </IconButton>
+                  <IconButton color="primary" onClick={() => {
+                    setCurrentProperty(property);
+                    setModalOpen(true);
+                  }}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="error" onClick={() => handleDelete(property.property_id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Stack>
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
 
-            <TableBody>
-              {filteredProperties
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((property, index) => (
-                  <TableRow key={property.property_id}>
-                    <TableCell sx={{ textAlign: 'center' }}>
-                      <Checkbox
-                        checked={selectedProperties.includes(property.property_id)}
-                        onChange={() => handleSelectProperty(property.property_id)}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.property_name}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.mobile_no}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.admin_mobile}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.posted_by}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.facing}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.site_area}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.price}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{property.location}</TableCell>
-                    
-                    {/* Status Column with Dropdown */}
-                    <TableCell sx={{ textAlign: 'center' }}>
-                      <Select
-                        value={property.Admin_status || 'Pending'}
-                        onChange={(e) => handleStatusChange(property.property_id, e.target.value)}
-                        sx={{ minWidth: 120 }}
-                      >
-                        <MenuItem value="Pending">Pending</MenuItem>
-                        <MenuItem value="Approved">Approved</MenuItem>
-                      </Select>
-                    </TableCell>
-                    
-                    <TableCell sx={{ textAlign: 'center' }}>
-                      <Stack direction="row" spacing={1} justifyContent="center">
-                        <IconButton color="info" onClick={() => handleViewClick(property)}>
-                          <VisibilityIcon />
-                        </IconButton>
-                        <IconButton color="primary" onClick={() => {
-                          setCurrentProperty(property);
-                          setModalOpen(true);
-                        }}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton color="error" onClick={() => handleDelete(property.property_id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
           </Table>
 
           <TablePagination
