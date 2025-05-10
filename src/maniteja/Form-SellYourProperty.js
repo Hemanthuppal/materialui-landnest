@@ -105,7 +105,7 @@ const SellYourProperty = () => {
     
     const [formData, setFormData] = useState({
         user_id: userId,
-        category_id: '1', 
+        category_id: '16', 
         type: 'sell',
         mobile_no: '',
         facing: '',
@@ -161,7 +161,7 @@ useEffect(() => {
 
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('Apartment');
+    const [selectedCategory, setSelectedCategory] = useState('Plot/land');
     const [formValues, setFormValues] = useState({});
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
@@ -344,7 +344,17 @@ useEffect(() => {
                 const rentCategories = response.data.filter(
                     cat => cat.category_type.toLowerCase() == 'sell'
                 );
-                setCategories(rentCategories);
+                const customOrder = [
+                    "Plot/land", "Commercial land/plot", "Rent with duplex building", "Duplex house", "Rental building",
+                    "Pg-offices", "Flat", "Villa", "Commercial building", "Villa", 
+                    "Apartment", "Others"
+                ];
+    
+                // Sort rentCategories according to customOrder
+                const sortedCategories = rentCategories.sort((a, b) => {
+                    return customOrder.indexOf(a.category) - customOrder.indexOf(b.category);
+                });
+                setCategories(sortedCategories);
             })
             .catch(error => {
                 console.error("Error fetching categories:", error);
