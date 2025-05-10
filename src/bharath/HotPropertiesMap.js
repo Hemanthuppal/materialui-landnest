@@ -15,8 +15,8 @@ import {
 
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
-import ReUsableCard from './../sharvani/ReUsableCard';
-import CustomBottomNav from './CustomNav';
+import ReUsableCard from './ReUsableCard';
+import CustomBottomNav from './CustomNavbarHotProperties';
 import { BASE_URL } from '../Api/ApiUrls';
 
 const rentalTypes = [
@@ -25,12 +25,12 @@ const rentalTypes = [
   "COMMERCIAL BUILDING", "APARTMENT", "OTHERS"
 ];
 
-const Buy_Property_Map = () => {
+const Hot_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('savedBuy');
+    const stored = localStorage.getItem('savedHot');
     return stored ? JSON.parse(stored) : [];
   });
   const [categories, setCategories] = useState([]);
@@ -45,7 +45,7 @@ const Buy_Property_Map = () => {
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-                   item.type && item.type.toLowerCase().includes("sell")
+          item.type === "best-deal" && item.Admin_status === "Approved"
         );
 
         const parsed = filtered.map(item => {
@@ -56,7 +56,7 @@ const Buy_Property_Map = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id == item.category_id
+            cat => cat.category_id === item.category_id
           );
 
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -81,6 +81,7 @@ const Buy_Property_Map = () => {
             width: item.width,
             property_name: item.property_name,
             mobile_no: item.mobile_no,
+            admin_mobile: item.admin_mobile,
             images: images,
             propertyData: item
           };
@@ -119,16 +120,16 @@ const Buy_Property_Map = () => {
   };
 
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id == property.id);
+    const isSaved = saved.find((p) => p.id === property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
     setSaved(updated);
-    localStorage.setItem('savedBuy', JSON.stringify([...saved, {
+    localStorage.setItem('savedHot', JSON.stringify([...saved, {
       ...property,
       images: property.images || [property.image]
     }]));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id == property.id);
+  const isSaved = (property) => saved.some((p) => p.id === property.id);
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
@@ -164,7 +165,7 @@ const Buy_Property_Map = () => {
 
       {/* Property Types */}
       <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Properties </Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Hot Properties </Typography>
         <Box
           sx={{
             display: 'flex',
@@ -181,16 +182,16 @@ const Buy_Property_Map = () => {
               variant="filled"
               onClick={() => {
                 setSelectedProperty(null);
-                setSelectedType(prev => (prev == type ? null : type));
+                setSelectedType(prev => (prev === type ? null : type));
               }}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType == type ? '#000000' : 'transparent',
-                color: selectedType == type ? '#ffffff' : '#000000',
+                bgcolor: selectedType === type ? '#000000' : 'transparent',
+                color: selectedType === type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />
@@ -236,7 +237,7 @@ const Buy_Property_Map = () => {
               property={selectedProperty}
               onCardClick={() => {
                 if (selectedProperty && selectedProperty.id) {
-                  navigate('/Buy-description', {
+                  navigate('/hot-property-description', {
                     state: { propertyId: selectedProperty.id }
                   });
                 }
@@ -259,4 +260,4 @@ const Buy_Property_Map = () => {
   );
 };
 
-export default Buy_Property_Map;
+export default Hot_Property_Map;
