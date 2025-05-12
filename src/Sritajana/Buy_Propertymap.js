@@ -198,58 +198,86 @@ const Buy_Property_Map = () => {
         </Box>
       </Box>
 
-      {/* Google Map */}
-      <Box sx={{ px: 2, pb: 10 }}>
-        {isLoaded ? (
-          <GoogleMap
-            mapContainerStyle={{ width: '100%', height: containerStyle.height }}
-            center={center}
-            zoom={14}
-          >
-            {filteredProperties.map(property => (
-              property.lat && property.lng && (
-                <Marker
-                  key={property.id}
-                  position={{ lat: property.lat, lng: property.lng }}
-                  onClick={() => setSelectedProperty(property)}
-                />
-              )
-            ))}
-          </GoogleMap>
-        ) : (
-          <Typography>Loading map...</Typography>
-        )}
-        
-        {/* Property Card Popup */}
-        {selectedProperty && (
+      {/* No properties message - moved outside the map container */}
+      {selectedType && filteredProperties.length === 0 && (
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '200px',
+          px: 2,
+          textAlign: 'center'
+        }}>
           <Box sx={{
-            position: 'absolute',
-            bottom: 115,
-            left: 0,
-            right: 0,
-            margin: '0 auto',
-            width: '100%',
-            maxWidth: 480,
-            zIndex: 999
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            padding: '16px',
+            borderRadius: '8px',
+            textAlign: 'center'
           }}>
-            <ReUsableCard
-              property={selectedProperty}
-              onCardClick={() => {
-                if (selectedProperty && selectedProperty.id) {
-                  navigate('/Buy-description', {
-                    state: { propertyId: selectedProperty.id }
-                  });
-                }
-              }}
-              isSaved={isSaved}
-              toggleSave={toggleSave}
-              likedCards={likedCards}
-              toggleLike={toggleLike}
-              onClose={() => setSelectedProperty(null)}
-            />
+            <Typography variant="h6">
+              No properties listed in this category
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              We couldn't find any properties matching "{selectedType}"
+            </Typography>
           </Box>
-        )}
-      </Box>
+        </Box>
+      )}
+
+      {/* Google Map - only show if there are properties or no type selected */}
+      {(!selectedType || filteredProperties.length > 0) && (
+        <Box sx={{ px: 2, pb: 10 }}>
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={{ width: '100%', height: containerStyle.height }}
+              center={center}
+              zoom={14}
+            >
+              {filteredProperties.map(property => (
+                property.lat && property.lng && (
+                  <Marker
+                    key={property.id}
+                    position={{ lat: property.lat, lng: property.lng }}
+                    onClick={() => setSelectedProperty(property)}
+                  />
+                )
+              ))}
+            </GoogleMap>
+          ) : (
+            <Typography>Loading map...</Typography>
+          )}
+
+          {/* Property Card Popup */}
+          {selectedProperty && (
+            <Box sx={{
+              position: 'absolute',
+              bottom: 115,
+              left: 0,
+              right: 0,
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: 480,
+              zIndex: 999
+            }}>
+              <ReUsableCard
+                property={selectedProperty}
+                onCardClick={() => {
+                  if (selectedProperty && selectedProperty.id) {
+                    navigate('/Buy-description', {
+                      state: { propertyId: selectedProperty.id }
+                    });
+                  }
+                }}
+                isSaved={isSaved}
+                toggleSave={toggleSave}
+                likedCards={likedCards}
+                toggleLike={toggleLike}
+                onClose={() => setSelectedProperty(null)}
+              />
+            </Box>
+          )}
+        </Box>
+      )}
 
       {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>

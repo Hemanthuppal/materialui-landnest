@@ -218,18 +218,26 @@ const CustomBottomNavbar = () => {
   const location = useLocation();
   const navRef = useRef(null);
 
-  const currentKey = location.pathname.startsWith(centerItem.route)
-    ? centerItem.key
-    : navItems.find((item) => location.pathname.startsWith(item.route))?.key || 'home';
+ const currentKey = (() => {
+  const found = navItems.find(item => item.route === location.pathname);
+  return found ? found.key : ''; // remove centerItem check
+})();
 
-  useEffect(() => {
-    const current = document.querySelector(`.cbn-nav-item[data-key="${currentKey}"]`);
-    const indicator = document.querySelector('.cbn-indicator');
-    if (current && indicator) {
-      const { offsetLeft, offsetWidth } = current;
-      indicator.style.left = `${offsetLeft + offsetWidth / 2 - 20}px`;
-    }
-  }, [currentKey]);
+
+
+ useEffect(() => {
+  if (currentKey === '') return; // Don't show indicator for centerItem
+
+  const current = document.querySelector(`.cbn-nav-item[data-key="${currentKey}"]`);
+  const indicator = document.querySelector('.cbn-indicator');
+
+  if (current && indicator) {
+    const { offsetLeft, offsetWidth } = current;
+    indicator.style.left = `${offsetLeft + offsetWidth / 2 - 16}px`;
+  }
+}, [currentKey]);
+
+
 
   const handleNav = (item) => {
     if (!item.isSpacer) navigate(item.route);
