@@ -247,7 +247,7 @@ const BestPlanTable = () => {
                 <TableCell sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                   <strong>Select</strong>
                 </TableCell>
-                {['S.No', 'Name', 'User Mobile', 'Admin Mobile', 'Posted By', 'Facing', 'Site Area', 'Price', 'Location', 'Status', 'Actions'].map((head) => (
+                {['S.No', 'Name', 'Images', 'User Mobile', 'Admin Mobile', 'Posted By', 'Facing', 'Site Area', 'Price', 'Location', 'Status', 'Actions'].map((head) => (
                   <TableCell key={head} sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                     <strong>{head}</strong>
                   </TableCell>
@@ -268,6 +268,23 @@ const BestPlanTable = () => {
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.property_name}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+          <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', py: 1 }}>
+            {property.property_images?.length > 0 ? (
+              property.property_images.map((image) => (
+                <Avatar
+                  key={image.id}
+                  src={`${BASE_URL}${image.image}`}
+                  alt={`Property ${image.id}`}
+                  variant="rounded"
+                  sx={{ width: 75, height: 75 }}
+                />
+              ))
+            ) : (
+              <Typography variant="body2">No images</Typography>
+            )}
+          </Box>
+        </TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.mobile_no}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.admin_mobile}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{property.posted_by}</TableCell>
