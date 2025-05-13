@@ -86,7 +86,7 @@ const Lease_description = () => {
     : [buildingImage];
 
   return (
-    <Box sx={{ width: '100vw', minHeight: '100vh', backgroundColor: 'rgb(239, 231, 221)', pb: 10 }}>
+    <Box sx={{ width: '100vw', minHeight: '100vh',marginBottom:'10px', backgroundColor: 'rgb(239, 231, 221)', pb: 10 }}>
       {/* Header */}
       <Box sx={{
         position: 'fixed',
@@ -99,6 +99,7 @@ const Lease_description = () => {
         p: 2,
         display: 'flex',
         alignItems: 'center',
+        
       }}>
         <IconButton onClick={() => navigate(-1)} sx={{ color: 'white', mr: 1 }}>
           <ArrowBackIosNewIcon />
@@ -114,6 +115,7 @@ const Lease_description = () => {
     borderRadius: '20px',
     background: 'linear-gradient(135deg, #ffffff 0%,rgb(248, 248, 248) 100%)',
     boxShadow: 5,
+    
   }}>
     {/* Main Image Display */}
     {images.length > 1 ? (
@@ -423,7 +425,8 @@ const Lease_description = () => {
       </Box>
 
       {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, }} elevation={3}>
+        
         <CustomBottomNav />
       </Paper>
     </Box>

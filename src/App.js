@@ -86,6 +86,9 @@ import UserLease from "./Userproperties/Lease/Lease";
 import UserVendor from "./Userproperties/Vendor/Vendor";
 import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
 import Consultant_Table from "./Components/Admin/AdminUploadedProperties/Consultant_Table";
+import EditLeaseForm from "./Userproperties/Lease/EditLease";
+import EditRentForm from "./Userproperties/Rent/EditRent";
+import EditBuy from "./Userproperties/Buy/EditBuy";
 
 function App() {
   return (
@@ -215,6 +218,11 @@ function App() {
           <Route path="/user-lease" element={<UserLease />} />
           <Route path="/user-deals" element={<UserBestdeals />} />
           <Route path="/user-vendors" element={<UserVendor />} />
+
+          <Route path="/user-edit-lease/:menuPropertyId" element={<EditLeaseForm />} />
+          <Route path="/user-edit-rent/:menuPropertyId" element={<EditRentForm />} />
+           <Route path="/user-edit-buy/:menuPropertyId" element={<EditBuy />} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

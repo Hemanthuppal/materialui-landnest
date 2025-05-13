@@ -196,13 +196,28 @@ const ConstructionPackages = () => {
     }));
   };
 
+  // const handleEdit = (pkgId, sectionId, content) => {
+  //   setTempContent((prev) => ({
+  //     ...prev,
+  //     [`${pkgId}-${sectionId}`]: content,
+  //   }));
+  //   setEditingField(`${pkgId}-${sectionId}`);
+  // };
+
+
   const handleEdit = (pkgId, sectionId, content) => {
-    setTempContent((prev) => ({
-      ...prev,
-      [`${pkgId}-${sectionId}`]: content,
-    }));
-    setEditingField(`${pkgId}-${sectionId}`);
-  };
+  setEditingField(`${pkgId}-${sectionId}`);
+  setTempContent((prev) => ({
+    ...prev,
+    [`${pkgId}-${sectionId}`]: content,
+  }));
+
+  // Expand the accordion
+  setExpanded((prev) => ({
+    ...prev,
+    [pkgId]: sectionId,
+  }));
+};
 
   const handleSave = async (pkgId, sectionId) => {
     try {
@@ -485,26 +500,11 @@ const ConstructionPackages = () => {
     <>
       <Fade in={true} timeout={800}>
         <Box
-          sx={{
-            px: { xs: 2, sm: 4, md: 6 },
-            pt: 4,
-            maxWidth: "800px",
-            margin: "0 auto",
-            pb: 2,
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: "30px",
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
+         
         >
           {/* First Card */}
           <Box
-            sx={{
-              flex: 1,
-              minWidth: { xs: "100%", md: "400px" },
-              maxWidth: { xs: "100%", md: "500px" },
-            }}
+            
           >
             {isLoading ? (
               <Box
@@ -532,7 +532,7 @@ const ConstructionPackages = () => {
                       },
                       border: "none",
                       width: "100%",
-                      height: "700px",
+                      // height: "700px",
                       display: "flex",
                       flexDirection: "column",
                     }}

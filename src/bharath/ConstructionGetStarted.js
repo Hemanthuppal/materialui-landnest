@@ -28,7 +28,7 @@ function ConstructionConsultationForm() {
     if (userId) {
       axios.get(`https://landnest.net:81/users/`)
         .then(res => {
-          const user = res.data.find(u => u.user_id === userId);
+          const user = res.data.find(u => u.user_id == userId);
           if (user) {
             setUserData({
               name: `${user.first_name} ${user.last_name}`,
