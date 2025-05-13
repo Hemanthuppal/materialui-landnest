@@ -68,7 +68,7 @@ const PropertyCard = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
           
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -120,7 +120,7 @@ const PropertyCard = () => {
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId];
-      const property = properties.find(p => p.id === propertyId);
+      const property = properties.find(p => p.id == propertyId);
       const nextIndex = (currentIndex + 1) % property.images.length;
       return {
         ...prev,
@@ -133,7 +133,7 @@ const PropertyCard = () => {
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId];
-      const property = properties.find(p => p.id === propertyId);
+      const property = properties.find(p => p.id == propertyId);
       const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
       return {
         ...prev,
@@ -169,7 +169,7 @@ const PropertyCard = () => {
   };
   
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -185,7 +185,7 @@ const PropertyCard = () => {
     }]));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
    // Filter properties based on search query and selected type
    const filteredProperties = properties.filter((property) => {
@@ -254,15 +254,15 @@ const PropertyCard = () => {
               key={index}
               label={type}
               variant="filled"
-              onClick={() => setSelectedType(prev => (prev === type ? null : type))}
+              onClick={() => setSelectedType(prev => (prev == type ? null : type))}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType === type ? '#000000' : 'transparent',
-                color: selectedType === type ? '#ffffff' : '#000000',
+                bgcolor: selectedType == type ? '#000000' : 'transparent',
+                color: selectedType == type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />
@@ -374,7 +374,7 @@ const PropertyCard = () => {
             width: 8,
             height: 8,
             borderRadius: '50%',
-            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+            backgroundColor: currentImageIndex[property.id] == index ? '#1976d2' : '#ccc',
             cursor: 'pointer',
             transition: 'background-color 0.3s'
           }}

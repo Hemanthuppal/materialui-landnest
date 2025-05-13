@@ -124,7 +124,7 @@ const EditLeaseForm = () => {
                         );
                         const data = await response.json();
 
-                        if (data.status === 'OK' && data.results.length > 0) {
+                        if (data.status == 'OK' && data.results.length > 0) {
                             const address = data.results[0].formatted_address;
                             setAddress(address);
                         } else {
@@ -428,7 +428,7 @@ const EditLeaseForm = () => {
 
             console.log('API response:', response);
 
-            if (response.status === 200) {
+            if (response.status == 200) {
                 console.log('Property updated successfully!');
                 alert('Property updated successfully!');
                 navigate('/dashboard');

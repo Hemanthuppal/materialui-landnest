@@ -308,7 +308,7 @@ const EditSellProperty = () => {
                         );
                         const data = await response.json();
 
-                        if (data.status === 'OK' && data.results.length > 0) {
+                        if (data.status == 'OK' && data.results.length > 0) {
                             const address = data.results[0].formatted_address;
                             setAddress(address);
                         } else {
@@ -506,7 +506,7 @@ const EditSellProperty = () => {
 
             console.log('Server response:', response);
             
-            if (response.status === 200) {
+            if (response.status == 200) {
                 console.log('Success! Response data:', response.data);
                 alert('Property updated successfully!');
                 navigate('/dashboard');

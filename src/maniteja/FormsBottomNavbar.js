@@ -219,14 +219,14 @@ const CustomBottomNavbar = () => {
   const navRef = useRef(null);
 
  const currentKey = (() => {
-  const found = navItems.find(item => item.route === location.pathname);
+  const found = navItems.find(item => item.route == location.pathname);
   return found ? found.key : ''; // remove centerItem check
 })();
 
 
 
  useEffect(() => {
-  if (currentKey === '') return; // Don't show indicator for centerItem
+  if (currentKey == '') return; // Don't show indicator for centerItem
 
   const current = document.querySelector(`.cbn-nav-item[data-key="${currentKey}"]`);
   const indicator = document.querySelector('.cbn-indicator');

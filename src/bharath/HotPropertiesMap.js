@@ -45,7 +45,7 @@ const Hot_Property_Map = () => {
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-          item.type === "best-deal" && item.Admin_status === "Approved"
+          item.type == "best-deal" && item.Admin_status == "Approved"
         );
 
         const parsed = filtered.map(item => {
@@ -56,7 +56,7 @@ const Hot_Property_Map = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
 
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -120,7 +120,7 @@ const Hot_Property_Map = () => {
   };
 
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
     setSaved(updated);
     localStorage.setItem('savedHot', JSON.stringify([...saved, {
@@ -129,7 +129,7 @@ const Hot_Property_Map = () => {
     }]));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
@@ -182,16 +182,16 @@ const Hot_Property_Map = () => {
               variant="filled"
               onClick={() => {
                 setSelectedProperty(null);
-                setSelectedType(prev => (prev === type ? null : type));
+                setSelectedType(prev => (prev == type ? null : type));
               }}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType === type ? '#000000' : 'transparent',
-                color: selectedType === type ? '#ffffff' : '#000000',
+                bgcolor: selectedType == type ? '#000000' : 'transparent',
+                color: selectedType == type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />

@@ -98,7 +98,7 @@ const HomeServiceCategory = () => {
       </Box>
 
       {/* No vendors message */}
-      {filteredVendors.length === 0 && (
+      {filteredVendors.length == 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',

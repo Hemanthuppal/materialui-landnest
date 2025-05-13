@@ -48,13 +48,13 @@ const WorkerDetail = () => {
     .then(data => {
       const currentUserId = userId; // Replace with real user ID (from context, auth, etc.)
 
-      const userProperties = data.filter(prop => prop.user_id === currentUserId);
+      const userProperties = data.filter(prop => prop.user_id == currentUserId);
 
       const counts = {
-        postProperty: userProperties.filter(prop => prop.type === "best-deal").length,
-        sellProperty: userProperties.filter(prop => prop.type === "sell").length,
-        rentProperty: userProperties.filter(prop => prop.type === "rent").length,
-        leaseProperty: userProperties.filter(prop => prop.type === "lease").length,
+        postProperty: userProperties.filter(prop => prop.type == "best-deal").length,
+        sellProperty: userProperties.filter(prop => prop.type == "sell").length,
+        rentProperty: userProperties.filter(prop => prop.type == "rent").length,
+        leaseProperty: userProperties.filter(prop => prop.type == "lease").length,
         vendors: 0 // Still needs separate API
       };
 
@@ -151,13 +151,13 @@ const WorkerDetail = () => {
                         textDecoration: clickableLabels.includes(item.label) ? "underline" : "none",
                       }}
                       onClick={() => {
-                        if (item.label === "My Post Property With Landnest") {
+                        if (item.label == "My Post Property With Landnest") {
                           navigate("/user-buy", { state: { type: "best-deal" } });
-                        } else if (item.label === "My Sell Property") {
+                        } else if (item.label == "My Sell Property") {
                           navigate("/user-buy", { state: { type: "sell" } });
-                        } else if (item.label === "My Rent Property") {
+                        } else if (item.label == "My Rent Property") {
                           navigate("/user-rent");
-                        } else if (item.label === "My Lease Property") {
+                        } else if (item.label == "My Lease Property") {
                           navigate("/user-lease");
                         }
                       }}

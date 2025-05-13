@@ -124,7 +124,7 @@ const handleDelete = async () => {
            };
  
            const matchedCategory = categoriesResponse.data.find(
-             cat => cat.category_id === item.category_id
+             cat => cat.category_id == item.category_id
            );
            
            const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -176,7 +176,7 @@ const handleDelete = async () => {
      e.stopPropagation();
      setCurrentImageIndex(prev => {
        const currentIndex = prev[propertyId];
-       const property = properties.find(p => p.id === propertyId);
+       const property = properties.find(p => p.id == propertyId);
        const nextIndex = (currentIndex + 1) % property.images.length;
        return {
          ...prev,
@@ -189,7 +189,7 @@ const handleDelete = async () => {
      e.stopPropagation();
      setCurrentImageIndex(prev => {
        const currentIndex = prev[propertyId];
-       const property = properties.find(p => p.id === propertyId);
+       const property = properties.find(p => p.id == propertyId);
        const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
        return {
          ...prev,
@@ -361,7 +361,7 @@ const handleDelete = async () => {
                             width: 8,
                             height: 8,
                             borderRadius: '50%',
-                            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+                            backgroundColor: currentImageIndex[property.id] == index ? '#1976d2' : '#ccc',
                             cursor: 'pointer',
                             transition: 'background-color 0.3s'
                           }}

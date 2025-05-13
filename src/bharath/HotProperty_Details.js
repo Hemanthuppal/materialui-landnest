@@ -61,7 +61,7 @@ const [selectedType, setSelectedType] = useState(null);
         const filtered = propertiesResponse.data
         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort by created_at DESC
         .filter(item =>
-          item.type === "best-deal" && item.Admin_status === "Approved"
+          item.type == "best-deal" && item.Admin_status == "Approved"
         );
         
 
@@ -73,7 +73,7 @@ const [selectedType, setSelectedType] = useState(null);
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
           
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -125,7 +125,7 @@ const [selectedType, setSelectedType] = useState(null);
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId];
-      const property = properties.find(p => p.id === propertyId);
+      const property = properties.find(p => p.id == propertyId);
       const nextIndex = (currentIndex + 1) % property.images.length;
       return {
         ...prev,
@@ -138,7 +138,7 @@ const [selectedType, setSelectedType] = useState(null);
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId];
-      const property = properties.find(p => p.id === propertyId);
+      const property = properties.find(p => p.id == propertyId);
       const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
       return {
         ...prev,
@@ -169,7 +169,7 @@ const [selectedType, setSelectedType] = useState(null);
   };
   
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -182,7 +182,7 @@ const [selectedType, setSelectedType] = useState(null);
     localStorage.setItem('savedHot', JSON.stringify(updated));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
    // Filter properties based on search query and selected type
    const filteredProperties = properties.filter((property) => {
@@ -252,15 +252,15 @@ const [selectedType, setSelectedType] = useState(null);
                     key={index}
                     label={type}
                     variant="filled"
-                    onClick={() => setSelectedType(prev => (prev === type ? null : type))}
+                    onClick={() => setSelectedType(prev => (prev == type ? null : type))}
                     sx={{
                       flexShrink: 0,
-                      bgcolor: selectedType === type ? '#000000' : 'transparent',
-                      color: selectedType === type ? '#ffffff' : '#000000',
+                      bgcolor: selectedType == type ? '#000000' : 'transparent',
+                      color: selectedType == type ? '#ffffff' : '#000000',
                       border: '1px solid black',
                       fontWeight: 'bold',
                       '&:hover': {
-                        bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                        bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                       },
                     }}
                   />
@@ -372,7 +372,7 @@ const [selectedType, setSelectedType] = useState(null);
             width: 8,
             height: 8,
             borderRadius: '50%',
-            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+            backgroundColor: currentImageIndex[property.id] == index ? '#1976d2' : '#ccc',
             cursor: 'pointer',
             transition: 'background-color 0.3s'
           }}

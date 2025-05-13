@@ -47,7 +47,7 @@
 //   const handleAvatarClick = (event) => setProfileAnchorEl(event.currentTarget);
 //   const handleProfileMenuClose = () => setProfileAnchorEl(null);
 
-//   const isActive = (path) => location.pathname === path;
+//   const isActive = (path) => location.pathname == path;
 
 //   const handleLogout = () => {
 //     handleProfileMenuClose();
@@ -238,7 +238,7 @@ export default function Header() {
   const handleAvatarClick = (event) => setProfileAnchorEl(event.currentTarget);
   const handleProfileMenuClose = () => setProfileAnchorEl(null);
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname == path;
 
   const handleLogout = () => {
     handleProfileMenuClose();

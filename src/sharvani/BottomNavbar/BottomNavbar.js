@@ -34,10 +34,10 @@
 //   };
 
 //   const handleChange = (event, newValue) => {
-//     if (newValue === 0) navigate('/dashboard');
-//     if (newValue === 1) navigate('/details');
-//     if (newValue === 2) navigate('/rent-saves');
-//     if (newValue === 3) navigate('/inboxlist');
+//     if (newValue == 0) navigate('/dashboard');
+//     if (newValue == 1) navigate('/details');
+//     if (newValue == 2) navigate('/rent-saves');
+//     if (newValue == 3) navigate('/inboxlist');
 //   };
 
 //   return (
@@ -108,7 +108,7 @@ const BottomNavbar = () => {
           <div
             key={item.key}
             data-key={item.key}
-            className={`nav-item ${currentKey === item.key ? 'nav-item-active' : ''}`}
+            className={`nav-item ${currentKey == item.key ? 'nav-item-active' : ''}`}
             onClick={() => handleNav(item)}
           >
             {item.icon}

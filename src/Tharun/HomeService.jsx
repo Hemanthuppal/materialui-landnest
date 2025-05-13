@@ -108,16 +108,16 @@ const HomeService = () => {
               variant="filled"
               onClick={() => {
                 setSelectedWorker(null);
-                setSelectedType(prev => (prev === type ? null : type));
+                setSelectedType(prev => (prev == type ? null : type));
               }}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType === type ? '#000000' : 'transparent',
-                color: selectedType === type ? '#ffffff' : '#000000',
+                bgcolor: selectedType == type ? '#000000' : 'transparent',
+                color: selectedType == type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />
@@ -126,7 +126,7 @@ const HomeService = () => {
       </Box>
 
       {/* No vendors message */}
-      {selectedType && filteredVendors.length === 0 && (
+      {selectedType && filteredVendors.length == 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',

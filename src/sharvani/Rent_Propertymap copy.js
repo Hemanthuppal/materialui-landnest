@@ -49,7 +49,7 @@ const Rent_Property_Map = () => {
         const response = await axios.get(`${BASE_URL}/property/`);
         // Filter properties where type is "rent/lease"
         const rentProperties = response.data.filter(property => 
-          property.type && property.type.toLowerCase() === "rent"
+          property.type && property.type.toLowerCase() == "rent"
         );
         setProperties(rentProperties);
 console.log("rentproperties",rentProperties);
@@ -78,7 +78,7 @@ console.log("rentproperties",rentProperties);
     : { lat: 26.8467, lng: 80.9462 };
 
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -91,7 +91,7 @@ console.log("rentproperties",rentProperties);
     localStorage.setItem('savedRent', JSON.stringify(updated));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({

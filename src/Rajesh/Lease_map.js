@@ -202,7 +202,7 @@ const Lease_Property_Map = () => {
       </Box>
 
       {/* No properties message - moved outside the map container */}
-      {selectedType && filteredProperties.length === 0 && (
+      {selectedType && filteredProperties.length == 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',

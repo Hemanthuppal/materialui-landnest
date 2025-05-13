@@ -14,7 +14,7 @@
 //     const validEmail = 'admin@gmail.com';
 //     const validPassword = 'admin@123';
     
-//     if (email === validEmail && password === validPassword) {
+//     if (email == validEmail && password == validPassword) {
 //       setIsAuthenticated(true);
 //       navigate('/dashboard');
 //     } else {

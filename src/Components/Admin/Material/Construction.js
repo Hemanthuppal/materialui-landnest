@@ -28,7 +28,7 @@ const Construction = () => {
     let updatedConstructions;
     if (editConstruction) {
       updatedConstructions = constructions.map((c) =>
-        c.id === editConstruction.id ? construction : c
+        c.id == editConstruction.id ? construction : c
       );
       toast.success("Material updated successfully!");
     } else {
@@ -41,7 +41,7 @@ const Construction = () => {
   };
 
   const handleEdit = (id) => {
-    const materialToEdit = constructions.find((c) => c.id === id);
+    const materialToEdit = constructions.find((c) => c.id == id);
     if (materialToEdit) {
       setEditConstruction(materialToEdit);
       setShowForm(true);

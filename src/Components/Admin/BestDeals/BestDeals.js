@@ -17,7 +17,7 @@ const BestDealsPage = () => {
   };
 
   const handleEdit = (id) => {
-    const planToEdit = plans.find((plan) => plan.id === id);
+    const planToEdit = plans.find((plan) => plan.id == id);
     if (planToEdit) {
       setEditPlan(planToEdit);
       setShowForm(true);

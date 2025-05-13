@@ -67,7 +67,7 @@ const W_Navbar = () => {
             <div
               key={item.key}
               data-key={item.key}
-              className={`cbn-nav-item ${currentKey === item.key ? 'cbn-active' : ''}`}
+              className={`cbn-nav-item ${currentKey == item.key ? 'cbn-active' : ''}`}
               onClick={() => handleNav(item)}
             >
               {item.icon}
@@ -77,7 +77,7 @@ const W_Navbar = () => {
         )}
 
         <div
-          className={`cbn-nav-item cbn-center ${currentKey === centerItem.key ? 'cbn-active' : ''}`}
+          className={`cbn-nav-item cbn-center ${currentKey == centerItem.key ? 'cbn-active' : ''}`}
           data-key={centerItem.key}
           onClick={() => handleNav(centerItem)}
         >

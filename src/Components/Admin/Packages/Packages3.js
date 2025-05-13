@@ -228,7 +228,7 @@ const ConstructionPackages = () => {
         ];
       const rupeeValues = extractRupeeValues(content);
 
-      if (rupeeValues.length === 0) {
+      if (rupeeValues.length == 0) {
         setEditableContent((prev) => ({
           ...prev,
           [`${pkgId}-${sectionId}`]: content,
@@ -354,7 +354,7 @@ const ConstructionPackages = () => {
     }
 
     const rupeeValues = extractRupeeValues(content);
-    if (rupeeValues.length === 0) {
+    if (rupeeValues.length == 0) {
       return <span dangerouslySetInnerHTML={{ __html: content }} />;
     }
 
@@ -650,14 +650,14 @@ const ConstructionPackages = () => {
                       {pkg.sections.map((section) => (
                         <Accordion
                           key={section.id}
-                          expanded={expanded[pkg.id] === section.id}
+                          expanded={expanded[pkg.id] == section.id}
                           onChange={handleChange(section.id, pkg.id)}
                           sx={{
                             "&:before": { display: "none" },
                             boxShadow: "none",
                             borderBottom: "1px solid rgba(0,0,0,0.05)",
                             backgroundColor:
-                              expanded[pkg.id] === section.id
+                              expanded[pkg.id] == section.id
                                 ? "rgba(74, 0, 224, 0.03)"
                                 : "transparent",
                             transition: "all 0.3s ease",
@@ -668,7 +668,7 @@ const ConstructionPackages = () => {
                         >
                           <AccordionSummary
                             expandIcon={
-                              expanded[pkg.id] === section.id ? (
+                              expanded[pkg.id] == section.id ? (
                                 <RemoveIcon sx={{ color: pkg.color }} />
                               ) : (
                                 <AddIcon sx={{ color: "#666" }} />
@@ -689,7 +689,7 @@ const ConstructionPackages = () => {
                               sx={{
                                 fontWeight: 600,
                                 color:
-                                  expanded[pkg.id] === section.id
+                                  expanded[pkg.id] == section.id
                                     ? pkg.color
                                     : "#444",
                                 fontSize: "1.2rem",
@@ -702,7 +702,7 @@ const ConstructionPackages = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 if (
-                                  editingField === `${pkg.id}-${section.id}`
+                                  editingField == `${pkg.id}-${section.id}`
                                 ) {
                                   handleSave(pkg.id, section.id);
                                 } else {
@@ -718,7 +718,7 @@ const ConstructionPackages = () => {
                               sx={{ marginLeft: "auto" }}
                               disabled={isLoading}
                             >
-                              {editingField === `${pkg.id}-${section.id}` ? (
+                              {editingField == `${pkg.id}-${section.id}` ? (
                                 <SaveIcon />
                               ) : (
                                 <EditIcon />
@@ -749,7 +749,7 @@ const ConstructionPackages = () => {
                               {renderContentWithEditableRupeeValues(
                                 pkg.id,
                                 section.id,
-                                editingField === `${pkg.id}-${section.id}`
+                                editingField == `${pkg.id}-${section.id}`
                                   ? tempContent[`${pkg.id}-${section.id}`]
                                   : editableContent[
                                       `${pkg.id}-${section.id}`

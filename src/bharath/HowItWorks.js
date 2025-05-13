@@ -455,7 +455,7 @@ const InteriorServicesEnhanced = () => {
 
   // Determine active tab based on current route
   const isHowItWorks = location.pathname.includes('how-it-works') ||
-    location.pathname === '/interiors' && location.hash === '#how-it-works';
+    location.pathname == '/interiors' && location.hash == '#how-it-works';
   const isPortfolio = location.pathname.includes('portfolio');
   const isServices = !isHowItWorks && !isPortfolio;
 

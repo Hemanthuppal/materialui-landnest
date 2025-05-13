@@ -45,7 +45,7 @@ const ThreeDPlanTable = () => {
     try {
       setLoading(true);
       const response = await axios.get(`${IMAGE_BASE_URL}/`);
-      const twoDPlans = response.data.filter(plan => plan.category_id === 2);
+      const twoDPlans = response.data.filter(plan => plan.category_id == 2);
       setPlans(twoDPlans);
     } catch (error) {
       console.error("Error fetching plans:", error);

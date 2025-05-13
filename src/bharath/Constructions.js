@@ -663,7 +663,7 @@ const Constructions = () => {
     let y = 120;
     items.forEach((item, index) => {
       // Alternate row colors
-      if (index % 2 === 0) {
+      if (index % 2 == 0) {
         doc.setFillColor(240, 240, 240);
         doc.rect(20, y, 170, 10, 'F');
       }
@@ -907,7 +907,7 @@ const Constructions = () => {
                 onClick={() => {
                   if (card.path) {
                     navigate(card.path);
-                  } else if (card.title === "Quotations") {
+                  } else if (card.title == "Quotations") {
                     handleDownloadQuotation();
                   }
                 }}

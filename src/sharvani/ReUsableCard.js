@@ -197,7 +197,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
                     width: 8,
                     height: 8,
                     borderRadius: '50%',
-                    backgroundColor: currentImageIndex === index ? '#1976d2' : '#ccc',
+                    backgroundColor: currentImageIndex == index ? '#1976d2' : '#ccc',
                     cursor: 'pointer',
                     transition: 'background-color 0.3s'
                   }}

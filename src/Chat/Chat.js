@@ -234,7 +234,7 @@ const Chat = () => {
           placeholder="Type a message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+          onKeyPress={(e) => e.key == 'Enter' && handleSendMessage()}
           sx={styles.textField}
           InputProps={{
             endAdornment: (

@@ -45,7 +45,7 @@ const Hot_Property_Map = () => {
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-          item.type === "best-deal" && item.Admin_status === "Approved"
+          item.type == "best-deal" && item.Admin_status == "Approved"
         );
 
         const parsed = filtered.map(item => {
@@ -56,7 +56,7 @@ const Hot_Property_Map = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
 
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -201,7 +201,7 @@ const Hot_Property_Map = () => {
       </Box>
 
       {/* No properties message - moved outside the map container */}
-      {selectedType && filteredProperties.length === 0 && (
+      {selectedType && filteredProperties.length == 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',

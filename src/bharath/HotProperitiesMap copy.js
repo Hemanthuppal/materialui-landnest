@@ -51,7 +51,7 @@ const Hot_Property_Map = () => {
   
           const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
 const filtered = propertiesResponse.data.filter(item =>
-  item.type === "best-deal" && item.Admin_status === "Approved"
+  item.type == "best-deal" && item.Admin_status == "Approved"
 );
 
   
@@ -63,7 +63,7 @@ const filtered = propertiesResponse.data.filter(item =>
             };
   
             const matchedCategory = categoriesResponse.data.find(
-              cat => cat.category_id === item.category_id
+              cat => cat.category_id == item.category_id
             );
   
             const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -121,7 +121,7 @@ const filtered = propertiesResponse.data.filter(item =>
     });
   
     useEffect(() => {
-      if (filteredProperties.length === 0) return;
+      if (filteredProperties.length == 0) return;
   
       const mapContainer = document.getElementById('leaflet-map');
       if (!mapContainer || mapContainer._leaflet_id) return;
@@ -148,7 +148,7 @@ const filtered = propertiesResponse.data.filter(item =>
     }, [filteredProperties]);
   
     const toggleSave = (property) => {
-      const isSaved = saved.find((p) => p.id === property.id);
+      const isSaved = saved.find((p) => p.id == property.id);
       const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
       setSaved(updated);
       localStorage.setItem('savedHot', JSON.stringify([...saved, {
@@ -157,7 +157,7 @@ const filtered = propertiesResponse.data.filter(item =>
       }]));
     };
   
-    const isSaved = (property) => saved.some((p) => p.id === property.id);
+    const isSaved = (property) => saved.some((p) => p.id == property.id);
   
     const toggleLike = (id) => {
       setLikedCards((prev) => ({
@@ -211,16 +211,16 @@ const filtered = propertiesResponse.data.filter(item =>
                 onClick={() => {
                   // Clear any property selection when clicking a type
                   setSelectedProperty(null);
-                  setSelectedType(prev => (prev === type ? null : type));
+                  setSelectedType(prev => (prev == type ? null : type));
                 }}
                 sx={{
                   flexShrink: 0,
-                  bgcolor: selectedType === type ? '#000000' : 'transparent',
-                  color: selectedType === type ? '#ffffff' : '#000000',
+                  bgcolor: selectedType == type ? '#000000' : 'transparent',
+                  color: selectedType == type ? '#ffffff' : '#000000',
                   border: '1px solid black',
                   fontWeight: 'bold',
                   '&:hover': {
-                    bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                    bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                   },
                 }}
               />

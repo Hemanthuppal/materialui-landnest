@@ -226,13 +226,13 @@ const ConstructionPackages = () => {
                   {pkg.sections.map((section) => (
                     <Accordion 
                       key={section.id}
-                      expanded={expanded[pkg.id] === section.id}
+                      expanded={expanded[pkg.id] == section.id}
                       onChange={handleChange(section.id, pkg.id)}
                       sx={{
                         '&:before': { display: 'none' },
                         boxShadow: 'none',
                         borderBottom: '1px solid rgba(0,0,0,0.05)',
-                        backgroundColor: expanded[pkg.id] === section.id ? 'rgba(74, 0, 224, 0.03)' : 'transparent',
+                        backgroundColor: expanded[pkg.id] == section.id ? 'rgba(74, 0, 224, 0.03)' : 'transparent',
                         transition: 'all 0.3s ease',
                         '&:hover': {
                           backgroundColor: 'rgba(74, 0, 224, 0.03)'
@@ -241,7 +241,7 @@ const ConstructionPackages = () => {
                     >
                       <AccordionSummary
                         expandIcon={
-                          expanded[pkg.id] === section.id ? 
+                          expanded[pkg.id] == section.id ? 
                           <RemoveIcon sx={{ color: pkg.color }} /> : 
                           <AddIcon sx={{ color: '#666' }} />
                         }
@@ -258,7 +258,7 @@ const ConstructionPackages = () => {
                       >
                         <Typography sx={{ 
                           fontWeight: 600,
-                          color: expanded[pkg.id] === section.id ? pkg.color : '#444',
+                          color: expanded[pkg.id] == section.id ? pkg.color : '#444',
                           fontSize: '1rem',
                           letterSpacing: '0.2px'
                         }}>

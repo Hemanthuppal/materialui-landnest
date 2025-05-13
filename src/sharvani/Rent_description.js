@@ -69,7 +69,7 @@ const Rent_description = () => {
   }
 
   // Find the category that matches the property's category_id
-  const propertyCategory = categories.find(cat => cat.category_id === property.category_id);
+  const propertyCategory = categories.find(cat => cat.category_id == property.category_id);
   const categoryName = propertyCategory ? propertyCategory.category : property.type;
 
   const {
@@ -193,12 +193,12 @@ const Rent_description = () => {
           overflow: 'hidden',
           position: 'relative',
           cursor: 'pointer',
-          boxShadow: selectedImage === image
+          boxShadow: selectedImage == image
             ? '0px 4px 20px rgba(0, 0, 0, 0.3)'
             : '0px 2px 8px rgba(0, 0, 0, 0.1)',
-          transform: selectedImage === image ? 'scale(1.08)' : 'scale(1)',
+          transform: selectedImage == image ? 'scale(1.08)' : 'scale(1)',
           transition: 'all 0.4s ease',
-          border: selectedImage === image ? '2px solid #1976d2' : '2px solid transparent',
+          border: selectedImage == image ? '2px solid #1976d2' : '2px solid transparent',
           flexShrink: 0,
           '&:hover': {
             transform: 'scale(1.05)',
@@ -346,7 +346,7 @@ const Rent_description = () => {
             gap: 1,
             p: 1.5, // Slightly reduced padding
             boxSizing: 'border-box',
-            borderRight: colIndex === 0 ? '1px solid #9e9e9e' : 'none',
+            borderRight: colIndex == 0 ? '1px solid #9e9e9e' : 'none',
             borderBottom: rowIndex < 3 ? '1px solid #9e9e9e' : 'none',
             minWidth: 0,
           }}

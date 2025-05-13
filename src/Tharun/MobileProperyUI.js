@@ -209,7 +209,7 @@ const MobilePropertyUI = () => {
             sx={{
               width: '50%',
               minHeight: 90,
-              borderRight: colIndex === 0 ? '1px solid #f8bbd0' : 'none',
+              borderRight: colIndex == 0 ? '1px solid #f8bbd0' : 'none',
               borderBottom: rowIndex < 3 ? '1px solid #f8bbd0' : 'none',
               p: 2,
               display: 'flex',
