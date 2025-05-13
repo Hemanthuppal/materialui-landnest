@@ -85,6 +85,7 @@ import UserRent from "./Userproperties/Rent/Rent";
 import UserLease from "./Userproperties/Lease/Lease";
 import UserVendor from "./Userproperties/Vendor/Vendor";
 import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
+import HomeServiceCategory from "./Tharun/HomeServicesCategory";
 
 function App() {
   return (
@@ -212,6 +213,8 @@ function App() {
           <Route path="/user-lease" element={<UserLease />} />
           <Route path="/user-deals" element={<UserBestdeals />} />
           <Route path="/user-vendors" element={<UserVendor />} />
+
+          <Route path="/home-service-category" element={<HomeServiceCategory />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
