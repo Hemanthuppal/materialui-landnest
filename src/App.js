@@ -88,6 +88,7 @@ import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
 import EditLeaseForm from "./Userproperties/Lease/EditLease";
 import EditRentForm from "./Userproperties/Rent/EditRent";
 import EditBuy from "./Userproperties/Buy/EditBuy";
+import Chat from "./Chat/Chat";
 
 function App() {
   return (
@@ -219,6 +220,7 @@ function App() {
           <Route path="/user-edit-lease/:menuPropertyId" element={<EditLeaseForm />} />
           <Route path="/user-edit-rent/:menuPropertyId" element={<EditRentForm />} />
            <Route path="/user-edit-buy/:menuPropertyId" element={<EditBuy />} />
+          <Route path="/chat" element={<Chat />} />
 
         </Routes>
       </BrowserRouter>
