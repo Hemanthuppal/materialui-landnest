@@ -147,7 +147,7 @@ const SellYourProperty = () => {
     useEffect(() => {
         const fetchMobileNo = async () => {
             try {
-                const response = await axios.get(`http://46.37.122.105:89/users/`);
+                const response = await axios.get(`${BASE_URL}/users/`);
                 const users = response.data;
                 
                 console.log('All users from API:', users);
@@ -318,7 +318,7 @@ const SellYourProperty = () => {
     };
 
     useEffect(() => {
-        axios.get('http://46.37.122.105:89/property-category/')
+        axios.get(`${BASE_URL}/property-category/`)
             .then(response => {
                 const rentCategories = response.data.filter(
                     cat => cat.category_type.toLowerCase() == 'sell'
@@ -383,9 +383,9 @@ const SellYourProperty = () => {
         console.log('FormData prepared, sending to server...');
     
         try {
-            console.log('Making POST request to:', 'http://46.37.122.105:89/property/');
+            console.log('Making POST request to:', `${BASE_URL}/property/`);
             
-            const response = await axios.post('http://46.37.122.105:89/property/', formDataToSend, {
+            const response = await axios.post(`${BASE_URL}/property/`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
