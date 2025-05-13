@@ -996,7 +996,7 @@ function App() {
       >
         {/* First Card */}
         <Card
-  onClick={() => navigate('/constructions')}
+  onClick={() => navigate('/home-service-category', { state: { category: "Painting" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1071,7 +1071,7 @@ function App() {
 
         {/* Second Card */}
         <Card
-  onClick={() => navigate('/interiors')}
+  onClick={() => navigate('/home-service-category', { state: { category: "Electrical" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1144,7 +1144,7 @@ function App() {
 
         {/* Third Card */}
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: "Plumbing" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1215,7 +1215,7 @@ function App() {
 
         {/* fourth card */}
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: " Tiles & Granite Repair works" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1287,7 +1287,7 @@ function App() {
 
         {/* fifth card */}
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: " Category" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1358,7 +1358,7 @@ function App() {
 
 
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: " AC Technician" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1429,7 +1429,7 @@ function App() {
 
          
         <Card
-  onClick={() => navigate('/renovations')}
+ onClick={() => navigate('/home-service-category', { state: { category: "Gardener" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1490,7 +1490,7 @@ function App() {
 
 
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: "  Alluminium Fabrication" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1551,7 +1551,7 @@ function App() {
 
 
         <Card
-  onClick={() => navigate('/renovations')}
+ onClick={() => navigate('/home-service-category', { state: { category: " UPVC Fabrications" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1612,7 +1612,7 @@ function App() {
 
         
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: " Gas Pipeline Installation & Repair" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1672,7 +1672,7 @@ function App() {
 </Card>
 
         <Card
-  onClick={() => navigate('/renovations')}
+   onClick={() => navigate('/home-service-category', { state: { category: "  Steel Fabrications" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1733,7 +1733,7 @@ function App() {
 
 
         <Card
-  onClick={() => navigate('/renovations')}
+  onClick={() => navigate('/home-service-category', { state: { category: "  Home Clean" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1794,7 +1794,7 @@ function App() {
 
 
         <Card
-  onClick={() => navigate('/renovations')}
+ onClick={() => navigate('/home-service-category', { state: { category: "  Toilet & Kitchen Cleaning" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1855,7 +1855,7 @@ function App() {
 
 
         <Card
-  onClick={() => navigate('/renovations')}
+   onClick={() => navigate('/home-service-category', { state: { category: " Soft & Curtain Installation & Cleaning" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
@@ -1916,6 +1916,7 @@ function App() {
 
 
 <Card
+onClick={() => navigate('/home-service-category', { state: { category: " Homemaid" } })}
   sx={{
     backgroundColor: '#d8ccba',
     borderTopLeftRadius: '24px',
