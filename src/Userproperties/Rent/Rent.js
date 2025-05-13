@@ -65,15 +65,38 @@ const PropertyCard = () => {
     setMenuPropertyId(null);
   };
 
-  const handleEdit = () => {
-    alert(`Edit clicked for property ID: ${menuPropertyId}`);
-    handleMenuClose();
-  };
+ const handleEdit = () => {
+  navigate(`/user-edit-rent/${menuPropertyId}`);
+};
 
-  const handleDelete = () => {
-    alert(`Delete clicked for property ID: ${menuPropertyId}`);
+const handleDelete = async () => {
+  const confirmDelete = window.confirm(`Are you sure you want to delete property ID ${menuPropertyId}?`);
+
+  if (!confirmDelete) {
+    // User clicked "No"
+    // handleMenuClose();
+    return;
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/property/${menuPropertyId}/`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      alert(`Property ID ${menuPropertyId} deleted successfully.`);
+      // Optionally refresh your data or remove the item from the UI
+    } else {
+      const errorData = await response.json();
+      alert(`Failed to delete property ID ${menuPropertyId}. Reason: ${errorData.detail || 'Unknown error'}`);
+    }
+  } catch (error) {
+    console.error('Error deleting property:', error);
+    alert('An error occurred while trying to delete the property.');
+  } finally {
     handleMenuClose();
-  };
+  }
+};
 
    useEffect(() => {
     const fetchData = async () => {
@@ -250,7 +273,7 @@ const PropertyCard = () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/rent-description', { state: { propertyId: property.id, property: property.propertyData } });
+                  // navigate('/rent-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >

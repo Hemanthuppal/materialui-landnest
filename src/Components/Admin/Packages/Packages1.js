@@ -23,32 +23,51 @@ import {
   Save as SaveIcon,
 } from "@mui/icons-material";
 import AdminDashboard from "../../Admin/Dashboard/Dashboard";
+import Packages2 from "./Packages2";
+import Packages3 from "./Packages3";
 
 const ConstructionPackages = () => {
   const [expanded, setExpanded] = useState({});
   const [editableContent, setEditableContent] = useState({});
   const [editingField, setEditingField] = useState(null);
   const [tempContent, setTempContent] = useState({});
-  const [packageData, setPackageData] = useState({});
+  const [packageData, setPackageData] = useState({
+    package_cost: 0,
+    tile_general: 0,
+    tile_stair: 0,
+    tile_balcony: 0,
+    title_bathroom: 0,
+    tile_parking: 0,
+    tile_kitchen_countertop: 0,
+    tile_kitchen_backsplash: 0,
+    window_standered: 0,
+    doors_main: 0,
+    doors_pooja: 0,
+    doors_internal: 0,
+    fabrication_stair_rail: 0,
+    fabrication_gate: 0,
+    sanitary_overheadtank: 0,
+    sanitary_commode: 0,
+    sanitary_wallmixer: 0,
+  });
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
   const [editingPackageCost, setEditingPackageCost] = useState(false);
-  const [tempPackageCost, setTempPackageCost] = useState("");
+  const [tempPackageCost, setTempPackageCost] = useState("0");
   const [isLoading, setIsLoading] = useState(true);
-
   const [sectionContent, setSectionContent] = useState({
-    package2800: {
+    package2500: {
       design:
-        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong> \n• <strong>Plumbing & Electrical Layout</strong> \n• <strong> Working Drawings for Execution, Schedule of Openings</strong>",
+        "• <strong>2D Floor Plans</strong> \n• <strong>3D Elevations</strong>",
       materials:
         "• <strong>Steel:</strong> Fe500/550 Grade TMT (A-One Gold, Prime Gold, or Equivalent)\n• <strong>Cement:</strong> 53 & 43 Grade (Bharathi, Dalmia, Maha, or Equivalent)\n• <strong>Aggregates:</strong> 20mm & 40mm\n• <strong>Sand:</strong> M-Sand for blockwork, P-Sand for plastering\n• <strong>Blocks:</strong> Solid Blocks (6″ {36 per pic} & 4″ {28 per pic})\n• <strong>Concrete Mix:</strong> RMC or hand mix – M20 Grade\n• <strong>Underground Sump:</strong> 6″ solid block with waterproof plastering\n• <strong>Plinth Foundation:</strong> One course of size stone masonry\n• <strong>Ceiling Height:</strong> 10 feet (floor to floor)\n• <strong>Waterproofing:</strong> Dr. Fixit or Fosroc",
       flooring:
         "• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹60/sq. ft.\n• <strong>Staircase:</strong> Granite up to ₹80/sq. ft.\n• <strong>Balconies & Sitouts:</strong> Anti-skid tiles up to ₹60/sq. ft.\n• <strong>Bathrooms/Toilets:</strong> Wall & floor tiles up to ₹60/sq. ft.\n• <strong>Parking Area:</strong> Flooring up to ₹50/sq. ft.\n• <strong>Kitchen Countertop:</strong> Granite up to ₹100/sq. ft.\n• <strong>Kitchen Backsplash (Dadoing, 4ft height):</strong> Tiles up to ₹50/sq. ft.\n• <strong>Bathroom Wall Tiling:</strong> Up to 7 feet height\n• <strong>Terrace Finishing:</strong> Screed concrete",
       windows:
-        "• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹550/sq. ft.)\n• <strong>3-track UPVC with 5mm glass & MS grill (₹700/sq. ft.) or Sal wood frames with shutters\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
+        "• <strong>Standard Windows:</strong> 2-track UPVC with 5mm glass & MS grill (₹550/sq. ft.)\n• <strong>Maximum Window Openings:</strong> 2.5-track Aluminum with 4mm glass & MS grill\n• <strong>Maximum Window Coverage:</strong> 10% of total wall space",
       doors:
         "• <strong>Main Door:</strong> Teakwood frame (5″x3″) with teak shutter & fittings (₹22,000 per door)\n• <strong>Pooja Room Door:</strong> Frame (5″x3″) with readymade shutter & fittings (₹20,000 per door)\n• <strong>Internal Doors:</strong> WPC or neem wood frame (4″x3″) with membrane shutter & fittings (₹8,000 per door)\n• <strong>Bathroom Doors:</strong> PVC/WPC doors",
       painting:
@@ -60,9 +79,9 @@ const ConstructionPackages = () => {
       extra:
         "• <strong>Compound Wall Construction</strong>\n• <strong>BBMP/BDA Approvals & Liaison Fees</strong>\n• <strong>Building Plinth Level Above 18″ from Road</strong>\n• <strong>External Ramps & Landscaping, road cutting works</strong>\n• <strong>Extra Depth for Sump Tank, Rain water sump</strong>\n• <strong>Interior Works (Wardrobes, False Ceiling, etc.)</strong>\n• <strong>External Elevation Cladding</strong>\n• <strong>Security Fabrication Works</strong>\n• <strong>Any Civil Works Outside the Main House</strong>\n• <strong>Additional Height for Compound Wall</strong>\n• <strong>Electrical Fixtures (Lights, Fans, Bulbs, etc.)</strong>\n• <strong>Additional Charges for Soil Bearing Capacity < 180 SBC</strong>",
       sanctions:
-        "We assist with obtaining permissions, approvals, and sanction fees for:\n• <strong>Construction Plan Sanction</strong>\n• <strong>Temporary Electricity Connection</strong>\n• <strong>Permanent Electrical Connection</strong>\n• <strong>Water Connection</strong>\n• <strong>Sewage Connection</strong>",
+        "Assistance with approvals from government agencies, including:\n• <strong>Construction Plan Sanction</strong>\n• <strong>Temporary Electricity Connection</strong>\n• <strong>Permanent Electrical Connection</strong>\n• <strong>Water Connection</strong>\n• <strong>Sewage Connection</strong>",
       elevation:
-        "<strong>Elevation Budget:</strong> 0.5% of the Project's Super Built-Up Cost",
+        "<strong>Elevation Budget:</strong> 0.25% of the Project's Super Built-Up Cost",
       audit:
         "• <strong>Soil Testing:</strong> Additional charges\n• <strong>Site Supervision:</strong> Civil Engineer & Project Manager assigned\n• <strong>Architect Visits:</strong> Additional charges",
     },
@@ -93,8 +112,8 @@ const ConstructionPackages = () => {
 
   const updateSectionContent = (data) => {
     const updatedSectionContent = {
-      package2800: {
-        ...sectionContent.package2800,
+      package2500: {
+        ...sectionContent.package2500,
         flooring: `• <strong>Living, Kitchen, Dining & Bedroom:</strong> Tiles up to ₹${
           data.tile_general || 0
         }/sq. ft.
@@ -149,36 +168,6 @@ const ConstructionPackages = () => {
     setSectionContent(updatedSectionContent);
   };
 
-  const handleEditPackageCost = () => {
-    setTempPackageCost(packageData.package_cost?.toString() || "0");
-    setEditingPackageCost(true);
-  };
-
-  const handleSavePackageCost = async () => {
-    try {
-      await axios.put(`https://landnest.net:81/packages/2/`, {
-        package_cost: parseInt(tempPackageCost) || 0,
-      });
-
-      // Refresh data after successful update
-      await fetchPackageData();
-
-      setEditingPackageCost(false);
-      setSnackbar({
-        open: true,
-        message: "Package cost updated successfully",
-        severity: "success",
-      });
-    } catch (error) {
-      console.error("Error updating package cost:", error);
-      setSnackbar({
-        open: true,
-        message: "Failed to update package cost",
-        severity: "error",
-      });
-    }
-  };
-
   const handleChange = (panel, packageType) => (event, newExpanded) => {
     setExpanded((prev) => ({
       ...prev,
@@ -203,8 +192,6 @@ const ConstructionPackages = () => {
   //   }));
   //   setEditingField(`${pkgId}-${sectionId}`);
   // };
-
-
   const handleEdit = (pkgId, sectionId, content) => {
   setEditingField(`${pkgId}-${sectionId}`);
   setTempContent((prev) => ({
@@ -219,12 +206,13 @@ const ConstructionPackages = () => {
   }));
 };
 
+
   const handleSave = async (pkgId, sectionId) => {
     try {
       const content =
         tempContent[`${pkgId}-${sectionId}`] ||
-        sectionContent.package2800[
-          sectionId.replace("pkg2800", "").toLowerCase()
+        sectionContent.package2500[
+          sectionId.replace("pkg2500", "").toLowerCase()
         ];
       const rupeeValues = extractRupeeValues(content);
 
@@ -238,7 +226,7 @@ const ConstructionPackages = () => {
       }
 
       let updatePayload = {};
-      const sectionKey = sectionId.replace("pkg2800", "").toLowerCase();
+      const sectionKey = sectionId.replace("pkg2500", "").toLowerCase();
 
       switch (sectionKey) {
         case "three": // Flooring section
@@ -284,7 +272,6 @@ const ConstructionPackages = () => {
           break;
       }
 
-      // Filter out undefined values
       const filteredPayload = Object.fromEntries(
         Object.entries(updatePayload).filter(([_, v]) => v !== undefined)
       );
@@ -323,6 +310,36 @@ const ConstructionPackages = () => {
     return num ? parseInt(num, 10) : 0;
   };
 
+  const handleEditPackageCost = () => {
+    setTempPackageCost(packageData.package_cost?.toString() || "0");
+    setEditingPackageCost(true);
+  };
+
+  const handleSavePackageCost = async () => {
+    try {
+      await axios.put(`https://landnest.net:81/packages/2/`, {
+        package_cost: parseInt(tempPackageCost) || 0,
+      });
+
+      // Refresh data after successful update
+      await fetchPackageData();
+
+      setEditingPackageCost(false);
+      setSnackbar({
+        open: true,
+        message: "Package cost updated successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error updating package cost:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update package cost",
+        severity: "error",
+      });
+    }
+  };
+
   const handleRupeeValueChange = (
     pkgId,
     sectionId,
@@ -331,7 +348,6 @@ const ConstructionPackages = () => {
     length,
     newValue
   ) => {
-    // Ensure the value starts with ₹ and has a number or 0
     if (!newValue.startsWith("₹")) {
       newValue = "₹" + (newValue.replace(/[^0-9]/g, "") || "0");
     } else {
@@ -418,8 +434,8 @@ const ConstructionPackages = () => {
 
   const packages = [
     {
-      id: "package2800",
-      title: "Construction Package Details",
+      id: "package2500",
+      title: "Basic Package Details",
       price: `Rs ${
         packageData.package_cost
           ? (packageData.package_cost / 1000).toFixed(0) + "K"
@@ -429,64 +445,64 @@ const ConstructionPackages = () => {
       gradient: "linear-gradient(135deg,rgb(101, 81, 77),rgb(124, 119, 119))",
       sections: [
         {
-          id: "pkg2800One",
+          id: "pkg2500One",
           title: "Design & Drawings",
-          content: sectionContent.package2800.design,
+          content: sectionContent.package2500.design,
         },
         {
-          id: "pkg2800Two",
+          id: "pkg2500Two",
           title: "Construction Materials",
-          content: sectionContent.package2800.materials,
+          content: sectionContent.package2500.materials,
         },
         {
-          id: "pkg2800Three",
+          id: "pkg2500Three",
           title: "Flooring & Wall Tiling",
-          content: sectionContent.package2800.flooring,
+          content: sectionContent.package2500.flooring,
         },
         {
-          id: "pkg2800Four",
+          id: "pkg2500Four",
           title: "Windows",
-          content: sectionContent.package2800.windows,
+          content: sectionContent.package2500.windows,
         },
         {
-          id: "pkg2800Five",
+          id: "pkg2500Five",
           title: "Doors",
-          content: sectionContent.package2800.doors,
+          content: sectionContent.package2500.doors,
         },
         {
-          id: "pkg2800Six",
+          id: "pkg2500Six",
           title: "Painting & Finishing",
-          content: sectionContent.package2800.painting,
+          content: sectionContent.package2500.painting,
         },
         {
-          id: "pkg2800Seven",
+          id: "pkg2500Seven",
           title: "Fabrication Works",
-          content: sectionContent.package2800.fabrication,
+          content: sectionContent.package2500.fabrication,
         },
         {
-          id: "pkg2800Eight",
+          id: "pkg2500Eight",
           title: "Plumbing & Sanitary",
-          content: sectionContent.package2800.plumbing,
+          content: sectionContent.package2500.plumbing,
         },
         {
-          id: "pkg2800Nine",
+          id: "pkg2500Nine",
           title: "Extra Charges",
-          content: sectionContent.package2800.extra,
+          content: sectionContent.package2500.extra,
         },
         {
-          id: "pkg2800Ten",
+          id: "pkg2500Ten",
           title: "Government Sanctions & Electrical Assistance",
-          content: sectionContent.package2800.sanctions,
+          content: sectionContent.package2500.sanctions,
         },
         {
-          id: "pkg2800Eleven",
+          id: "pkg2500Eleven",
           title: "Elevation Budget",
-          content: sectionContent.package2800.elevation,
+          content: sectionContent.package2500.elevation,
         },
         {
-          id: "pkg2800Twelve",
+          id: "pkg2500Twelve",
           title: "Site Audit & Reporting",
-          content: sectionContent.package2800.audit,
+          content: sectionContent.package2500.audit,
         },
       ],
     },
@@ -498,22 +514,18 @@ const ConstructionPackages = () => {
 
   return (
     <>
-      <Fade in={true} timeout={800}>
-        <Box
-         
-        >
-          {/* First Card */}
-          <Box
-            
-          >
+      {/* <AdminDashboard /> */}
+      <Fade in={true} timeout={800} >
+             <Box
+              
+             >
+               {/* First Card */}
+               <Box
+                 
+               >
             {isLoading ? (
               <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "300px",
-                }}
+                
               >
                 <CircularProgress />
               </Box>
@@ -584,6 +596,7 @@ const ConstructionPackages = () => {
                                   },
                                 },
                               }}
+                              
                             />
                           ) : (
                             <Typography
@@ -765,6 +778,7 @@ const ConstructionPackages = () => {
               ))
             )}
           </Box>
+         
         </Box>
       </Fade>
 
@@ -786,3 +800,5 @@ const ConstructionPackages = () => {
 };
 
 export default ConstructionPackages;
+
+
