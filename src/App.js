@@ -85,6 +85,7 @@ import UserRent from "./Userproperties/Rent/Rent";
 import UserLease from "./Userproperties/Lease/Lease";
 import UserVendor from "./Userproperties/Vendor/Vendor";
 import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
+import Consultant_Table from "./Components/Admin/AdminUploadedProperties/Consultant_Table";
 import EditLeaseForm from "./Userproperties/Lease/EditLease";
 import EditRentForm from "./Userproperties/Rent/EditRent";
 import EditBuy from "./Userproperties/Buy/EditBuy";
@@ -205,6 +206,8 @@ function App() {
           <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
           <Route path="/admin-material" element={<Material />} /> //sritha
           <Route path="/admin-addcategory" element={<Category />} /> //sritha
+          <Route path="/Consultant_Table" element={<Consultant_Table />} /> //sritha
+
           {/* <Route path="/view" element={<CustomerList />} /> */}
           <Route
             path="/adminuploadpropertiesform"
