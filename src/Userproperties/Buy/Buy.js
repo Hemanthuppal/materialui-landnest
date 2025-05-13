@@ -31,12 +31,15 @@ import CustomSearchBar from '../../Rajesh/CustomSearchBar';
 import BottomNavbar from '../../maniteja/FormsBottomNavbar';
 import { AuthContext } from '../../AuthContext/AuthContext';
 import { BASE_URL } from '../../Api/ApiUrls';
+import { useLocation } from 'react-router-dom';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
+   const location = useLocation();
   const { userId, logout } = useContext(AuthContext);
   const [searchQuery, setSearchQuery] = useState('');
    const [anchorEl, setAnchorEl] = useState(null);
+   const passedType = location.state?.type?.toLowerCase();
     const [menuPropertyId, setMenuPropertyId] = useState(null);
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedBuy');
@@ -112,7 +115,7 @@ const PropertyCard = () => {
       const filtered = propertiesResponse.data.filter(item =>
         item.user_id == userId &&
         item.type &&
-        item.type.toLowerCase() == "sell"
+        item.type?.toLowerCase() === passedType
       );
  
          const parsed = filtered.map(item => {
@@ -274,7 +277,7 @@ const PropertyCard = () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/buy-description', { state: { propertyId: property.id, property: property.propertyData } });
+                  // navigate('/buy-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >

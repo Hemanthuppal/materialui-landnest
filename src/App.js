@@ -202,8 +202,8 @@ function App() {
           <Route path="/admin-elevation" element={<AdminElevation />} />
           <Route path="/admin-customers" element={<AdminCustomers />} />
           <Route path="/admin-bestdeals" element={<AdminBestDeals />} />
-          <Route path="/admin-material" element={<Material />} /> //sritha
-          <Route path="/admin-addcategory" element={<Category />} /> //sritha
+          <Route path="/admin-material" element={<Material />} /> 
+          <Route path="/admin-addcategory" element={<Category />} />
           {/* <Route path="/view" element={<CustomerList />} /> */}
           <Route
             path="/adminuploadpropertiesform"

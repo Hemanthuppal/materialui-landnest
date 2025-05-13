@@ -275,7 +275,7 @@ const handleDelete = async () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/lease-description', { state: { propertyId: property.id, property: property.propertyData } });
+                  // navigate('/lease-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >

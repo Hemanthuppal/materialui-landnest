@@ -190,12 +190,18 @@ const EditSellProperty = () => {
                     'facing': 'Facing',
                     'price': 'Price',
                     'no_of_flores': 'No of floors',
+                    'no_of_flores': 'Floors',
                     'buildup_area': 'Buildup area',
                     'borewell': 'Borewell',
                     'parking': 'No.of Cars Parking',
-                    // '_1bhk_count': '1bhk-count',
+                    '_1bhk_count': '1bhk-count',
                     '_2bhk_count': '2bhk-count',
                     '_3bhk_count': '3bhk-count',
+                     '_1bhk_count': '1bhk',
+                    '_2bhk_count': '2bhk',
+                    '_3bhk_count': '3bhk',
+                    '_4bhk_count': '4bhk',
+                    'lift': 'lift',
                     'duplex_bedrooms': 'Duplex bedrooms',
                     'rooms_count': 'Rooms-count',
                     'bedrooms_count': 'No.of Bedrooms',
@@ -388,7 +394,7 @@ const EditSellProperty = () => {
         'Buildup area': 'buildup_area',
         'Borewell': 'borewell',
         'No.of Cars Parking': 'parking',
-        // '1bhk-count': '_1bhk_count',
+        '1bhk-count': '_1bhk_count',
         '2bhk-count': '_2bhk_count',
         '3bhk-count': '_3bhk_count',
         'Duplex bedrooms': 'duplex_bedrooms',
@@ -404,6 +410,7 @@ const EditSellProperty = () => {
         'Roadwidth': 'roadwidth',
         'Length': 'length',
         'Width': 'width',
+        'lift': 'lift',
         'Property Name': 'property_name'
     };
 
@@ -552,7 +559,7 @@ const EditSellProperty = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
                 <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Edit Property for Sale
+                        Edit Sell Property
                     </Typography>
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
@@ -769,9 +776,9 @@ const EditSellProperty = () => {
                                 label="Posted by"
                                 onChange={handleChange}
                             >
-                                <MenuItem value="owner">Owner</MenuItem>
-                                <MenuItem value="agent">Agent</MenuItem>
-                                <MenuItem value="builder">Builder</MenuItem>
+                                <MenuItem value="Owner">Owner</MenuItem>
+                                <MenuItem value="Agent">Agent</MenuItem>
+                                <MenuItem value="Builder">Builder</MenuItem>
                             </Select>
                         </FormControl>
 
