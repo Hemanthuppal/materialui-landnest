@@ -85,6 +85,7 @@ import UserRent from "./Userproperties/Rent/Rent";
 import UserLease from "./Userproperties/Lease/Lease";
 import UserVendor from "./Userproperties/Vendor/Vendor";
 import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
+import HomeServiceCategory from "./Tharun/HomeServicesCategory";
 import Consultant_Table from "./Components/Admin/AdminUploadedProperties/Consultant_Table";
 import EditLeaseForm from "./Userproperties/Lease/EditLease";
 import EditRentForm from "./Userproperties/Rent/EditRent";
@@ -220,6 +221,7 @@ function App() {
           <Route path="/user-deals" element={<UserBestdeals />} />
           <Route path="/user-vendors" element={<UserVendor />} />
 
+          <Route path="/home-service-category" element={<HomeServiceCategory />} />
           <Route path="/user-edit-lease/:menuPropertyId" element={<EditLeaseForm />} />
           <Route path="/user-edit-rent/:menuPropertyId" element={<EditRentForm />} />
            <Route path="/user-edit-buy/:menuPropertyId" element={<EditBuy />} />

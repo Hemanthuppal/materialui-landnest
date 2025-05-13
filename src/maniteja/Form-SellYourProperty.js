@@ -656,9 +656,9 @@ useEffect(() => {
           label="Posted by"
           onChange={handleChange}
         >
-          <MenuItem value="owner">Owner</MenuItem>
-          <MenuItem value="agent">Agent</MenuItem>
-          <MenuItem value="builder">Builder</MenuItem>
+          <MenuItem value="Owner">Owner</MenuItem>
+          <MenuItem value="Agent">Agent</MenuItem>
+          <MenuItem value="Builder">Builder</MenuItem>
         </Select>
       </FormControl>
 

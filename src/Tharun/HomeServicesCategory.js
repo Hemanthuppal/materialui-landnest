@@ -3,28 +3,23 @@ import {
   Box,
   Typography,
   Card,
-  Chip,
   Paper,
+  IconButton
 } from '@mui/material';
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
-import CustomSearchBar from "../Rajesh/CustomSearchBar";
 import {BASE_URL} from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
-const workerTypes = [
-  "Painting", "Carpenter", "Flooring", "AC Technician", "Cleaning maid",
-  "Gardener", "Sofa Cleaning", "Water Purifier", "Kitchen/Toilet Cleaning", "Plumbing","Electrical"
-];
-
-const HomeService = () => {
+const HomeServiceCategory = () => {
   const [vendors, setVendors] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
-  const [selectedType, setSelectedType] = useState(null);
+  const [category, setCategory] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -39,8 +34,15 @@ const HomeService = () => {
 
   const containerStyle = {
     width: '100%',
-    height: 'calc(100vh - 240px)',
+    height: 'calc(100vh - 200px)',
   };
+
+  useEffect(() => {
+    // Get category from navigation state
+    if (location.state?.category) {
+      setCategory(location.state.category);
+    }
+  }, [location]);
 
   useEffect(() => {
     const fetchVendors = async () => {
@@ -56,11 +58,11 @@ const HomeService = () => {
     fetchVendors();
   }, []);
 
-  // Filter vendors based on selected worker type
-  const filteredVendors = selectedType
+  // Filter vendors based on the selected category
+  const filteredVendors = category
     ? vendors.filter(vendor => 
-        vendor.profession && vendor.profession.toLowerCase().includes(selectedType.toLowerCase()))
-    : vendors;
+        vendor.profession && vendor.profession.toLowerCase().includes(category.toLowerCase()))
+    : [];
 
   return (
     <Box
@@ -73,60 +75,30 @@ const HomeService = () => {
         minHeight: '100vh'
       }}
     >
-      {/* Sticky Search Header */}
+      {/* Category Header */}
       <Box
         sx={{
           position: 'sticky',
           top: 0,
           zIndex: 1000,
           bgcolor: 'rgb(239, 231, 221)',
-          px: 1,
-          py: 1,
+          px: 2,
+          py: 2,
+          display: 'flex',
+          alignItems: 'center',
+          borderBottom: '1px solid rgba(0,0,0,0.1)'
         }}
       >
-        <CustomSearchBar />
-      </Box>
-
-      {/* Worker Type Chips */}
-      <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          Looking for Home Services
+        <IconButton onClick={() => navigate(-1)} sx={{ mr: 1 }}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          {category || 'Home Services'}
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1,
-            overflowX: 'auto',
-            whiteSpace: 'nowrap',
-            pb: 1
-          }}
-        >
-          {workerTypes.map((type, index) => (
-            <Chip
-              key={index}
-              label={type}
-              variant="filled"
-              onClick={() => {
-                setSelectedWorker(null);
-                setSelectedType(prev => (prev === type ? null : type));
-              }}
-              sx={{
-                flexShrink: 0,
-                bgcolor: selectedType === type ? '#000000' : 'transparent',
-                color: selectedType === type ? '#ffffff' : '#000000',
-                border: '1px solid black',
-                fontWeight: 'bold',
-                '&:hover': {
-                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
-                },
-              }}
-            />
-          ))}
-        </Box>
       </Box>
 
       {/* No vendors message */}
-      {selectedType && filteredVendors.length === 0 && (
+      {filteredVendors.length === 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -145,15 +117,15 @@ const HomeService = () => {
               No workers available in this category
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              We couldn't find any workers matching "{selectedType}"
+              We couldn't find any workers matching "{category}"
             </Typography>
           </Box>
         </Box>
       )}
 
-      {/* Google Map - only show if there are vendors or no type selected */}
-      {(!selectedType || filteredVendors.length > 0) && (
-        <Box sx={{ px: 2, pb: 10 }}>
+      {/* Google Map */}
+      {filteredVendors.length > 0 && (
+        <Box sx={{ px: 0, pb: 10 }}>
           {isLoaded ? (
             <Box sx={{ width: '100%', height: containerStyle.height }}>
               <GoogleMap
@@ -173,8 +145,8 @@ const HomeService = () => {
                     <Marker
                       key={vendor.vendor_id}
                       position={{
-                        lat: parseFloat(vendor.lat),
-                        lng: parseFloat(vendor.long),
+                        lat: Number(vendor.lat),
+                        lng: Number(vendor.long),
                       }}
                       onClick={() => setSelectedWorker(vendor)}
                     />
@@ -191,7 +163,7 @@ const HomeService = () => {
             <Box
               sx={{
                 position: 'absolute',
-                bottom: 250,
+                bottom: 200,
                 left: 0,
                 right: 0,
                 px: 2,
@@ -243,4 +215,4 @@ const HomeService = () => {
   );
 };
 
-export default HomeService;
+export default HomeServiceCategory;
