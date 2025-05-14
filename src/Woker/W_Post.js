@@ -141,7 +141,7 @@ const W_Post = () => {
                 </IconButton>
 
                 <Typography variant="caption" color="text.primary" ml={0.5}>
-                  Location Verified
+                  Location 
                 </Typography>
               </Box>
 

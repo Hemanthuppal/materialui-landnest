@@ -59,34 +59,38 @@ const Chat = () => {
       });
   }, [propertyId]);
 
-  const fetchChatHistory = () => {
-    axios.get(`https://landnest.net:81/chat-messages/?property_id=${propertyId}`)
-      .then(res => {
-        // Filter messages to only include:
-        // 1. Messages sent by current user (user_id == userId)
-        // OR
-        // 2. Messages received by current user (receiver == userId)
-        const filteredMessages = res.data.filter(msg => 
-          (msg.user_id == userId) || (msg.receiver == userId)
-        );
-        
-        // Process messages to determine sender/receiver
-        const processedMessages = filteredMessages.map(msg => ({
-          ...msg,
-          isSender: msg.user_id == userId, // true if current user sent this message
-          displayName: msg.user_id == userId ? 'You' : receiverName,
-          time: formatTime(msg.created_at)
-        }));
-        
-        // Sort messages by timestamp
-        processedMessages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-        
-        setChatMessages(processedMessages);
-      })
-      .catch(err => {
-        console.error('Error fetching chat history:', err);
-      });
-  };
+ const fetchChatHistory = () => {
+  axios.get(`https://landnest.net:81/chat-messages/?property_id=${propertyId}`)
+    .then(res => {
+      // Filter messages to only include:
+      // 1. Messages for the current property (property_id == propertyId)
+      // AND
+      // 2. Messages where:
+      //    a. Sent by current user (user_id == userId)
+      //    OR
+      //    b. Received by current user (receiver == userId)
+      const filteredMessages = res.data.filter(msg => 
+        msg.property_id == propertyId && 
+        (msg.user_id == userId || msg.receiver == userId)
+      );
+      
+      // Process messages to determine sender/receiver
+      const processedMessages = filteredMessages.map(msg => ({
+        ...msg,
+        isSender: msg.user_id == userId, // true if current user sent this message
+        displayName: msg.user_id == userId ? 'You' : receiverName,
+        time: formatTime(msg.created_at)
+      }));
+      
+      // Sort messages by timestamp
+      processedMessages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      
+      setChatMessages(processedMessages);
+    })
+    .catch(err => {
+      console.error('Error fetching chat history:', err);
+    });
+};
 
   const formatTime = (timestamp) => {
     const date = new Date(timestamp);

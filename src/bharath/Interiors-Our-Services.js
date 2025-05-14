@@ -640,7 +640,7 @@ const Interiors = () => {
           <Box
              
             component={Link}
-            to="/portfolio"
+            // to="/portfolio"
             sx={{
               flex: 1,
               textAlign: 'center',

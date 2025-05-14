@@ -482,7 +482,7 @@ const [selectedType, setSelectedType] = useState(null);
       <LocationOn fontSize="small" color="action" />
     </IconButton>
     <Typography variant="caption" color="text.primary" ml={0.5}>
-      Location Verified
+      Location 
     </Typography>
     <Box sx={{ flexGrow: 1 }} />
     <Button

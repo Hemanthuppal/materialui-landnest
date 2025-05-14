@@ -85,16 +85,14 @@ import UserRent from "./Userproperties/Rent/Rent";
 import UserLease from "./Userproperties/Lease/Lease";
 import UserVendor from "./Userproperties/Vendor/Vendor";
 import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
-<<<<<<< HEAD
 import Portfolio from "./Rajesh/Portfolio";
-=======
 import HomeServiceCategory from "./Tharun/HomeServicesCategory";
 import Consultant_Table from "./Components/Admin/AdminUploadedProperties/Consultant_Table";
 import EditLeaseForm from "./Userproperties/Lease/EditLease";
 import EditRentForm from "./Userproperties/Rent/EditRent";
 import EditBuy from "./Userproperties/Buy/EditBuy";
 import Chat from "./Chat/Chat";
->>>>>>> cb75acaecb9c7736c8c44c9a25cc05e0b5b5d75c
+import ChatWindow from "./Tharun/IndividulChat";
 
 function App() {
   return (
@@ -231,6 +229,7 @@ function App() {
           <Route path="/user-edit-rent/:menuPropertyId" element={<EditRentForm />} />
            <Route path="/user-edit-buy/:menuPropertyId" element={<EditBuy />} />
           <Route path="/chat" element={<Chat />} />
+           <Route path="/chat/:userId" element={<ChatWindow />} />
 
         </Routes>
       </BrowserRouter>

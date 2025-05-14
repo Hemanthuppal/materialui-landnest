@@ -34,18 +34,18 @@ const InboxList = () => {
         const response = await axios.get('https://landnest.net:81/chat-messages/');
         const data = response.data;
 
-        // Filter messages relevant to the current user
+        // Filter only messages relevant to this user
         const userMessages = data.filter(
           (msg) => msg.user_id == userId || msg.receiver == userId
         );
 
-        // Group by property_id (latest message per property)
+        // Group messages by unique conversation partner (latest message per partner)
         const latestMessagesMap = new Map();
 
         userMessages.reverse().forEach((msg) => {
-          const key = msg.property_id;
-          if (!latestMessagesMap.has(key)) {
-            latestMessagesMap.set(key, msg);
+          const otherUser = msg.user_id == userId ? msg.receiver : msg.user_id;
+          if (!latestMessagesMap.has(otherUser)) {
+            latestMessagesMap.set(otherUser, msg);
           }
         });
 
@@ -63,10 +63,8 @@ const InboxList = () => {
 
   useEffect(() => {
     const lowerSearch = searchText.toLowerCase();
-    const filtered = messages.filter(
-      (msg) =>
-        msg.message.toLowerCase().includes(lowerSearch) ||
-        msg.property_id?.toString().includes(lowerSearch)
+    const filtered = messages.filter((msg) =>
+      msg.message.toLowerCase().includes(lowerSearch)
     );
     setFilteredMessages(filtered);
   }, [searchText, messages]);
@@ -122,7 +120,7 @@ const InboxList = () => {
         />
       </Paper>
 
-      {/* Message List */}
+      {/* Scrollable List */}
       <Box
         sx={{
           flexGrow: 1,
@@ -132,43 +130,43 @@ const InboxList = () => {
         }}
       >
         <List>
-          {filteredMessages.map((msg, index) => (
-            <React.Fragment key={index}>
-              <ListItem
-                alignItems="flex-start"
-                button
-                onClick={() => navigate(`/chat/${msg.property_id}`)}
-              >
-                <ListItemAvatar>
-                  <Avatar>{`P${msg.property_id}`[0]}</Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography fontWeight={500} noWrap>
-                        {`Property ${msg.property_id}`}
+          {filteredMessages.map((msg, index) => {
+            const isMe = msg.user_id == userId;
+            const otherUser = isMe ? msg.receiver : msg.user_id;
+
+            return (
+              <React.Fragment key={index}>
+                <ListItem alignItems="flex-start"  button
+  onClick={() => navigate(`/chat/${otherUser}`)}>
+                  <ListItemAvatar>
+                    <Avatar>{`User ${otherUser}`[0]}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography fontWeight={500} noWrap>
+                          {`User ${otherUser}`}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {new Date(msg.created_at).toLocaleDateString()}
+                        </Typography>
+                      </Box>
+                    }
+                    secondary={
+                      <Typography variant="body2" noWrap>
+                        {msg.message}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {new Date(msg.created_at).toLocaleDateString()}
-                      </Typography>
-                    </Box>
-                  }
-                  secondary={
-                    <Typography variant="body2" noWrap>
-                      {msg.message}
-                    </Typography>
-                  }
-                />
-              </ListItem>
-              {index !== filteredMessages.length - 1 && (
-                <Divider variant="inset" component="li" />
-              )}
-            </React.Fragment>
-          ))}
+                    }
+                  />
+                </ListItem>
+                {index !== filteredMessages.length - 1 && <Divider variant="inset" component="li" />}
+              </React.Fragment>
+            );
+          })}
         </List>
       </Box>
 
-      {/* Bottom Navbar */}
+      {/* Bottom Navigation */}
       <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
         <FormsBottomNavbar />
       </Box>
