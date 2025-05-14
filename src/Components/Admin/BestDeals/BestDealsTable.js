@@ -68,7 +68,7 @@ const BestPlanTable = () => {
       setLoading(true);
       const response = await axios.get(`${BASE_URL}/property/`);
       // Filter properties where type is "best-deal"
-      const bestdealProperties = response.data.filter(property => property.type === "best-deal");
+      const bestdealProperties = response.data.filter(property => property.type == "best-deal");
       setProperties(bestdealProperties);
     } catch (error) {
       console.error("Error fetching properties:", error);
@@ -114,8 +114,8 @@ const BestPlanTable = () => {
   };
 
   const handleStatusChange = async (propertyId, newStatus) => {
-    const previousStatus = properties.find(prop => prop.property_id === propertyId)?.status;
-    const adminMobile = properties.find(prop => prop.property_id === propertyId)?.admin_mobile;
+    const previousStatus = properties.find(prop => prop.property_id == propertyId)?.status;
+    const adminMobile = properties.find(prop => prop.property_id == propertyId)?.admin_mobile;
   
     console.log("Previous status:", previousStatus);
   
@@ -135,7 +135,7 @@ const BestPlanTable = () => {
   
       setProperties(prev =>
         prev.map(prop =>
-          prop.property_id === propertyId ? { ...prop, status: newStatus } : prop
+          prop.property_id == propertyId ? { ...prop, status: newStatus } : prop
         )
       );
   
@@ -147,7 +147,7 @@ const BestPlanTable = () => {
   
       setProperties(prev =>
         prev.map(prop =>
-          prop.property_id === propertyId ? { ...prop, status: previousStatus } : prop
+          prop.property_id == propertyId ? { ...prop, status: previousStatus } : prop
         )
       );
     }
@@ -180,7 +180,7 @@ const BestPlanTable = () => {
   
     // Construct the payload with full property info for each selected property
     const payload = selectedProperties.map(propertyId => {
-      const property = properties.find(p => p.property_id === propertyId);
+      const property = properties.find(p => p.property_id == propertyId);
       return {
         property_id: propertyId,
         admin_mobile: newMobile,
@@ -251,7 +251,7 @@ const BestPlanTable = () => {
             variant="contained"
             color="primary"
             onClick={handleOpenChangeMobileDialog}
-            disabled={selectedProperties.length === 0}
+            disabled={selectedProperties.length == 0}
           >
             Change Mobile
           </Button>

@@ -80,7 +80,7 @@ const VendorRegister = () => {
     const [formData, setFormData] = useState({
         name: '',
         user_id: '',
-        profession: 'Plumbing',
+        profession: '',
         mobile: '',
         email: '',
         address: '',
@@ -161,45 +161,51 @@ const VendorRegister = () => {
     };
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        const formDataToSend = new FormData();
+    const formDataToSend = new FormData();
+    const updatedFormData = { ...formData, user_id: userId };
 
-        // Inject userId dynamically before sending
-        const updatedFormData = { ...formData, user_id: userId };
+    Object.keys(updatedFormData).forEach(key => {
+        formDataToSend.append(key, updatedFormData[key]);
+    });
 
-        Object.keys(updatedFormData).forEach(key => {
-            formDataToSend.append(key, updatedFormData[key]);
+    if (profilePhoto) {
+        formDataToSend.append('profile', profilePhoto);
+    }
+
+    workPhotos.forEach((photo, index) => {
+        formDataToSend.append('new_work_images', photo);
+    });
+
+    // Debug log FormData contents
+    for (let [key, value] of formDataToSend.entries()) {
+        console.log(`${key}:`, value);
+    }
+
+    try {
+        const response = await fetch(`${BASE_URL}/vendors/`, {
+            method: 'POST',
+            body: formDataToSend,
         });
 
-        if (profilePhoto) {
-            formDataToSend.append('profile', profilePhoto);
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Success:', data);
+            alert('Vendor registered successfully!');
+            navigate('/dashboard');
+        } else {
+            const errorData = await response.json();  // try to parse the error body
+            console.error('Error response:', errorData);
+            alert('Form submission failed. Check console for details.');
         }
+    } catch (error) {
+        console.error('Network or other error:', error);
+        alert('Error submitting form. Please try again.');
+    }
+};
 
-        workPhotos.forEach((photo) => {
-            formDataToSend.append('new_work_images', photo);
-        });
-
-        try {
-            const response = await fetch(`${BASE_URL}/vendors/`, {
-                method: 'POST',
-                body: formDataToSend,
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Success:', data);
-                alert('Vendor registered successfully!');
-                navigate('/dashboard');
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error submitting form. Please try again.');
-        }
-    };
 
 
 
@@ -244,6 +250,7 @@ const VendorRegister = () => {
                                 value={formData.profession}
                                 onChange={handleInputChange}
                             >
+                                <MenuItem default >Select Category</MenuItem>
                                 <MenuItem value="Plumbing">Plumbing</MenuItem>
                                 <MenuItem value="Electrical">Electrical</MenuItem>
                                 <MenuItem value="Carpentry">Carpentry</MenuItem>

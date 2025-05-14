@@ -7,7 +7,11 @@ import {
   Paper
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import L from 'leaflet';
+import {
+  GoogleMap,
+  Marker,
+  useJsApiLoader
+} from '@react-google-maps/api';
 import 'leaflet/dist/leaflet.css';
 
 import buildingImage from '../Images/house.jpeg';
@@ -22,19 +26,11 @@ const rentalTypes = [
   "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
 ];
 
-// Fix Leaflet marker icon issue
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
 
 const Rent_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
-
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('saveRent');
     return stored ? JSON.parse(stored) : [];
@@ -51,7 +47,7 @@ const Rent_Property_Map = () => {
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-          item.type && item.type.toLowerCase().includes("rent")
+                   item.type && item.type.toLowerCase().includes("rent")
         );
 
         const parsed = filtered.map(item => {
@@ -62,13 +58,11 @@ const Rent_Property_Map = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
 
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
 
-          // Get all images or default to buildingImage
-          // Ensure images is always an array
           const images = item.property_images?.length > 0
             ? item.property_images.map(img => `${BASE_URL}${img.image}`)
             : [buildingImage];
@@ -89,7 +83,7 @@ const Rent_Property_Map = () => {
             width: item.width,
             property_name: item.property_name,
             mobile_no: item.mobile_no,
-            images: images, // Make sure this is always an array
+            images: images,
             propertyData: item
           };
         });
@@ -103,59 +97,40 @@ const Rent_Property_Map = () => {
     fetchProperties();
   }, []);
 
-  // 🔍 Filter based on selected type
+  // Filter based on selected type
   const filteredProperties = selectedType
     ? properties.filter(p => p.title.toLowerCase().includes(selectedType.toLowerCase()))
     : properties;
 
-  const redIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-    iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
+  const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
   });
 
-  useEffect(() => {
-    if (filteredProperties.length === 0) return;
+  const center = {
+    lat: 17.429299,
+    lng: 78.499021
+  };
 
-    const mapContainer = document.getElementById('leaflet-map');
-    if (!mapContainer || mapContainer._leaflet_id) return;
-
-    const map = L.map('leaflet-map').setView([17.429299, 78.499021], 9);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '',
-    }).addTo(map);
-
-    filteredProperties.forEach(property => {
-      if (!property.lat || !property.lng) return;
-
-      const marker = L.marker([property.lat, property.lng], { icon: redIcon }).addTo(map);
-
-      marker.on('click', () => {
-        setSelectedProperty(property);
-      });
-    });
-
-    return () => {
-      map.remove();
-    };
-  }, [filteredProperties]);
+  const containerStyle = {
+    width: '100%',
+    height: 'calc(100vh - 240px)'
+  };
 
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
     setSaved(updated);
     localStorage.setItem('saveRent', JSON.stringify([...saved, {
       ...property,
-      images: property.images || [property.image] // Fallback to single image if no array
+      images: property.images || [property.image]
     }]));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
@@ -175,7 +150,7 @@ const Rent_Property_Map = () => {
         minHeight: '100vh'
       }}
     >
-      {/* 🔍 Search Bar */}
+      {/* Search Bar */}
       <Box
         sx={{
           position: 'sticky',
@@ -189,9 +164,9 @@ const Rent_Property_Map = () => {
         <CustomSearchBar />
       </Box>
 
-      {/* 📌 Property Types */}
+      {/* Property Types */}
       <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Rent Property</Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Rent Properties </Typography>
         <Box
           sx={{
             display: 'flex',
@@ -207,18 +182,17 @@ const Rent_Property_Map = () => {
               label={type}
               variant="filled"
               onClick={() => {
-                // Clear any property selection when clicking a type
                 setSelectedProperty(null);
-                setSelectedType(prev => (prev === type ? null : type));
+                setSelectedType(prev => (prev == type ? null : type));
               }}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType === type ? '#000000' : 'transparent',
-                color: selectedType === type ? '#ffffff' : '#000000',
+                bgcolor: selectedType == type ? '#000000' : 'transparent',
+                color: selectedType == type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />
@@ -226,44 +200,88 @@ const Rent_Property_Map = () => {
         </Box>
       </Box>
 
-      {/* 🗺️ Leaflet Map */}
-      <Box sx={{ px: 2, pb: 10 }}>
-        <Box sx={{ width: '100%', height: 'calc(100vh - 240px)' }}>
-          <div id="leaflet-map" style={{ height: '100%', width: '100%', borderRadius: '8px' }}></div>
-        </Box>
-
-        {/* 🏠 Property Card Popup */}
-        {selectedProperty && (
+      {/* No properties message - moved outside the map container */}
+      {selectedType && filteredProperties.length == 0 && (
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '200px',
+          px: 2,
+          textAlign: 'center'
+        }}>
           <Box sx={{
-            position: 'absolute',
-            bottom: 115,
-            left: 0,
-            right: 0,
-            margin: '0 auto',
-            width: '100%',
-            maxWidth: 480,
-            zIndex: 999
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            padding: '16px',
+            borderRadius: '8px',
+            textAlign: 'center'
           }}>
-            <ReUsableCard
-              property={selectedProperty}
-              onCardClick={() => {
-                if (selectedProperty && selectedProperty.id) {
-                  navigate('/rent-description', {
-                    state: { propertyId: selectedProperty.id }
-                  });
-                }
-              }}
-              isSaved={isSaved}
-              toggleSave={toggleSave}
-              likedCards={likedCards}
-              toggleLike={toggleLike}
-              onClose={() => setSelectedProperty(null)}
-            />
+            <Typography variant="h6">
+              No properties listed in this category
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              We couldn't find any properties matching "{selectedType}"
+            </Typography>
           </Box>
-        )}
-      </Box>
+        </Box>
+      )}
 
-      {/* 📱 Bottom Navigation */}
+      {/* Google Map - only show if there are properties or no type selected */}
+      {(!selectedType || filteredProperties.length > 0) && (
+        <Box sx={{ px: 2, pb: 10 }}>
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={{ width: '100%', height: containerStyle.height }}
+              center={center}
+              zoom={14}
+            >
+              {filteredProperties.map(property => (
+                property.lat && property.lng && (
+                  <Marker
+                    key={property.id}
+                    position={{ lat: property.lat, lng: property.lng }}
+                    onClick={() => setSelectedProperty(property)}
+                  />
+                )
+              ))}
+            </GoogleMap>
+          ) : (
+            <Typography>Loading map...</Typography>
+          )}
+
+          {/* Property Card Popup */}
+          {selectedProperty && (
+            <Box sx={{
+              position: 'absolute',
+              bottom: 115,
+              left: 0,
+              right: 0,
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: 480,
+              zIndex: 999
+            }}>
+              <ReUsableCard
+                property={selectedProperty}
+                onCardClick={() => {
+                  if (selectedProperty && selectedProperty.id) {
+                    navigate('/rent-description', {
+                      state: { propertyId: selectedProperty.id }
+                    });
+                  }
+                }}
+                isSaved={isSaved}
+                toggleSave={toggleSave}
+                likedCards={likedCards}
+                toggleLike={toggleLike}
+                onClose={() => setSelectedProperty(null)}
+              />
+            </Box>
+          )}
+        </Box>
+      )}
+
+      {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <CustomBottomNav />
       </Paper>

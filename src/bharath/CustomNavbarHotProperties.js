@@ -48,7 +48,7 @@ const CustomBottomNav = () => {
           <div
             key={item.key}
             data-key={item.key}
-            className={`nav-item ${currentKey === item.key ? 'nav-item-active' : ''}`}
+            className={`nav-item ${currentKey == item.key ? 'nav-item-active' : ''}`}
             onClick={() => handleNav(item)}
           >
             {item.icon}

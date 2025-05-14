@@ -87,7 +87,7 @@ const W_Lease = () => {
   };
 
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -100,7 +100,7 @@ const W_Lease = () => {
     localStorage.setItem('savedLease', JSON.stringify(updated));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const filteredProperties = propertyData.filter((property) =>
     property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

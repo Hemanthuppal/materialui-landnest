@@ -65,16 +65,40 @@ const PropertyCard = () => {
     setAnchorEl(null);
     setMenuPropertyId(null);
   };
+const handleEdit = () => {
+  navigate(`/user-edit-lease/${menuPropertyId}`);
+};
 
-  const handleEdit = () => {
-    alert(`Edit clicked for property ID: ${menuPropertyId}`);
-    handleMenuClose();
-  };
+const handleDelete = async () => {
+  const confirmDelete = window.confirm(`Are you sure you want to delete property ID ${menuPropertyId}?`);
 
-  const handleDelete = () => {
-    alert(`Delete clicked for property ID: ${menuPropertyId}`);
+  if (!confirmDelete) {
+    // User clicked "No"
+    // handleMenuClose();
+    return;
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/property/${menuPropertyId}/`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      alert(`Property ID ${menuPropertyId} deleted successfully.`);
+      // Optionally refresh your data or remove the item from the UI
+    } else {
+      const errorData = await response.json();
+      alert(`Failed to delete property ID ${menuPropertyId}. Reason: ${errorData.detail || 'Unknown error'}`);
+    }
+  } catch (error) {
+    console.error('Error deleting property:', error);
+    alert('An error occurred while trying to delete the property.');
+  } finally {
     handleMenuClose();
-  };
+  }
+};
+
+
 
    useEffect(() => {
     const fetchData = async () => {
@@ -100,7 +124,7 @@ const PropertyCard = () => {
            };
  
            const matchedCategory = categoriesResponse.data.find(
-             cat => cat.category_id === item.category_id
+             cat => cat.category_id == item.category_id
            );
            
            const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -152,7 +176,7 @@ const PropertyCard = () => {
      e.stopPropagation();
      setCurrentImageIndex(prev => {
        const currentIndex = prev[propertyId];
-       const property = properties.find(p => p.id === propertyId);
+       const property = properties.find(p => p.id == propertyId);
        const nextIndex = (currentIndex + 1) % property.images.length;
        return {
          ...prev,
@@ -165,7 +189,7 @@ const PropertyCard = () => {
      e.stopPropagation();
      setCurrentImageIndex(prev => {
        const currentIndex = prev[propertyId];
-       const property = properties.find(p => p.id === propertyId);
+       const property = properties.find(p => p.id == propertyId);
        const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
        return {
          ...prev,
@@ -251,7 +275,7 @@ const PropertyCard = () => {
               onClick={(e) => {
                 const isButtonClick = e.target.closest('button') || e.target.closest('svg');
                 if (!isButtonClick) {
-                  navigate('/lease-description', { state: { propertyId: property.id, property: property.propertyData } });
+                  // navigate('/lease-description', { state: { propertyId: property.id, property: property.propertyData } });
                 }
               }}
             >
@@ -337,7 +361,7 @@ const PropertyCard = () => {
                             width: 8,
                             height: 8,
                             borderRadius: '50%',
-                            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+                            backgroundColor: currentImageIndex[property.id] == index ? '#1976d2' : '#ccc',
                             cursor: 'pointer',
                             transition: 'background-color 0.3s'
                           }}

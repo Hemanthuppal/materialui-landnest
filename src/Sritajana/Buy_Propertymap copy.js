@@ -62,7 +62,7 @@ const Buy_Property_Map = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
 
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -116,7 +116,7 @@ const Buy_Property_Map = () => {
   });
 
   useEffect(() => {
-    if (filteredProperties.length === 0) return;
+    if (filteredProperties.length == 0) return;
 
     const mapContainer = document.getElementById('leaflet-map');
     if (!mapContainer || mapContainer._leaflet_id) return;
@@ -143,13 +143,13 @@ const Buy_Property_Map = () => {
   }, [filteredProperties]);
 
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
     setSaved(updated);
     localStorage.setItem('savedBuy', JSON.stringify(updated));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
@@ -203,16 +203,16 @@ const Buy_Property_Map = () => {
         onClick={() => {
           // Clear any property selection when clicking a type
           setSelectedProperty(null);
-          setSelectedType(prev => (prev === type ? null : type));
+          setSelectedType(prev => (prev == type ? null : type));
         }}
         sx={{
           flexShrink: 0,
-          bgcolor: selectedType === type ? '#000000' : 'transparent',
-          color: selectedType === type ? '#ffffff' : '#000000',
+          bgcolor: selectedType == type ? '#000000' : 'transparent',
+          color: selectedType == type ? '#ffffff' : '#000000',
           border: '1px solid black',
           fontWeight: 'bold',
           '&:hover': {
-            bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+            bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
           },
         }}
       />

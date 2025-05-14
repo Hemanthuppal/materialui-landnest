@@ -120,7 +120,7 @@ const ExploreConstructionResources = () => {
       setLoading(true);
       const response = await axios.get(`${BASE_URL}/material-content/`);
       const filteredMaterials = response.data
-        .filter(item => item.category_id === categoryId)
+        .filter(item => item.category_id == categoryId)
         .map(item => ({
           id: item.content_id,
           title: item.content,
@@ -334,14 +334,14 @@ const ExploreConstructionResources = () => {
             },
           }}
         >
-          {loading && categories.length === 0 ? (
+          {loading && categories.length == 0 ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
               <CircularProgress />
             </Box>
           ) : (
             <List dense sx={{ p: 0 }}>
               {categories.map((category) => {
-                const isSelected = activeCategory === category.category_id;
+                const isSelected = activeCategory == category.category_id;
 
                 return (
                   <React.Fragment key={category.category_id}>
@@ -427,7 +427,7 @@ const ExploreConstructionResources = () => {
                           width: '100%',
                           borderRadius: 2,
                           border: '0.5px solid #000',
-                          boxShadow: selectedItemId === item.id ? 6 : 2,
+                          boxShadow: selectedItemId == item.id ? 6 : 2,
                           cursor: 'pointer',
                           transition: '0.2s',
                           overflow: 'hidden',

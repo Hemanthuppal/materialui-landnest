@@ -21,7 +21,7 @@ const ElevationsPlansPage = () => {
   const addOrUpdatePlan = (plan) => {
     let updatedPlans;
     if (editPlan) {
-      updatedPlans = plans.map((p) => (p.id === editPlan.id ? plan : p));
+      updatedPlans = plans.map((p) => (p.id == editPlan.id ? plan : p));
       toast.success("Plan updated successfully!");
     } else {
       updatedPlans = [...plans, plan];
@@ -33,7 +33,7 @@ const ElevationsPlansPage = () => {
   };
 
   const handleEdit = (id) => {
-    const planToEdit = plans.find((plan) => plan.id === id);
+    const planToEdit = plans.find((plan) => plan.id == id);
     if (planToEdit) {
       setEditPlan(planToEdit);
       setShowForm(true);

@@ -356,7 +356,7 @@ const Elevations = () => {
         setLoading(true);
         const response = await axios.get(`${IMAGE_BASE_URL}/`);
         // Filter plans where category_id is 3 (for Elevation Plans)
-        const elevationPlans = response.data.filter(plan => plan.category_id === 3);
+        const elevationPlans = response.data.filter(plan => plan.category_id == 3);
         setPlans(elevationPlans);
       } catch (error) {
         console.error("Error fetching elevation plans:", error);

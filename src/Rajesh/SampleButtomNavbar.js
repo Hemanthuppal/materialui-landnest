@@ -26,7 +26,7 @@ const SampleBottomNavbar = () => {
     navigate(item.route);
   };
 
-  const activeIndex = navItems.findIndex(item => item.key === active);
+  const activeIndex = navItems.findIndex(item => item.key == active);
   const itemWidth = 100 / navItems.length;
 
   return (
@@ -53,7 +53,7 @@ const SampleBottomNavbar = () => {
       {navItems.map((item) => (
         <button
           key={item.key}
-          className={`nav-btn ${active === item.key ? 'active' : ''}`}
+          className={`nav-btn ${active == item.key ? 'active' : ''}`}
           onClick={() => handleClick(item)}
         >
           <span className="icon">{item.icon}</span>

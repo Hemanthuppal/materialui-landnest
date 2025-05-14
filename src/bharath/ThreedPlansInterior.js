@@ -347,7 +347,7 @@ const ThreedPlansInterior = () => {
         setLoading(true);
         const response = await axios.get(`${IMAGE_BASE_URL}/`);
         // Filter plans where category_id is 2 (for 3D Plans Interior)
-        const threeDPlans = response.data.filter(plan => plan.category_id === 2);
+        const threeDPlans = response.data.filter(plan => plan.category_id == 2);
         setPlans(threeDPlans);
       } catch (error) {
         console.error("Error fetching plans:", error);

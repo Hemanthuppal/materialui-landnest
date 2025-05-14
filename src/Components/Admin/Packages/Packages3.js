@@ -196,13 +196,28 @@ const ConstructionPackages = () => {
     }));
   };
 
+  // const handleEdit = (pkgId, sectionId, content) => {
+  //   setTempContent((prev) => ({
+  //     ...prev,
+  //     [`${pkgId}-${sectionId}`]: content,
+  //   }));
+  //   setEditingField(`${pkgId}-${sectionId}`);
+  // };
+
+
   const handleEdit = (pkgId, sectionId, content) => {
-    setTempContent((prev) => ({
-      ...prev,
-      [`${pkgId}-${sectionId}`]: content,
-    }));
-    setEditingField(`${pkgId}-${sectionId}`);
-  };
+  setEditingField(`${pkgId}-${sectionId}`);
+  setTempContent((prev) => ({
+    ...prev,
+    [`${pkgId}-${sectionId}`]: content,
+  }));
+
+  // Expand the accordion
+  setExpanded((prev) => ({
+    ...prev,
+    [pkgId]: sectionId,
+  }));
+};
 
   const handleSave = async (pkgId, sectionId) => {
     try {
@@ -213,7 +228,7 @@ const ConstructionPackages = () => {
         ];
       const rupeeValues = extractRupeeValues(content);
 
-      if (rupeeValues.length === 0) {
+      if (rupeeValues.length == 0) {
         setEditableContent((prev) => ({
           ...prev,
           [`${pkgId}-${sectionId}`]: content,
@@ -339,7 +354,7 @@ const ConstructionPackages = () => {
     }
 
     const rupeeValues = extractRupeeValues(content);
-    if (rupeeValues.length === 0) {
+    if (rupeeValues.length == 0) {
       return <span dangerouslySetInnerHTML={{ __html: content }} />;
     }
 
@@ -485,26 +500,11 @@ const ConstructionPackages = () => {
     <>
       <Fade in={true} timeout={800}>
         <Box
-          sx={{
-            px: { xs: 2, sm: 4, md: 6 },
-            pt: 4,
-            maxWidth: "800px",
-            margin: "0 auto",
-            pb: 2,
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: "30px",
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
+         
         >
           {/* First Card */}
           <Box
-            sx={{
-              flex: 1,
-              minWidth: { xs: "100%", md: "400px" },
-              maxWidth: { xs: "100%", md: "500px" },
-            }}
+            
           >
             {isLoading ? (
               <Box
@@ -532,7 +532,7 @@ const ConstructionPackages = () => {
                       },
                       border: "none",
                       width: "100%",
-                      height: "700px",
+                      // height: "700px",
                       display: "flex",
                       flexDirection: "column",
                     }}
@@ -650,14 +650,14 @@ const ConstructionPackages = () => {
                       {pkg.sections.map((section) => (
                         <Accordion
                           key={section.id}
-                          expanded={expanded[pkg.id] === section.id}
+                          expanded={expanded[pkg.id] == section.id}
                           onChange={handleChange(section.id, pkg.id)}
                           sx={{
                             "&:before": { display: "none" },
                             boxShadow: "none",
                             borderBottom: "1px solid rgba(0,0,0,0.05)",
                             backgroundColor:
-                              expanded[pkg.id] === section.id
+                              expanded[pkg.id] == section.id
                                 ? "rgba(74, 0, 224, 0.03)"
                                 : "transparent",
                             transition: "all 0.3s ease",
@@ -668,7 +668,7 @@ const ConstructionPackages = () => {
                         >
                           <AccordionSummary
                             expandIcon={
-                              expanded[pkg.id] === section.id ? (
+                              expanded[pkg.id] == section.id ? (
                                 <RemoveIcon sx={{ color: pkg.color }} />
                               ) : (
                                 <AddIcon sx={{ color: "#666" }} />
@@ -689,7 +689,7 @@ const ConstructionPackages = () => {
                               sx={{
                                 fontWeight: 600,
                                 color:
-                                  expanded[pkg.id] === section.id
+                                  expanded[pkg.id] == section.id
                                     ? pkg.color
                                     : "#444",
                                 fontSize: "1.2rem",
@@ -702,7 +702,7 @@ const ConstructionPackages = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 if (
-                                  editingField === `${pkg.id}-${section.id}`
+                                  editingField == `${pkg.id}-${section.id}`
                                 ) {
                                   handleSave(pkg.id, section.id);
                                 } else {
@@ -718,7 +718,7 @@ const ConstructionPackages = () => {
                               sx={{ marginLeft: "auto" }}
                               disabled={isLoading}
                             >
-                              {editingField === `${pkg.id}-${section.id}` ? (
+                              {editingField == `${pkg.id}-${section.id}` ? (
                                 <SaveIcon />
                               ) : (
                                 <EditIcon />
@@ -749,7 +749,7 @@ const ConstructionPackages = () => {
                               {renderContentWithEditableRupeeValues(
                                 pkg.id,
                                 section.id,
-                                editingField === `${pkg.id}-${section.id}`
+                                editingField == `${pkg.id}-${section.id}`
                                   ? tempContent[`${pkg.id}-${section.id}`]
                                   : editableContent[
                                       `${pkg.id}-${section.id}`

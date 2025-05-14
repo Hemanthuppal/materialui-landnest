@@ -61,7 +61,7 @@ const BuySaves = () => {
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId] || 0;
-      const property = saved.find(p => p.id === propertyId);
+      const property = saved.find(p => p.id == propertyId);
       const nextIndex = (currentIndex + 1) % (property.images?.length || 1);
       return {
         ...prev,
@@ -74,7 +74,7 @@ const BuySaves = () => {
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId] || 0;
-      const property = saved.find(p => p.id === propertyId);
+      const property = saved.find(p => p.id == propertyId);
       const prevIndex = (currentIndex - 1 + (property.images?.length || 1)) % (property.images?.length || 1);
       return {
         ...prev,
@@ -140,7 +140,7 @@ const BuySaves = () => {
 
       {/* Saved Property Cards */}
       <Box sx={{ pb: 8 }}>
-        {saved.length === 0 ? (
+        {saved.length == 0 ? (
           <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
             No saved properties.
           </Typography>
@@ -253,7 +253,7 @@ const BuySaves = () => {
                               width: 8,
                               height: 8,
                               borderRadius: '50%',
-                              backgroundColor: currentIndex === index ? '#1976d2' : '#ccc',
+                              backgroundColor: currentIndex == index ? '#1976d2' : '#ccc',
                               cursor: 'pointer',
                               transition: 'background-color 0.3s'
                             }}

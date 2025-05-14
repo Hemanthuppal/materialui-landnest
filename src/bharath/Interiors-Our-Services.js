@@ -339,49 +339,97 @@ import { Link } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import logotop from './Images/landnest-logo.jpg'
 
+
+import fullHomeImg from './Images/fullhome.jpg';
+import commercialImg from './Images/commercial.jpg';
+import kitchenImg from './Images/kitchen.jpg';
+import luxuryImg from './Images/luxury.webp';
+import renovationImg from './Images/renovation.jpeg';
+import landscapingImg from './Images/Landscaping.jpeg';
+import elevation3DImg from './Images/3delevation.jpg';
+
 const Interiors = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const [value, setValue] = useState('construction');
 
+  // const cards = [
+  //   {
+  //     title: "Full Home Interiors",
+  //     description: "Professional 2D plans with detailed measurements",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   },
+  //   {
+  //     title: "Commercial Spaces Interiors",
+  //     description: "Professional 2D plans with detailed measurements",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   },
+  //   {
+  //     title: "Modular Kitchens",
+  //     description: "Detailed exterior view facade designs",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   },
+  //   {
+  //     title: "Luxury Interiors",
+  //     description: "Complete construction document sets",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   },
+  //   {
+  //     title: "Home Renovations",
+  //     description: "Detailed cost estimates and proposals",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   },
+  //   {
+  //     title: "Landscaping",
+  //     description: "Complete construction document sets",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   },
+  //   {
+  //     title: "3D Elevations",
+  //     description: "Detailed cost estimates and proposals",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   }
+  // ];
+
+
   const cards = [
-    {
-      title: "Full Home Interiors",
-      description: "Professional 2D plans with detailed measurements",
-      bgImage: 'url(https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    },
-    {
-      title: "Commercial Spaces Interiors",
-      description: "Professional 2D plans with detailed measurements",
-      bgImage: 'url(https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    },
-    {
-      title: "Modular Kitchens",
-      description: "Detailed exterior view facade designs",
-      bgImage: 'url(https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    },
-    {
-      title: "Luxury Interiors",
-      description: "Complete construction document sets",
-      bgImage: 'url(https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    },
-    {
-      title: "Home Renovations",
-      description: "Detailed cost estimates and proposals",
-      bgImage: 'url(https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    },
-    {
-      title: "Landscaping",
-      description: "Complete construction document sets",
-      bgImage: 'url(https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    },
-    {
-      title: "3D Elevations",
-      description: "Detailed cost estimates and proposals",
-      bgImage: 'url(https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
-    }
-  ];
+  {
+    title: "Full Home Interiors",
+    description: "Professional 2D plans with detailed measurements",
+    bgImage: `url(${fullHomeImg})`
+  },
+  {
+    title: "Commercial Spaces Interiors",
+    description: "Professional 2D plans with detailed measurements",
+    bgImage: `url(${commercialImg})`
+  },
+  {
+    title: "Modular Kitchens",
+    description: "Detailed exterior view facade designs",
+    bgImage: `url(${kitchenImg})`
+  },
+  {
+    title: "Luxury Interiors",
+    description: "Complete construction document sets",
+    bgImage: `url(${luxuryImg})`
+  },
+  {
+    title: "Home Renovations",
+    description: "Detailed cost estimates and proposals",
+    bgImage: `url(${renovationImg})`
+  },
+  {
+    title: "Landscaping",
+    description: "Complete construction document sets",
+    bgImage: `url(${landscapingImg})`
+  },
+  {
+    title: "3D Elevations",
+    description: "Detailed cost estimates and proposals",
+    bgImage: `url(${elevation3DImg})`
+  }
+];
 
 
   return (

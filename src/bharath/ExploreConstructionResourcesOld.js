@@ -276,7 +276,7 @@ const ExploreConstructionResources = () => {
       { id: 'bathroom', icon: <BathroomIcon />, label: 'Bathroom' },
       { id: 'doors', icon: <DoorsIcon />, label: 'Doors' },
     ].map((item) => {
-      const isSelected = activeCategory === item.id;
+      const isSelected = activeCategory == item.id;
 
       return (
         <React.Fragment key={item.id}>

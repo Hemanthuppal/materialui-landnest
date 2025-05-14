@@ -30,7 +30,7 @@
 //     e.preventDefault();
 //     setError('');
     
-//     if (email === 'admin@gmail.com' && password === 'admin@123') {
+//     if (email == 'admin@gmail.com' && password == 'admin@123') {
 //       navigate('/view'); 
 //     } else {
 //       setError('Invalid email or password');
@@ -208,7 +208,7 @@
 //     e.preventDefault();
 //     setError('');
     
-//     if (email === 'admin@gmail.com' && password === 'admin@123') {
+//     if (email == 'admin@gmail.com' && password == 'admin@123') {
 //       navigate('/view'); 
 //     } else {
 //       setError('Invalid email or password');
@@ -463,7 +463,7 @@ const AdminLoginPage = () => {
     e.preventDefault();
     setError('');
     
-    if (email === 'admin@gmail.com' && password === 'admin@123') {
+    if (email == 'admin@gmail.com' && password == 'admin@123') {
       navigate('/view'); 
     } else {
       setError('Invalid email or password');

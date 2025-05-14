@@ -42,7 +42,7 @@
 //     }
     
 //     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0;
+//     return Object.keys(newErrors).length == 0;
 //   };
 
 //   const handleSubmit = (e) => {
@@ -51,7 +51,7 @@
 //     if (validateForm()) {
 //       const users = JSON.parse(localStorage.getItem('users')) || [];
       
-//       if (users.some(user => user.email === formData.email)) {
+//       if (users.some(user => user.email == formData.email)) {
 //         setErrors({ email: 'Email already registered' });
 //         return;
 //       }

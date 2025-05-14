@@ -10,6 +10,7 @@ import {
   Button,
   Grid,
   Tooltip,
+  Chip
 } from '@mui/material';
 import {
   FavoriteBorder,
@@ -40,6 +41,16 @@ const PropertyCard = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState({});
+const [selectedType, setSelectedType] = useState(null);
+    const [selectedProperty, setSelectedProperty] = useState(null);
+
+
+    const rentalTypes = [
+      "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
+      "COMMERCIAL LAND", "COMMERCIAL BUILDING/ Space", "VILLA",
+      "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
+    ];
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +59,9 @@ const PropertyCard = () => {
         setCategories(categoriesResponse.data);
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
-        const filtered = propertiesResponse.data.filter(item =>
+         const filtered = propertiesResponse.data
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort by created_at DESC
+        .filter(item =>
           item.type && item.type.toLowerCase().includes("rent")
         );
 
@@ -60,7 +73,7 @@ const PropertyCard = () => {
           };
 
           const matchedCategory = categoriesResponse.data.find(
-            cat => cat.category_id === item.category_id
+            cat => cat.category_id == item.category_id
           );
           
           const categoryName = matchedCategory ? matchedCategory.category : 'Property';
@@ -112,7 +125,7 @@ const PropertyCard = () => {
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId];
-      const property = properties.find(p => p.id === propertyId);
+      const property = properties.find(p => p.id == propertyId);
       const nextIndex = (currentIndex + 1) % property.images.length;
       return {
         ...prev,
@@ -125,7 +138,7 @@ const PropertyCard = () => {
     e.stopPropagation();
     setCurrentImageIndex(prev => {
       const currentIndex = prev[propertyId];
-      const property = properties.find(p => p.id === propertyId);
+      const property = properties.find(p => p.id == propertyId);
       const prevIndex = (currentIndex - 1 + property.images.length) % property.images.length;
       return {
         ...prev,
@@ -156,7 +169,7 @@ const PropertyCard = () => {
   };
   
   const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id === property.id);
+    const isSaved = saved.find((p) => p.id == property.id);
     let updated;
 
     if (isSaved) {
@@ -172,12 +185,20 @@ const PropertyCard = () => {
     }]));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id === property.id);
+  const isSaved = (property) => saved.some((p) => p.id == property.id);
 
-  const filteredProperties = properties.filter((property) =>
-    property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    property.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+   // Filter properties based on search query and selected type
+   const filteredProperties = properties.filter((property) => {
+    const matchesSearch = 
+      property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesType = selectedType 
+      ? property.title.toLowerCase().includes(selectedType.toLowerCase())
+      : true;
+    
+    return matchesSearch && matchesType;
+  });
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
@@ -215,6 +236,39 @@ const PropertyCard = () => {
       >
         <CustomSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       </Box>
+      
+            {/* Property Types */}
+            <Box sx={{ px: 2 }}>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>Rent Properties </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 1,
+                  overflowX: 'auto',
+                  whiteSpace: 'nowrap',
+                  pb: 1,
+                }}
+              >
+                {rentalTypes.map((type, index) => (
+                  <Chip
+                    key={index}
+                    label={type}
+                    variant="filled"
+                    onClick={() => setSelectedType(prev => (prev == type ? null : type))}
+                    sx={{
+                      flexShrink: 0,
+                      bgcolor: selectedType == type ? '#000000' : 'transparent',
+                      color: selectedType == type ? '#ffffff' : '#000000',
+                      border: '1px solid black',
+                      fontWeight: 'bold',
+                      '&:hover': {
+                        bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                      },
+                    }}
+                  />
+                ))}
+              </Box>
+            </Box>
 
       <Box sx={{ pb: 8 }}>
         {filteredProperties.length > 0 ? (
@@ -320,7 +374,7 @@ const PropertyCard = () => {
             width: 8,
             height: 8,
             borderRadius: '50%',
-            backgroundColor: currentImageIndex[property.id] === index ? '#1976d2' : '#ccc',
+            backgroundColor: currentImageIndex[property.id] == index ? '#1976d2' : '#ccc',
             cursor: 'pointer',
             transition: 'background-color 0.3s'
           }}
@@ -521,7 +575,13 @@ const PropertyCard = () => {
             height: '200px',
             px: 2
           }}>
-            <Typography>No properties found matching your search.</Typography>
+            {selectedType ? (
+                          <Typography>
+                            No properties listed in the "{selectedType}" category
+                          </Typography>
+                        ) : (
+                          <Typography>No properties found matching your search.</Typography>
+                        )}
           </Box>
         )}
       </Box>

@@ -156,7 +156,7 @@ const SampleDescription = ({
                         alignItems: 'center',
                         gap: 1,
                         p: 2,
-                        borderRight: colIndex === 0 ? '1px solid #9e9e9e' : 'none',
+                        borderRight: colIndex == 0 ? '1px solid #9e9e9e' : 'none',
                         borderBottom: rowIndex < overview.length - 1 ? '1px solid #9e9e9e' : 'none',
                       }}
                     >

@@ -54,7 +54,7 @@ const W_Post = () => {
 
   const handleCardClick = (property) => {
     // Toggle Edit/Delete icons visibility when clicking "Move Vert"
-    setShowEditDelete((prev) => (prev === property.id ? null : property.id));
+    setShowEditDelete((prev) => (prev == property.id ? null : property.id));
   };
 
   const handleDelete = (propertyId) => {
@@ -189,7 +189,7 @@ const W_Post = () => {
                   Move Vert
                 </Typography>
 
-                {showEditDelete === property.id && (
+                {showEditDelete == property.id && (
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <Tooltip title="Edit">
                       <IconButton sx={{ color: 'blue' }} onClick={() => console.log('Edit clicked')}>

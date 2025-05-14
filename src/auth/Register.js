@@ -27,27 +27,36 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Auto-detect location
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
-          const data = await response.json();
-          setCity(data.address.city || data.address.town || data.address.village || '');
-          setState(data.address.state || '');
-        } catch (error) {
-          console.error('Error fetching location:', error);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setLatitude(latitude);
+          setLongitude(longitude);
+
+          try {
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+            );
+            const data = await response.json();
+            setCity(data.address.city || data.address.town || data.address.village || '');
+            setState(data.address.state || '');
+          } catch (error) {
+            console.error('Error fetching location:', error);
+          }
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
         }
-      }, (error) => {
-        console.error('Geolocation error:', error);
-      });
+      );
     } else {
       console.error('Geolocation not supported.');
     }
@@ -62,6 +71,11 @@ const RegisterPage = () => {
       return;
     }
 
+    if (!latitude || !longitude) {
+      setError('Location not detected. Please allow location access.');
+      return;
+    }
+
     const formData = {
       username: name,
       first_name: name,
@@ -71,6 +85,8 @@ const RegisterPage = () => {
       password: password,
       state: state,
       city: city,
+      lat: latitude,
+      long: longitude,
       role: 1,
     };
 
@@ -87,7 +103,7 @@ const RegisterPage = () => {
         const result = await response.json();
         console.log('Registration successful:', result);
         alert('Registration successful!');
-        navigate('/'); 
+        navigate('/');
       } else {
         const errorData = await response.json();
         console.error('Registration failed:', errorData);

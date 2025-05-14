@@ -484,6 +484,11 @@ import pic15 from "../Images/agreement.webp";
 import logotop from './Images/landnest-logo.jpg'
 import { jsPDF } from "jspdf";
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
+import const1 from './Images/Constructionelevation.jpg'
+import const2 from './Images/construction2d.jpg'
+import const3 from './Images/construction3d.jpg'
+import const4 from './Images/constructionpackages.jpeg'
+
 
 const steps = [
   { title: 'Agreement Sign', image: pic15 },
@@ -521,37 +526,70 @@ const Constructions = () => {
 
 
 
+  // const cards = [
+  //   {
+  //     title: "Floor Plans 2D",
+  //     description: "Professional 2D plans with Detailed Measurements.",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+  //     path: "/two-d-plane-interior"
+  //   },
+  //   {
+  //     title: "Floor Plans 3D",
+  //     description: "Professional 3D plans with Detailed Measurements.",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+  //     path: "/three-d-plane-interior"
+  //   },
+  //   {
+  //     title: "Elevations",
+  //     description: "Detailed Exterior Views and facade designs.",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+  //     path: "/elevations"
+  //   },
+  //   {
+  //     title: "Our Construction Packages",
+  //     description: "Complete construction document sets.",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
+  //     path: "/packages"
+  //   },
+  //   {
+  //     title: "Quotations",
+  //     description: "Detailed cost estimates and proposals.",
+  //     bgImage: 'url(https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
+  //   }
+  // ];
+
+
   const cards = [
-    {
-      title: "Floor Plans 2D",
-      description: "Professional 2D plans with Detailed Measurements.",
-      bgImage: 'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
-      path: "/two-d-plane-interior"
-    },
-    {
-      title: "Floor Plans 3D",
-      description: "Professional 3D plans with Detailed Measurements.",
-      bgImage: 'url(https://images.unsplash.com/photo-1600607688969-a5bfcd646154?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
-      path: "/three-d-plane-interior"
-    },
-    {
-      title: "Elevations",
-      description: "Detailed Exterior Views and facade designs.",
-      bgImage: 'url(https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
-      path: "/elevations"
-    },
-    {
-      title: "Our Construction Packages",
-      description: "Complete construction document sets.",
-      bgImage: 'url(https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)',
-      path: "/packages"
-    },
-    {
-      title: "Quotations",
+  {
+    title: "Floor Plans 2D",
+    description: "Professional 2D plans with Detailed Measurements.",
+    bgImage: `url(${const2})`,
+    path: "/two-d-plane-interior"
+  },
+  {
+    title: "Floor Plans 3D",
+    description: "Professional 3D plans with Detailed Measurements.",
+    bgImage: `url(${const3})`,
+    path: "/three-d-plane-interior"
+  },
+  {
+    title: "Elevations",
+    description: "Detailed Exterior Views and facade designs.",
+    bgImage: `url(${const1})`,
+    path: "/elevations"
+  },
+  {
+    title: "Our Construction Packages",
+    description: "Complete construction document sets.",
+    bgImage: `url(${const4})`,
+    path: "/packages"
+  },
+ {
+     title: "Quotations",
       description: "Detailed cost estimates and proposals.",
       bgImage: 'url(https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
     }
-  ];
+];
 
   const trustCards = [
     { bgImage: 'url(https://img.freepik.com/free-vector/hand-drawn-construction-background_23-2147724568.jpg)' },
@@ -625,7 +663,7 @@ const Constructions = () => {
     let y = 120;
     items.forEach((item, index) => {
       // Alternate row colors
-      if (index % 2 === 0) {
+      if (index % 2 == 0) {
         doc.setFillColor(240, 240, 240);
         doc.rect(20, y, 170, 10, 'F');
       }
@@ -869,7 +907,7 @@ const Constructions = () => {
                 onClick={() => {
                   if (card.path) {
                     navigate(card.path);
-                  } else if (card.title === "Quotations") {
+                  } else if (card.title == "Quotations") {
                     handleDownloadQuotation();
                   }
                 }}

@@ -50,7 +50,7 @@ const Material = () => {
   const API_URL = `${BASE_URL}`;
 
   const getCategoryName = (categoryId) => {
-    const found = categories.find((cat) => cat.category_id === categoryId);
+    const found = categories.find((cat) => cat.category_id == categoryId);
     return found ? found.category : "N/A";
   };
 
@@ -68,7 +68,7 @@ const Material = () => {
       const formattedMaterials = matRes.data.map((item) => ({
         id: item.content_id,
         category:
-          fetchedCategories.find((cat) => cat.category_id === item.category_id)
+          fetchedCategories.find((cat) => cat.category_id == item.category_id)
             ?.category || "N/A",
         category_id: item.category_id,
         materialName: item.content,

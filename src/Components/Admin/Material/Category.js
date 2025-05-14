@@ -27,7 +27,7 @@ const Category = () => {
     let updatedCategories;
     if (editCategory) {
       updatedCategories = categories.map((c) =>
-        c.id === editCategory.id ? category : c
+        c.id == editCategory.id ? category : c
       );
       toast.success("Category updated successfully!");
     } else {
@@ -40,7 +40,7 @@ const Category = () => {
   };
 
   const handleEdit = (id) => {
-    const categoryToEdit = categories.find((c) => c.id === id);
+    const categoryToEdit = categories.find((c) => c.id == id);
     if (categoryToEdit) {
       setEditCategory(categoryToEdit);
       setShowForm(true);

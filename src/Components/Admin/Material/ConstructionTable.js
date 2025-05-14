@@ -14,7 +14,7 @@ const ConstructionTable = ({ toggleForm, constructions, categories, onEdit, onDe
   
   // Helper to find category name from ID
   const getCategoryName = (id) => {
-    const cat = categories.find(c => c.id === id);
+    const cat = categories.find(c => c.id == id);
     return cat ? cat.name : "Unknown";
   };
 
