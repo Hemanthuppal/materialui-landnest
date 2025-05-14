@@ -590,7 +590,9 @@ const Interiors = () => {
 
           {/* Portfolio - Inactive */}
           <Box
-
+             
+            component={Link}
+            to="/portfolio"
             sx={{
               flex: 1,
               textAlign: 'center',

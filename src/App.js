@@ -85,6 +85,7 @@ import UserRent from "./Userproperties/Rent/Rent";
 import UserLease from "./Userproperties/Lease/Lease";
 import UserVendor from "./Userproperties/Vendor/Vendor";
 import UserBestdeals from "./Userproperties/BestDeals/Bestdeals";
+import Portfolio from "./Rajesh/Portfolio";
 
 function App() {
   return (
@@ -148,6 +149,7 @@ function App() {
             path="/hot-property-details"
             element={<Hot_Property_Details />}
           />
+           <Route path="/Portfolio" element={<Portfolio />} />
           <Route path="/hot-property-saves" element={<HotProperty_Saves />} />
           <Route path="/lease_map" element={<Lease_map />} />
           <Route path="/lease_details" element={<Lease_detail />} />

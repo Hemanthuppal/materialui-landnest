@@ -97,16 +97,21 @@ const Login = () => {
               color: '#fff',
             }}
           >
-            <Avatar
-              src={landNestLogo}
-              sx={{
-                width: 100,
-                height: 100,
-                mb: 2,
-                mx: 'auto',
-                boxShadow: '0 0 10px #ffd700',
-              }}
-            />
+            <Box
+  component="img"
+  src={landNestLogo}
+  alt="Land Nest Logo"
+  sx={{
+    width: 180,
+    height: 120,
+    mb: 2,
+    mx: 'auto',
+    borderRadius: 2, // Optional: slightly rounded corners
+    boxShadow: '0 0 20px #ffd700',
+    display: 'block',
+  }}
+/>
+
             <Typography variant="h5" sx={{ color: '#f7e896', fontWeight: 600, mb: 2 }}>
               Welcome Back
             </Typography>
