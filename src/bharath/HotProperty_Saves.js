@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import {
   Box,
   Card,
@@ -10,6 +10,7 @@ import {
   Grid,
   Divider,
   Tooltip,
+   CircularProgress
 } from '@mui/material';
 import {
   Favorite,
@@ -21,36 +22,121 @@ import {
   ChevronLeft,
   ChevronRight
 } from '@mui/icons-material';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import BottomNavbar from './CustomNavbarHotProperties';
+import { AuthContext } from '../AuthContext/AuthContext';
+import { BASE_URL } from '../Api/ApiUrls';
 
 const HotProperty_Saves = () => {
   const [saved, setSaved] = useState([]);
     const [likedCards, setLikedCards] = useState({});
     const [currentImageIndex, setCurrentImageIndex] = useState({});
     const navigate = useNavigate();
-  
+   const { userId, logout } = useContext(AuthContext);
+    const [loading, setLoading] = useState(true);
+
+
     useEffect(() => {
-      const stored = localStorage.getItem('savedHot');
-      if (stored) {
-        const savedProperties = JSON.parse(stored);
-        setSaved(savedProperties);
-        
-        // Initialize current image index for each property
-        const indexes = {};
-        savedProperties.forEach(property => {
-          indexes[property.id] = 0;
-        });
-        setCurrentImageIndex(indexes);
-      }
-    }, []);
-  
-    const handleRemove = (id) => {
-      const updated = saved.filter((item) => item.id !== id);
-      setSaved(updated);
-      localStorage.setItem('savedHot', JSON.stringify(updated));
-    };
+        const fetchData = async () => {
+          try {
+            // Step 1: Fetch user's saved properties (cart items)
+            const cartResponse = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}`);
+            const cartItems = cartResponse.data;
+    
+            // Step 2: Fetch all properties to get full details
+            const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
+            
+            // Step 3: Get categories for property type mapping
+            const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
+            
+            // Step 4: Filter and map saved properties
+            const savedProperties = cartItems
+              .map(cartItem => {
+                // Find the property and ensure it's a "sell" type
+                const property = propertiesResponse.data.find(
+                  p => p.property_id === cartItem.property_id && 
+                       p.type && 
+                       p.type.toLowerCase().includes("best-deal")
+                );
+                if (!property) return null;
+    
+                const parseCoord = (coord) => {
+                  if (!coord) return null;
+                  const cleaned = coord.replace(/"/g, '').replace(':', '.');
+                  return parseFloat(cleaned);
+                };
+    
+                const matchedCategory = categoriesResponse.data.find(
+                  cat => cat.category_id == property.category_id
+                );
+                
+                const categoryName = matchedCategory ? matchedCategory.category : 'Property';
+    
+                // Get all images or default image
+                const images = property.property_images?.length > 0 
+                  ? property.property_images.map(img => `${BASE_URL}${img.image}`)
+                  : ['/default-property-image.jpg'];
+    
+                return {
+                  id: property.property_id,
+                  cart_id: cartItem.cart_id, // Keep cart_id for removal
+                  title: categoryName,
+                  location: property.location || 'Not specified',
+                  price: `₹${property.price?.toLocaleString()}`,
+                  date: property.created_at?.split('T')[0],
+                  facing: property.facing?.replace(/"/g, '') || 'N/A',
+                  area: property.site_area ? `${property.site_area} sq ft` : 'N/A',
+                  dimensions: property.roadwidth ? `${property.roadwidth} ft road` : 'N/A',
+                  listedBy: property.list?.replace(/"/g, '') || 'Agent',
+                  lat: parseCoord(property.lat),
+                  long: parseCoord(property.long),
+                  length: property.length,
+                  width: property.width,
+                  mobile_no: property.mobile_no,
+                  property_name: property.property_name,
+                  images: images,
+                  propertyData: property
+                };
+              })
+              .filter(Boolean); // Remove any null entries
+    
+            setSaved(savedProperties);
+            
+            // Initialize current image index for each property
+            const initialIndexes = {};
+            savedProperties.forEach(property => {
+              initialIndexes[property.id] = 0;
+            });
+            setCurrentImageIndex(initialIndexes);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        if (userId) {
+          fetchData();
+        }
+      }, [userId]);
+
+        const handleRemove = async (propertyId) => {
+          try {
+            // Find the cart item to get cart_id
+            const cartItem = saved.find(item => item.id === propertyId);
+            if (!cartItem) return;
+      
+            await axios.delete(`${BASE_URL}/user-cart/${cartItem.cart_id}/`);
+            
+            // Update local state
+            const updated = saved.filter((item) => item.id !== propertyId);
+            setSaved(updated);
+          } catch (error) {
+            console.error('Error removing property:', error);
+          }
+        };
   
     const toggleLike = (id) => {
       setLikedCards((prev) => ({
@@ -123,6 +209,20 @@ const HotProperty_Saves = () => {
         }
       }
     };
+
+      if (loading) {
+        return (
+          <Box sx={{ 
+            backgroundColor: 'rgb(239, 231, 221)', 
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <CircularProgress />
+          </Box>
+        );
+      }
   
     return (
       <Box sx={{ backgroundColor: 'rgb(239, 231, 221)', minHeight: '110vh' }}>

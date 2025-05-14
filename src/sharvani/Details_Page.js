@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -10,7 +10,8 @@ import {
   Button,
   Grid,
   Tooltip,
-  Chip
+  Chip,
+    CircularProgress
 } from '@mui/material';
 import {
   FavoriteBorder,
@@ -28,6 +29,7 @@ import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
 import BottomNavbar from './BottomNavbar/BottomNavbar';
 import { BASE_URL } from '../Api/ApiUrls';
+import { AuthContext } from '../AuthContext/AuthContext';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
@@ -43,7 +45,13 @@ const PropertyCard = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState({});
 const [selectedType, setSelectedType] = useState(null);
     const [selectedProperty, setSelectedProperty] = useState(null);
-
+const { userId, logout } = useContext(AuthContext);
+const [savedProperties, setSavedProperties] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // Stores complete cart items
+  
+ 
+  
+  const [saving, setSaving] = useState({});
 
     const rentalTypes = [
       "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
@@ -168,24 +176,74 @@ const [selectedType, setSelectedType] = useState(null);
     }
   };
   
-  const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id == property.id);
-    let updated;
+  // Fetch saved properties from API on component mount
+  useEffect(() => {
+    const fetchSavedProperties = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}`);
+        setCartItems(response.data);
+        setSavedProperties(response.data.map(item => item.property_id));
+      } catch (error) {
+        console.error('Error fetching saved properties:', error);
+      }
+    };
 
-    if (isSaved) {
-      updated = saved.filter((p) => p.id !== property.id);
-    } else {
-      updated = [...saved, property];
+    fetchSavedProperties();
+  }, [userId]);
+
+  // API functions
+  const addToCart = async (propertyId) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/user-cart/`, {
+        user_id: userId,
+        property_id: propertyId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      throw error;
     }
-
-    setSaved(updated);
-    localStorage.setItem('saveRent', JSON.stringify([...saved, {
-      ...property,
-      images: property.images || [property.image] // Fallback to single image if no array
-    }]));
   };
 
-  const isSaved = (property) => saved.some((p) => p.id == property.id);
+
+
+  const removeFromCart = async (cartId) => {
+    try {
+      await axios.delete(`${BASE_URL}/user-cart/${cartId}/`);
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      throw error;
+    }
+  };
+
+  const toggleSave = async (property) => {
+    const propertyId = property.id;
+    setSaving(prev => ({ ...prev, [propertyId]: true }));
+    
+    try {
+      const isSaved = savedProperties.includes(propertyId);
+      const cartItem = cartItems.find(item => item.property_id === propertyId);
+
+      if (isSaved) {
+        // Remove from saved
+        await removeFromCart(cartItem.cart_id);
+        setSavedProperties(prev => prev.filter(id => id !== propertyId));
+        setCartItems(prev => prev.filter(item => item.property_id !== propertyId));
+      } else {
+        // Add to saved
+        const newItem = await addToCart(propertyId);
+        setSavedProperties(prev => [...prev, propertyId]);
+        setCartItems(prev => [...prev, newItem.data]);
+      }
+    } catch (error) {
+      console.error('Error updating saved properties:', error);
+      // Optionally show error to user
+    } finally {
+      setSaving(prev => ({ ...prev, [propertyId]: false }));
+    }
+  };
+
+  const isSaved = (property) => savedProperties.includes(property.id);
 
    // Filter properties based on search query and selected type
    const filteredProperties = properties.filter((property) => {
@@ -391,8 +449,10 @@ const [selectedType, setSelectedType] = useState(null);
                         e.stopPropagation();
                         toggleSave(property);
                       }}
+                       disabled={saving[property.id]}
                     >
                       {isSaved(property) ? <Favorite color="error" /> : <FavoriteBorder />}
+                       {saving[property.id] && <CircularProgress size={24} sx={{ position: 'absolute' }} />}
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Share">

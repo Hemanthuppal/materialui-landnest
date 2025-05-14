@@ -1,10 +1,11 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import {
   Box,
   Chip,
   Typography,
-  Paper
+  Paper,
+  CircularProgress
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -12,13 +13,12 @@ import {
   Marker,
   useJsApiLoader
 } from '@react-google-maps/api';
-
+import { AuthContext } from '../AuthContext/AuthContext';
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
-import ReUsableCard from './ReUsableCard';
-import CustomBottomNav from './CustomNavbarHotProperties';
+import ReUsableCard from './../sharvani/ReUsableCard';
+import CustomBottomNav from './CustomNav';
 import { BASE_URL } from '../Api/ApiUrls';
-import { AuthContext } from '../AuthContext/AuthContext';
 
 const rentalTypes = [
   "PLOT/LAND", "COMMERCIAL LAND/PLOT", "RENT WITH DUPLEX BUILDING", "DUPLEX HOUSE",
@@ -26,40 +26,36 @@ const rentalTypes = [
   "COMMERCIAL BUILDING", "APARTMENT", "OTHERS"
 ];
 
-const Hot_Property_Map = () => {
+const Buy_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
-  const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('savedHot');
-    return stored ? JSON.parse(stored) : [];
-  });
   const [categories, setCategories] = useState([]);
   const [likedCards, setLikedCards] = useState({});
+  const { userId, logout } = useContext(AuthContext);
+  const [savedProperties, setSavedProperties] = useState([]);
+  const [saving, setSaving] = useState({});
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
- const { userId, logout } = useContext(AuthContext);
-    const [savedProperties, setSavedProperties] = useState([]);
-      const [saving, setSaving] = useState({});
 
-      // Fetch saved properties from API
-        useEffect(() => {
-          const fetchSavedProperties = async () => {
-            try {
-              const response = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}`);
-              // Ensure response.data is an array before mapping
-              const savedItems = Array.isArray(response.data) ? response.data : [];
-              setSavedProperties(savedItems.map(item => item.property_id));
-            } catch (error) {
-              console.error('Error fetching saved properties:', error);
-              setSavedProperties([]); // Set empty array on error
-            }
-          };
-      
-          if (userId) {
-            fetchSavedProperties();
-          }
-        }, [userId]);
+  // Fetch saved properties from API
+  useEffect(() => {
+    const fetchSavedProperties = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}`);
+        // Ensure response.data is an array before mapping
+        const savedItems = Array.isArray(response.data) ? response.data : [];
+        setSavedProperties(savedItems.map(item => item.property_id));
+      } catch (error) {
+        console.error('Error fetching saved properties:', error);
+        setSavedProperties([]); // Set empty array on error
+      }
+    };
 
+    if (userId) {
+      fetchSavedProperties();
+    }
+  }, [userId]);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -69,7 +65,7 @@ const Hot_Property_Map = () => {
 
         const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-          item.type == "best-deal" && item.Admin_status == "Approved"
+          item.type && item.type.toLowerCase().includes("sell")
         );
 
         const parsed = filtered.map(item => {
@@ -105,7 +101,6 @@ const Hot_Property_Map = () => {
             width: item.width,
             property_name: item.property_name,
             mobile_no: item.mobile_no,
-            admin_mobile: item.admin_mobile,
             images: images,
             propertyData: item
           };
@@ -114,11 +109,69 @@ const Hot_Property_Map = () => {
         setProperties(parsed);
       } catch (error) {
         console.error('Error fetching properties:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProperties();
   }, []);
+
+  // API functions for cart operations
+  const addToCart = async (propertyId) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/user-cart/`, {
+        user_id: userId,
+        property_id: propertyId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      throw error;
+    }
+  };
+
+  const removeFromCart = async (propertyId) => {
+    try {
+      const cartResponse = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}&property_id=${propertyId}`);
+      if (cartResponse.data && cartResponse.data.length > 0) {
+        await axios.delete(`${BASE_URL}/user-cart/${cartResponse.data[0].cart_id}/`);
+      }
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      throw error;
+    }
+  };
+
+  const toggleSave = async (property) => {
+    const propertyId = property.id;
+    setSaving(prev => ({ ...prev, [propertyId]: true }));
+    
+    try {
+      const isSaved = savedProperties.includes(propertyId);
+      
+      if (isSaved) {
+        await removeFromCart(propertyId);
+        setSavedProperties(prev => prev.filter(id => id !== propertyId));
+      } else {
+        await addToCart(propertyId);
+        setSavedProperties(prev => [...prev, propertyId]);
+      }
+    } catch (error) {
+      console.error('Error updating saved properties:', error);
+    } finally {
+      setSaving(prev => ({ ...prev, [propertyId]: false }));
+    }
+  };
+
+  const isSaved = (property) => savedProperties.includes(property.id);
+
+  const toggleLike = (id) => {
+    setLikedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   // Filter based on selected type
   const filteredProperties = selectedType
@@ -143,62 +196,19 @@ const Hot_Property_Map = () => {
     height: 'calc(100vh - 240px)'
   };
 
-  
-    // API functions for cart operations
-     const addToCart = async (propertyId) => {
-       try {
-         const response = await axios.post(`${BASE_URL}/user-cart/`, {
-           user_id: userId,
-           property_id: propertyId
-         });
-         return response.data;
-       } catch (error) {
-         console.error('Error adding to cart:', error);
-         throw error;
-       }
-     };
-   
-     const removeFromCart = async (propertyId) => {
-       try {
-         const cartResponse = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}&property_id=${propertyId}`);
-         if (cartResponse.data && cartResponse.data.length > 0) {
-           await axios.delete(`${BASE_URL}/user-cart/${cartResponse.data[0].cart_id}/`);
-         }
-       } catch (error) {
-         console.error('Error removing from cart:', error);
-         throw error;
-       }
-     };
-   
-     const toggleSave = async (property) => {
-       const propertyId = property.id;
-       setSaving(prev => ({ ...prev, [propertyId]: true }));
-       
-       try {
-         const isSaved = savedProperties.includes(propertyId);
-         
-         if (isSaved) {
-           await removeFromCart(propertyId);
-           setSavedProperties(prev => prev.filter(id => id !== propertyId));
-         } else {
-           await addToCart(propertyId);
-           setSavedProperties(prev => [...prev, propertyId]);
-         }
-       } catch (error) {
-         console.error('Error updating saved properties:', error);
-       } finally {
-         setSaving(prev => ({ ...prev, [propertyId]: false }));
-       }
-     };
-   
-     const isSaved = (property) => savedProperties.includes(property.id);
-
-  const toggleLike = (id) => {
-    setLikedCards((prev) => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
-  };
+  if (loading) {
+    return (
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        backgroundColor: 'rgb(239, 231, 221)'
+      }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -223,12 +233,11 @@ const Hot_Property_Map = () => {
         }}
       >
         <CustomSearchBar />
-
       </Box>
 
       {/* Property Types */}
       <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Hot Properties </Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Properties </Typography>
         <Box
           sx={{
             display: 'flex',
@@ -262,8 +271,8 @@ const Hot_Property_Map = () => {
         </Box>
       </Box>
 
-      {/* No properties message - moved outside the map container */}
-      {selectedType && filteredProperties.length == 0 && (
+      {/* No properties message */}
+      {selectedType && filteredProperties.length === 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -288,7 +297,7 @@ const Hot_Property_Map = () => {
         </Box>
       )}
 
-      {/* Google Map - only show if there are properties or no type selected */}
+      {/* Google Map */}
       {(!selectedType || filteredProperties.length > 0) && (
         <Box sx={{ px: 2, pb: 10 }}>
           {isLoaded ? (
@@ -327,7 +336,7 @@ const Hot_Property_Map = () => {
                 property={selectedProperty}
                 onCardClick={() => {
                   if (selectedProperty && selectedProperty.id) {
-                    navigate('/hot-property-description', {
+                    navigate('/Buy-description', {
                       state: { propertyId: selectedProperty.id }
                     });
                   }
@@ -337,7 +346,7 @@ const Hot_Property_Map = () => {
                 likedCards={likedCards}
                 toggleLike={toggleLike}
                 onClose={() => setSelectedProperty(null)}
-                 saving={saving[selectedProperty.id]}
+                saving={saving[selectedProperty.id]}
               />
             </Box>
           )}
@@ -351,4 +360,5 @@ const Hot_Property_Map = () => {
     </Box>
   );
 };
-export default Hot_Property_Map;
+
+export default Buy_Property_Map;
