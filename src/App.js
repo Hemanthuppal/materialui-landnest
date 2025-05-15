@@ -93,6 +93,7 @@ import EditRentForm from "./Userproperties/Rent/EditRent";
 import EditBuy from "./Userproperties/Buy/EditBuy";
 import Chat from "./Chat/Chat";
 import ChatWindow from "./Tharun/IndividulChat";
+import HomeServiceType from "./bharath/HomeServiceType";
 
 function App() {
   return (
@@ -231,6 +232,7 @@ function App() {
           <Route path="/chat" element={<Chat />} />
            <Route path="/chat/:userId" element={<ChatWindow />} />
 
+<Route path="/home-service-type" element={<HomeServiceType />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
