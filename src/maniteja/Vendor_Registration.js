@@ -10,7 +10,8 @@ import FormsBottomNavbar from './FormsBottomNavbar';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
 import { BASE_URL } from './../Api/ApiUrls';
-
+import { IconButton, InputAdornment } from '@mui/material';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
 
 const containerStyle = {
@@ -50,14 +51,15 @@ const GreenButton = styled(Button)({
 const VendorRegister = () => {
 
     const { userId, logout } = useContext(AuthContext);
-
+ const [apiHitCount, setApiHitCount] = useState(0);
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
         libraries: ['places'],
     });
-
+const [address, setAddress] = useState('');
     const [markerIcon, setMarkerIcon] = useState(null);
+      const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
 
     useEffect(() => {
         if (isLoaded && window.google) {
@@ -69,8 +71,70 @@ const VendorRegister = () => {
             });
         }
     }, [isLoaded]);
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    setUsingCurrentLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setLocation(pos);
+
+        try {
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${GOOGLE_MAPS_API_KEY}`
+          );
+          const data = await response.json();
+
+          if (data.status == 'OK' && data.results.length > 0) {
+            const address = data.results[0].formatted_address;
+            setAddress(address);
+          } else {
+            console.warn('No address found, fallback to coordinates.');
+            setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
+          }
+        } catch (error) {
+          console.error('Google Maps API error:', error);
+          setAddress(`Lat: ${pos.lat.toFixed(6)}, Lng: ${pos.lng.toFixed(6)}`);
+        }
+      },
+      (error) => {
+        console.error("Error getting current location:", error);
+        alert("Error getting current location. Please enable location services.");
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+};
+
+ const handleMapClick = async (e) => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        setLocation({ lat, lng });
+        setUsingCurrentLocation(false);
+        incrementApiHit(); // Clicking on map uses Google Maps API
+
+        if (window.google && window.google.maps) {
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                if (status == 'OK' && results[0]) {
+                    setAddress(results[0].formatted_address);
+                } else {
+                    setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
+                }
+            });
+        }
+    };
 
 
+    const incrementApiHit = () => {
+        setApiHitCount(prev => prev + 1);
+        console.log(`Google Maps API hits: ${apiHitCount + 1}`);
+    }; 
+   
     // const { user_id } = useContext( useAuth );
 
     // const [formData, setFormData] = useState({
@@ -161,50 +225,53 @@ const VendorRegister = () => {
     };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const formDataToSend = new FormData();
-    const updatedFormData = { ...formData, user_id: userId };
+        const formDataToSend = new FormData();
+        const updatedFormData = { ...formData, user_id: userId , lat: location.lat,
+            long: location.lng,
+            address: address, };
+        console.log('Form Data:', updatedFormData);
 
-    Object.keys(updatedFormData).forEach(key => {
-        formDataToSend.append(key, updatedFormData[key]);
-    });
-
-    if (profilePhoto) {
-        formDataToSend.append('profile', profilePhoto);
-    }
-
-    workPhotos.forEach((photo, index) => {
-        formDataToSend.append('new_work_images', photo);
-    });
-
-    // Debug log FormData contents
-    for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
-    }
-
-    try {
-        const response = await fetch(`${BASE_URL}/vendors/`, {
-            method: 'POST',
-            body: formDataToSend,
+        Object.keys(updatedFormData).forEach(key => {
+            formDataToSend.append(key, updatedFormData[key]);
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Success:', data);
-            alert('Vendor registered successfully!');
-            navigate('/dashboard');
-        } else {
-            const errorData = await response.json();  // try to parse the error body
-            console.error('Error response:', errorData);
-            alert('Form submission failed. Check console for details.');
+        if (profilePhoto) {
+            formDataToSend.append('profile', profilePhoto);
         }
-    } catch (error) {
-        console.error('Network or other error:', error);
-        alert('Error submitting form. Please try again.');
-    }
-};
+
+        workPhotos.forEach((photo, index) => {
+            formDataToSend.append('new_work_images', photo);
+        });
+
+        // Debug log FormData contents
+        for (let [key, value] of formDataToSend.entries()) {
+            console.log(`${key}:`, value);
+        }
+
+        try {
+            const response = await fetch(`${BASE_URL}/vendors/`, {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Success:', data);
+                alert('Vendor registered successfully!');
+                navigate('/dashboard');
+            } else {
+                const errorData = await response.json();  // try to parse the error body
+                console.error('Error response:', errorData);
+                alert('Form submission failed. Check console for details.');
+            }
+        } catch (error) {
+            console.error('Network or other error:', error);
+            alert('Error submitting form. Please try again.');
+        }
+    };
 
 
 
@@ -220,6 +287,12 @@ const VendorRegister = () => {
     const handleFilterClick = () => {
         console.log('Filter icon clicked');
     };
+    const workerTypes = [
+        "Painting", "Carpenter", "Flooring", "AC Technician", "Cleaning maid",
+        "Gardener", "Sofa Cleaning", "Water Purifier", "Kitchen/Toilet Cleaning", "Plumbing", "Electrical"
+    ];
+
+
 
     if (!isLoaded) {
         return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -234,15 +307,47 @@ const VendorRegister = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
-                <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Vendor Registration
-                    </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '100vh',
+                    pt: '10px',
+                    backgroundColor: 'rgb(239, 231, 221)',
+                }}
+            >
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        p: { xs: 2, sm: 3 },
+                        pb: 10,
+                        display: 'flex',
+                        justifyContent: 'center', // center horizontally
+                    }}
+                >
 
-                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
+                    <Paper
+                        elevation={2}
+                        sx={{
+                            p: { xs: 2, sm: 3 },
+                            mb: 5,
+                            width: '100%',
+                            boxSizing: 'border-box',
+                        }}
+                        component="form"
+                        onSubmit={handleSubmit}
+                    >
+                        <Typography
+                            variant="h5"
+                            gutterBottom
+                            sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}
+                        >
+                            Vendor RegistartionForm
+                        </Typography>
                         <FormControl fullWidth sx={{ mb: 3 }}>
                             <InputLabel id="category-label">Select Profession</InputLabel>
+
+
                             <Select
                                 labelId="category-label"
                                 label="Select Profession"
@@ -250,10 +355,10 @@ const VendorRegister = () => {
                                 value={formData.profession}
                                 onChange={handleInputChange}
                             >
-                                <MenuItem default >Select Category</MenuItem>
-                                <MenuItem value="Plumbing">Plumbing</MenuItem>
-                                <MenuItem value="Electrical">Electrical</MenuItem>
-                                <MenuItem value="Carpentry">Carpentry</MenuItem>
+
+                                {workerTypes.map((type, index) => (
+                                    <MenuItem key={index} value={type}>{type}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
@@ -289,36 +394,51 @@ const VendorRegister = () => {
                             required
                         />
 
-                        <Autocomplete
-                            onLoad={ref => (autocompleteRef.current = ref)}
-                            onPlaceChanged={onPlaceChanged}
-                        >
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                label="Address"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                                onBlur={geocodeAddress}
-                                sx={{ mb: 2 }}
-                                required
-                            />
-                        </Autocomplete>
+                        <Box sx={{ mb: 2 }}>
+    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
+        Location
+    </Typography>
 
-                        {/* Map with marker */}
+    <Autocomplete
+        onLoad={(ref) => (autocompleteRef.current = ref)}
+        onPlaceChanged={onPlaceChanged}
+    >
+        <TextField
+            fullWidth
+            label="Search Location"
+            variant="outlined"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            onBlur={geocodeAddress}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton onClick={getCurrentLocation} edge="end">
+                            <MyLocationIcon />
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }}
+        />
+    </Autocomplete>
+
+    {/* <Typography variant="caption" sx={{ alignSelf: 'center', mt: 1, display: 'block' }}>
+        {usingCurrentLocation ? "Using browser geolocation" : "Using Google Maps API"}
+    </Typography> */}
+</Box>
+
                         <GoogleMap
                             mapContainerStyle={containerStyle}
                             center={location}
                             zoom={15}
+                            onClick={handleMapClick}
                         >
-                            {markerIcon && (
-                                <Marker
-                                    position={location}
+                             {markerIcon && (
+                                  <Marker 
+                                    position={location} 
                                     icon={markerIcon}
-                                />
-                            )}
-
+                                  />
+                                )}
                         </GoogleMap>
 
                         <TextField
@@ -379,7 +499,7 @@ const VendorRegister = () => {
                             value={formData.description}
                             onChange={handleInputChange}
                         />
-                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 ,mb: 2}}>
                             <RedButton
                                 variant="contained"
                                 size="large"

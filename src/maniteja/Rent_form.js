@@ -132,7 +132,7 @@ const RentForm = () => {
     });
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('1BHK');
+    const [selectedCategory, setSelectedCategory] = useState('');
     const [formValues, setFormValues] = useState({});
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
@@ -407,13 +407,43 @@ const getCurrentLocation = () => {
                 onSearchClick={handleSearchClick}
                 onFilterClick={handleFilterClick}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
-                <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 10, maxWidth: 'md', mx: 'auto' }}>
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Rent Property Form
-                    </Typography>
-
-                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
+           <Box
+  sx={{
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    pt: '10px',
+    backgroundColor: 'rgb(239, 231, 221)',
+  }}
+>
+  <Box
+    sx={{
+      flexGrow: 1,
+      p: { xs: 2, sm: 3 },
+      pb: 10,
+      display: 'flex',
+      justifyContent: 'center', // center horizontally
+    }}
+  >
+   
+    <Paper
+      elevation={2}
+      sx={{
+        p: { xs: 2, sm: 3 },
+        mb: 3,
+        width: '100%',
+        boxSizing: 'border-box',
+      }}
+      component="form"
+      onSubmit={handleSubmit}
+    >
+         <Typography
+        variant="h5"
+        gutterBottom
+        sx={{ fontWeight: 'bold',mb: 3, textAlign: 'center' }}
+      >
+        Rent Property Form
+      </Typography>
                          <FormControl fullWidth sx={{ mb: 3 }}>
                            <InputLabel id="category-label">Select Category</InputLabel>
                            <Select
@@ -558,7 +588,7 @@ const getCurrentLocation = () => {
                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>Description</Typography>
                         <TextField fullWidth variant="outlined" multiline rows={4} sx={{ mb: 3 }} />
 
-                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 ,mb: 2 }}>
                             <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}
                                 onClick={() => navigate(-1)}>
                                 Cancel
