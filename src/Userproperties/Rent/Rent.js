@@ -404,19 +404,19 @@ const handleDelete = async () => {
               <CardContent sx={{ px: 2, py: 0.2, pb: '7px !important' }}>
                   {/* Title and Price row */}
                   <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={0.5}>
-                    <Typography 
-                      variant="subtitle1" 
-                      fontWeight="bold" 
-                      noWrap 
-                      sx={{ 
-                        flex: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        pr: 1 
-                      }}
-                    >
-                      {property.title}
-                    </Typography>
+                     <Typography 
+                                          variant="subtitle1" 
+                                          fontWeight="bold" 
+                                          noWrap 
+                                          sx={{ 
+                                            flex: 1,
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            pr: 1 
+                                          }}
+                                        >
+                                          {property.title}-{property.property_name}
+                                        </Typography>
                     <Typography variant="body2" fontWeight="bold" color="primary" noWrap>
                                         ₹{Number(String(property.price).replace(/[^0-9]/g, '')).toLocaleString('en-IN')}
                                         </Typography>

@@ -345,7 +345,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
           <Typography variant="body2" color="text.primary" sx={{ ml: 0.5 }}>
             Location
           </Typography>
-         <Tooltip title="Send Message">
+         {/* <Tooltip title="Send Message">
     <IconButton
       size="small"
       onClick={(e) => { 
@@ -356,7 +356,7 @@ const ReUsableCard = ({ property, onCardClick, isSaved, toggleSave, likedCards, 
     >
       <Chat fontSize="small" />
     </IconButton>
-  </Tooltip>
+  </Tooltip> */}
           <Box sx={{ flexGrow: 1 }} />
           <Button
             size="small"

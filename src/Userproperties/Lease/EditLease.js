@@ -76,6 +76,7 @@ const EditLeaseForm = () => {
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
     const [postedBy, setPostedBy] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+  const [deletedImageIds, setDeletedImageIds] = useState([]);
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -309,7 +310,8 @@ const EditLeaseForm = () => {
         gated_security: '',
         parking: '',
         advance_payment: '',
-        description: ''
+        description: '',
+        deleted_image_ids: '' //1,2,3
     });
 
     const handleChange = (event) => {
@@ -389,73 +391,64 @@ const EditLeaseForm = () => {
         setFormData(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Form submission started.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Form submission started.');
 
-        const updatedFormData = {
-            ...formData,
-            lat: location.lat,
-            long: location.lng,
-            location: address,
-            type: 'lease',
-        };
-        console.log('Updated formData with location:', updatedFormData);
+    const updatedFormData = {
+        ...formData,
+        lat: location.lat,
+        long: location.lng,
+        location: address,
+        type: 'lease',
+        deleted_image_ids: deletedImageIds.join(',') // Convert array to comma-separated string
+    };
+console.log("updatedFormData", updatedFormData);
+    const formDataToSend = new FormData();
 
-        const formDataToSend = new FormData();
-
-        // Append data fields
-        Object.entries(updatedFormData).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-                formDataToSend.append(key, value);
-            }
-        });
-        console.log('FormData fields appended.');
-
-        // Append work photos
-        workPhotos.forEach((file, index) => {
-            formDataToSend.append('new_property_images', file);
-            console.log(`Photo ${index + 1} appended:`, file.name);
-        });
-
-        try {
-            console.log('Sending formData to API...');
-            const response = await axios.put(`${BASE_URL}/property/${menuPropertyId}/`, formDataToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            console.log('API response:', response);
-
-            if (response.status === 200) {
-                console.log('Property updated successfully!');
-                alert('Property updated successfully!');
-                navigate('/dashboard');
-            } else {
-                console.warn('Unexpected response status:', response.status);
-                alert('Something went wrong. Try again.');
-            }
-        } catch (error) {
-            console.error('Submission Error:', error);
-
-            if (error.response) {
-                console.error('Error response from server:', error.response.data);
-                alert(`Error: ${error.response.data.message || 'Something went wrong'}`);
-            } else {
-                console.error('No server response. Possible network error.');
-                alert('An error occurred while submitting. Please try again.');
-            }
+    // Append form fields
+    Object.entries(updatedFormData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+            formDataToSend.append(key, value);
         }
-    };
+    });
 
-    const handleRemoveImage = (imageId) => {
-        // This would need to call your API to delete the image
-        console.log('Image to remove:', imageId);
-        // You would typically make an API call here to delete the image
-        // Then update the existingImages state
-        setExistingImages(existingImages.filter(img => img.id !== imageId));
-    };
+    // Append images
+    workPhotos.forEach((file) => {
+        formDataToSend.append('new_property_images', file);
+    });
+
+    // No need to separately append deleted_image_ids as it's already in updatedFormData
+    console.log("deleted image", deletedImageIds.join(','));
+    console.log("data", formDataToSend);
+
+    try {
+        const response = await axios.put(
+            `${BASE_URL}/property/${menuPropertyId}/`,
+            formDataToSend,
+            {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            }
+        );
+
+        if (response.status === 200) {
+            alert('Property updated successfully!');
+            console.log("response", response);
+            navigate('/dashboard');
+        } else {
+            alert('Something went wrong. Try again.');
+        }
+    } catch (error) {
+        console.error('Submission Error:', error);
+        alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
+    }
+};
+   
+
+      const handleRemoveImage = (imageId) => {
+    setDeletedImageIds([...deletedImageIds, imageId]);
+    setExistingImages(existingImages.filter(img => img.id !== imageId));
+  };
 
     if (!isLoaded) {
         return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -583,59 +576,66 @@ const EditLeaseForm = () => {
                             )}
                         </GoogleMap>
 
-                        {/* Upload Section */}
-                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
-                            Property Images
-                        </Typography>
+                       <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
+        Property Images
+      </Typography>
 
-                        {/* Display existing images */}
-                        {existingImages.length > 0 && (
-                            <Box sx={{ mb: 2 }}>
-                                <Typography variant="subtitle2">Current Images:</Typography>
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                                    {existingImages.map((image) => (
-                                        <Box key={image.id} sx={{ position: 'relative' }}>
-                                            <img
-                                                src={`${BASE_URL}${image.image}`}
-                                                alt="Property"
-                                                style={{ width: 100, height: 100, objectFit: 'cover' }}
-                                            />
-                                            <Button
-                                                size="small"
-                                                color="error"
-                                                sx={{
-                                                    position: 'absolute',
-                                                    top: 0,
-                                                    right: 0,
-                                                    minWidth: 'auto',
-                                                    p: 0.5,
-                                                    backgroundColor: 'rgba(255, 0, 0, 0.7)'
-                                                }}
-                                                onClick={() => handleRemoveImage(image.id)}
-                                            >
-                                                ×
-                                            </Button>
-                                        </Box>
-                                    ))}
-                                </Box>
-                            </Box>
-                        )}
+      {/* Display existing images */}
+      {existingImages.length > 0 && (
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2">Current Images:</Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+            {existingImages.map((image) => (
+              <Box key={image.id} sx={{ position: 'relative' }}>
+                <img
+                  src={`${BASE_URL}${image.image}`}
+                  alt="Property"
+                  style={{ width: 100, height: 100, objectFit: 'cover' }}
+                />
+                <Button
+                  size="small"
+                  color="error"
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    minWidth: 'auto',
+                    p: 0.5,
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    color: 'white',
+                  }}
+                  onClick={() => handleRemoveImage(image.id)}
+                >
+                  ×
+                </Button>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      )}
 
-                        <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} fullWidth sx={{ mb: 3 }}>
-                            Upload New Images
-                            <VisuallyHiddenInput
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handleWorkPhotosChange}
-                            />
-                        </Button>
-                        {workPhotos.length > 0 && (
-                            <Typography variant="caption" display="block" gutterBottom>
-                                Selected: {workPhotos.length} file(s)
-                            </Typography>
-                        )}
+      {/* Upload new images */}
+      <Button
+        component="label"
+        variant="outlined"
+        startIcon={<CloudUploadIcon />}
+        fullWidth
+        sx={{ mb: 3 }}
+      >
+        Upload New Images
+        <VisuallyHiddenInput
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleWorkPhotosChange}
+        />
+      </Button>
 
+      {workPhotos.length > 0 && (
+        <Typography variant="caption" display="block" gutterBottom>
+          Selected: {workPhotos.length} file(s)
+        </Typography>
+      )}
                         <FormControl fullWidth margin="normal">
                             <InputLabel id="posted-by-label">Posted By</InputLabel>
                             <Select

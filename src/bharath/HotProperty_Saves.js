@@ -505,7 +505,8 @@ const HotProperty_Saves = () => {
                     >
                       {[
                         { label: 'Facing', value: property.facing },
-                        { label: 'Area', value: `${property.area} (${property.length} × ${property.width})` },
+                        { label: 'Area', value: `${property.area} ` },
+                      //  { label: 'Area', value: `${property.area} (${property.length} × ${property.width})` },
                         { label: 'Listed By', value: property.listedBy },
                       ].map((item, index) => (
                         <Box

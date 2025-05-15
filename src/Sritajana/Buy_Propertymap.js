@@ -129,8 +129,8 @@ const Buy_Property_Map = () => {
   });
 
   const center = {
-    lat: 17.429299,
-    lng: 78.499021
+    lat: 17.5366218,
+    lng: 78.4844811
   };
 
   const containerStyle = {
@@ -288,7 +288,7 @@ const Buy_Property_Map = () => {
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: containerStyle.height }}
               center={center}
-              zoom={14}
+              zoom={7}
             >
               {filteredProperties.map(property => (
                 property.lat && property.lng && (

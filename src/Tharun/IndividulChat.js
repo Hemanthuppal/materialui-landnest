@@ -19,24 +19,23 @@ import { Send, ArrowBack, MoreVert, Search } from '@mui/icons-material';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext/AuthContext';
+import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 
 const ChatWindow = () => {
   const { userId, userName } = useContext(AuthContext);
-  const { userId: otherUserId } = useParams();
+  const { propertyId } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [otherUserName, setOtherUserName] = useState('User');
+  const [participants, setParticipants] = useState([]);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
-  // Fetch chat messages
+  // Fetch chat messages for this property
   const fetchChat = async () => {
     try {
       const res = await axios.get('https://landnest.net:81/chat-messages/');
       const filtered = res.data.filter(
-        (msg) =>
-          (msg.user_id == userId && msg.receiver == otherUserId) ||
-          (msg.user_id == otherUserId && msg.receiver == userId)
+        (msg) => msg.property_id == propertyId
       );
       setMessages(filtered);
       
@@ -49,31 +48,38 @@ const ChatWindow = () => {
     }
   };
 
-  // Fetch user details
-  const fetchUserDetails = async () => {
-    try {
-      const res = await axios.get(`https://landnest.net:81/users/${otherUserId}/`);
-      setOtherUserName(res.data.name || `User ${otherUserId}`);
-    } catch (error) {
-      console.error('Error fetching user details:', error);
-    }
+  // Identify all participants in this property chat
+  const identifyParticipants = () => {
+    const uniqueUsers = new Set();
+    messages.forEach(msg => {
+      uniqueUsers.add(msg.user_id);
+      uniqueUsers.add(msg.receiver);
+    });
+    setParticipants(Array.from(uniqueUsers).filter(id => id != userId));
   };
 
   useEffect(() => {
-    fetchUserDetails();
     fetchChat();
     const interval = setInterval(fetchChat, 5000);
     return () => clearInterval(interval);
-  }, [otherUserId]);
+  }, [propertyId]);
+
+  useEffect(() => {
+    identifyParticipants();
+  }, [messages]);
 
   const handleSend = async () => {
     if (!newMessage.trim()) return;
     try {
-      await axios.post('https://landnest.net:81/chat-messages/', {
-        user_id: userId,
-        receiver: otherUserId,
-        message: newMessage,
-      });
+      // Assuming you want to send to all participants
+      await Promise.all(participants.map(async (receiverId) => {
+        await axios.post('https://landnest.net:81/chat-messages/', {
+          user_id: userId,
+          receiver: receiverId,
+          message: newMessage,
+          property_id: propertyId
+        });
+      }));
       setNewMessage('');
       fetchChat();
     } catch (error) {
@@ -113,19 +119,9 @@ const ChatWindow = () => {
           <IconButton edge="start" color="inherit" onClick={() => navigate(-1)}>
             <ArrowBack />
           </IconButton>
-          <ListItemAvatar sx={{ marginRight: 1 }}>
-            <Badge
-              overlap="circular"
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              variant="dot"
-              color="success"
-            >
-              <Avatar src={`https://i.pravatar.cc/150?u=${otherUserId}`} />
-            </Badge>
-          </ListItemAvatar>
           <ListItemText
-            primary={otherUserName}
-            secondary="Online"
+            primary={`Property #${propertyId}`}
+            secondary={`Chat with ${participants.length} participant(s)`}
             sx={{ color: 'white' }}
             primaryTypographyProps={{ fontWeight: 'bold' }}
             secondaryTypographyProps={{ fontSize: '0.75rem' }}
@@ -144,6 +140,7 @@ const ChatWindow = () => {
           p: 2,
           display: 'flex',
           flexDirection: 'column',
+       
         }}
       >
         <List sx={{ width: '100%' }}>
@@ -158,7 +155,7 @@ const ChatWindow = () => {
             >
               {msg.user_id !== userId && (
                 <ListItemAvatar>
-                  <Avatar src={`https://i.pravatar.cc/150?u=${otherUserId}`} />
+                  <Avatar src={`https://i.pravatar.cc/150?u=${msg.user_id}`} />
                 </ListItemAvatar>
               )}
               <Box
@@ -179,6 +176,11 @@ const ChatWindow = () => {
                   }}
                 >
                   <Typography variant="body1">{msg.message}</Typography>
+                  {msg.user_id !== userId && (
+                    <Typography variant="caption" color="text.secondary">
+                      {msg.user_id === userId ? 'You' : `User ${msg.user_id}`}
+                    </Typography>
+                  )}
                 </Paper>
                 <Typography
                   variant="caption"
@@ -209,6 +211,8 @@ const ChatWindow = () => {
           bgcolor: '#f0f0f0',
           display: 'flex',
           alignItems: 'center',
+         marginBottom: '22%', // Adjust for the bottom navbar
+         
         }}
       >
         <TextField
@@ -239,6 +243,9 @@ const ChatWindow = () => {
             ),
           }}
         />
+      </Box>
+       <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <FormsBottomNavbar />
       </Box>
     </Box>
   );

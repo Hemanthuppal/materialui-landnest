@@ -290,7 +290,7 @@ const Rent_Property_Map = () => {
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: containerStyle.height }}
               center={center}
-              zoom={14}
+              zoom={7}
             >
               {filteredProperties.map(property => (
                 property.lat && property.lng && (

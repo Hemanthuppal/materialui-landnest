@@ -230,7 +230,7 @@ function App() {
           <Route path="/user-edit-rent/:menuPropertyId" element={<EditRentForm />} />
            <Route path="/user-edit-buy/:menuPropertyId" element={<EditBuy />} />
           <Route path="/chat" element={<Chat />} />
-           <Route path="/chat/:userId" element={<ChatWindow />} />
+           <Route path="/chat/:propertyId" element={<ChatWindow />} />
 
 <Route path="/home-service-type" element={<HomeServiceType />} />
         </Routes>
