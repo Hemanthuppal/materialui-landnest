@@ -30,33 +30,38 @@ const ChatWindow = () => {
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
-  const fetchChat = useCallback(async () => {
-    if (!propertyId) return; // Don't fetch if no property ID
-    
-    try {
-      const res = await axios.get(`https://landnest.net:81/chat-messages/?property_id=${propertyId}`);
-      // Filter messages again on client side just in case
-      const propertyMessages = res.data.filter(msg => msg.property_id == propertyId);
-      setMessages(propertyMessages);
-      
-      // Determine receiver ID (the other participant)
-      if (propertyMessages.length > 0) {
-        const firstMessage = propertyMessages[0];
-        const otherUser = firstMessage.user_id == userId ? firstMessage.receiver : firstMessage.user_id;
-        setReceiverId(otherUser);
-      } else if (location.state?.receiver) {
-        // For new chats, use receiver from navigation state
-        setReceiverId(location.state.receiver);
-      }
+const fetchChat = useCallback(async () => {
+  if (!propertyId) return;
 
-      // Auto-scroll to bottom
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } catch (error) {
-      console.error('Error loading chat:', error);
+  try {
+    const res = await axios.get(`https://landnest.net:81/chat-messages/?property_id=${propertyId}`);
+    const propertyMessages = res.data.filter(msg => msg.property_id == propertyId);
+    setMessages(propertyMessages);
+
+    // Determine receiver ID
+    if (propertyMessages.length > 0) {
+      const firstMessage = propertyMessages[0];
+      const otherUser = firstMessage.user_id == userId ? firstMessage.receiver : firstMessage.user_id;
+      setReceiverId(otherUser);
+    } else {
+      // New chat case – fetch property details
+      const propertyRes = await axios.get(`https://landnest.net:81/property/${propertyId}/`);
+      const propertyUserId = propertyRes.data?.user_id;
+      if (propertyUserId && propertyUserId !== userId) {
+        setReceiverId(propertyUserId);
+      } else {
+        console.warn('Could not determine receiver from property');
+      }
     }
-  }, [propertyId, userId, location.state]);
+
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  } catch (error) {
+    console.error('Error loading chat:', error);
+  }
+}, [propertyId, userId]);
+
 
   useEffect(() => {
     if (propertyId) {
@@ -124,7 +129,7 @@ const ChatWindow = () => {
           color: 'white',
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ bgcolor: 'black', color: 'white' }}>
           <IconButton edge="start" color="inherit" onClick={() => navigate(-1)}>
             <ArrowBack />
           </IconButton>
@@ -237,6 +242,7 @@ const ChatWindow = () => {
               borderRadius: 20,
               paddingRight: 1,
             },
+            border: '2px solid black',
           }}
           InputProps={{
             endAdornment: (
@@ -245,7 +251,7 @@ const ChatWindow = () => {
                 onClick={handleSend}
                 disabled={!newMessage.trim() || !receiverId}
               >
-                <Send />
+                <Send sx={{color: 'black'}} />
               </IconButton>
             ),
           }}

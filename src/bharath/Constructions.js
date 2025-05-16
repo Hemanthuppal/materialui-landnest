@@ -485,10 +485,10 @@ import logotop from './Images/landnest-logo.jpg'
 import { jsPDF } from "jspdf";
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import const1 from './Images/Constructionelevation.jpg'
-import const2 from './Images/construction2d.jpg'
+import const2 from './Images/2dnewpic.jpg'
 import const3 from './Images/construction3d.jpg'
 import const4 from './Images/constructionpackages.jpeg'
-
+import expimag from './Images/exp-constru-resources.jpeg'
 
 const steps = [
   { title: 'Agreement Sign', image: pic15 },
@@ -560,36 +560,41 @@ const Constructions = () => {
 
 
   const cards = [
-  {
-    title: "Floor Plans 2D",
-    description: "Professional 2D plans with Detailed Measurements.",
-    bgImage: `url(${const2})`,
-    path: "/two-d-plane-interior"
-  },
-  {
-    title: "Floor Plans 3D",
-    description: "Professional 3D plans with Detailed Measurements.",
-    bgImage: `url(${const3})`,
-    path: "/three-d-plane-interior"
-  },
-  {
-    title: "Elevations",
-    description: "Detailed Exterior Views and facade designs.",
-    bgImage: `url(${const1})`,
-    path: "/elevations"
-  },
-  {
-    title: "Our Construction Packages",
-    description: "Complete construction document sets.",
-    bgImage: `url(${const4})`,
-    path: "/packages"
-  },
- {
-     title: "Quotations",
+    {
+      title: " Explore Construction Resources ",
+      bgImage: `url(${expimag})`,
+      path: "/explore-construction-resources"
+    },
+    {
+      title: "Floor Plans 2D",
+      description: "Professional 2D plans with Detailed Measurements.",
+      bgImage: `url(${const2})`,
+      path: "/two-d-plane-interior"
+    },
+    {
+      title: "Floor Plans 3D",
+      description: "Professional 3D plans with Detailed Measurements.",
+      bgImage: `url(${const3})`,
+      path: "/three-d-plane-interior"
+    },
+    {
+      title: "Elevations",
+      description: "Detailed Exterior Views and facade designs.",
+      bgImage: `url(${const1})`,
+      path: "/elevations"
+    },
+    {
+      title: "Our Construction Packages",
+      description: "Complete construction document sets.",
+      bgImage: `url(${const4})`,
+      path: "/packages"
+    },
+    {
+      title: "Quotations",
       description: "Detailed cost estimates and proposals.",
       bgImage: 'url(https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)'
     }
-];
+  ];
 
   const trustCards = [
     { bgImage: 'url(https://img.freepik.com/free-vector/hand-drawn-construction-background_23-2147724568.jpg)' },
@@ -712,7 +717,7 @@ const Constructions = () => {
     doc.save(`Landnest_Quotation_${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
- 
+
 
   const rows = chunkArray(steps, chunkSize);
 
@@ -721,60 +726,60 @@ const Constructions = () => {
       {/* Sticky Header Section */}
 
 
-<Box sx={{
-  position: 'sticky',
-  top: 0,
-  zIndex: 1200,
-  bgcolor: 'background.paper',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-}}>
-  {/* Top Navigation Bar */}
-  <Box display="flex" alignItems="center" justifyContent="space-between" p={1} sx={{
-    background: 'black',
-    borderBottom: '1px solid rgba(0,0,0,0.08)'
-  }}>
-    {/* Back Arrow - Left Side */}
-    <IconButton
-      onClick={() => navigate(-1)}
-      sx={{
-        color: 'white',
-        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
-      }}
-    >
-      <ArrowBackIosIcon />
-    </IconButton>
-    
-    {/* Center Text - "landnest" */}
-    <Typography variant="h6" component="div" sx={{ 
-      color: 'white',
-      fontWeight: 'bold',
-      flexGrow: 1,
-      textAlign: 'left'
-    }}>
-      LANDNEST
-    </Typography>
-    
-    {/* Right Side Logo */}
-    <Box sx={{ 
-      width: 100,
-      height: 50,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <img 
-        src={logotop} 
-        alt="Landnest Logo" 
-        style={{ 
-          maxWidth: '100%', 
-          maxHeight: '100%',
-          objectFit: 'contain'
-        }}
-      />
-    </Box>
-  </Box>
+      <Box sx={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1200,
+        bgcolor: 'background.paper',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        {/* Top Navigation Bar */}
+        <Box display="flex" alignItems="center" justifyContent="space-between" p={1} sx={{
+          background: 'black',
+          borderBottom: '1px solid rgba(0,0,0,0.08)'
+        }}>
+          {/* Back Arrow - Left Side */}
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              color: 'white',
+              '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+            }}
+          >
+            <ArrowBackIosIcon />
+          </IconButton>
 
-   <Box sx={{
+          {/* Center Text - "landnest" */}
+          <Typography variant="h6" component="div" sx={{
+            color: 'white',
+            fontWeight: 'bold',
+            flexGrow: 1,
+            textAlign: 'left'
+          }}>
+            LANDNEST
+          </Typography>
+
+          {/* Right Side Logo */}
+          <Box sx={{
+            width: 100,
+            height: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img
+              src={logotop}
+              alt="Landnest Logo"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </Box>
+        </Box>
+
+        <Box sx={{
           padding: isMobile ? 1 : 0.5,
           display: 'flex',
           justifyContent: 'space-between',
@@ -866,7 +871,7 @@ const Constructions = () => {
             </Typography>
           </Box>
         </Box>
-</Box>
+      </Box>
 
       {/* Main Content */}
       <Box sx={{ pb: 2 }}>
@@ -877,7 +882,7 @@ const Constructions = () => {
           marginY: 2
         }}>
           {/* Fixed Explore Resources and Projects row */}
-          <Box sx={{
+          {/* <Box sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -897,13 +902,14 @@ const Constructions = () => {
               Explore Construction Resources →
             </Typography>
           
-          </Box>
+          </Box> */}
 
-        
+
 
           <Box sx={{ width: '100%' }}>
             {cards.map((card, index) => (
-              <Card key={index}
+              <Card
+                key={index}
                 onClick={() => {
                   if (card.path) {
                     navigate(card.path);
@@ -918,7 +924,7 @@ const Constructions = () => {
                   minHeight: 200,
                   width: '100%',
                   display: 'flex',
-                  alignItems: 'center',
+                  alignItems: 'flex-end', // Changed from 'center' to 'flex-end'
                   color: 'white',
                   position: 'relative',
                   borderRadius: '12px',
@@ -935,14 +941,17 @@ const Constructions = () => {
                     backgroundColor: 'rgba(0,0,0,0.5)',
                     borderRadius: '12px'
                   }
-                }}>
-                <CardContent sx={{
-                  position: 'relative',
-                  zIndex: 1,
-                  textAlign: 'left',
-                  width: '100%',
-                  padding: isMobile ? 3 : 4,
-                }}>
+                }}
+              >
+                <CardContent
+                  sx={{
+                    position: 'relative',
+                    zIndex: 1,
+                    textAlign: 'left',
+                    width: '100%',
+                    padding: isMobile ? 3 : 4,
+                  }}
+                >
                   <Typography variant="h6" component="div" fontWeight="bold" gutterBottom>
                     {card.title}
                   </Typography>
@@ -955,24 +964,24 @@ const Constructions = () => {
           </Box>
 
           <Box sx={{ textAlign: 'center' }}>
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: 'red',
-          color: '#fff',
-          borderRadius: '20px',
-          px: 4,
-          py: 1,
-          fontWeight: 'bold',
-          '&:hover': {
-            backgroundColor: '#cc0000',
-          },
-        }}
-        onClick={() => navigate('/construction-get-started')} // or history.push('/consultation')
-      >
-        GET FREE CONSULTATION
-      </Button>
-    </Box>       </Box>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: 'red',
+                color: '#fff',
+                borderRadius: '20px',
+                px: 4,
+                py: 1,
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: '#cc0000',
+                },
+              }}
+              onClick={() => navigate('/construction-get-started')} // or history.push('/consultation')
+            >
+              GET FREE CONSULTATION
+            </Button>
+          </Box>       </Box>
 
         <Box sx={{ padding: 2, marginY: 1 }}>
           <Typography
@@ -1051,7 +1060,7 @@ const Constructions = () => {
 
 
 
-        <Box sx={{ px: 2, py: 1, bgcolor: '#e7dbc9', paddingBottom: '40px', marginBottom:'40px' }}>
+        <Box sx={{ px: 2, py: 1, bgcolor: '#e7dbc9', paddingBottom: '40px', marginBottom: '40px' }}>
           <Typography
             variant="h5"
             fontWeight="bold"
@@ -1067,48 +1076,48 @@ const Constructions = () => {
             Our Construction Process
           </Typography>
           {rows.map((row, rowIndex) => (
-           
 
-             <Box
-                        key={rowIndex}
-                        display="flex"
-                        gap={2}
-                        mb={2}
-                      >
-                        {row.map((item) => (
-                          <Card
-                            key={item.id}
-                            sx={{ 
-                              flex: 1,
-                              borderRadius: 2,
-                              boxShadow: 3,
-                                                height:'160px',
-            
-                              '&:hover': {
-                                transform: 'translateY(-4px)',
-                                transition: 'transform 0.3s ease'
-                              }
-                            }}
-                          >
-                            <CardMedia
-                              component="img"
-                              height="125"
-                              image={item.image}
-                              alt={item.title}
-                              sx={{ objectFit: 'cover' }}
-                            />
-                            <CardContent sx={{ padding: '8px' }}>
-                              <Typography variant="subtitle1" align="center" fontWeight="bold">
-                                {item.title}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </Box>
+
+            <Box
+              key={rowIndex}
+              display="flex"
+              gap={2}
+              mb={2}
+            >
+              {row.map((item) => (
+                <Card
+                  key={item.id}
+                  sx={{
+                    flex: 1,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    height: '160px',
+
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      transition: 'transform 0.3s ease'
+                    }
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="125"
+                    image={item.image}
+                    alt={item.title}
+                    sx={{ objectFit: 'cover' }}
+                  />
+                  <CardContent sx={{ padding: '8px' }}>
+                    <Typography variant="subtitle1" align="center" fontWeight="bold">
+                      {item.title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
           ))}
         </Box>
       </Box>
-    
+
       <FormsBottomNavbar />
     </>
   );

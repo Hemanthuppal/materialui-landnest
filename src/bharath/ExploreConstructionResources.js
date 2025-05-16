@@ -313,7 +313,7 @@ const ExploreConstructionResources = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden' }}>
+      <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden',  }}>
         <Drawer
           variant="permanent"
           anchor="left"

@@ -115,7 +115,7 @@ const ChatWindow = () => {
           color: 'white',
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ bgcolor: 'black', color: 'white' }}>
           <IconButton edge="start" color="inherit" onClick={() => navigate(-1)}>
             <ArrowBack />
           </IconButton>
@@ -125,6 +125,7 @@ const ChatWindow = () => {
             sx={{ color: 'white' }}
             primaryTypographyProps={{ fontWeight: 'bold' }}
             secondaryTypographyProps={{ fontSize: '0.75rem' }}
+          
           />
           <IconButton edge="end" color="inherit">
             <MoreVert />
@@ -230,6 +231,7 @@ const ChatWindow = () => {
               borderRadius: 20,
               paddingRight: 1,
             },
+            border: '2px solid black',
           }}
           InputProps={{
             endAdornment: (
@@ -238,7 +240,7 @@ const ChatWindow = () => {
                 onClick={handleSend}
                 disabled={!newMessage.trim()}
               >
-                <Send />
+                <Send sx={{color: 'black'}}  />
               </IconButton>
             ),
           }}
