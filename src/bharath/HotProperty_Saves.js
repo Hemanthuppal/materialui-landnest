@@ -10,7 +10,8 @@ import {
   Grid,
   Divider,
   Tooltip,
-   CircularProgress
+   CircularProgress,
+   Chip
 } from '@mui/material';
 import {
   Favorite,
@@ -36,7 +37,13 @@ const HotProperty_Saves = () => {
     const navigate = useNavigate();
    const { userId, logout } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
-
+    const [searchQuery, setSearchQuery] = useState('');
+      const [selectedType, setSelectedType] = useState(null);
+const rentalTypes = [
+  "PLOT/LAND", "COMMERCIAL LAND/PLOT", "RENT WITH DUPLEX BUILDING", "DUPLEX HOUSE",
+  "RENTAL BUILDING", "PG-OFFICES", "FLAT", "VILLA",
+  "COMMERCIAL BUILDING", "APARTMENT", "OTHERS"
+];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,6 +89,7 @@ const HotProperty_Saves = () => {
                 return {
                   id: property.property_id,
                   cart_id: cartItem.cart_id, // Keep cart_id for removal
+                   created_at: cartItem.created_at,
                   title: categoryName,
                   location: property.location || 'Not specified',
                   price: `₹${property.price?.toLocaleString()}`,
@@ -100,7 +108,8 @@ const HotProperty_Saves = () => {
                   propertyData: property
                 };
               })
-              .filter(Boolean); // Remove any null entries
+              .filter(Boolean)
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));// Remove any null entries
     
             setSaved(savedProperties);
             
@@ -121,6 +130,19 @@ const HotProperty_Saves = () => {
           fetchData();
         }
       }, [userId]);
+
+       // Filter properties based on search query and selected type
+   const filteredProperties = saved.filter((property) => {
+    const matchesSearch = 
+      property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesType = selectedType 
+      ? property.title.toLowerCase().includes(selectedType.toLowerCase())
+      : true;
+    
+    return matchesSearch && matchesType;
+  });
 
         const handleRemove = async (propertyId) => {
           try {
@@ -239,15 +261,51 @@ const HotProperty_Saves = () => {
         >
           <CustomSearchBar />
         </Box>
+        {/* Property Types */}
+                    <Box sx={{ px: 2 }}>
+                      <Typography variant="subtitle1" sx={{ mb: 1 }}>Saved Hot Properties </Typography>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: 1,
+                          overflowX: 'auto',
+                          whiteSpace: 'nowrap',
+                          pb: 1,
+                        }}
+                      >
+                        {rentalTypes.map((type, index) => (
+                          <Chip
+                            key={index}
+                            label={type}
+                            variant="filled"
+                            onClick={() => setSelectedType(prev => (prev == type ? null : type))}
+                            sx={{
+                              flexShrink: 0,
+                              bgcolor: selectedType == type ? '#000000' : 'transparent',
+                              color: selectedType == type ? '#ffffff' : '#000000',
+                              border: '1px solid black',
+                              fontWeight: 'bold',
+                              '&:hover': {
+                                bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                              },
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
   
         {/* Saved Property Cards */}
         <Box sx={{ pb: 8 }}>
-          {saved.length == 0 ? (
-            <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
-              No saved properties.
-            </Typography>
-          ) : (
-            saved.map((property) => {
+          {filteredProperties.length === 0 ? (
+                    <Box sx={{ px: 2, mt: 4, textAlign: 'center' }}>
+                      <Typography color="text.secondary">
+                        {selectedType 
+                          ? `No saved properties in "${selectedType}" category`
+                          : 'No saved properties match your search'}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    filteredProperties.map((property) => {
               // Ensure images is always an array with at least one item
               const images = property.images?.length > 0 ? property.images : ['/default-property-image.jpg'];
               const currentIndex = currentImageIndex[property.id] || 0;

@@ -8,7 +8,8 @@ import {
   IconButton,
   Button,
   Tooltip,
-  CircularProgress
+  CircularProgress,
+  Chip
 } from '@mui/material';
 import axios from 'axios';
 import {
@@ -28,14 +29,23 @@ import { AuthContext } from '../AuthContext/AuthContext';
 import { BASE_URL } from '../Api/ApiUrls';
 
 
+
+
 const BuySaves = () => {
   const [saved, setSaved] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedType, setSelectedType] = useState(null);
   const [likedCards, setLikedCards] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState({});
+
   const navigate = useNavigate();
  const { userId, logout } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true); 
+const rentalTypes = [
+    "PLOT/LAND", "COMMERCIAL LAND/PLOT", "RENT WITH DUPLEX BUILDING", "DUPLEX HOUSE",
+    "RENTAL BUILDING", "PG-OFFICES", "FLAT", "VILLA",
+    "COMMERCIAL BUILDING", "APARTMENT", "OTHERS"
+  ];
 useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,6 +90,7 @@ useEffect(() => {
             return {
               id: property.property_id,
               cart_id: cartItem.cart_id, // Keep cart_id for removal
+              created_at: cartItem.created_at, // Attach created_at for sorting
               title: categoryName,
               location: property.location || 'Not specified',
               price: `₹${property.price?.toLocaleString()}`,
@@ -98,7 +109,8 @@ useEffect(() => {
               propertyData: property
             };
           })
-          .filter(Boolean); // Remove any null entries
+          .filter(Boolean)
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // Sort by latest saved // Remove any null entries
 
         setSaved(savedProperties);
         
@@ -119,6 +131,19 @@ useEffect(() => {
       fetchData();
     }
   }, [userId]);
+
+   // Filter properties based on search query and selected type
+   const filteredProperties = saved.filter((property) => {
+    const matchesSearch = 
+      property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesType = selectedType 
+      ? property.title.toLowerCase().includes(selectedType.toLowerCase())
+      : true;
+    
+    return matchesSearch && matchesType;
+  });
 
   const handleRemove = async (propertyId) => {
     try {
@@ -235,21 +260,57 @@ useEffect(() => {
       >
         <CustomSearchBar />
       </Box>
+      {/* Property Types */}
+            <Box sx={{ px: 2 }}>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>Saved Buy Properties </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 1,
+                  overflowX: 'auto',
+                  whiteSpace: 'nowrap',
+                  pb: 1,
+                }}
+              >
+                {rentalTypes.map((type, index) => (
+                  <Chip
+                    key={index}
+                    label={type}
+                    variant="filled"
+                    onClick={() => setSelectedType(prev => (prev == type ? null : type))}
+                    sx={{
+                      flexShrink: 0,
+                      bgcolor: selectedType == type ? '#000000' : 'transparent',
+                      color: selectedType == type ? '#ffffff' : '#000000',
+                      border: '1px solid black',
+                      fontWeight: 'bold',
+                      '&:hover': {
+                        bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                      },
+                    }}
+                  />
+                ))}
+              </Box>
+            </Box>
 
       {/* Saved Property Cards */}
       <Box sx={{ pb: 8 }}>
-        {saved.length == 0 ? (
-          <Typography sx={{ px: 2, mt: 4 }} color="text.secondary">
-            No saved properties.
-          </Typography>
+        {filteredProperties.length === 0 ? (
+          <Box sx={{ px: 2, mt: 4, textAlign: 'center' }}>
+            <Typography color="text.secondary">
+              {selectedType 
+                ? `No saved properties in "${selectedType}" category`
+                : 'No saved properties match your search'}
+            </Typography>
+          </Box>
         ) : (
-          saved.map((property) => {
-            // Ensure images is always an array with at least one item
+          filteredProperties.map((property) => {
             const images = property.images?.length > 0 ? property.images : ['/default-property-image.jpg'];
             const currentIndex = currentImageIndex[property.id] || 0;
             const showCarouselControls = images.length > 1;
 
             return (
+            
               <Card
                 key={property.id}
                 sx={{
@@ -526,7 +587,7 @@ useEffect(() => {
                   </Box>
                 </CardContent>
               </Card>
-            );
+                );
           })
         )}
       </Box>

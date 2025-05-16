@@ -74,7 +74,7 @@ const WorkerDetails = () => {
           borderBottom: '1px solid #ccc',
         }}
       >
-        <IconButton onClick={() => navigate('/home-service')} sx={{ mr: 1 }}>
+        <IconButton onClick={() => navigate(-1)} sx={{ mr: 1 }}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h6" fontWeight="bold">Worker Details</Typography>
