@@ -53,7 +53,10 @@ import image17 from "./../Images/home.jpg";
 import imagebuy from "./../Images/buy.jpg";
 import imagerent from "./../Images/rent.jpg";
 import imagelease from "./../Images/lease.jpg";
+import imagepg from "./../Images/logo.jpg";
+import logo from "./../Images/logo.jpg";
 import { useNavigate } from 'react-router-dom';
+
 
 import {
 
@@ -147,7 +150,7 @@ const cards = [
   {
     title: "Buy",
     icon: <BuyIcon fontSize="large" />,
-    bgImage: imagebuy, // Just use the image path directly
+    bgImage: imagebuy,
     path: "/buy-propertymap"
   },
   {
@@ -161,6 +164,12 @@ const cards = [
     icon: <LeaseIcon fontSize="large" />,
     bgImage: imagelease,
     path: "/lease_map"
+  },
+  {
+    title: "Post Your Property",
+    // icon: <PGIcon fontSize="large" />,
+    bgImage: imagepg,
+    path: "/pg-propertymap"
   }
 ];
 
@@ -494,44 +503,113 @@ function App() {
         </Box>
 
 
+        
+
+
         <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
+       
+         
+       
         <AppBar
   position="fixed"
   sx={{
-    bgcolor: 'rgba(232, 217, 183, 0.95)',
-    boxShadow: 'none',
-    border: '1px solid black',
+    // bgcolor: 'rgba(246, 237, 182, 0.15)',
+    bgcolor: "rgba(232, 217, 183, 0.95)",
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    boxShadow: '0 6px 14px rgba(0,0,0,0.25)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     borderRadius: '10px',
-    height: '42px', // Reduced height
-    width: '82%',
+    height: '48px',
+    width: '83%',
     ml: '7.3%',
-    marginRight:'3px',
+    mr: '3px',
+    mt: '0px',
     zIndex: 1201,
-    marginTop:'0px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   }}
 >
-  <Toolbar sx={{ minHeight: '42px !important', px: 0.5 }}>
-    <Search sx={{ flex: 1, mx: 0.5, px: 0.5 }}>
+  <Toolbar sx={{ minHeight: '48px !important', px: 0.75, width: '95%' }}>
+    <Search
+      sx={{
+        flex: 0.99,
+        mx: 0.5,
+        px: 0.75,
+        border: '1px solid black',
+        borderRadius: '18px',
+      }}
+    >
       <SearchIconWrapper>
-        <SearchIcon sx={{ fontSize: '1rem', color: '#333' }} />
+        <SearchIcon sx={{ fontSize: '1.05rem', color: '#333' }} />
       </SearchIconWrapper>
       <StyledInputBase
         placeholder="Search…"
-        sx={{ fontSize: '0.75rem' }} // smaller input text
+        sx={{ fontSize: '0.8rem', color: '#000', px: 0.75 }}
       />
     </Search>
 
-    <IconButton size="small" sx={{ p: 0.5 }}>
-      <FavoriteBorderIcon sx={{ fontSize: '0.875rem', color: '#757575' }} />
-    </IconButton>
-    <IconButton size="small" sx={{ p: 0.5 }}>
-      <FaRegBell style={{ fontSize: '0.875rem', color: '#757575' }} />
-    </IconButton>
-    <IconButton size="small" sx={{ p: 0.5 }}>
-      <RiMessengerLine style={{ fontSize: '0.875rem', color: '#757575' }} />
-    </IconButton>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <IconButton
+        size="medium"
+        sx={{
+          p: 0.6,
+          bgcolor: 'rgba(255,255,255,0.4)',
+          borderRadius: '50%',
+          boxShadow: '0 3px 6px rgba(0,0,0,0.25)',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-1.5px)',
+            boxShadow: '0 6px 10px rgba(0,0,0,0.35)',
+            bgcolor: 'rgba(255,255,255,0.6)',
+          },
+        }}
+      >
+        <FavoriteBorderIcon sx={{ fontSize: '1.15rem', color: '#d32f2f' }} />
+      </IconButton>
+
+      <IconButton
+        size="medium"
+        sx={{
+          p: 0.6,
+          bgcolor: 'rgba(255,255,255,0.4)',
+          borderRadius: '50%',
+          boxShadow: '0 3px 6px rgba(0,0,0,0.25)',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-1.5px)',
+            boxShadow: '0 6px 10px rgba(0,0,0,0.35)',
+            bgcolor: 'rgba(255,255,255,0.6)',
+          },
+        }}
+      >
+        <FaRegBell style={{ fontSize: '1.15rem', color: '#1976d2' }} />
+      </IconButton>
+
+      <IconButton
+        size="medium"
+        sx={{
+          p: 0.6,
+          bgcolor: 'rgba(255,255,255,0.4)',
+          borderRadius: '50%',
+          boxShadow: '0 3px 6px rgba(0,0,0,0.25)',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-1.5px)',
+            boxShadow: '0 6px 10px rgba(0,0,0,0.35)',
+            bgcolor: 'rgba(255,255,255,0.6)',
+          },
+        }}
+      >
+        <RiMessengerLine style={{ fontSize: '1.15rem', color: '#673ab7' }} />
+      </IconButton>
+    </Box>
   </Toolbar>
 </AppBar>
+
+
+
 
           {/* <AppBar
               position="fixed"
@@ -628,7 +706,19 @@ function App() {
           borderBottomRightRadius: '24px',
           overflow: 'hidden',
           height: 130,
-          width: 130,
+          width: 140, // default
+  '@media (max-width:360px)': {
+    width: 130
+  },
+  '@media (min-width:361px) and (max-width:429px)': {
+    width: 140
+  },
+  '@media (width:430px)': {
+    width: 160
+  },
+  '@media (min-width:490px)': {
+    width: 180
+  },
           boxShadow: '0 8px 24px rgba(0, 0, 0, 0.7)', // Darker shadow for the image
           cursor: 'pointer',
           transform: 'perspective(1000px)',
@@ -644,6 +734,7 @@ function App() {
             height: '65%',
             backgroundImage: `url(${card.bgImage})`,
             backgroundSize: 'cover',
+            border:'1px solid black',
             backgroundPosition: 'center',
             borderBottomRightRadius: '24px',
             position: 'relative',
@@ -693,79 +784,99 @@ function App() {
   ))}
 
   {/* Second Row: Centered Third Card */}
-  <Grid item xs={12} display="flex" justifyContent="center">
-    <Link to="/lease_map" style={{ textDecoration: 'none' }}>
-      <Card
+  {/* Second Row: 2 Cards */}
+{cards.slice(2, 4).map((card, index) => (
+  <Grid item xs={6} key={index} display="flex" justifyContent="center">
+    <Card
+      onClick={() => card.path && navigate(card.path)}
+      sx={{
+        backgroundColor: '#d8ccba',
+        borderTopLeftRadius: '24px',
+        borderBottomRightRadius: '24px',
+        overflow: 'hidden',
+        height: 130,
+        width: 140, // default
+  '@media (max-width:360px)': {
+    width: 130
+  },
+  '@media (width:375px)': {
+    width: 120
+  },
+  '@media (min-width:361px) and (max-width:374px), (min-width:376px) and (max-width:429px)': {
+    width: 140
+  },
+  '@media (width:430px)': {
+    width: 160
+  },
+  '@media (min-width:490px)': {
+    width: 180
+  },
+        marginBottom: 1,
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.7)',
+        cursor: 'pointer',
+        transform: 'perspective(1000px)',
+        transition: 'transform 0.4s ease, box-shadow 0.4s ease',
+        '&:hover': {
+          transform: 'perspective(1000px) scale(1.03) rotateX(2deg)',
+          boxShadow: '0 16px 32px rgba(0, 0, 0, 0.45), 0 12px 12px rgba(0, 0, 0, 0.30)',
+        }
+      }}
+    >
+      <Box
         sx={{
-          backgroundColor: '#d8ccba',
-          borderTopLeftRadius: '24px',
+          height: '65%',
+          backgroundImage: `url(${card.bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           borderBottomRightRadius: '24px',
-          overflow: 'hidden',
-          height: 130,
-          width:130,
-          marginBottom:1,
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.7)', // Darker shadow for the image
-          cursor: 'pointer',
-          transform: 'perspective(1000px)',
-          transition: 'transform 0.4s ease, box-shadow 0.4s ease',
-          '&:hover': {
-            transform: 'perspective(1000px) scale(1.03) rotateX(2deg)',
-            boxShadow: '0 16px 32px rgba(0, 0, 0, 0.45), 0 12px 12px rgba(0, 0, 0, 0.30)',
-          }
+          border:'1px solid black',
+          position: 'relative',
+          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.35)',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '8px',
+            borderBottomRightRadius: '24px',
+            zIndex: 2,
+          },
+        }}
+      />
+      <CardContent
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          
+          height: '35%',
+          px: 1.5,
+          py: 0.5,
+          backgroundColor: '#d8ccba',
         }}
       >
-        <Box
+        <Typography
+          variant="body2"
+          fontWeight="600"
+          color="#333"
           sx={{
-            height: '65%',
-            backgroundImage: `url(${cards[2].bgImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            borderBottomRightRadius: '24px',
-            position: 'relative',
-            boxShadow: '0 10px 20px rgba(0, 0, 0, 0.35)',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '8px',
-              borderBottomRightRadius: '24px',
-              zIndex: 2,
-            },
-          }}
-        />
-        <CardContent
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: '35%',
-            px: 1.5,
-            py: 0.5,
-            backgroundColor: '#d8ccba',
+            fontSize: '0.88rem',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
-          <Typography
-            variant="body2"
-            fontWeight="600"
-            color="#333"
-            sx={{
-              fontSize: '0.88rem',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {cards[2].title}
-          </Typography>
-          <IconButton sx={{ color: '#333', p: 0.5 }}>
-            <ArrowForwardIosIcon fontSize="small" />
-          </IconButton>
-        </CardContent>
-      </Card>
-    </Link>
+          {card.title}
+        </Typography>
+        <IconButton sx={{ color: '#333', p: 0.5 }}>
+          <ArrowForwardIosIcon fontSize="small" />
+        </IconButton>
+      </CardContent>
+    </Card>
   </Grid>
+))}
+
 </Grid>
 
 </Card>
