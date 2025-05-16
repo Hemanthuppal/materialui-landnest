@@ -88,15 +88,15 @@ const InboxList = () => {
       }}
     >
       {/* Header */}
-      <AppBar position="static" elevation={0} sx={{ bgcolor: 'rgb(239, 231, 221)', color: '#000' }}>
+      <AppBar position="static" elevation={0} sx={{ bgcolor: 'black', color: 'white' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <IconButton edge="start" size="small" onClick={() => navigate(-1)}>
+          <IconButton edge="start" size="small" onClick={() => navigate(-1)} sx={{  color: 'white' }}>
             <ArrowBackIosNewIcon />
           </IconButton>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             Inbox ({filteredMessages.length})
           </Typography>
-          <IconButton edge="end" size="small">
+          <IconButton edge="end" size="small"sx={{  color: 'white' }}>
             <MoreVert />
           </IconButton>
         </Toolbar>

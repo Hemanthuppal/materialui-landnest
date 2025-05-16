@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  Card,
-  Chip,
-  Paper,
-} from '@mui/material';
-
+import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Card, Chip, Paper } from '@mui/material';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import CustomSearchBar from "../Rajesh/CustomSearchBar";
-import {BASE_URL} from './../Api/ApiUrls';
+import { BASE_URL } from './../Api/ApiUrls';
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU";
 
 const workerTypes = [
   "Painting", "Carpenter", "Flooring", "AC Technician", "Cleaning maid",
-  "Gardener", "Sofa Cleaning", "Water Purifier", "Kitchen/Toilet Cleaning", "Plumbing","Electrical"
+  "Gardener", "Sofa Cleaning", "Water Purifier", "Kitchen/Toilet Cleaning", "Plumbing", "Electrical"
 ];
 
 const HomeService = () => {
   const [vendors, setVendors] = useState([]);
+  const [filteredVendors, setFilteredVendors] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
 
   const { isLoaded } = useJsApiLoader({
@@ -42,12 +37,14 @@ const HomeService = () => {
     height: 'calc(100vh - 240px)',
   };
 
+  // Fetch vendors data
   useEffect(() => {
     const fetchVendors = async () => {
       try {
         const response = await fetch(`${BASE_URL}/vendors/`);
         const data = await response.json();
         setVendors(data);
+        setFilteredVendors(data); // Initialize filtered vendors with all vendors
       } catch (error) {
         console.error("Error fetching vendors:", error);
       }
@@ -56,11 +53,27 @@ const HomeService = () => {
     fetchVendors();
   }, []);
 
-  // Filter vendors based on selected worker type
-  const filteredVendors = selectedType
-    ? vendors.filter(vendor => 
-        vendor.profession && vendor.profession.toLowerCase().includes(selectedType.toLowerCase()))
-    : vendors;
+  // Filter vendors when selectedType changes
+  useEffect(() => {
+    if (vendors.length > 0) {
+      const filtered = selectedType
+        ? vendors.filter(vendor => 
+            vendor.profession && vendor.profession.toLowerCase().includes(selectedType.toLowerCase()))
+        : vendors;
+      
+      setFilteredVendors(filtered);
+    }
+  }, [selectedType, vendors]);
+
+  // Handle map load
+  const onMapLoad = useCallback(() => {
+    setMapLoaded(true);
+  }, []);
+
+  const handleTypeSelection = (type) => {
+    setSelectedWorker(null);
+    setSelectedType(prev => (prev === type ? null : type));
+  };
 
   return (
     <Box
@@ -106,18 +119,15 @@ const HomeService = () => {
               key={index}
               label={type}
               variant="filled"
-              onClick={() => {
-                setSelectedWorker(null);
-                setSelectedType(prev => (prev == type ? null : type));
-              }}
+              onClick={() => handleTypeSelection(type)}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType == type ? '#000000' : 'transparent',
-                color: selectedType == type ? '#ffffff' : '#000000',
+                bgcolor: selectedType === type ? '#000000' : 'transparent',
+                color: selectedType === type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />
@@ -126,7 +136,7 @@ const HomeService = () => {
       </Box>
 
       {/* No vendors message */}
-      {selectedType && filteredVendors.length == 0 && (
+      {selectedType && filteredVendors.length === 0 && (
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -151,89 +161,88 @@ const HomeService = () => {
         </Box>
       )}
 
-      {/* Google Map - only show if there are vendors or no type selected */}
-      {(!selectedType || filteredVendors.length > 0) && (
-        <Box sx={{ px: 2, pb: 10 }}>
-          {isLoaded ? (
-            <Box sx={{ width: '100%', height: containerStyle.height }}>
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={7}
-                options={{
-                  gestureHandling: 'greedy',
-                  zoomControl: true,
-                  mapTypeControl: false,
-                  streetViewControl: false,
-                  fullscreenControl: false,
-                }}
-              >
-                {filteredVendors.map((vendor) => (
-                  vendor.lat && vendor.long && (
-                    <Marker
-                      key={vendor.vendor_id}
-                      position={{
-                        lat: parseFloat(vendor.lat),
-                        lng: parseFloat(vendor.long),
-                      }}
-                      onClick={() => setSelectedWorker(vendor)}
-                    />
-                  )
-                ))}
-              </GoogleMap>
-            </Box>
-          ) : (
-            <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
-          )}
-
-          {/* Floating Worker Card */}
-          {selectedWorker && (
-            <Box
-              sx={{
-                position: 'absolute',
-                bottom: 250,
-                left: 0,
-                right: 0,
-                px: 2,
-                zIndex: 999,
+      {/* Google Map */}
+      <Box sx={{ px: 2, pb: 10 }}>
+        {isLoaded ? (
+          <Box sx={{ width: '100%', height: containerStyle.height }}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={7}
+              onLoad={onMapLoad}
+              options={{
+                gestureHandling: 'greedy',
+                zoomControl: true,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
               }}
             >
-              <Card
-                onClick={() => navigate(`/work-details/${selectedWorker.vendor_id}`)}
-                sx={{
-                  borderRadius: 3,
-                  p: 2,
-                  backgroundColor: '#fff',
-                  boxShadow: 3,
-                }}
-              >
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <img
-                    src={`${BASE_URL}${selectedWorker.profile}`}
-                    alt={selectedWorker.name}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 10,
-                      objectFit: 'cover',
+              {mapLoaded && filteredVendors.map((vendor) => (
+                vendor.lat && vendor.long && (
+                  <Marker
+                    key={`marker-${vendor.vendor_id}`}
+                    position={{
+                      lat: parseFloat(vendor.lat),
+                      lng: parseFloat(vendor.long),
                     }}
+                    onClick={() => setSelectedWorker(vendor)}
                   />
-                  <Box>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {selectedWorker.profession}
-                    </Typography>
-                    <Typography variant="body2">Name: {selectedWorker.name}</Typography>
-                    <Typography variant="body2">Mobile: {selectedWorker.mobile}</Typography>
-                    <Typography variant="body2">Email: {selectedWorker.email}</Typography>
-                    <Typography variant="body2">Experience: {selectedWorker.experience}+ year(s)</Typography>
-                    <Typography variant="body2">⭐⭐⭐⭐</Typography>
-                  </Box>
+                )
+              ))}
+            </GoogleMap>
+          </Box>
+        ) : (
+          <Typography sx={{ textAlign: 'center' }}>Loading map...</Typography>
+        )}
+
+        {/* Floating Worker Card */}
+        {selectedWorker && (
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 250,
+              left: 0,
+              right: 0,
+              px: 2,
+              zIndex: 999,
+            }}
+          >
+            <Card
+              onClick={() => navigate(`/work-details/${selectedWorker.vendor_id}`)}
+              sx={{
+                borderRadius: 3,
+                p: 2,
+                backgroundColor: '#fff',
+                boxShadow: 3,
+              }}
+            >
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <img
+                  src={`${BASE_URL}${selectedWorker.profile}`}
+                  alt={selectedWorker.name}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 10,
+                    objectFit: 'cover',
+                  }}
+                />
+                <Box>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {selectedWorker.profession}
+                  </Typography>
+                  <Typography variant="body2">Name: {selectedWorker.name}</Typography>
+                  <Typography variant="body2">Mobile: {selectedWorker.mobile}</Typography>
+                  <Typography variant="body2">Email: {selectedWorker.email}</Typography>
+                  <Typography variant="body2">Experience: {selectedWorker.experience}+ year(s)</Typography>
+                  <Typography variant="body2">⭐⭐⭐⭐</Typography>
                 </Box>
-              </Card>
-            </Box>
-          )}
-        </Box>
-      )}
+              </Box>
+            </Card>
+          </Box>
+        )}
+      </Box>
 
       {/* Bottom Navigation */}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
