@@ -159,7 +159,7 @@ const HomeService = () => {
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
-                zoom={14}
+                zoom={7}
                 options={{
                   gestureHandling: 'greedy',
                   zoomControl: true,
