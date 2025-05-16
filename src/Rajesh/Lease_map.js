@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import {
   Box,
@@ -12,8 +12,8 @@ import {
   Marker,
   useJsApiLoader
 } from '@react-google-maps/api';
-import 'leaflet/dist/leaflet.css';
 
+import { AuthContext } from '../AuthContext/AuthContext';
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from './CustomSearchBar';
 import ReUsableCard from '../sharvani/ReUsableCard';
@@ -39,6 +39,29 @@ const Lease_Property_Map = () => {
   const [categories, setCategories] = useState([]);
   const [likedCards, setLikedCards] = useState({});
   const navigate = useNavigate();
+  const { userId, logout } = useContext(AuthContext);
+     const [savedProperties, setSavedProperties] = useState([]);
+       const [saving, setSaving] = useState({});
+
+
+       // Fetch saved properties from API
+         useEffect(() => {
+           const fetchSavedProperties = async () => {
+             try {
+               const response = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}`);
+               // Ensure response.data is an array before mapping
+               const savedItems = Array.isArray(response.data) ? response.data : [];
+               setSavedProperties(savedItems.map(item => item.property_id));
+             } catch (error) {
+               console.error('Error fetching saved properties:', error);
+               setSavedProperties([]); // Set empty array on error
+             }
+           };
+       
+           if (userId) {
+             fetchSavedProperties();
+           }
+         }, [userId]);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -112,8 +135,8 @@ const Lease_Property_Map = () => {
   });
 
   const center = {
-    lat: 17.429299,
-    lng: 78.499021
+    lat: 17.5366218,
+    lng: 78.4844811
   };
 
   const containerStyle = {
@@ -121,17 +144,55 @@ const Lease_Property_Map = () => {
     height: 'calc(100vh - 240px)'
   };
 
-  const toggleSave = (property) => {
-    const isSaved = saved.find((p) => p.id == property.id);
-    const updated = isSaved ? saved.filter((p) => p.id !== property.id) : [...saved, property];
-    setSaved(updated);
-    localStorage.setItem('saveLease', JSON.stringify([...saved, {
-      ...property,
-      images: property.images || [property.image]
-    }]));
-  };
 
-  const isSaved = (property) => saved.some((p) => p.id == property.id);
+ // API functions for cart operations
+   const addToCart = async (propertyId) => {
+     try {
+       const response = await axios.post(`${BASE_URL}/user-cart/`, {
+         user_id: userId,
+         property_id: propertyId
+       });
+       return response.data;
+     } catch (error) {
+       console.error('Error adding to cart:', error);
+       throw error;
+     }
+   };
+ 
+   const removeFromCart = async (propertyId) => {
+     try {
+       const cartResponse = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}&property_id=${propertyId}`);
+       if (cartResponse.data && cartResponse.data.length > 0) {
+         await axios.delete(`${BASE_URL}/user-cart/${cartResponse.data[0].cart_id}/`);
+       }
+     } catch (error) {
+       console.error('Error removing from cart:', error);
+       throw error;
+     }
+   };
+ 
+   const toggleSave = async (property) => {
+     const propertyId = property.id;
+     setSaving(prev => ({ ...prev, [propertyId]: true }));
+     
+     try {
+       const isSaved = savedProperties.includes(propertyId);
+       
+       if (isSaved) {
+         await removeFromCart(propertyId);
+         setSavedProperties(prev => prev.filter(id => id !== propertyId));
+       } else {
+         await addToCart(propertyId);
+         setSavedProperties(prev => [...prev, propertyId]);
+       }
+     } catch (error) {
+       console.error('Error updating saved properties:', error);
+     } finally {
+       setSaving(prev => ({ ...prev, [propertyId]: false }));
+     }
+   };
+ 
+   const isSaved = (property) => savedProperties.includes(property.id);
 
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
@@ -234,7 +295,7 @@ const Lease_Property_Map = () => {
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: containerStyle.height }}
               center={center}
-              zoom={14}
+              zoom={7}
             >
               {filteredProperties.map(property => (
                 property.lat && property.lng && (
@@ -276,6 +337,7 @@ const Lease_Property_Map = () => {
                 likedCards={likedCards}
                 toggleLike={toggleLike}
                 onClose={() => setSelectedProperty(null)}
+                saving={saving[selectedProperty.id]}
               />
             </Box>
           )}

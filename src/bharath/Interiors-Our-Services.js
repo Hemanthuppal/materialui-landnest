@@ -640,7 +640,7 @@ const Interiors = () => {
           <Box
              
             component={Link}
-            to="/portfolio"
+            // to="/portfolio"
             sx={{
               flex: 1,
               textAlign: 'center',
@@ -875,48 +875,54 @@ const Interiors = () => {
         </Typography>
 
         <Box sx={{ width: '100%' }}>
-          {cards.map((card, index) => (
-            <Card key={index} sx={{
-              backgroundImage: `${card.bgImage}`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              minHeight: 200,
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              color: 'white',
-              position: 'relative',
-              borderRadius: '12px',
-              boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-              mb: 3,
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                borderRadius: '12px'
-              }
-            }}>
-              <CardContent sx={{
-                position: 'relative',
-                zIndex: 1,
-                textAlign: 'left',
-                width: '100%',
-                padding: isMobile ? 3 : 4,
-              }}>
-                <Typography variant="h6" component="div" fontWeight="bold" gutterBottom>
-                  {card.title}
-                </Typography>
-                <Typography variant="body1" component="div">
-                  {card.description}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
+  {cards.map((card, index) => (
+    <Card 
+      key={index}
+      sx={{
+        backgroundImage: `${card.bgImage}`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: 200,
+        width: '100%',
+        display: 'flex',
+        alignItems: 'flex-end', // Push content to bottom
+        justifyContent: 'flex-start', // Align content to left
+        color: 'white',
+        position: 'relative',
+        borderRadius: '12px',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+        mb: 3,
+        cursor: 'pointer', // Add pointer cursor for clickable cards
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          borderRadius: '12px'
+        }
+      }}
+    >
+      <CardContent 
+        sx={{
+          position: 'relative',
+          zIndex: 1,
+          textAlign: 'left',
+          padding: isMobile ? 3 : 4,
+        }}
+      >
+        <Typography variant="h6" component="div" fontWeight="bold" gutterBottom>
+          {card.title}
+        </Typography>
+        <Typography variant="body1" component="div">
+          {card.description}
+        </Typography>
+      </CardContent>
+    </Card>
+  ))}
+</Box>
       </Container>
 
 

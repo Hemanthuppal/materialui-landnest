@@ -36,10 +36,8 @@ const InboxList = () => {
 
         // Filter messages relevant to the current user
         const userMessages = data.filter(
-        (msg) =>
-          (msg.user_id == userId || msg.receiver == userId) &&
-          msg.property_id !== null
-      );
+          (msg) => msg.user_id == userId || msg.receiver == userId
+        );
 
         // Group by property_id (latest message per property)
         const latestMessagesMap = new Map();
@@ -88,15 +86,15 @@ const InboxList = () => {
       }}
     >
       {/* Header */}
-      <AppBar position="static" elevation={0} sx={{ bgcolor: 'black', color: 'white' }}>
+      <AppBar position="static" elevation={0} sx={{ bgcolor: 'rgb(239, 231, 221)', color: '#000' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <IconButton edge="start" size="small" onClick={() => navigate(-1)} sx={{  color: 'white' }}>
+          <IconButton edge="start" size="small" onClick={() => navigate(-1)}>
             <ArrowBackIosNewIcon />
           </IconButton>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             Inbox ({filteredMessages.length})
           </Typography>
-          <IconButton edge="end" size="small"sx={{  color: 'white' }}>
+          <IconButton edge="end" size="small">
             <MoreVert />
           </IconButton>
         </Toolbar>

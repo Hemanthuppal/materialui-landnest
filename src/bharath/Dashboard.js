@@ -682,8 +682,8 @@ function App() {
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)'
   }}
 >
-  <Typography variant="h6" align="center" mb={1}>
-  Looking For
+  <Typography variant="h6" fontWeight="bold" align="center" mb={1}>
+  Looking For Properties
 </Typography>
 
 <Card

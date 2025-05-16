@@ -761,11 +761,11 @@ const ConstructionPackages = () => {
 
         <Box sx={{
           px: { xs: 2, sm: 4, md: 6 },
-          pt: 4,
+          pt: 2,
           maxWidth: '1200px',
           margin: '0 auto',
           backgroundColor: '#e7dbc9',
-          pb: 2
+          pb: 0.5
 
         }}>
           {packages.map((pkg, index) => (
@@ -789,8 +789,8 @@ const ConstructionPackages = () => {
                     <Typography variant="h5" sx={{
                       fontWeight: 700,
                       color: 'white',
-                      fontSize: '1.6rem',
-                      letterSpacing: '0.5px'
+                      fontSize: '20px',
+                      letterSpacing: '0.5px',
                     }}>
                       {pkg.title}
                     </Typography>
@@ -799,14 +799,14 @@ const ConstructionPackages = () => {
                     <Typography variant="h4" sx={{
                       fontWeight: 700,
                       color: 'white',
-                      mt: 1.5,
+                      mt: 0.5,
                       background: 'rgba(255,255,255,0.2)',
                       display: 'inline-block',
                       px: 3,
                       py: 1,
                       borderRadius: '20px',
                       backdropFilter: 'blur(5px)',
-                      fontSize: '1.5rem'
+                      fontSize: '20px'
                     }}>
                       {pkg.price}
                     </Typography>
@@ -867,7 +867,7 @@ const ConstructionPackages = () => {
                         <Typography sx={{
                           fontWeight: 600,
                           color: expanded[pkg.id] == section.id ? pkg.color : '#444',
-                          fontSize: '1.2rem',
+                          fontSize: '18px',
                           letterSpacing: '0.2px'
                         }}>
                           {section.title}

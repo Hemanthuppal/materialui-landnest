@@ -225,7 +225,7 @@ const W_Rent = () => {
                 </IconButton>
 
                 <Typography variant="caption" color="text.primary" ml={0.5}>
-                  Location Verified
+                  Location 
                 </Typography>
               </Box>
 

@@ -66,7 +66,7 @@ const fieldMap = {
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
-const EditRentForm = () => {
+const EditLeaseForm = () => {
     const { menuPropertyId } = useParams();
     console.log("menuPropertyId:", menuPropertyId);
     const [workPhotos, setWorkPhotos] = useState([]);
@@ -76,7 +76,7 @@ const EditRentForm = () => {
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
     const [postedBy, setPostedBy] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-     const [deletedImageIds, setDeletedImageIds] = useState([]);
+  const [deletedImageIds, setDeletedImageIds] = useState([]);
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -125,7 +125,7 @@ const EditRentForm = () => {
                         );
                         const data = await response.json();
 
-                        if (data.status == 'OK' && data.results.length > 0) {
+                        if (data.status === 'OK' && data.results.length > 0) {
                             const address = data.results[0].formatted_address;
                             setAddress(address);
                         } else {
@@ -310,8 +310,7 @@ const EditRentForm = () => {
         gated_security: '',
         parking: '',
         advance_payment: '',
-        description: '',
-         deleted_image_ids: ''
+        description: ''
     });
 
     const handleChange = (event) => {
@@ -391,67 +390,73 @@ const EditRentForm = () => {
         setFormData(prev => ({ ...prev, [key]: value }));
     };
 
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Form submission started.');
 
-     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Form submission started.');
-    
-        const updatedFormData = {
-            ...formData,
-            lat: location.lat,
-            long: location.lng,
-            location: address,
-            type: 'rent',
-            deleted_image_ids: deletedImageIds.join(',') // Convert array to comma-separated string
-        };
-    console.log("updatedFormData", updatedFormData);
-        const formDataToSend = new FormData();
-    
-        // Append form fields
-        Object.entries(updatedFormData).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-                formDataToSend.append(key, value);
-            }
-        });
-    
-        // Append images
-        workPhotos.forEach((file) => {
-            formDataToSend.append('new_property_images', file);
-        });
-    
-        // No need to separately append deleted_image_ids as it's already in updatedFormData
-        console.log("deleted image", deletedImageIds.join(','));
-        console.log("data", formDataToSend);
-    
-        try {
-            const response = await axios.put(
-                `${BASE_URL}/property/${menuPropertyId}/`,
-                formDataToSend,
-                {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                }
-            );
-    
-            if (response.status === 200) {
-                alert('Property updated successfully!');
-                console.log("response", response);
-                navigate('/dashboard');
-            } else {
-                alert('Something went wrong. Try again.');
-            }
-        } catch (error) {
-            console.error('Submission Error:', error);
-            alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
-        }
+    const updatedFormData = {
+      ...formData,
+      lat: location.lat,
+      long: location.lng,
+      location: address,
+      type: 'lease',
     };
-       
-    
-          const handleRemoveImage = (imageId) => {
-        setDeletedImageIds([...deletedImageIds, imageId]);
-        setExistingImages(existingImages.filter(img => img.id !== imageId));
-      };
 
-   
+    const formDataToSend = new FormData();
+
+    // Append form fields
+    Object.entries(updatedFormData).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formDataToSend.append(key, value);
+      }
+    });
+
+    // Append images
+    workPhotos.forEach((file) => {
+      formDataToSend.append('new_property_images', file);
+    });
+
+    // Append deleted image IDs
+    formDataToSend.append('deleted_image_ids', JSON.stringify(deletedImageIds));
+    console.log("deleted image",JSON.stringify(deletedImageIds));
+     console.log("data",formDataToSend);
+
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/property/${menuPropertyId}/`,
+        formDataToSend,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+      
+
+      if (response.status === 200) {
+        alert('Property updated successfully!');
+        console.log("response",response);
+    
+        // navigate('/dashboard');
+      } else {
+        alert('Something went wrong. Try again.');
+      }
+    } catch (error) {
+      console.error('Submission Error:', error);
+      alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
+    }
+  };
+
+    // const handleRemoveImage = (imageId) => {
+    //     // This would need to call your API to delete the image
+    //     console.log('Image to remove:', imageId);
+    //     // You would typically make an API call here to delete the image
+    //     // Then update the existingImages state
+    //     setExistingImages(existingImages.filter(img => img.id !== imageId));
+    // };
+
+      const handleRemoveImage = (imageId) => {
+    setDeletedImageIds([...deletedImageIds, imageId]);
+    setExistingImages(existingImages.filter(img => img.id !== imageId));
+  };
 
     if (!isLoaded) {
         return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -475,7 +480,7 @@ const EditRentForm = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)', }}>
                 <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 12, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Edit Rent Property
+                        Edit Lease Property
                     </Typography>
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
@@ -578,7 +583,8 @@ const EditRentForm = () => {
                                 />
                             )}
                         </GoogleMap>
- <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
+
+                       <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
         Property Images
       </Typography>
 
@@ -638,7 +644,6 @@ const EditRentForm = () => {
           Selected: {workPhotos.length} file(s)
         </Typography>
       )}
-
                         <FormControl fullWidth margin="normal">
                             <InputLabel id="posted-by-label">Posted By</InputLabel>
                             <Select
@@ -690,4 +695,4 @@ const EditRentForm = () => {
     );
 };
 
-export default EditRentForm;
+export default EditLeaseForm;

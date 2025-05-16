@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useContext} from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 import {
   Box,
@@ -12,47 +12,45 @@ import {
   Marker,
   useJsApiLoader
 } from '@react-google-maps/api';
-import 'leaflet/dist/leaflet.css';
-
+import { AuthContext } from '../AuthContext/AuthContext';
 import buildingImage from '../Images/house.jpeg';
 import CustomSearchBar from '../Rajesh/CustomSearchBar';
-import ReUsableCard from './ReUsableCard';
-import CustomBottomNav from './BottomNavbar/BottomNavbar';
+import ReUsableCard from './../sharvani/ReUsableCard';
+import CustomBottomNav from './CustomNav';
 import { BASE_URL } from '../Api/ApiUrls';
-import { AuthContext } from '../AuthContext/AuthContext';
 
 const rentalTypes = [
-  "1BHK", "2BHK", "3BHK", "4+ BHK", "PLOT/LAND", "DUPLEX HOUSE",
-  "COMMERCIAL LAND", "COMMERCIAL BUILDING/ Space", "VILLA",
-  "PG-SCHOOL-OFFICE", "SHOPPING mall/shop"
+  "PLOT/LAND", "COMMERCIAL LAND/PLOT", "RENT WITH DUPLEX BUILDING", "DUPLEX HOUSE",
+  "RENTAL BUILDING", "PG-OFFICES", "FLAT", "VILLA",
+  "COMMERCIAL BUILDING", "APARTMENT", "OTHERS"
 ];
 
-
-const Rent_Property_Map = () => {
+const Buy_Property_Map = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [saved, setSaved] = useState(() => {
-    const stored = localStorage.getItem('saveRent');
+    const stored = localStorage.getItem('savedBuy');
     return stored ? JSON.parse(stored) : [];
   });
   const [categories, setCategories] = useState([]);
   const [likedCards, setLikedCards] = useState({});
   const { userId, logout } = useContext(AuthContext);
-    const [savedProperties, setSavedProperties] = useState([]);
-      const [saving, setSaving] = useState({});
+  const [savedProperties, setSavedProperties] = useState([]);
+  const [saving, setSaving] = useState({});
+  const [map, setMap] = useState(null);
   const navigate = useNavigate();
-// Fetch saved properties from API
+
+  // Fetch saved properties from API
   useEffect(() => {
     const fetchSavedProperties = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}`);
-        // Ensure response.data is an array before mapping
         const savedItems = Array.isArray(response.data) ? response.data : [];
         setSavedProperties(savedItems.map(item => item.property_id));
       } catch (error) {
         console.error('Error fetching saved properties:', error);
-        setSavedProperties([]); // Set empty array on error
+        setSavedProperties([]);
       }
     };
 
@@ -60,15 +58,20 @@ const Rent_Property_Map = () => {
       fetchSavedProperties();
     }
   }, [userId]);
+
+  // Fetch properties and categories
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const categoriesResponse = await axios.get(`${BASE_URL}/property-category/`);
+        const [categoriesResponse, propertiesResponse] = await Promise.all([
+          axios.get(`${BASE_URL}/property-category/`),
+          axios.get(`${BASE_URL}/property/`)
+        ]);
+
         setCategories(categoriesResponse.data);
 
-        const propertiesResponse = await axios.get(`${BASE_URL}/property/`);
         const filtered = propertiesResponse.data.filter(item =>
-                   item.type && item.type.toLowerCase().includes("rent")
+          item.type && item.type.toLowerCase().includes("sell")
         );
 
         const parsed = filtered.map(item => {
@@ -132,8 +135,8 @@ const Rent_Property_Map = () => {
   });
 
   const center = {
-    lat: 17.429299,
-    lng: 78.499021
+    lat: 17.5366218,
+    lng: 78.4844811
   };
 
   const containerStyle = {
@@ -141,54 +144,63 @@ const Rent_Property_Map = () => {
     height: 'calc(100vh - 240px)'
   };
 
+  const onLoad = useCallback((map) => {
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
+
   // API functions for cart operations
-   const addToCart = async (propertyId) => {
-     try {
-       const response = await axios.post(`${BASE_URL}/user-cart/`, {
-         user_id: userId,
-         property_id: propertyId
-       });
-       return response.data;
-     } catch (error) {
-       console.error('Error adding to cart:', error);
-       throw error;
-     }
-   };
- 
-   const removeFromCart = async (propertyId) => {
-     try {
-       const cartResponse = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}&property_id=${propertyId}`);
-       if (cartResponse.data && cartResponse.data.length > 0) {
-         await axios.delete(`${BASE_URL}/user-cart/${cartResponse.data[0].cart_id}/`);
-       }
-     } catch (error) {
-       console.error('Error removing from cart:', error);
-       throw error;
-     }
-   };
- 
-   const toggleSave = async (property) => {
-     const propertyId = property.id;
-     setSaving(prev => ({ ...prev, [propertyId]: true }));
-     
-     try {
-       const isSaved = savedProperties.includes(propertyId);
-       
-       if (isSaved) {
-         await removeFromCart(propertyId);
-         setSavedProperties(prev => prev.filter(id => id !== propertyId));
-       } else {
-         await addToCart(propertyId);
-         setSavedProperties(prev => [...prev, propertyId]);
-       }
-     } catch (error) {
-       console.error('Error updating saved properties:', error);
-     } finally {
-       setSaving(prev => ({ ...prev, [propertyId]: false }));
-     }
-   };
- 
-   const isSaved = (property) => savedProperties.includes(property.id);
+  const addToCart = async (propertyId) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/user-cart/`, {
+        user_id: userId,
+        property_id: propertyId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      throw error;
+    }
+  };
+
+  const removeFromCart = async (propertyId) => {
+    try {
+      const cartResponse = await axios.get(`${BASE_URL}/user-cart/?user_id=${userId}&property_id=${propertyId}`);
+      if (cartResponse.data && cartResponse.data.length > 0) {
+        await axios.delete(`${BASE_URL}/user-cart/${cartResponse.data[0].cart_id}/`);
+      }
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      throw error;
+    }
+  };
+
+  const toggleSave = async (property) => {
+    const propertyId = property.id;
+    setSaving(prev => ({ ...prev, [propertyId]: true }));
+    
+    try {
+      const isSaved = savedProperties.includes(propertyId);
+      
+      if (isSaved) {
+        await removeFromCart(propertyId);
+        setSavedProperties(prev => prev.filter(id => id !== propertyId));
+      } else {
+        await addToCart(propertyId);
+        setSavedProperties(prev => [...prev, propertyId]);
+      }
+    } catch (error) {
+      console.error('Error updating saved properties:', error);
+    } finally {
+      setSaving(prev => ({ ...prev, [propertyId]: false }));
+    }
+  };
+
+  const isSaved = (property) => savedProperties.includes(property.id);
+
   const toggleLike = (id) => {
     setLikedCards((prev) => ({
       ...prev,
@@ -223,7 +235,7 @@ const Rent_Property_Map = () => {
 
       {/* Property Types */}
       <Box sx={{ px: 2 }}>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>Rent Properties </Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Buy Properties </Typography>
         <Box
           sx={{
             display: 'flex',
@@ -240,16 +252,16 @@ const Rent_Property_Map = () => {
               variant="filled"
               onClick={() => {
                 setSelectedProperty(null);
-                setSelectedType(prev => (prev == type ? null : type));
+                setSelectedType(prev => (prev === type ? null : type));
               }}
               sx={{
                 flexShrink: 0,
-                bgcolor: selectedType == type ? '#000000' : 'transparent',
-                color: selectedType == type ? '#ffffff' : '#000000',
+                bgcolor: selectedType === type ? '#000000' : 'transparent',
+                color: selectedType === type ? '#ffffff' : '#000000',
                 border: '1px solid black',
                 fontWeight: 'bold',
                 '&:hover': {
-                  bgcolor: selectedType == type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
+                  bgcolor: selectedType === type ? '#000000' : 'rgba(0, 0, 0, 0.1)',
                 },
               }}
             />
@@ -257,21 +269,55 @@ const Rent_Property_Map = () => {
         </Box>
       </Box>
 
-      {/* No properties message - moved outside the map container */}
-      {selectedType && filteredProperties.length == 0 && (
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '200px',
-          px: 2,
-          textAlign: 'center'
-        }}>
+      {/* Map Container */}
+      <Box sx={{ px: 2, pb: 10, height: containerStyle.height }}>
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={{ width: '100%', height: '100%' }}
+            center={center}
+            zoom={12}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+            options={{
+              disableDefaultUI: true,
+              zoomControl: true,
+            }}
+          >
+            {filteredProperties.map(property => (
+              property.lat && property.lng && (
+                <Marker
+                  key={property.id}
+                  position={{ lat: property.lat, lng: property.lng }}
+                  onClick={() => setSelectedProperty(property)}
+                />
+              )
+            ))}
+          </GoogleMap>
+        ) : (
           <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            backgroundColor: '#f5f5f5'
+          }}>
+            <Typography>Loading map...</Typography>
+          </Box>
+        )}
+
+        {/* No properties message */}
+        {selectedType && filteredProperties.length === 0 && (
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
             padding: '16px',
             borderRadius: '8px',
-            textAlign: 'center'
+            textAlign: 'center',
+            zIndex: 1,
+            width: '80%'
           }}>
             <Typography variant="h6">
               No properties listed in this category
@@ -280,62 +326,37 @@ const Rent_Property_Map = () => {
               We couldn't find any properties matching "{selectedType}"
             </Typography>
           </Box>
-        </Box>
-      )}
+        )}
+      </Box>
 
-      {/* Google Map - only show if there are properties or no type selected */}
-      {(!selectedType || filteredProperties.length > 0) && (
-        <Box sx={{ px: 2, pb: 10 }}>
-          {isLoaded ? (
-            <GoogleMap
-              mapContainerStyle={{ width: '100%', height: containerStyle.height }}
-              center={center}
-              zoom={7}
-            >
-              {filteredProperties.map(property => (
-                property.lat && property.lng && (
-                  <Marker
-                    key={property.id}
-                    position={{ lat: property.lat, lng: property.lng }}
-                    onClick={() => setSelectedProperty(property)}
-                  />
-                )
-              ))}
-            </GoogleMap>
-          ) : (
-            <Typography>Loading map...</Typography>
-          )}
-
-          {/* Property Card Popup */}
-          {selectedProperty && (
-            <Box sx={{
-              position: 'absolute',
-              bottom: 115,
-              left: 0,
-              right: 0,
-              margin: '0 auto',
-              width: '100%',
-              maxWidth: 480,
-              zIndex: 999
-            }}>
-              <ReUsableCard
-                property={selectedProperty}
-                onCardClick={() => {
-                  if (selectedProperty && selectedProperty.id) {
-                    navigate('/rent-description', {
-                      state: { propertyId: selectedProperty.id }
-                    });
-                  }
-                }}
-                isSaved={isSaved}
-                toggleSave={toggleSave}
-                likedCards={likedCards}
-                toggleLike={toggleLike}
-                onClose={() => setSelectedProperty(null)}
-                saving={saving[selectedProperty.id]}
-              />
-            </Box>
-          )}
+      {/* Property Card Popup */}
+      {selectedProperty && (
+      <Box sx={{
+                 position: 'absolute',
+                 bottom: 115,
+                 left: 0,
+                 right: 0,
+                 margin: '0 auto',
+                 width: '100%',
+                 maxWidth: 480,
+                 zIndex: 999
+               }}>
+          <ReUsableCard
+            property={selectedProperty}
+            onCardClick={() => {
+              if (selectedProperty && selectedProperty.id) {
+                navigate('/Buy-description', {
+                  state: { propertyId: selectedProperty.id }
+                });
+              }
+            }}
+            isSaved={isSaved}
+            toggleSave={toggleSave}
+            likedCards={likedCards}
+            toggleLike={toggleLike}
+            onClose={() => setSelectedProperty(null)}
+            saving={saving[selectedProperty.id]}
+          />
         </Box>
       )}
 
@@ -347,4 +368,4 @@ const Rent_Property_Map = () => {
   );
 };
 
-export default Rent_Property_Map;
+export default Buy_Property_Map;

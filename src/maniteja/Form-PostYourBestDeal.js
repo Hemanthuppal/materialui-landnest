@@ -330,7 +330,7 @@ useEffect(() => {
 
     const [location, setLocation] = useState(centerDefault);
     const [address, setAddress] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('Apartment');
+    const [selectedCategory, setSelectedCategory] = useState('');
     const [formValues, setFormValues] = useState({});
     const autocompleteRef = useRef(null);
     const navigate = useNavigate();
@@ -627,13 +627,43 @@ useEffect(() => {
     return (
         <>
             <SearchBar onBackClick={handleBackClick} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
-                <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Post Your Best Deal
-                    </Typography>
-
-                    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
+                      <Box
+             sx={{
+               display: 'flex',
+               flexDirection: 'column',
+               minHeight: '100vh',
+               pt: '10px',
+               backgroundColor: 'rgb(239, 231, 221)',
+             }}
+           >
+             <Box
+               sx={{
+                 flexGrow: 1,
+                 p: { xs: 2, sm: 3 },
+                 pb: 10,
+                 display: 'flex',
+                 justifyContent: 'center', // center horizontally
+               }}
+             >
+              
+               <Paper
+                 elevation={2}
+                 sx={{
+                   p: { xs: 2, sm: 3 },
+                   mb: 3,
+                   width: '100%',
+                   boxSizing: 'border-box',
+                 }}
+                 component="form"
+                 onSubmit={handleSubmit}
+               >
+                    <Typography
+                   variant="h5"
+                   gutterBottom
+                   sx={{ fontWeight: 'bold',mb: 3, textAlign: 'center' }}
+                 >
+                   Post Your Best Deal
+                 </Typography>
                         <FormControl fullWidth sx={{ mb: 3 }}>
                             <InputLabel id="category-label">Select Category</InputLabel>
                             <Select
@@ -828,7 +858,7 @@ useEffect(() => {
                         <TextField fullWidth variant="outlined" multiline rows={4} sx={{ mb: 2 }} />
 
                         {/* Buttons */}
-                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+                        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2,mb: 2 }}>
                             <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}
                             onClick={() => navigate(-1)}>
                                 Cancel
