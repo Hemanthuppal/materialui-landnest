@@ -340,7 +340,9 @@ import {
   Build as FabricationIcon,
   Plumbing as PlumbingIcon,
   GridOn as TilesGraniteIcon,
-  FormatPaint as PaintIcon
+  FormatPaint as PaintIcon,
+   Architecture as FloorPlanIcon,
+   Foundation as FoundationIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
@@ -387,38 +389,37 @@ const TwodPlansInterior = () => {
   ];
 
   // Fetch categories and materials
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch categories from API
-        const categoriesResponse = await axios.get(`${BASE_URL}/material-categories/`);
-        const fetchedCategories = categoriesResponse.data.length > 0 ? 
-          categoriesResponse.data : defaultCategories;
-        
-        setCategories(fetchedCategories);
-        
-        // Set the first category as active by default
-        if (fetchedCategories.length > 0) {
-          setActiveCategory(fetchedCategories[0].category_id);
-          await fetchMaterials(fetchedCategories[0].category_id);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-        // Fallback to default categories if API fails
-        setCategories(defaultCategories);
-        if (defaultCategories.length > 0) {
-          setActiveCategory(defaultCategories[0].category_id);
-          fetchMaterials(defaultCategories[0].category_id);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
 
-    fetchData();
-  }, []);
+      // Fetch categories from the new API
+      const response = await axios.get('https://landnest.net:81/construction-categories/');
+      const allCategories = response.data;
+
+      // Filter categories where category === "2D"
+      const filteredCategories = allCategories.filter(cat => cat.category === "2D");
+
+      // Set the filtered categories in state
+      setCategories(filteredCategories);
+
+      // Set the first matching category as active and fetch its sub_cat
+      if (filteredCategories.length > 0) {
+        setActiveCategory(filteredCategories[0].category_id);
+        await fetchMaterials(filteredCategories[0].sub_cat); // Assuming fetchMaterials handles sub_cat now
+      }
+    } catch (error) {
+      console.error('Error fetching construction categories:', error);
+      setCategories([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   // Fetch materials when active category changes
   useEffect(() => {
@@ -430,7 +431,7 @@ const TwodPlansInterior = () => {
   const fetchMaterials = async (categoryId) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${BASE_URL}/material-content/`);
+      const response = await axios.get(`${BASE_URL}/construction-content/`);
       const filteredMaterials = response.data
         .filter(item => item.category_id == categoryId)
         .map(item => ({
@@ -446,34 +447,27 @@ const TwodPlansInterior = () => {
     }
   };
 
-  const getCategoryIcon = (categoryName) => {
-    switch (categoryName.toLowerCase()) {
-      case 'cement':
-        return <ConstructionIcon />;
-      case 'steel':
-        return <SteelIcon />;
-      case 'brick':
-        return <BrickIcon />;
-      case 'sand':
-        return <SandIcon />;
-      case 'stone':
-        return <StoneIcon />;
-      case 'wood and windows':
-        return <WoodWindowsIcon />;
-      case 'electrical':
-        return <ElectricalIcon />;
-      case 'fabrication works':
-        return <FabricationIcon />;
-      case 'plumbing works':
-        return <PlumbingIcon />;
-      case 'tiles and granite':
-        return <TilesGraniteIcon />;
-      case 'paint work':
-        return <PaintIcon />;
-      default:
-        return <ConstructionIcon />;
-    }
-  };
+const getCategoryIcon = (categoryName) => {
+  switch (categoryName.toLowerCase()) {
+    case 'floor plan':
+      return <FloorPlanIcon />;
+    case 'elevation':
+      return <SteelIcon />;
+    case 'structural drawing':
+      return <BrickIcon />;
+    case 'plumbing': // fixed typo
+      return <PlumbingIcon />;
+    case 'electrical':
+      return <ElectricalIcon />; // removed the duplicate, keeping the correct icon
+    case 'space planning':
+      return <WoodWindowsIcon />;
+    case 'foundation plans':
+      return <FoundationIcon />;
+    default:
+      return <ConstructionIcon />; // fallback icon
+  }
+};
+
 
   const rows = chunkArray(materials, 2);
 
@@ -640,7 +634,7 @@ const TwodPlansInterior = () => {
               borderTopLeftRadius: '40px',
               borderBottomRightRadius: '40px',
               marginTop: '155px',
-              height: '70vh',
+              height: '69vh',
               marginLeft: '1px',
               border: '1px solid black',
             },
@@ -681,13 +675,13 @@ const TwodPlansInterior = () => {
                           },
                         }}
                       >
-                        {getCategoryIcon(category.category)}
+                        {getCategoryIcon(category.sub_cat)}
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={category.category}
+                        primary={category.sub_cat}
                         primaryTypographyProps={{
-                          fontSize: '0.7rem',
+                          fontSize: '0.5rem',
                           textAlign: 'center',
                           fontWeight: isSelected ? '600' : '400',
                           color: isSelected ? '#ffffff' : 'rgba(10, 10, 10, 0.9)',

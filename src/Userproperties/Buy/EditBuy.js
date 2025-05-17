@@ -117,7 +117,7 @@ const type = locationn.state?.type || "sell"; // fallback to sell
     const [formData, setFormData] = useState({
         user_id: userId,
         category_id: '',
-        type: 'sell',
+        type: '',
         mobile_no: '',
         facing: '',
         roadwidth: '',
@@ -240,7 +240,7 @@ const type = locationn.state?.type || "sell"; // fallback to sell
                 setFormData({
                     user_id: userId,
                     category_id: propertyData.category_id,
-                    type: propertyData.type || 'sell',
+                    type: propertyData.type || '',
                     mobile_no: propertyData.mobile_no || '',
                     facing: propertyData.facing || '',
                     roadwidth: propertyData.roadwidth || '',
