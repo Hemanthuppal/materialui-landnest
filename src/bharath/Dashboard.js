@@ -69,6 +69,7 @@ import {
 } from '@mui/icons-material';
 import { href } from 'react-router-dom';
 import FormsBottomNavbar from './../maniteja/FormsBottomNavbar';
+import SearchBar from '../maniteja/FormsSearchBar';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
@@ -166,7 +167,7 @@ const cards = [
     path: "/lease_map"
   },
   {
-    title: "Post Your Property",
+    title: "Sell/Post",
     // icon: <PGIcon fontSize="large" />,
     bgImage: imagepg,
     path: "/pg-propertymap"
@@ -209,18 +210,82 @@ function App() {
     
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#f8f9fa' }}>
 
+      <Box
+  sx={{
+    position: 'sticky',
+    top: 0,
+    zIndex: 1200,
+    bgcolor: 'black',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    borderRadius: '10px',
+    
+    
+  }}
+>
+  <Box
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+    px={1}
+    py={0.5} // Smaller vertical padding
+    sx={{ borderBottom: '1px solid rgba(0,0,0,0.08)', height: '44px' }} // Fixed reduced height
+  >
+    {/* LANDNEST Text */}
+   <Typography
+  variant="subtitle1"
+  sx={{
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: "'Cinzel', serif", // stylish serif font
+    letterSpacing: 1,
+    ml: 1,
+  }}
+>
+  LANDNEST
+</Typography>
+
+
+
+    {/* Logo Image */}
+    <Box
+  sx={{
+    width: 60,
+    height: 30,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ml: 1.5,
+    border: '2px solid rgba(228, 222, 185, 0.93)', // goldish border
+    borderRadius: '6px', // optional rounded corners
+    padding: '2px', // some inner spacing so image doesn't touch the border
+  }}
+>
+  <img
+    src={logo}
+    alt="Landnest Logo"
+    style={{
+      maxWidth: '100%',
+      maxHeight: '100%',
+      objectFit: 'contain',
+    }}
+  />
+</Box>
+
+  </Box>
+</Box>
+
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden',marginBottom:"70px" }}>
         <Box
          sx={{
           width: { xs: '14%', sm: '64px' },
-          height: '88vh',
+          height: '85vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           overflow: 'hidden',
           borderTopLeftRadius: '20px',
           borderBottomRightRadius: '20px',
-          marginTop: '0px',
+          marginTop: '4px',
           marginLeft: '5px',
           boxShadow: `
             0 10px 30px -5px rgba(0,0,0,0.3),
@@ -237,40 +302,60 @@ function App() {
         >
           {/* Premium Profile Section */}
           <Box
-            sx={{
-              width: '100%',
-              background: 'linear-gradient(145deg,rgb(18, 17, 17),rgb(18, 17, 17))',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: { xs: '50px', sm: '50px' },
-              borderTopLeftRadius: '40px',
-              boxShadow: `
-        inset 0 2px 4px rgba(255,255,255,0.05),
-        0 2px 5px rgba(0,0,0,0.2)
-      `,
-              overflow: 'hidden'
-            }}
-          >
-            <Avatar
-              alt="User"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
-              sx={{
-                width: { xs: 30, sm: 34 },
-                height: { xs: 30, sm: 34 },
-                border: '3px solid rgba(216,204,186,0.7)',
-                boxShadow: `
+  sx={{
+    width: '100%',
+    background: 'linear-gradient(145deg, rgb(18, 17, 17), rgb(18, 17, 17))',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: { xs: '70px', sm: '70px' }, // slightly increased for text space
+    borderTopLeftRadius: '40px',
+    boxShadow: `
+      inset 0 2px 4px rgba(255,255,255,0.05),
+      0 2px 5px rgba(0,0,0,0.2)
+    `,
+    overflow: 'hidden',
+  }}
+>
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '4px',
+    }}
+  >
+    <Avatar
+      alt="User"
+      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
+      sx={{
+        width: { xs: 30, sm: 34 },
+        height: { xs: 30, sm: 34 },
+        border: '3px solid rgba(216,204,186,0.7)',
+        boxShadow: `
           0 3px 10px rgba(0,0,0,0.3),
           inset 0 0 10px rgba(216,204,186,0.2)
         `,
-                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                '&:hover': {
-                  transform: { sm: 'scale(1.15) rotate(5deg)' },
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.4)'
-                }
-              }}
-            />
-          </Box>
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        '&:hover': {
+          transform: { sm: 'scale(1.15) rotate(5deg)' },
+          boxShadow: '0 5px 15px rgba(0,0,0,0.4)',
+        },
+      }}
+    />
+    <Typography
+      variant="caption"
+      sx={{
+        color: 'rgba(216,204,186,0.9)',
+        fontSize: '0.7rem',
+        fontWeight: 500,
+      }}
+    >
+      Profile
+    </Typography>
+  </Box>
+</Box>
+
 
           {/* Luxury Middle Section */}
           <Box
@@ -508,7 +593,8 @@ function App() {
 
         <Box flex={1} p={1} sx={{ overflow: 'auto' }}>
        
-         
+        
+
        
         <AppBar
   position="fixed"
@@ -524,7 +610,7 @@ function App() {
     width: '83%',
     ml: '7.3%',
     mr: '3px',
-    mt: '0px',
+    mt: '54px',
     zIndex: 1201,
     display: 'flex',
     justifyContent: 'center',
@@ -607,7 +693,6 @@ function App() {
     </Box>
   </Toolbar>
 </AppBar>
-
 
 
 
@@ -711,13 +796,22 @@ function App() {
     width: 130
   },
   '@media (min-width:361px) and (max-width:429px)': {
-    width: 140
+    width: 143
   },
   '@media (width:430px)': {
     width: 160
   },
   '@media (min-width:490px)': {
     width: 180
+  },
+  '@media (min-width:469px)': {
+    width: 178
+  },
+  '@media (min-width:490px)': {
+    width: 180
+  },
+  '@media (min-width:485px)': {
+    width: 185
   },
           boxShadow: '0 8px 24px rgba(0, 0, 0, 0.7)', // Darker shadow for the image
           cursor: 'pointer',
@@ -803,13 +897,22 @@ function App() {
     width: 120
   },
   '@media (min-width:361px) and (max-width:374px), (min-width:376px) and (max-width:429px)': {
-    width: 140
+    width: 143
   },
   '@media (width:430px)': {
     width: 160
   },
   '@media (min-width:490px)': {
     width: 180
+  },
+   '@media (min-width:469px)': {
+    width: 178
+  },
+  '@media (min-width:490px)': {
+    width: 180
+  },
+   '@media (min-width:485px)': {
+    width: 185
   },
         marginBottom: 1,
         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.7)',
