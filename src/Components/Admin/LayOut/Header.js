@@ -221,7 +221,7 @@ const navItems = [
   { label: "2Dplans", path: "/admin-2dplans" },
   { label: "3Dplans", path: "/admin-3dplans" },
   { label: "Elevations", path: "/admin-elevation" },
-  { label: "Explore Category", path: "/admin-addcategory" },
+  { label: "Explore Category", path: "/admin-material" },
   { label: "Package", path: "/admin-packages" },
 ];
 
