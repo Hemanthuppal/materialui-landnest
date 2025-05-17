@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
-import Packages from "./packages1";
+import Packages from "./Packages1";
 import Packages2 from "./Packages2";
 import Packages3 from "./Packages3";
 import AdminDashboard from "../../Admin/Dashboard/Dashboard";

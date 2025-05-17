@@ -33,43 +33,88 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-  
-    try {
-      const response = await fetch(`${BASE_URL}/login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          identifier: email,
-          password: password
-        }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        // Save to context instead of only sessionStorage
-        login(data.user_id); // <- this sets user_id in AuthContext
-  
-        if (rememberMe) {
-          sessionStorage.setItem('isAuthenticated', 'true');
-          sessionStorage.setItem('user_id', data.user_id);
-        }
-  
-        console.log("userid=", data.user_id);
-        navigate('/dashboard');
-      } else {
-        setError(data.message || 'Invalid email or password');
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   setError('');
+
+//   try {
+//     // Get the FCM token (assuming you have this available)
+//     const fcmToken = "token123"; // You need to implement this function
+    
+//     const response = await fetch(`${BASE_URL}/login/`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         identifier: email,
+//         password: password,
+//         fcm_token: fcmToken // Include the FCM token in the request
+//       }),
+//     });
+
+//     const data = await response.json();
+
+//     if (response.ok) {
+//       login(data.user_id);
+      
+//       if (rememberMe) {
+//         sessionStorage.setItem('isAuthenticated', 'true');
+//         sessionStorage.setItem('user_id', data.user_id);
+//       }
+
+//       console.log("userid=", data.user_id);
+//       navigate('/dashboard');
+//     } else {
+//       setError(data.message || 'Invalid email or password');
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     setError('Something went wrong. Please try again later.');
+//   }
+// };
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+
+  try {
+    
+    const fcmToken = localStorage.getItem('fcmToken'); 
+    
+    const response = await fetch(`${BASE_URL}/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        identifier: email,
+        password: password,
+        fcm_token: fcmToken // Pass the FCM token from localStorage
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      login(data.user_id);
+      
+      if (rememberMe) {
+        sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('user_id', data.user_id);
       }
-    } catch (err) {
-      console.error(err);
-      setError('Something went wrong. Please try again later.');
+
+      console.log("userid=", data.user_id);
+      navigate('/dashboard');
+    } else {
+      setError(data.message || 'Invalid email or password');
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setError('Something went wrong. Please try again later.');
+  }
+};
 
   return (
     <Fade in timeout={700}>

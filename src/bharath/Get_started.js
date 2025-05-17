@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Box, Typography, TextField, Checkbox, FormControlLabel,
   Button, Container, Paper, useMediaQuery, useTheme, IconButton
@@ -76,6 +76,99 @@ function InteriorConsultationForm() {
           </Box>
         </Box>
       </Box>
+      <Box sx={{
+        padding: isMobile ? 1 : 0.5,
+        display: 'flex',
+        justifyContent: 'space-between',
+        boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
+      }}>
+        {/* Construction - Inactive */}
+        <Box
+          component={Link}
+          to="/constructions"
+          sx={{
+            flex: 1,
+            textAlign: 'center',
+            py: 2,
+            textDecoration: 'none',
+            background: `
+                linear-gradient(145deg, rgb(22, 22, 22), rgb(15, 15, 15)),
+                url('https://www.transparenttextures.com/patterns/dark-matter.png')
+              `,
+            backgroundBlendMode: 'overlay',
+            borderRight: '1px solid rgba(0,0,0,0.1)',
+            borderTopLeftRadius: '30px',
+            boxShadow: `
+                inset 0 0 15px rgba(0,0,0,0.2),
+                0 2px 5px rgba(0,0,0,0.1)
+              `,
+            transform: 'scale(0.98)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              background: `
+                  linear-gradient(145deg, rgb(35, 35, 35), rgb(25, 25, 25)),
+                  url('https://www.transparenttextures.com/patterns/dark-matter.png')
+                `,
+              transform: 'scale(1)',
+              boxShadow: `
+                  inset 0 0 20px rgba(0,0,0,0.3),
+                  0 3px 8px rgba(0,0,0,0.2)
+                `
+            }
+          }}>
+          <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+            fontWeight: 500,
+            color: 'white',
+            textShadow: '0 1px 5px rgba(0,0,0,0.7)',
+            fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+          }}>
+            Constructions
+          </Typography>
+        </Box>
+
+        {/* Interiors - Active */}
+        <Box
+          component={Link}
+          to="/interiors"
+          sx={{
+            flex: 1,
+            textAlign: 'center',
+            py: 2,
+            background: `
+                linear-gradient(145deg, rgba(232,224,208,0.95), rgba(216,204,186,0.95)),
+                url('https://www.transparenttextures.com/patterns/cream-paper.png')
+              `,
+            backgroundBlendMode: 'overlay',
+            textDecoration: 'none',
+            borderBottomRightRadius: '30px',
+            boxShadow: `
+                inset 0 0 15px rgba(0,0,0,0.1),
+                0 2px 5px rgba(0,0,0,0.08)
+              `,
+            transform: 'scale(0.98)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'scale(1)',
+              boxShadow: `
+                  inset 0 0 20px rgba(0,0,0,0.15),
+                  0 3px 8px rgba(0,0,0,0.15)
+                `
+            }
+          }}
+        >
+          <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{
+            fontWeight: 800,
+            // color: '#5d4037',
+            color: '#333333',
+            // color:"#556b2f",
+            letterSpacing: '1px',
+            textShadow: '0 1px 3px rgba(255,255,255,0.5)',
+            fontFamily: 'Inter, Roboto, Helvetica, sans-serif',
+          }}>
+            Interiors
+          </Typography>
+        </Box>
+      </Box>
 
       {/* Main Form */}
       <Box sx={{ backgroundColor: "#e7dbc9", minHeight: '100vh' }}>
@@ -88,21 +181,21 @@ function InteriorConsultationForm() {
             <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
               <TextField
                 fullWidth label="Name" margin="normal" size="small"
-                name="name" value={formData.name} onChange={handleChange}
+                name="name" value={formData.name} onChange={handleChange} disabled
               />
               <TextField
                 fullWidth label="Email ID" margin="normal" size="small"
-                name="email" value={formData.email} onChange={handleChange}
+                name="email" value={formData.email} onChange={handleChange} disabled
               />
               <TextField
                 fullWidth label="Phone" margin="normal" size="small"
-                name="phone" value={formData.phone} onChange={handleChange}
+                name="phone" value={formData.phone} onChange={handleChange} disabled
               />
 
               <FormControlLabel
                 control={<Checkbox defaultChecked color="primary" />}
                 label="Check Updates on Whatsapp"
-                sx={{ mb: 2 }}
+                sx={{ mb: 2 }} disabled
               />
 
               <Box sx={{ textAlign: 'center' }}>
