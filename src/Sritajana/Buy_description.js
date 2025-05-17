@@ -38,6 +38,44 @@ const Buy_description = () => {
     setSelectedImage(image); // Update selected image
   };
 
+
+   const handleLocationClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLong = position.coords.longitude;
+          
+          if (property?.lat && property?.long) {
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLong}&destination=${property.lat},${property.long}&travelmode=driving`;
+            window.open(mapsUrl, '_blank');
+          } else if (property?.loc) {
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.loc)}`;
+            window.open(mapsUrl, '_blank');
+          }
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+          if (property?.lat && property?.long) {
+            const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.long}`;
+            window.open(mapsUrl, '_blank');
+          } else if (property?.loc) {
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.loc)}`;
+            window.open(mapsUrl, '_blank');
+          }
+        }
+      );
+    } else {
+      if (property?.lat && property?.long) {
+        const mapsUrl = `https://www.google.com/maps/?q=${property.lat},${property.long}`;
+        window.open(mapsUrl, '_blank');
+      } else if (property?.loc) {
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.loc)}`;
+        window.open(mapsUrl, '_blank');
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,7 +115,7 @@ const Buy_description = () => {
 
   const {
     property_images = [],property_name, building_image,
-    type, price, location: loc,
+    type, price, location: loc,lat,long,
     site_area, buildup_area,no_of_flores,
     facing, roadwidth, list, length, width,
     nearby, created_at, bedrooms_count,
@@ -243,10 +281,14 @@ const Buy_description = () => {
     maxWidth: '200px', // Adjust as needed
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+     
+    
   }}
+  
+   onClick={handleLocationClick}
 >
-  <LocationOnIcon sx={{ fontSize: '16px', mr: 0.5 }} />
+  <LocationOnIcon sx={{ fontSize: '16px', mr: 0.5,color: 'primary.main' }} />
   {loc ? `${loc.substring(0, 25)}${loc.length > 25 ? '...' : ''}` : 'Not Specified'}
 </Typography>
     <Typography fontWeight="bold" fontSize="18px" color="rgb(240, 65, 30)">
