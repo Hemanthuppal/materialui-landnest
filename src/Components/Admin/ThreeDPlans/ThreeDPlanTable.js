@@ -76,14 +76,18 @@ const ThreeDPlanTable = () => {
         threeDCategoryIds.includes(plan.category_id)
       );
 
-      // Enhance plans with sub_cat information
-      const enhancedPlans = filteredPlans.map(plan => {
-        const category = allCategories.find(cat => cat.category_id === plan.category_id);
-        return {
-          ...plan,
-          sub_cat: category ? category.sub_cat : 'Unknown'
-        };
-      });
+     const sortedPlans = filteredPlans.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    // Enhance plans with sub_cat information
+    const enhancedPlans = sortedPlans.map(plan => {
+      const category = allCategories.find(cat => cat.category_id === plan.category_id);
+      return {
+        ...plan,
+        sub_cat: category ? category.sub_cat : 'Unknown'
+      };
+    });
 
       setPlans(enhancedPlans);
       setCategories(allCategories); // Store categories in state if needed elsewhere

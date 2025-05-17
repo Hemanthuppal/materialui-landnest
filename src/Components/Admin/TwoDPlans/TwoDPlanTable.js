@@ -54,44 +54,50 @@ const TwoDPlanTable = () => {
     }
   };
 
-  const fetchPlans = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch categories first and wait for completion
-      const allCategories = await fetchCategories();
-      
-      // Get all 2D categories
-      const threeDCategories = allCategories.filter(cat => cat.category === "2D");
-      const threeDCategoryIds = threeDCategories.map(cat => cat.category_id);
+const fetchPlans = async () => {
+  try {
+    setLoading(true);
+    
+    // Fetch categories first and wait for completion
+    const allCategories = await fetchCategories();
+    
+    // Get all 2D categories
+    const threeDCategories = allCategories.filter(cat => cat.category === "2D");
+    const threeDCategoryIds = threeDCategories.map(cat => cat.category_id);
 
-      // Fetch all plans
-      const planResponse = await axios.get(`${IMAGE_BASE_URL}/`);
-      const allPlans = planResponse.data;
+    // Fetch all plans
+    const planResponse = await axios.get(`${IMAGE_BASE_URL}/`);
+    const allPlans = planResponse.data;
 
-      // Filter plans whose category_id matches any in threeDCategoryIds
-      const filteredPlans = allPlans.filter(plan => 
-        threeDCategoryIds.includes(plan.category_id)
-      );
+    // Filter plans whose category_id matches any in threeDCategoryIds
+    const filteredPlans = allPlans.filter(plan => 
+      threeDCategoryIds.includes(plan.category_id)
+    );
 
-      // Enhance plans with sub_cat information
-      const enhancedPlans = filteredPlans.map(plan => {
-        const category = allCategories.find(cat => cat.category_id === plan.category_id);
-        return {
-          ...plan,
-          sub_cat: category ? category.sub_cat : 'Unknown'
-        };
-      });
+    // Sort filtered plans by created_at descending
+    const sortedPlans = filteredPlans.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
 
-      setPlans(enhancedPlans);
-      setCategories(allCategories); // Store categories in state if needed elsewhere
-    } catch (error) {
-      console.error("Error fetching plans:", error);
-      toast.error("Failed to fetch 2D plans. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Enhance plans with sub_cat information
+    const enhancedPlans = sortedPlans.map(plan => {
+      const category = allCategories.find(cat => cat.category_id === plan.category_id);
+      return {
+        ...plan,
+        sub_cat: category ? category.sub_cat : 'Unknown'
+      };
+    });
+
+    setPlans(enhancedPlans);
+    setCategories(allCategories); // Store categories in state if needed elsewhere
+  } catch (error) {
+    console.error("Error fetching plans:", error);
+    toast.error("Failed to fetch 2D plans. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchPlans();

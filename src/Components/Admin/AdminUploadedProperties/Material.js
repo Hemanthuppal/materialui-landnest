@@ -54,33 +54,41 @@ const Material = () => {
     return found ? found.category : "N/A";
   };
 
-  const fetchAll = async () => {
-    try {
-      setLoading(true);
-      const [catRes, matRes] = await Promise.all([
-        axios.get(`${API_URL}/material-categories/`),
-        axios.get(`${API_URL}/material-content/`),
-      ]);
+const fetchAll = async () => {
+  try {
+    setLoading(true);
+    const [catRes, matRes] = await Promise.all([
+      axios.get(`${API_URL}/material-categories/`),
+      axios.get(`${API_URL}/material-content/`),
+    ]);
 
-      const fetchedCategories = catRes.data;
-      setCategories(fetchedCategories);
+    const fetchedCategories = catRes.data;
+    setCategories(fetchedCategories);
 
-      const formattedMaterials = matRes.data.map((item) => ({
-        id: item.content_id,
-        category:
-          fetchedCategories.find((cat) => cat.category_id == item.category_id)
-            ?.category || "N/A",
-        category_id: item.category_id,
-        materialName: item.content,
-        image: `${API_URL}${item.image}`,
-      }));
-      setMaterials(formattedMaterials);
-    } catch (err) {
-      console.error("Error fetching materials:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Sort materials by created_at descending (most recent first)
+    const sortedMaterials = matRes.data.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    const formattedMaterials = sortedMaterials.map((item) => ({
+      id: item.content_id,
+      category:
+        fetchedCategories.find((cat) => cat.category_id == item.category_id)
+          ?.category || "N/A",
+      category_id: item.category_id,
+      materialName: item.content,
+      image: `${API_URL}${item.image}`,
+      created_at: item.created_at, // Optional: Include if needed in UI
+    }));
+
+    setMaterials(formattedMaterials);
+  } catch (err) {
+    console.error("Error fetching materials:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchAll();
@@ -167,7 +175,8 @@ const Material = () => {
   };
 
   const filteredMaterials = materials.filter((mat) =>
-    mat.materialName.toLowerCase().includes(search.toLowerCase())
+    mat.materialName.toLowerCase().includes(search.toLowerCase()) ||
+    mat.category.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleChangePage = (_, newPage) => setPage(newPage);
