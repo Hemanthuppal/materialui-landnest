@@ -134,7 +134,7 @@ const Customer = () => {
           <Table>
             <TableHead sx={{ backgroundColor: '#1976d2' }}>
               <TableRow>
-                {['ID', 'Name', 'Profession', 'Mobile', 'Email', 'Address', 'Experience', 'Status', 'Actions'].map((head) => (
+                {['ID', 'Name', 'Mobile', 'Email', 'Address',  'Status', 'Actions'].map((head) => (
                   <TableCell key={head} sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                     <strong>{head}</strong>
                   </TableCell>
@@ -149,11 +149,11 @@ const Customer = () => {
                   <TableRow key={user.id}>
                     <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{user.name}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{user.profession}</TableCell>
+                   
                     <TableCell sx={{ textAlign: 'center' }}>{user.mobile}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{user.email}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{user.address}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{user.experience}</TableCell>
+                    
                     <TableCell sx={{ textAlign: 'center' }}>{user.status}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>
                       <Stack direction="row" spacing={1} justifyContent="center">
