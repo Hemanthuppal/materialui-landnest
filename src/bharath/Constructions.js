@@ -950,9 +950,12 @@ const Constructions = () => {
                     textAlign: 'left',
                     width: '100%',
                     padding: isMobile ? 3 : 4,
+                    marginBottom: 0,
+                  
+                    '&:last-child': { paddingBottom: 1.5 }
                   }}
                 >
-                  <Typography variant="h6" component="div" fontWeight="bold" gutterBottom>
+                  <Typography variant="h6" component="div" fontWeight="bold" gutterBottom sx={{letterHeight: -1.2,}}>
                     {card.title}
                   </Typography>
                   <Typography variant="body1" component="div">

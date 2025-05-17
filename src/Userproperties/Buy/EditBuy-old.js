@@ -13,7 +13,6 @@ import { IconButton, InputAdornment } from '@mui/material';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { AuthContext } from '../../AuthContext/AuthContext';
 import { BASE_URL } from '../../Api/ApiUrls';
-import { useLocation } from 'react-router-dom';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU';
 
@@ -52,24 +51,22 @@ const GreenButton = styled(Button)({
 });
 
 const fieldMap = {
-    'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Road Width'],
-    'Plot/land': ['Site Area', 'Facing',  'Price', 'Road Width'],
-    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', '1bhk Count', '2bhk Count', 'Duplex Bedrooms','Lift', 'Road Width'],
-    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', 'Duplex Bedrooms','Lift', 'Road Width'],
-    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', '1bhk Count', '2bhk Count', '3bhk Count','Lift', 'Road Width'],
-    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms Count', 'Floors', 'Borewell', 'No.of Cars Parking', 'Lift', 'Road Width', 'Buildup Area'],
-    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Lift', 'Road Width', 'Buildup Area'],
-    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'Lift', 'Road Width', 'Buildup Area'],
-    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop Count', 'No.of Cars Parking', 'Borewell', 'Floors', 'Lift', 'Road Width', 'Buildup Area'],
-    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House Count', '1bhk Count', '2bhk Count', '3bhk Count', '4bhk Count', 'Lift', 'Road Width', 'Buildup Area'],
-    'Others': ['Price', 'Road Width'],
+    'Commercial land/plot': ['Site Area', 'Facing', 'Price', 'Roadwidth'],
+    'Plot/land': ['Site Area', 'Facing', 'Price', 'Roadwidth'],
+    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms', 'lift', 'Roadwidth'],
+    'Duplex house': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', 'Duplex bedrooms', 'lift', 'Roadwidth'],
+    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', '3bhk-count', 'lift', 'Roadwidth'],
+    'Pg-offices': ['Property Name', 'Site Area', 'Facing', 'Price', 'Rooms-count', 'Floors', 'Borewell', 'No.of Cars Parking', 'lift', 'Roadwidth', 'Buildup area'],
+    'Flat': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'lift', 'Roadwidth', 'Buildup area'],
+    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Commercial building': ['Property Name', 'Site Area', 'Facing', 'Price', 'Shop-count', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Apartment': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Cars Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'lift', 'Roadwidth', 'Buildup area'],
+    'Others': ['Price', 'Roadwidth'],
 };
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
- const yesNoOptions = ['Yes', 'No'];
-
-const EditSellProperty = () => { 
+const EditSellProperty = () => {
     const { menuPropertyId } = useParams();
     const [workPhotos, setWorkPhotos] = useState([]);
     const [existingImages, setExistingImages] = useState([]);
@@ -79,16 +76,6 @@ const EditSellProperty = () => {
     const [postedBy, setPostedBy] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 const [deletedImageIds, setDeletedImageIds] = useState([]);
-const locationn = useLocation();
-const type = locationn.state?.type || "sell"; // fallback to sell
-
- const generateNumberOptions = (max = 50) => {
-    const options = [];
-    for (let i = 0; i <= max; i++) {
-        options.push(i);
-    }
-    return options;
-};
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
@@ -203,25 +190,25 @@ const type = locationn.state?.type || "sell"; // fallback to sell
                     'site_area': 'Site Area',
                     'facing': 'Facing',
                     'price': 'Price',
-                    'no_of_flores': 'No.of Floors',
+                    'no_of_flores': 'No of floors',
                     'no_of_flores': 'Floors',
-                    'buildup_area': 'Buildup Area',
+                    'buildup_area': 'Buildup area',
                     'borewell': 'Borewell',
                     'parking': 'No.of Cars Parking',
-                    '_1bhk_count': '1bhk Count',
-                    '_2bhk_count': '2bhk Count',
-                    '_3bhk_count': '3bhk Count',
-                    //  '_1bhk_count': '1bhk',
-                    // '_2bhk_count': '2bhk',
-                    // '_3bhk_count': '3bhk',
-                    '_4bhk_count': '4bhk Count',
-                    'lift': 'Lift',
-                    'duplex_bedrooms': 'Duplex Bedrooms',
-                    'rooms_count': 'Rooms Count',
+                    '_1bhk_count': '1bhk-count',
+                    '_2bhk_count': '2bhk-count',
+                    '_3bhk_count': '3bhk-count',
+                     '_1bhk_count': '1bhk',
+                    '_2bhk_count': '2bhk',
+                    '_3bhk_count': '3bhk',
+                    '_4bhk_count': '4bhk',
+                    'lift': 'lift',
+                    'duplex_bedrooms': 'Duplex bedrooms',
+                    'rooms_count': 'Rooms-count',
                     'bedrooms_count': 'No.of Bedrooms',
-                    'shop_count': 'Shop Count',
-                    'house_count': 'House Count',
-                    'roadwidth': 'Road Width',
+                    'shop_count': 'Shop-count',
+                    'house_count': 'House-count',
+                    'roadwidth': 'Roadwidth',
                     'length': 'Length',
                     'width': 'Width',
                     'property_name': 'Property Name'
@@ -400,32 +387,31 @@ const type = locationn.state?.type || "sell"; // fallback to sell
         }
     };
 
-   const labelKeyMap = {
+    const labelKeyMap = {
         'Site Area': 'site_area',
         'Facing': 'facing',
         'Price': 'price',
-        'No.of Floors': 'no_of_flores',
-        'Buildup Area': 'buildup_area',
+        'No of floors': 'no_of_flores',
+        'Buildup area': 'buildup_area',
         'Borewell': 'borewell',
-        'Lift': 'lift',
         'No.of Cars Parking': 'parking',
-        '1bhk Count': '_1bhk_count',
-        '2bhk Count': '_2bhk_count',
-        '3bhk Count': '_3bhk_count',
-        'Duplex Bedrooms': 'duplex_bedrooms',
+        '1bhk-count': '_1bhk_count',
+        '2bhk-count': '_2bhk_count',
+        '3bhk-count': '_3bhk_count',
+        'Duplex bedrooms': 'duplex_bedrooms',
         'Floors': 'no_of_flores',
-        'Rooms Count': 'rooms_count',
-        // 'Bedrooms-count': 'bedrooms_count',
+        'Rooms-count': 'rooms_count',
         'No.of Bedrooms': 'bedrooms_count',
-        'Shop Count': 'shop_count',
-        'House Count': 'house_count',
-        // '1bhk': '_1bhk_count',
-        // '2bhk': '_2bhk_count',
-        // '3bhk': '_3bhk_count',
-        '4bhk Count': '_4bhk_count',
-        'Road Width': 'roadwidth',
+        'Shop-count': 'shop_count',
+        'House-count': 'house_count',
+        '1bhk': '_1bhk_count',
+        '2bhk': '_2bhk_count',
+        '3bhk': '_3bhk_count',
+        '4bhk': '_4bhk_count',
+        'Roadwidth': 'roadwidth',
         'Length': 'length',
         'Width': 'width',
+        'lift': 'lift',
         'Property Name': 'property_name'
     };
 
@@ -631,14 +617,13 @@ const type = locationn.state?.type || "sell"; // fallback to sell
             <SearchBar onBackClick={handleBackClick} />
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)' }}>
                 <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
-                   <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-  {type == 'best-deal' ? 'Edit Post Property With Landnest' : 'Edit Sell Property'}
-</Typography>
-
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                        Edit Sell Property
+                    </Typography>
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
                         <FormControl fullWidth sx={{ mb: 3 }}>
-                            <InputLabel id="category-label">Select Property Type</InputLabel>
+                            <InputLabel id="category-label">Select Category</InputLabel>
                             <Select
                                 labelId="category-label"
                                 value={selectedCategory}
@@ -666,7 +651,7 @@ const type = locationn.state?.type || "sell"; // fallback to sell
                         {fields.includes('Site Area') && (
                             <Box key="Site Area" sx={{ mb: 2 }}>
                                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                                    Site Dimensions
+                                    Site Area
                                 </Typography>
                                 <Stack direction="row" spacing={2}>
                                     <TextField 
@@ -706,82 +691,37 @@ const type = locationn.state?.type || "sell"; // fallback to sell
                             </Box>
                         )}
 
-                                         {fields.map((label) => {
-                         if (label == 'Site Area') return null;
-                     
-                         if (label == 'Facing') {
-                             return (
-                                 <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                     <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                     <Select
-                                         labelId={`${label}-label`}
-                                         value={formValues[label] || ''}
-                                         label={label}
-                                         onChange={(e) => handleFieldChange(label, e.target.value)}
-                                     >
-                                         {facingOptions.map(option => (
-                                             <MenuItem key={option} value={option}>{option}</MenuItem>
-                                         ))}
-                                     </Select>
-                                 </FormControl>
-                             );
-                         }
-                     
-                         if (label == 'Borewell' || label == 'Lift') {
-                             return (
-                                 <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                     <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                     <Select
-                                         labelId={`${label}-label`}
-                                         value={formValues[label] || ''}
-                                         label={label}
-                                         onChange={(e) => handleFieldChange(label, e.target.value)}
-                                     >
-                                         {yesNoOptions.map(option => (
-                                             <MenuItem key={option} value={option}>{option}</MenuItem>
-                                         ))}
-                                     </Select>
-                                 </FormControl>
-                             );
-                         }
-                     
-                         if (label == 'No.of Cars Parking' || label == 'No.of Floors' || label == 'Floors' || label == 'No.of Bedrooms' || label == 'Rooms Count' || label == 'Shop Count' || label == 'House Count' || label == 'Duplex Bedrooms' || label == '1bhk Count' || label == '2bhk Count' || label == '3bhk Count') {
-                             return (
-                                 <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                     <InputLabel id={`${label}-label`}>{label}</InputLabel>  
-                                     <Select
-                                         labelId={`${label}-label`}
-                                         value={formValues[label] || ''}
-                                         label={label}
-                                         onChange={(e) => handleFieldChange(label, e.target.value)}
-                                         MenuProps={{
-                                             PaperProps: {
-                                                 style: {
-                                                     maxHeight: 200, // Limits dropdown height and adds scroll
-                                                 },
-                                             },
-                                         }}
-                                     >
-                                         {generateNumberOptions().map(number => (
-                                             <MenuItem key={number} value={number}>{number}</MenuItem>
-                                         ))}
-                                     </Select>
-                                 </FormControl>
-                             );
-                         }
-                     
-                         return (
-                             <TextField
-                                 key={label}
-                                 fullWidth
-                                 label={label}
-                                 variant="outlined"
-                                 sx={{ mb: 2 }}
-                                 value={formValues[label] || ''}
-                                 onChange={(e) => handleFieldChange(label, e.target.value)}
-                             />
-                         );
-                     })}
+                        {fields.map((label) => {
+                            if (label == 'Site Area') return null;
+                            if (label == 'Facing') {
+                                return (
+                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                        <Select
+                                            labelId={`${label}-label`}
+                                            value={formValues[label] || ''}
+                                            label={label}
+                                            onChange={(e) => handleFieldChange(label, e.target.value)}
+                                        >
+                                            {facingOptions.map(option => (
+                                                <MenuItem key={option} value={option}>{option}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                );
+                            }
+                            return (
+                                <TextField
+                                    key={label}
+                                    fullWidth
+                                    label={label}
+                                    variant="outlined"
+                                    sx={{ mb: 2 }}
+                                    value={formValues[label] || ''}
+                                    onChange={(e) => handleFieldChange(label, e.target.value)}
+                                />
+                            );
+                        })}
 
                         {/* Location Section */}
                         <Box sx={{ mb: 2 }}>

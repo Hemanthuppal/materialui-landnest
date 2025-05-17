@@ -5,6 +5,10 @@ import {
   Stack,
   Box,
   Typography,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -13,22 +17,44 @@ import { BASE_URL } from "../../../Api/ApiUrls"; // adjust path as needed
 
 const API_BASE_URL = `${BASE_URL}`;
 const IMAGE_BASE_URL = `${API_BASE_URL}/construction-content`;
+const CATEGORY_BASE_URL = `${API_BASE_URL}/construction-categories/`; // Assuming this is your categories endpoint
 
 const TwoDPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
-  const { userId } = useContext(AuthContext); // assuming context provides user object
+  const { userId } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+useEffect(() => {
+  // Fetch categories when component mounts
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(CATEGORY_BASE_URL);
+      const filtered = response.data.filter(cat => cat.category == "2D");
+      setCategories(filtered);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      toast.error("Failed to load categories");
+    }
+  };
+
+  fetchCategories();
+}, []);
+
 
   useEffect(() => {
     if (editPlan) {
       setName(editPlan.content || "");
       setPreview(`${API_BASE_URL}${editPlan.image}`);
       setImage(null);
+      setSelectedCategory(editPlan.category_id || "");
     } else {
       setName("");
       setImage(null);
       setPreview("");
+      setSelectedCategory("");
     }
   }, [editPlan]);
 
@@ -48,10 +74,15 @@ const TwoDPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
       return;
     }
 
+    if (!selectedCategory) {
+      toast.error("Category is required");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("content", name);
-    formData.append("category_id", 1); // 2D Plan category
-    formData.append("user_id", 1); // assuming user has an 'id' field
+    formData.append("category_id", selectedCategory);
+    formData.append("user_id", userId); // using the actual user ID from context
     if (image) formData.append("image", image);
 
     try {
@@ -73,6 +104,24 @@ const TwoDPlanForm = ({ editPlan, onCancel, fetchPlans }) => {
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate>
       <Stack spacing={2}>
+        <FormControl fullWidth>
+          <InputLabel id="category-label">Category</InputLabel>
+          <Select
+            labelId="category-label"
+            id="category"
+            value={selectedCategory}
+            label="Category"
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            required
+          >
+            {categories.map((category) => (
+              <MenuItem key={category.category_id} value={category.category_id}>
+                {category.sub_cat}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <TextField
           label="Plan Name"
           fullWidth

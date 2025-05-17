@@ -35,11 +35,11 @@ import { useLocation } from 'react-router-dom';
 
 const PropertyCard = () => {
   const navigate = useNavigate();
-   const location = useLocation();
+   const locationn = useLocation();
   const { userId, logout } = useContext(AuthContext);
   const [searchQuery, setSearchQuery] = useState('');
    const [anchorEl, setAnchorEl] = useState(null);
-   const passedType = location.state?.type?.toLowerCase();
+   const passedType = locationn.state?.type?.toLowerCase();
     const [menuPropertyId, setMenuPropertyId] = useState(null);
   const [saved, setSaved] = useState(() => {
     const stored = localStorage.getItem('savedBuy');
@@ -69,8 +69,10 @@ const PropertyCard = () => {
     setMenuPropertyId(null);
   };
 
-  const handleEdit = () => {
-  navigate(`/user-edit-buy/${menuPropertyId}`);
+ const handleEdit = () => {
+  navigate(`/user-edit-buy/${menuPropertyId}`, {
+    state: { type: locationn.state?.type || "sell" }, // fallback to "sell" if not found
+  });
 };
 
   const handleDelete = async () => {
