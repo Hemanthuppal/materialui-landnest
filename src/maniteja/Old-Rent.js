@@ -50,17 +50,17 @@ const GreenButton = styled(Button)({
 });
 
 const fieldMap = {
-    '1BHK': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area'], 
-    '2BHK': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area'],
-    '3BHK': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area'],
-    '4+BHK': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area'],
-    'Plot/land': ['Property Name', 'Facing', 'Price Per Month', 'Area'],
-    'Duplex house': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area'],
-    'Commercial land': ['Property Name', 'Facing', 'Price Per Month', 'Area'],
-    'Commercial building/space': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area', 'No.of Floors'],
-    'Villa': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area'],
-    'Pg-school-office': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area', 'No.of Floors', 'Rooms Count'],
-    'Shopping mall/shop': ['Property Name', 'Facing', 'Price Per Month', 'No.of Cars Parking', 'Area', 'No.of Floors'],
+    '1BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'], 
+    '2BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    '3BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    '4+BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    'Plot/land': ['Property Name', 'Facing', 'Price', 'Area'],
+    'Duplex house': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    'Commercial land': ['Property Name', 'Facing', 'Price', 'Area'],
+    'Commercial building/space': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area', 'No.of floors'],
+    'Villa': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area'],
+    'Pg-school-office': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area', 'No.of floors', 'Rooms-Count'],
+    'Shopping mall/shop': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Area', 'No.of floors'],
 };
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
@@ -72,14 +72,6 @@ const RentForm = () => {
      const [apiHitCount, setApiHitCount] = useState(0);
         const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
          const [postedBy, setPostedBy] = useState('');
-
-         const generateNumberOptions = (max = 50) => {
-    const options = [];
-    for (let i = 0; i <= max; i++) {
-        options.push(i);
-    }
-    return options;
-};
             
                 const handleChange = (event) => {
                     const value = event.target.value;
@@ -113,7 +105,7 @@ const RentForm = () => {
         if (e.target.files) {
             setWorkPhotos(Array.from(e.target.files));
         }
-    }; 
+    };
 
     const [formData, setFormData] = useState({
         user_id: userId, // This should probably come from user auth
@@ -327,11 +319,11 @@ const getCurrentLocation = () => {
 
     const labelKeyMap = {
         'Facing': 'facing',
-        'Price Per Month': 'price',
+        'Price': 'price',
         'No.of Cars Parking': 'parking',
         'Area': 'site_area',
-        'No.of Floors': 'no_of_flores',
-        'Rooms Count': 'rooms_count',
+        'No.of floors': 'no_of_flores',
+        'Rooms-Count': 'rooms_count',
         'Property Name': 'property_name'
         // Add others as needed
     };
@@ -453,7 +445,7 @@ const getCurrentLocation = () => {
         Rent Property Form
       </Typography>
                          <FormControl fullWidth sx={{ mb: 3 }}>
-                           <InputLabel id="category-label">Select Propert Type</InputLabel>
+                           <InputLabel id="category-label">Select Category</InputLabel>
                            <Select
                                labelId="category-label"
                                value={selectedCategory}
@@ -480,61 +472,36 @@ const getCurrentLocation = () => {
                            </Select>
                        </FormControl>
                        
+                       
+                       
                        {selectedCategory &&
-                           fieldMap[selectedCategory]?.map((label) => {
-                               if (label == 'Facing') {
-                                   return (
-                                       <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                           <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                           <Select
-                                               labelId={`${label}-label`}
-                                               value={formValues[label] || ''}
-                                               label={label}
-                                               onChange={(e) => handleFieldChange(label, e.target.value)}
-                                           >
-                                               {facingOptions.map(option => (
-                                                   <MenuItem key={option} value={option}>{option}</MenuItem>
-                                               ))}
-                                           </Select>
-                                       </FormControl>
-                                   );
-                               } else if (label == 'No.of Cars Parking' || label == 'No.of Floors' || label == 'Rooms Count') {
-                                   return (
-                                       <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                           <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                           <Select
-                                               labelId={`${label}-label`}
-                                               value={formValues[label] || ''}
-                                               label={label}
-                                               onChange={(e) => handleFieldChange(label, e.target.value)}
-                                               MenuProps={{
-                                                   PaperProps: {
-                                                       style: {
-                                                           maxHeight: 200, // Limits dropdown height and adds scroll
-                                                       },
-                                                   },
-                                               }}
-                                           >
-                                               {generateNumberOptions().map(number => (
-                                                   <MenuItem key={number} value={number}>{number}</MenuItem>
-                                               ))}
-                                           </Select>
-                                       </FormControl>
-                                   );
-                               } else {
-                                   return (
-                                       <TextField
-                                           key={label}
-                                           fullWidth
-                                           label={label}
-                                           variant="outlined"
-                                           sx={{ mb: 2 }}
+                           fieldMap[selectedCategory]?.map((label) => (
+                               label == 'Facing' ? (
+                                   <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                       <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                       <Select
+                                           labelId={`${label}-label`}
                                            value={formValues[label] || ''}
+                                           label={label}
                                            onChange={(e) => handleFieldChange(label, e.target.value)}
-                                       />
-                                   );
-                               }
-                           })
+                                       >
+                                           {facingOptions.map(option => (
+                                               <MenuItem key={option} value={option}>{option}</MenuItem>
+                                           ))}
+                                       </Select>
+                                   </FormControl>
+                               ) : (
+                                   <TextField
+                                       key={label}
+                                       fullWidth
+                                       label={label}
+                                       variant="outlined"
+                                       sx={{ mb: 2 }}
+                                       value={formValues[label] || ''}
+                                       onChange={(e) => handleFieldChange(label, e.target.value)}
+                                   />
+                               )
+                           ))
                        }
 
                         {/* Location Section */}

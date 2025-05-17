@@ -1,172 +1,3 @@
-// import React, { useState, useRef } from 'react';
-// import {
-//     Box, Typography, TextField, Button, Paper, Stack, styled
-// } from '@mui/material';
-// import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
-// import SearchBar from './FormsSearchBar';
-// import FormsBottomNavbar from './FormsBottomNavbar';
-// import { useNavigate } from 'react-router-dom';
-
-// const GOOGLE_MAPS_API_KEY = 'AIzaSyAZAU88Lr8CEkiFP_vXpkbnu1-g-PRigXU'; // Replace with your actual API key
-
-// const containerStyle = {
-//     width: '100%',
-//     height: '300px',
-// };
-
-// const centerDefault = {
-//     lat: 18.387449,
-//     lng: 78.803236,
-// };
-
-// // ✅ Styled buttons
-// const RedButton = styled(Button)({
-//     backgroundColor: 'red',
-//     color: 'white',
-//     '&:hover': { backgroundColor: '#cc0000' },
-// });
-// const GreenButton = styled(Button)({
-//     backgroundColor: 'green',
-//     color: 'white',
-//     '&:hover': { backgroundColor: '#008000' },
-// });
-// const PostYourBestDeal = () => {
-//      const { isLoaded } = useJsApiLoader({
-//                 id: 'google-map-script',
-//                 googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-//                 libraries: ['places'],
-//             });
-//     const [location, setLocation] = useState(centerDefault);
-//     const [address, setAddress] = useState('');
-//     const autocompleteRef = useRef(null);
-//     const navigate = useNavigate();
-
-//     // ✅ Handle selection from Google Places dropdown
-//     const onPlaceChanged = () => {
-//         if (autocompleteRef.current) {
-//         const place = autocompleteRef.current.getPlace();
-//         if (place && place.geometry) {
-//             const newLoc = {
-//                 lat: place.geometry.location.lat(),
-//                 lng: place.geometry.location.lng(),
-//             };
-//             setLocation(newLoc);
-//             setAddress(place.formatted_address);
-//         }
-//     }
-//     };
-
-//     // ✅ Handle manual address entry
-//     const geocodeAddress = async () => {
-//         if (window.google && window.google.maps) {
-//         const geocoder = new window.google.maps.Geocoder();
-//         geocoder.geocode({ address }, (results, status) => {
-//             if (status == 'OK' && results[0]) {
-//                 const location = results[0].geometry.location;
-//                 setLocation({
-//                     lat: location.lat(),
-//                     lng: location.lng(),
-//                 });
-//                 setAddress(results[0].formatted_address);
-//             } else {
-//                 alert('Address could not be located. Please check input.');
-//             }
-//         });
-//     }
-//     };
-
-//     // ✅ Optional callback handlers for SearchBar
-//     const handleBackClick = () => {
-//         navigate(-1);
-//     };
-
-//     const handleSearchClick = () => {
-//         console.log('Search icon clicked');
-//     };
-
-//     const handleFilterClick = () => {
-//         console.log('Filter icon clicked');
-//     };
-//      if (!isLoaded) {
-//                 return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-//                     <Typography>Loading Google Maps...</Typography>
-//                 </Box>;
-//             }
-
-//     return (
-//         <>
-//             {/* ✅ Add SearchBar at the top */}
-//             <SearchBar
-//                 onBackClick={handleBackClick}
-//                 onSearchClick={handleSearchClick}
-//                 onFilterClick={handleFilterClick}
-//             />
-//             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt:'10px', backgroundColor: 'rgb(239, 231, 221)' }}>
-//             <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 'md', mx: 'auto' }}>
-//                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-//                     Post Your Best Deal
-//                 </Typography>
-
-//                 <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }}>
-//                     {/* ✅ Basic Input Fields */}
-//                     <TextField fullWidth label="Property Type" variant="outlined" sx={{ mb: 2 }} />
-//                     <TextField fullWidth label="Budget" variant="outlined" sx={{ mb: 2 }} />
-
-//                     {/* ✅ Location Search using Google Autocomplete */}
-//                     <Autocomplete
-//                         onLoad={ref => (autocompleteRef.current = ref)}
-//                         onPlaceChanged={onPlaceChanged}
-//                     >
-//                         <TextField
-//                             fullWidth
-//                             label="Location"
-//                             variant="outlined"
-//                             value={address}
-//                             onChange={e => setAddress(e.target.value)}
-//                             onBlur={geocodeAddress}
-//                             sx={{ mb: 2 }}
-//                         />
-//                     </Autocomplete>
-
-//                     {/* ✅ Google Map and Marker */}
-//                     <GoogleMap
-//                         mapContainerStyle={containerStyle}
-//                         center={location}
-//                         zoom={15}
-//                     >
-//                         <Marker position={location} />
-//                     </GoogleMap>
-
-//                     <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-//                         Description
-//                     </Typography>
-//                     <TextField fullWidth variant="outlined" multiline rows={4} />
-//                     <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
-//                         <RedButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}  
-//                         onClick={() => navigate(-1)}>
-//                             Cancel
-//                         </RedButton>
-//                         <GreenButton variant="contained" size="large" sx={{ px: 4, fontWeight: 'bold' }}>
-//                             Submit
-//                         </GreenButton>
-//                     </Stack>
-//                 </Paper>
-//                 <Box sx={{ height: '70px' }} />
-
-//             </Box>
-//             </Box>
-//             <FormsBottomNavbar />
-//         </>
-//     );
-// };
-
-// export default PostYourBestDeal;
-
-
-
-
-
-
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import {
     Box, Typography, TextField, Button, Select, MenuItem,
@@ -234,37 +65,27 @@ const GreenButton = styled(Button)({
 // };
 
 const fieldMap = {
-    'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Road Width'],
-    'Plot/land': ['Site Area', 'Facing',  'Price', 'Road Width'],
-    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', '1bhk Count', '2bhk Count', 'Duplex Bedrooms','Lift', 'Road Width'],
-    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', 'Duplex Bedrooms','Lift', 'Road Width'],
-    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', '1bhk Count', '2bhk Count', '3bhk Count','Lift', 'Road Width'],
-    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms Count', 'Floors', 'Borewell', 'No.of Cars Parking', 'Lift', 'Road Width', 'Buildup Area'],
-    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Lift', 'Road Width', 'Buildup Area'],
-    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'Lift', 'Road Width', 'Buildup Area'],
-    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop Count', 'No.of Cars Parking', 'Borewell', 'Floors', 'Lift', 'Road Width', 'Buildup Area'],
-    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House Count', '1bhk Count', '2bhk Count', '3bhk Count', '4bhk Count', 'Lift', 'Road Width', 'Buildup Area'],
-    'Others': ['Price', 'Road Width'],
+    'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'Plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms','lift', 'Roadwidth'],
+    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', 'Duplex bedrooms','lift', 'Roadwidth'],
+    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', '3bhk-count','lift', 'Roadwidth'],
+    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'No.of Cars Parking', 'lift', 'Roadwidth', 'Buildup area'],
+    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'lift', 'Roadwidth', 'Buildup area'],
+    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'lift', 'Roadwidth', 'Buildup area'],
+    'Others': ['Price', 'Roadwidth'],
 };
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
- const yesNoOptions = ['Yes', 'No'];
-
-const PostYourBestDeal = () => {
+const SellYourProperty = () => {
     const [workPhotos, setWorkPhotos] = useState([]);
     const { userId, logout } = useContext(AuthContext);
     const [apiHitCount, setApiHitCount] = useState(0);
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
     const [postedBy, setPostedBy] = useState('');
-
-       const generateNumberOptions = (max = 50) => {
-    const options = [];
-    for (let i = 0; i <= max; i++) {
-        options.push(i);
-    }
-    return options;
-};
 
     const handleChange = (event) => {
         const value = event.target.value;
@@ -283,9 +104,9 @@ const PostYourBestDeal = () => {
     };
     
     const [formData, setFormData] = useState({
-        user_id: userId, 
-        category_id: '1', 
-        // type: 'sell',
+        user_id: userId,
+        category_id: '16', 
+        type: 'sell',
         mobile_no: '',
         facing: '',
         roadwidth: '',
@@ -317,8 +138,7 @@ const PostYourBestDeal = () => {
         rooms_count: '',
         shop_count: '',
         house_count: '',
-         property_name: '',
-        lift: ''
+        property_name: ''
     });
 
     const { isLoaded } = useJsApiLoader({
@@ -468,27 +288,24 @@ useEffect(() => {
         'Site Area': 'site_area',
         'Facing': 'facing',
         'Price': 'price',
-        'No.of Floors': 'no_of_flores',
-        'Buildup Area': 'buildup_area',
+        'No.of floors': 'no_of_flores',
+        'Buildup area': 'buildup_area',
         'Borewell': 'borewell',
-        'Lift': 'lift',
         'No.of Cars Parking': 'parking',
-        '1bhk Count': '_1bhk_count',
-        '2bhk Count': '_2bhk_count',
-        '3bhk Count': '_3bhk_count',
-        '4bhk Count': '_4bhk_count',
-        'Duplex Bedrooms': 'duplex_bedrooms',
+        '1bhk-count': '_1bhk_count',
+        '2bhk-count': '_2bhk_count',
+        '3bhk-count': '_3bhk_count',
+        'Duplex bedrooms': 'duplex_bedrooms',
         'Floors': 'no_of_flores',
-        'Rooms Count': 'rooms_count',
-        // 'Bedrooms-count': 'bedrooms_count',
-        'No.of Bedrooms': 'bedrooms_count',
-        'Shop Count': 'shop_count',
-        'House Count': 'house_count',
+        'Rooms-Count': 'rooms_count',
+        'Bedrooms-count': 'bedrooms_count',
+        'Shop-count': 'shop_count',
+        'House-count': 'house_count',
         '1bhk': '_1bhk_count',
         '2bhk': '_2bhk_count',
         '3bhk': '_3bhk_count',
-        
-        'Road Width': 'roadwidth',
+        '4bhk': '_4bhk_count',
+        'Roadwidth': 'roadwidth',
         'Length': 'length',
         'Width': 'width',
         'Property Name': 'property_name'
@@ -514,7 +331,7 @@ useEffect(() => {
           geocoder.geocode({ location: { lat, lng } }, (results, status) => {
             if (status == 'OK' && results[0]) {
               setAddress(results[0].formatted_address);
-            } else { 
+            } else {
               setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
             }
           });
@@ -575,8 +392,6 @@ useEffect(() => {
             long: location.lng.toString(),
             location: address,
             site_area: site_area.toString(),
-            type: 'best-deal',
-            Admin_status: 'Pending'
             // mobile_no: formData.mobile_no
         };
     
@@ -650,7 +465,7 @@ useEffect(() => {
 
     return (
         <>
-            <SearchBar onBackClick={handleBackClick} /> 
+            <SearchBar onBackClick={handleBackClick} />
                       <Box
              sx={{
                display: 'flex',
@@ -686,10 +501,10 @@ useEffect(() => {
                    gutterBottom
                    sx={{ fontWeight: 'bold',mb: 3, textAlign: 'center' }}
                  >
-                   Post Your Best Deal
+                   Sell Your Property
                  </Typography>
                         <FormControl fullWidth sx={{ mb: 3 }}>
-                            <InputLabel id="category-label">Select Property Type</InputLabel>
+                            <InputLabel id="category-label">Select Category</InputLabel>
                             <Select
                                 labelId="category-label"
                                 value={selectedCategory}
@@ -717,7 +532,7 @@ useEffect(() => {
                         {fields.includes('Site Area') && (
     <Box key="Site Area" sx={{ mb: 2 }}>
         <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-            Site Dimensions
+            Site Area
         </Typography>
         <Stack direction="row" spacing={2}>
             <TextField 
@@ -757,83 +572,37 @@ useEffect(() => {
         </Stack>
     </Box>
 )}
-                                             {fields.map((label) => {
-                          if (label == 'Site Area') return null;
-                      
-                          if (label == 'Facing') {
-                              return (
-                                  <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                      <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                      <Select
-                                          labelId={`${label}-label`}
-                                          value={formValues[label] || ''}
-                                          label={label}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                      >
-                                          {facingOptions.map(option => (
-                                              <MenuItem key={option} value={option}>{option}</MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                              );
-                          }
-                      
-                          if (label == 'Borewell' || label == 'Lift') {
-                              return (
-                                  <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                      <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                      <Select
-                                          labelId={`${label}-label`}
-                                          value={formValues[label] || ''}
-                                          label={label}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                      >
-                                          {yesNoOptions.map(option => (
-                                              <MenuItem key={option} value={option}>{option}</MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                              );
-                          }
-                      
-                          if (label == 'No.of Cars Parking' || label == 'No.of Floors' || label == 'Floors' || label == 'No.of Bedrooms' || label == 'Rooms Count' || label == 'Shop Count' || label == 'House Count' || label == 'Duplex Bedrooms' || label == '1bhk Count' || label == '2bhk Count' || label == '3bhk Count' || label == '1bhk' || label == '2bhk' || label == '3bhk') {
-                              return (
-                                  <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                      <InputLabel id={`${label}-label`}>{label}</InputLabel>  
-                                      <Select
-                                          labelId={`${label}-label`}
-                                          value={formValues[label] || ''}
-                                          label={label}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                          MenuProps={{
-                                              PaperProps: {
-                                                  style: {
-                                                      maxHeight: 200, // Limits dropdown height and adds scroll
-                                                  },
-                                              },
-                                          }}
-                                      >
-                                          {generateNumberOptions().map(number => (
-                                              <MenuItem key={number} value={number}>{number}</MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                              );
-                          }
-                      
-                          return (
-                              <TextField
-                                  key={label}
-                                  fullWidth
-                                  label={label}
-                                  variant="outlined"
-                                  sx={{ mb: 2 }}
-                                  value={formValues[label] || ''}
-                                  onChange={(e) => handleFieldChange(label, e.target.value)}
-                              />
-                          );
-                      })}
-                      
+                        {fields.map((label) => {
+                            if (label == 'Site Area') return null;
+                            if (label == 'Facing') {
+                                return (
+                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                        <Select
+                                            labelId={`${label}-label`}
+                                            value={formValues[label] || ''}
+                                            label={label}
+                                            onChange={(e) => handleFieldChange(label, e.target.value)}
+                                        >
+                                            {facingOptions.map(option => (
+                                                <MenuItem key={option} value={option}>{option}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                );
+                            }
+                            return (
+                                <TextField
+                                    key={label}
+                                    fullWidth
+                                    label={label}
+                                    variant="outlined"
+                                    sx={{ mb: 2 }}
+                                    value={formValues[label] || ''}
+                                    onChange={(e) => handleFieldChange(label, e.target.value)}
+                                />
+                            );
+                        })}
 
                         {/* Location Section */}
                     {/* Location Section */}
@@ -917,9 +686,9 @@ useEffect(() => {
           label="Posted by"
           onChange={handleChange}
         >
-          <MenuItem value="owner">Owner</MenuItem>
-          <MenuItem value="agent">Agent</MenuItem>
-          <MenuItem value="builder">Builder</MenuItem>
+          <MenuItem value="Owner">Owner</MenuItem>
+          <MenuItem value="Agent">Agent</MenuItem>
+          <MenuItem value="Builder">Builder</MenuItem>
         </Select>
       </FormControl>
 
@@ -951,4 +720,4 @@ useEffect(() => {
     );
 };
 
-export default PostYourBestDeal;
+export default SellYourProperty;

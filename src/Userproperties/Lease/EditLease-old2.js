@@ -50,23 +50,23 @@ const GreenButton = styled(Button)({
     '&:hover': { backgroundColor: '#008000' },
 });
 
-const fieldMap  = { 
-    '1BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
-    '2BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
-    '3BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
-    '4+BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
-    'Plot/land': ['Property Name', 'Facing', 'Lease Amount', 'Approx Area'],
-    'Duplex house': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
-    'Commercial land': ['Property Name', 'Facing', 'Lease Amount', 'Approx Area'],
-    'Commercial building/space': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area', 'No.of Floors'],
-    'Villa': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
-    'Pg-school-office': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area', 'No.of Floors', 'Rooms Count'],
-    'Shopping mall/shop': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area', 'No.of Floors'],
-}; 
+const fieldMap = {
+    '1BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    '2BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    '3BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    '4+BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    'Plot/land': ['Property Name', 'Facing', 'Price', 'Approx Area'],
+    'Duplex house': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    'Commercial land': ['Property Name', 'Facing', 'Price', 'Approx Area'],
+    'Commercial building/space': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors'],
+    'Villa': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
+    'Pg-school-office': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
+    'Shopping mall/shop': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors'],
+};
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
-const EditRentForm = () => { 
+const EditLeaseForm = () => {
     const { menuPropertyId } = useParams();
     console.log("menuPropertyId:", menuPropertyId);
     const [workPhotos, setWorkPhotos] = useState([]);
@@ -76,15 +76,7 @@ const EditRentForm = () => {
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
     const [postedBy, setPostedBy] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-     const [deletedImageIds, setDeletedImageIds] = useState([]);
-
-       const generateNumberOptions = (max = 50) => {
-    const options = [];
-    for (let i = 0; i <= max; i++) {
-        options.push(i);
-    }
-    return options;
-};
+  const [deletedImageIds, setDeletedImageIds] = useState([]);
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -133,7 +125,7 @@ const EditRentForm = () => {
                         );
                         const data = await response.json();
 
-                        if (data.status == 'OK' && data.results.length > 0) {
+                        if (data.status === 'OK' && data.results.length > 0) {
                             const address = data.results[0].formatted_address;
                             setAddress(address);
                         } else {
@@ -231,11 +223,11 @@ const EditRentForm = () => {
                 const initialFormValues = {};
                 const labelKeyMapReverse = {
                     'facing': 'Facing',
-                    'price': 'Lease Amount',
+                    'price': 'Price',
                     'parking': 'No.of Cars Parking',
                     'site_area': 'Approx Area',
-                    'no_of_flores': 'No.of Floors',
-                    'rooms_count': 'Rooms Count',
+                    'no_of_flores': 'No.of floors',
+                    'rooms_count': 'Rooms-Count',
                     'property_name': 'Property Name'
                 };
 
@@ -319,7 +311,7 @@ const EditRentForm = () => {
         parking: '',
         advance_payment: '',
         description: '',
-         deleted_image_ids: ''
+        deleted_image_ids: '' //1,2,3
     });
 
     const handleChange = (event) => {
@@ -373,11 +365,11 @@ const EditRentForm = () => {
 
     const labelKeyMap = {
         'Facing': 'facing',
-        'Lease Amount': 'price',
+        'Price': 'price',
         'No.of Cars Parking': 'parking',
         'Approx Area': 'site_area',
-        'No.of Floors': 'no_of_flores',
-        'Rooms Count': 'rooms_count',
+        'No.of floors': 'no_of_flores',
+        'Rooms-Count': 'rooms_count',
         'Property Name': 'property_name'
     };
 
@@ -399,67 +391,64 @@ const EditRentForm = () => {
         setFormData(prev => ({ ...prev, [key]: value }));
     };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Form submission started.');
 
-     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Form submission started.');
-    
-        const updatedFormData = {
-            ...formData,
-            lat: location.lat,
-            long: location.lng,
-            location: address,
-            type: 'rent',
-            deleted_image_ids: deletedImageIds.join(',') // Convert array to comma-separated string
-        };
-    console.log("updatedFormData", updatedFormData);
-        const formDataToSend = new FormData();
-    
-        // Append form fields
-        Object.entries(updatedFormData).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-                formDataToSend.append(key, value);
-            }
-        });
-    
-        // Append images
-        workPhotos.forEach((file) => {
-            formDataToSend.append('new_property_images', file);
-        });
-    
-        // No need to separately append deleted_image_ids as it's already in updatedFormData
-        console.log("deleted image", deletedImageIds.join(','));
-        console.log("data", formDataToSend);
-    
-        try {
-            const response = await axios.put(
-                `${BASE_URL}/property/${menuPropertyId}/`,
-                formDataToSend,
-                {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                }
-            );
-    
-            if (response.status === 200) {
-                alert('Property updated successfully!');
-                console.log("response", response);
-                navigate('/dashboard');
-            } else {
-                alert('Something went wrong. Try again.');
-            }
-        } catch (error) {
-            console.error('Submission Error:', error);
-            alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
-        }
+    const updatedFormData = {
+        ...formData,
+        lat: location.lat,
+        long: location.lng,
+        location: address,
+        type: 'lease',
+        deleted_image_ids: deletedImageIds.join(',') // Convert array to comma-separated string
     };
-       
-    
-          const handleRemoveImage = (imageId) => {
-        setDeletedImageIds([...deletedImageIds, imageId]);
-        setExistingImages(existingImages.filter(img => img.id !== imageId));
-      };
+console.log("updatedFormData", updatedFormData);
+    const formDataToSend = new FormData();
 
+    // Append form fields
+    Object.entries(updatedFormData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+            formDataToSend.append(key, value);
+        }
+    });
+
+    // Append images
+    workPhotos.forEach((file) => {
+        formDataToSend.append('new_property_images', file);
+    });
+
+    // No need to separately append deleted_image_ids as it's already in updatedFormData
+    console.log("deleted image", deletedImageIds.join(','));
+    console.log("data", formDataToSend);
+
+    try {
+        const response = await axios.put(
+            `${BASE_URL}/property/${menuPropertyId}/`,
+            formDataToSend,
+            {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            }
+        );
+
+        if (response.status === 200) {
+            alert('Property updated successfully!');
+            console.log("response", response);
+            navigate('/dashboard');
+        } else {
+            alert('Something went wrong. Try again.');
+        }
+    } catch (error) {
+        console.error('Submission Error:', error);
+        alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
+    }
+};
    
+
+      const handleRemoveImage = (imageId) => {
+    setDeletedImageIds([...deletedImageIds, imageId]);
+    setExistingImages(existingImages.filter(img => img.id !== imageId));
+  };
 
     if (!isLoaded) {
         return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -483,12 +472,12 @@ const EditRentForm = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', pt: '10px', backgroundColor: 'rgb(239, 231, 221)', }}>
                 <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, pb: 12, maxWidth: 'md', mx: 'auto' }}>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Edit Rent Property
+                        Edit Lease Property
                     </Typography>
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
                         <FormControl fullWidth sx={{ mb: 3 }}>
-                            <InputLabel id="category-label">Select Property Type</InputLabel>
+                            <InputLabel id="category-label">Select Category</InputLabel>
                             <Select
                                 labelId="category-label"
                                 value={selectedCategory}
@@ -513,62 +502,35 @@ const EditRentForm = () => {
                             </Select>
                         </FormControl>
 
-                      {selectedCategory &&
-                          fieldMap[selectedCategory]?.map((label) => {
-                              if (label == 'Facing') {
-                                  return (
-                                      <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                          <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                          <Select
-                                              labelId={`${label}-label`}
-                                              value={formValues[label] || ''}
-                                              label={label}
-                                              onChange={(e) => handleFieldChange(label, e.target.value)}
-                                          >
-                                              {facingOptions.map(option => (
-                                                  <MenuItem key={option} value={option}>{option}</MenuItem>
-                                              ))}
-                                          </Select>
-                                      </FormControl>
-                                  );
-                              } else if (label == 'No.of Cars Parking' || label == 'No.of Floors' || label == 'Rooms Count') {
-                                  return (
-                                      <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                          <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                          <Select
-                                              labelId={`${label}-label`}
-                                              value={formValues[label] || ''}
-                                              label={label}
-                                              onChange={(e) => handleFieldChange(label, e.target.value)}
-                                              MenuProps={{
-                                                  PaperProps: {
-                                                      style: {
-                                                          maxHeight: 200, // Limits dropdown height and adds scroll
-                                                      },
-                                                  },
-                                              }}
-                                          >
-                                              {generateNumberOptions().map(number => (
-                                                  <MenuItem key={number} value={number}>{number}</MenuItem>
-                                              ))}
-                                          </Select>
-                                      </FormControl>
-                                  );
-                              } else {
-                                  return (
-                                      <TextField
-                                          key={label}
-                                          fullWidth
-                                          label={label}
-                                          variant="outlined"
-                                          sx={{ mb: 2 }}
-                                          value={formValues[label] || ''}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                      />
-                                  );
-                              }
-                          })
-                      }
+                        {selectedCategory &&
+                            fieldMap[selectedCategory]?.map((label) => (
+                                label == 'Facing' ? (
+                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                        <Select
+                                            labelId={`${label}-label`}
+                                            value={formValues[label] || ''}
+                                            label={label}
+                                            onChange={(e) => handleFieldChange(label, e.target.value)}
+                                        >
+                                            {facingOptions.map(option => (
+                                                <MenuItem key={option} value={option}>{option}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                ) : (
+                                    <TextField
+                                        key={label}
+                                        fullWidth
+                                        label={label}
+                                        variant="outlined"
+                                        sx={{ mb: 2 }}
+                                        value={formValues[label] || ''}
+                                        onChange={(e) => handleFieldChange(label, e.target.value)}
+                                    />
+                                )
+                            ))
+                        }
 
                         {/* Location Section */}
                         <Box sx={{ mb: 2 }}>
@@ -613,7 +575,8 @@ const EditRentForm = () => {
                                 />
                             )}
                         </GoogleMap>
- <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
+
+                       <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 3 }}>
         Property Images
       </Typography>
 
@@ -673,7 +636,6 @@ const EditRentForm = () => {
           Selected: {workPhotos.length} file(s)
         </Typography>
       )}
-
                         <FormControl fullWidth margin="normal">
                             <InputLabel id="posted-by-label">Posted By</InputLabel>
                             <Select
@@ -725,4 +687,4 @@ const EditRentForm = () => {
     );
 };
 
-export default EditRentForm;
+export default EditLeaseForm;

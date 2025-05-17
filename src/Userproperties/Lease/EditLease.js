@@ -50,23 +50,23 @@ const GreenButton = styled(Button)({
     '&:hover': { backgroundColor: '#008000' },
 });
 
-const fieldMap = {
-    '1BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
-    '2BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
-    '3BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
-    '4+BHK': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
-    'Plot/land': ['Property Name', 'Facing', 'Price', 'Approx Area'],
-    'Duplex house': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
-    'Commercial land': ['Property Name', 'Facing', 'Price', 'Approx Area'],
-    'Commercial building/space': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors'],
-    'Villa': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area'],
-    'Pg-school-office': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors', 'Rooms-Count'],
-    'Shopping mall/shop': ['Property Name', 'Facing', 'Price', 'No.of Cars Parking', 'Approx Area', 'No.of floors'],
-};
+const fieldMap  = { 
+    '1BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
+    '2BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
+    '3BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
+    '4+BHK': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
+    'Plot/land': ['Property Name', 'Facing', 'Lease Amount', 'Approx Area'],
+    'Duplex house': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
+    'Commercial land': ['Property Name', 'Facing', 'Lease Amount', 'Approx Area'],
+    'Commercial building/space': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area', 'No.of Floors'],
+    'Villa': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area'],
+    'Pg-school-office': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area', 'No.of Floors', 'Rooms Count'],
+    'Shopping mall/shop': ['Property Name', 'Facing', 'Lease Amount', 'No.of Cars Parking', 'Approx Area', 'No.of Floors'],
+}; 
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 
-const EditLeaseForm = () => {
+const EditLeaseForm = () => { 
     const { menuPropertyId } = useParams();
     console.log("menuPropertyId:", menuPropertyId);
     const [workPhotos, setWorkPhotos] = useState([]);
@@ -77,6 +77,14 @@ const EditLeaseForm = () => {
     const [postedBy, setPostedBy] = useState('');
     const [isLoading, setIsLoading] = useState(true);
   const [deletedImageIds, setDeletedImageIds] = useState([]);
+
+  const generateNumberOptions = (max = 50) => {
+    const options = [];
+    for (let i = 0; i <= max; i++) {
+        options.push(i);
+    }
+    return options;
+};
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -223,11 +231,11 @@ const EditLeaseForm = () => {
                 const initialFormValues = {};
                 const labelKeyMapReverse = {
                     'facing': 'Facing',
-                    'price': 'Price',
+                    'price': 'Lease Amount',
                     'parking': 'No.of Cars Parking',
                     'site_area': 'Approx Area',
-                    'no_of_flores': 'No.of floors',
-                    'rooms_count': 'Rooms-Count',
+                    'no_of_flores': 'No.of Floors',
+                    'rooms_count': 'Rooms Count',
                     'property_name': 'Property Name'
                 };
 
@@ -365,11 +373,11 @@ const EditLeaseForm = () => {
 
     const labelKeyMap = {
         'Facing': 'facing',
-        'Price': 'price',
+        'Lease Amount': 'price',
         'No.of Cars Parking': 'parking',
         'Approx Area': 'site_area',
-        'No.of floors': 'no_of_flores',
-        'Rooms-Count': 'rooms_count',
+        'No.of Floors': 'no_of_flores',
+        'Rooms Count': 'rooms_count',
         'Property Name': 'property_name'
     };
 
@@ -477,7 +485,7 @@ console.log("updatedFormData", updatedFormData);
 
                     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3 }} component="form" onSubmit={handleSubmit}>
                         <FormControl fullWidth sx={{ mb: 3 }}>
-                            <InputLabel id="category-label">Select Category</InputLabel>
+                            <InputLabel id="category-label">Select Property Type</InputLabel>
                             <Select
                                 labelId="category-label"
                                 value={selectedCategory}
@@ -501,36 +509,62 @@ console.log("updatedFormData", updatedFormData);
                                 ])}
                             </Select>
                         </FormControl>
-
-                        {selectedCategory &&
-                            fieldMap[selectedCategory]?.map((label) => (
-                                label == 'Facing' ? (
-                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                        <Select
-                                            labelId={`${label}-label`}
-                                            value={formValues[label] || ''}
-                                            label={label}
-                                            onChange={(e) => handleFieldChange(label, e.target.value)}
-                                        >
-                                            {facingOptions.map(option => (
-                                                <MenuItem key={option} value={option}>{option}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                ) : (
-                                    <TextField
-                                        key={label}
-                                        fullWidth
-                                        label={label}
-                                        variant="outlined"
-                                        sx={{ mb: 2 }}
-                                        value={formValues[label] || ''}
-                                        onChange={(e) => handleFieldChange(label, e.target.value)}
-                                    />
-                                )
-                            ))
-                        }
+{selectedCategory &&
+    fieldMap[selectedCategory]?.map((label) => {
+        if (label == 'Facing') {
+            return (
+                <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                    <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                    <Select
+                        labelId={`${label}-label`}
+                        value={formValues[label] || ''}
+                        label={label}
+                        onChange={(e) => handleFieldChange(label, e.target.value)}
+                    >
+                        {facingOptions.map(option => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            );
+        } else if (label == 'No.of Cars Parking' || label == 'No.of Floors' || label == 'Rooms Count') {
+            return (
+                <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                    <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                    <Select
+                        labelId={`${label}-label`}
+                        value={formValues[label] || ''}
+                        label={label}
+                        onChange={(e) => handleFieldChange(label, e.target.value)}
+                        MenuProps={{
+                            PaperProps: {
+                                style: {
+                                    maxHeight: 200, // Limits dropdown height and adds scroll
+                                },
+                            },
+                        }}
+                    >
+                        {generateNumberOptions().map(number => (
+                            <MenuItem key={number} value={number}>{number}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            );
+        } else {
+            return (
+                <TextField
+                    key={label}
+                    fullWidth
+                    label={label}
+                    variant="outlined"
+                    sx={{ mb: 2 }}
+                    value={formValues[label] || ''}
+                    onChange={(e) => handleFieldChange(label, e.target.value)}
+                />
+            );
+        }
+    })
+}
 
                         {/* Location Section */}
                         <Box sx={{ mb: 2 }}>
