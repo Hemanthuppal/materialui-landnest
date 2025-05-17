@@ -26,13 +26,13 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { toast } from "react-toastify";
-import TwoDPlanForm from "./TwoDPlanForm";
+import ThreeDPlanForm from "./ThreeDPlanForm";
 import { BASE_URL } from "../../../Api/ApiUrls"; // adjust path as needed
 
 const API_BASE_URL = `${BASE_URL}`;
 const IMAGE_BASE_URL = `${API_BASE_URL}/construction-content`;
 
-const TwoDPlanTable = () => {
+const ThreeDPlanTable = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -40,54 +40,16 @@ const TwoDPlanTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentPlan, setCurrentPlan] = useState(null);
-  const [categories, setCategories] = useState([]);
-
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/construction-categories/`);
-      return response.data; // Return the categories data
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      toast.error("Failed to load categories");
-      return []; // Return empty array if error
-    }
-  };
 
   const fetchPlans = async () => {
     try {
       setLoading(true);
-      
-      // Fetch categories first and wait for completion
-      const allCategories = await fetchCategories();
-      
-      // Get all 2D categories
-      const threeDCategories = allCategories.filter(cat => cat.category === "2D");
-      const threeDCategoryIds = threeDCategories.map(cat => cat.category_id);
-
-      // Fetch all plans
-      const planResponse = await axios.get(`${IMAGE_BASE_URL}/`);
-      const allPlans = planResponse.data;
-
-      // Filter plans whose category_id matches any in threeDCategoryIds
-      const filteredPlans = allPlans.filter(plan => 
-        threeDCategoryIds.includes(plan.category_id)
-      );
-
-      // Enhance plans with sub_cat information
-      const enhancedPlans = filteredPlans.map(plan => {
-        const category = allCategories.find(cat => cat.category_id === plan.category_id);
-        return {
-          ...plan,
-          sub_cat: category ? category.sub_cat : 'Unknown'
-        };
-      });
-
-      setPlans(enhancedPlans);
-      setCategories(allCategories); // Store categories in state if needed elsewhere
+      const response = await axios.get(`${IMAGE_BASE_URL}/`);
+      const twoDPlans = response.data.filter(plan => plan.category_id == 2);
+      setPlans(twoDPlans);
     } catch (error) {
       console.error("Error fetching plans:", error);
-      toast.error("Failed to fetch 2D plans. Please try again.");
+      toast.error("Failed to fetch plans. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -96,8 +58,6 @@ const TwoDPlanTable = () => {
   useEffect(() => {
     fetchPlans();
   }, []);
-
-
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this plan?")) {
@@ -126,8 +86,7 @@ const TwoDPlanTable = () => {
   };
 
   const filteredPlans = plans.filter(plan =>
-    plan.content?.toLowerCase().includes(search.toLowerCase()) ||
-    plan.sub_cat?.toLowerCase().includes(search.toLowerCase())
+    plan.content?.toLowerCase().includes(search.toLowerCase())
   );
 
   if (loading) {
@@ -142,16 +101,16 @@ const TwoDPlanTable = () => {
     <Container sx={{ mt: 2 }}>
       <Box sx={{ maxWidth: 1300, mx: 'auto', p: 1, borderRadius: 2, boxShadow: 3, backgroundColor: '#fff' }}>
         <Typography variant="h4" sx={{ textAlign: 'center', color: 'primary.main', mb: 2 }}>
-          2D Plans Table
+          3D Plans Table
         </Typography>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <TextField
-            label="Search by Plan Name or Category"
+            label="Search by Plan Name"
             variant="outlined"
             value={search}
             onChange={handleSearchChange}
-            placeholder="Type plan name or category..."
+            placeholder="Type plan name..."
             size="small"
             sx={{ width: 300 }}
           />
@@ -163,7 +122,7 @@ const TwoDPlanTable = () => {
               setModalOpen(true);
             }}
           >
-            <AddIcon sx={{ mr: 1 }} /> Add 2D Plan
+            <AddIcon sx={{ mr: 1 }} /> Add 3D Plan
           </Button>
         </Box>
 
@@ -171,7 +130,7 @@ const TwoDPlanTable = () => {
           <Table>
             <TableHead sx={{ backgroundColor: '#1976d2' }}>
               <TableRow>
-                {['S.No', 'Category', 'Name', 'Image', 'Upload Date', 'Actions'].map((head) => (
+                {['S.No', 'Name', 'Image', 'Upload Date', 'Actions'].map((head) => (
                   <TableCell key={head} sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                     <strong>{head}</strong>
                   </TableCell>
@@ -185,7 +144,6 @@ const TwoDPlanTable = () => {
                 .map((plan, index) => (
                   <TableRow key={plan.content_id}>
                     <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
-                    <TableCell sx={{ textAlign: 'center' }}>{plan.sub_cat}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{plan.content}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>
                       {plan.image ? (
@@ -251,7 +209,7 @@ const TwoDPlanTable = () => {
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
           <Typography variant="h6">
-            {currentPlan ? "Edit 2D Plan" : "Add 2D Plan"}
+            {currentPlan ? "Edit 3D Plan" : "Add 3D Plan"}
           </Typography>
           <IconButton
             aria-label="close"
@@ -267,7 +225,7 @@ const TwoDPlanTable = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent dividers>
-          <TwoDPlanForm 
+          <ThreeDPlanForm 
             editPlan={currentPlan} 
             onCancel={() => setModalOpen(false)}
             fetchPlans={fetchPlans}
@@ -278,4 +236,4 @@ const TwoDPlanTable = () => {
   );
 };
 
-export default TwoDPlanTable;
+export default ThreeDPlanTable;

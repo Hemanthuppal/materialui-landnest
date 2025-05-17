@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from "react";
 import {
   Typography,
@@ -40,16 +42,54 @@ const ThreeDPlanTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentPlan, setCurrentPlan] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/construction-categories/`);
+      return response.data; // Return the categories data
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      toast.error("Failed to load categories");
+      return []; // Return empty array if error
+    }
+  };
 
   const fetchPlans = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${IMAGE_BASE_URL}/`);
-      const twoDPlans = response.data.filter(plan => plan.category_id == 2);
-      setPlans(twoDPlans);
+      
+      // Fetch categories first and wait for completion
+      const allCategories = await fetchCategories();
+      
+      // Get all 3D categories
+      const threeDCategories = allCategories.filter(cat => cat.category === "3D");
+      const threeDCategoryIds = threeDCategories.map(cat => cat.category_id);
+
+      // Fetch all plans
+      const planResponse = await axios.get(`${IMAGE_BASE_URL}/`);
+      const allPlans = planResponse.data;
+
+      // Filter plans whose category_id matches any in threeDCategoryIds
+      const filteredPlans = allPlans.filter(plan => 
+        threeDCategoryIds.includes(plan.category_id)
+      );
+
+      // Enhance plans with sub_cat information
+      const enhancedPlans = filteredPlans.map(plan => {
+        const category = allCategories.find(cat => cat.category_id === plan.category_id);
+        return {
+          ...plan,
+          sub_cat: category ? category.sub_cat : 'Unknown'
+        };
+      });
+
+      setPlans(enhancedPlans);
+      setCategories(allCategories); // Store categories in state if needed elsewhere
     } catch (error) {
       console.error("Error fetching plans:", error);
-      toast.error("Failed to fetch plans. Please try again.");
+      toast.error("Failed to fetch 3D plans. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -58,6 +98,7 @@ const ThreeDPlanTable = () => {
   useEffect(() => {
     fetchPlans();
   }, []);
+
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this plan?")) {
@@ -86,7 +127,8 @@ const ThreeDPlanTable = () => {
   };
 
   const filteredPlans = plans.filter(plan =>
-    plan.content?.toLowerCase().includes(search.toLowerCase())
+    plan.content?.toLowerCase().includes(search.toLowerCase()) ||
+    plan.sub_cat?.toLowerCase().includes(search.toLowerCase())
   );
 
   if (loading) {
@@ -106,11 +148,11 @@ const ThreeDPlanTable = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <TextField
-            label="Search by Plan Name"
+            label="Search by Plan Name or Category"
             variant="outlined"
             value={search}
             onChange={handleSearchChange}
-            placeholder="Type plan name..."
+            placeholder="Type plan name or category..."
             size="small"
             sx={{ width: 300 }}
           />
@@ -130,7 +172,7 @@ const ThreeDPlanTable = () => {
           <Table>
             <TableHead sx={{ backgroundColor: '#1976d2' }}>
               <TableRow>
-                {['S.No', 'Name', 'Image', 'Upload Date', 'Actions'].map((head) => (
+                {['S.No', 'Category', 'Name', 'Image', 'Upload Date', 'Actions'].map((head) => (
                   <TableCell key={head} sx={{ color: 'white', textAlign: 'center', fontSize: 16 }}>
                     <strong>{head}</strong>
                   </TableCell>
@@ -144,6 +186,7 @@ const ThreeDPlanTable = () => {
                 .map((plan, index) => (
                   <TableRow key={plan.content_id}>
                     <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>{plan.sub_cat}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{plan.content}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>
                       {plan.image ? (
