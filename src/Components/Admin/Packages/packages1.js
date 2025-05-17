@@ -216,7 +216,7 @@ const ConstructionPackages = () => {
         ];
       const rupeeValues = extractRupeeValues(content);
 
-      if (rupeeValues.length == 0) {
+      if (rupeeValues.length == 0) { 
         setEditableContent((prev) => ({
           ...prev,
           [`${pkgId}-${sectionId}`]: content,
