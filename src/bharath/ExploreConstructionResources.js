@@ -37,6 +37,9 @@ import { Link } from 'react-router-dom';
 import FormsBottomNavbar from '../maniteja/FormsBottomNavbar';
 import logotop from './Images/landnest-logo.jpg';
 import axios from 'axios';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';  // Hall
+import WindowIcon from '@mui/icons-material/Window';            // Window
+import KitchenIcon from '@mui/icons-material/Kitchen'; 
 import { BASE_URL } from '../../src/Api/ApiUrls';
 
 const chunkArray = (array, chunkSize) => {
@@ -136,6 +139,12 @@ const ExploreConstructionResources = () => {
 
   const getCategoryIcon = (categoryName) => {
     switch (categoryName.toLowerCase()) {
+       case 'hall':
+      return <MeetingRoomIcon />;
+    case 'window':
+      return <WindowIcon />;
+    case 'kitchen':
+      return <KitchenIcon />;
       case 'cement':
         return <ConstructionIcon />;
       case 'steel':

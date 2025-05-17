@@ -234,22 +234,20 @@ const GreenButton = styled(Button)({
 // };
 
 const fieldMap = {
-    'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Road Width'],
-    'Plot/land': ['Site Area', 'Facing',  'Price', 'Road Width'],
-    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', '1bhk Count', '2bhk Count', 'Duplex Bedrooms','Lift', 'Road Width'],
-    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', 'Duplex Bedrooms','Lift', 'Road Width'],
-    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Floors', 'Buildup Area', 'Borewell', 'No.of Cars Parking', '1bhk Count', '2bhk Count', '3bhk Count','Lift', 'Road Width'],
-    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms Count', 'Floors', 'Borewell', 'No.of Cars Parking', 'Lift', 'Road Width', 'Buildup Area'],
-    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Lift', 'Road Width', 'Buildup Area'],
-    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'Lift', 'Road Width', 'Buildup Area'],
-    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop Count', 'No.of Cars Parking', 'Borewell', 'Floors', 'Lift', 'Road Width', 'Buildup Area'],
-    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House Count', '1bhk Count', '2bhk Count', '3bhk Count', '4bhk Count', 'Lift', 'Road Width', 'Buildup Area'],
-    'Others': ['Price', 'Road Width'],
+    'Commercial land/plot': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'Plot/land': ['Site Area', 'Facing',  'Price', 'Roadwidth'],
+    'Rent with duplex building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', 'Duplex bedrooms','lift', 'Roadwidth'],
+    'Duplex house': ['Property Name', 'Site Area', 'Facing',  'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', 'Duplex bedrooms','lift', 'Roadwidth'],
+    'Rental building': ['Property Name', 'Site Area', 'Facing', 'Price', 'No of floors', 'Buildup area', 'Borewell', 'No.of Cars Parking', '1bhk-count', '2bhk-count', '3bhk-count','lift', 'Roadwidth'],
+    'Pg-offices': ['Property Name', 'Site Area', 'Facing',  'Price', 'Rooms-count', 'Floors', 'Borewell', 'No.of Cars Parking', 'lift', 'Roadwidth', 'Buildup area'],
+    'Flat': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'lift', 'Roadwidth', 'Buildup area'],
+    'Villa': ['Property Name', 'Site Area', 'Facing', 'Price', 'No.of Bedrooms', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Commercial building': ['Property Name', 'Site Area', 'Facing',  'Price', 'Shop-count', 'No.of Cars Parking', 'Borewell', 'Floors', 'lift', 'Roadwidth', 'Buildup area'],
+    'Apartment': ['Property Name', 'Site Area', 'Facing',  'Price', 'No.of Cars Parking', 'Borewell', 'House-count', '1bhk', '2bhk', '3bhk', '4bhk', 'lift', 'Roadwidth', 'Buildup area'],
+    'Others': ['Price', 'Roadwidth'],
 };
 
 const facingOptions = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
-
- const yesNoOptions = ['Yes', 'No'];
 
 const PostYourBestDeal = () => {
     const [workPhotos, setWorkPhotos] = useState([]);
@@ -257,14 +255,6 @@ const PostYourBestDeal = () => {
     const [apiHitCount, setApiHitCount] = useState(0);
     const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
     const [postedBy, setPostedBy] = useState('');
-
-       const generateNumberOptions = (max = 50) => {
-    const options = [];
-    for (let i = 0; i <= max; i++) {
-        options.push(i);
-    }
-    return options;
-};
 
     const handleChange = (event) => {
         const value = event.target.value;
@@ -317,8 +307,7 @@ const PostYourBestDeal = () => {
         rooms_count: '',
         shop_count: '',
         house_count: '',
-         property_name: '',
-        lift: ''
+        property_name: ''
     });
 
     const { isLoaded } = useJsApiLoader({
@@ -468,27 +457,24 @@ useEffect(() => {
         'Site Area': 'site_area',
         'Facing': 'facing',
         'Price': 'price',
-        'No.of Floors': 'no_of_flores',
-        'Buildup Area': 'buildup_area',
+        'No.of floors': 'no_of_flores',
+        'Buildup area': 'buildup_area',
         'Borewell': 'borewell',
-        'Lift': 'lift',
         'No.of Cars Parking': 'parking',
-        '1bhk Count': '_1bhk_count',
-        '2bhk Count': '_2bhk_count',
-        '3bhk Count': '_3bhk_count',
-        '4bhk Count': '_4bhk_count',
-        'Duplex Bedrooms': 'duplex_bedrooms',
+        '1bhk-count': '_1bhk_count',
+        '2bhk-count': '_2bhk_count',
+        '3bhk-count': '_3bhk_count',
+        'Duplex bedrooms': 'duplex_bedrooms',
         'Floors': 'no_of_flores',
-        'Rooms Count': 'rooms_count',
-        // 'Bedrooms-count': 'bedrooms_count',
-        'No.of Bedrooms': 'bedrooms_count',
-        'Shop Count': 'shop_count',
-        'House Count': 'house_count',
+        'Rooms-Count': 'rooms_count',
+        'Bedrooms-count': 'bedrooms_count',
+        'Shop-count': 'shop_count',
+        'House-count': 'house_count',
         '1bhk': '_1bhk_count',
         '2bhk': '_2bhk_count',
         '3bhk': '_3bhk_count',
-        
-        'Road Width': 'roadwidth',
+        '4bhk': '_4bhk_count',
+        'Roadwidth': 'roadwidth',
         'Length': 'length',
         'Width': 'width',
         'Property Name': 'property_name'
@@ -514,7 +500,7 @@ useEffect(() => {
           geocoder.geocode({ location: { lat, lng } }, (results, status) => {
             if (status == 'OK' && results[0]) {
               setAddress(results[0].formatted_address);
-            } else { 
+            } else {
               setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`);
             }
           });
@@ -527,17 +513,7 @@ useEffect(() => {
                 const rentCategories = response.data.filter(
                     cat => cat.category_type.toLowerCase() == 'sell'
                 );
-                const customOrder = [
-                    "Plot/land", "Commercial land/plot", "Rent with duplex building", "Duplex house", "Rental building",
-                    "Pg-offices", "Flat", "Villa", "Commercial building", "Villa", 
-                    "Apartment", "Others"
-                ];
-    
-                // Sort rentCategories according to customOrder
-                const sortedCategories = rentCategories.sort((a, b) => {
-                    return customOrder.indexOf(a.category) - customOrder.indexOf(b.category);
-                });
-                setCategories(sortedCategories);
+                setCategories(rentCategories);
             })
             .catch(error => {
                 console.error("Error fetching categories:", error);
@@ -650,7 +626,7 @@ useEffect(() => {
 
     return (
         <>
-            <SearchBar onBackClick={handleBackClick} /> 
+            <SearchBar onBackClick={handleBackClick} />
                       <Box
              sx={{
                display: 'flex',
@@ -689,7 +665,7 @@ useEffect(() => {
                    Post Your Best Deal
                  </Typography>
                         <FormControl fullWidth sx={{ mb: 3 }}>
-                            <InputLabel id="category-label">Select Property Type</InputLabel>
+                            <InputLabel id="category-label">Select Category</InputLabel>
                             <Select
                                 labelId="category-label"
                                 value={selectedCategory}
@@ -717,7 +693,7 @@ useEffect(() => {
                         {fields.includes('Site Area') && (
     <Box key="Site Area" sx={{ mb: 2 }}>
         <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-            Site Dimensions
+            Site Area
         </Typography>
         <Stack direction="row" spacing={2}>
             <TextField 
@@ -757,83 +733,37 @@ useEffect(() => {
         </Stack>
     </Box>
 )}
-                                             {fields.map((label) => {
-                          if (label == 'Site Area') return null;
-                      
-                          if (label == 'Facing') {
-                              return (
-                                  <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                      <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                      <Select
-                                          labelId={`${label}-label`}
-                                          value={formValues[label] || ''}
-                                          label={label}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                      >
-                                          {facingOptions.map(option => (
-                                              <MenuItem key={option} value={option}>{option}</MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                              );
-                          }
-                      
-                          if (label == 'Borewell' || label == 'Lift') {
-                              return (
-                                  <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                      <InputLabel id={`${label}-label`}>{label}</InputLabel>
-                                      <Select
-                                          labelId={`${label}-label`}
-                                          value={formValues[label] || ''}
-                                          label={label}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                      >
-                                          {yesNoOptions.map(option => (
-                                              <MenuItem key={option} value={option}>{option}</MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                              );
-                          }
-                      
-                          if (label == 'No.of Cars Parking' || label == 'No.of Floors' || label == 'Floors' || label == 'No.of Bedrooms' || label == 'Rooms Count' || label == 'Shop Count' || label == 'House Count' || label == 'Duplex Bedrooms' || label == '1bhk Count' || label == '2bhk Count' || label == '3bhk Count' || label == '1bhk' || label == '2bhk' || label == '3bhk') {
-                              return (
-                                  <FormControl fullWidth key={label} sx={{ mb: 2 }}>
-                                      <InputLabel id={`${label}-label`}>{label}</InputLabel>  
-                                      <Select
-                                          labelId={`${label}-label`}
-                                          value={formValues[label] || ''}
-                                          label={label}
-                                          onChange={(e) => handleFieldChange(label, e.target.value)}
-                                          MenuProps={{
-                                              PaperProps: {
-                                                  style: {
-                                                      maxHeight: 200, // Limits dropdown height and adds scroll
-                                                  },
-                                              },
-                                          }}
-                                      >
-                                          {generateNumberOptions().map(number => (
-                                              <MenuItem key={number} value={number}>{number}</MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                              );
-                          }
-                      
-                          return (
-                              <TextField
-                                  key={label}
-                                  fullWidth
-                                  label={label}
-                                  variant="outlined"
-                                  sx={{ mb: 2 }}
-                                  value={formValues[label] || ''}
-                                  onChange={(e) => handleFieldChange(label, e.target.value)}
-                              />
-                          );
-                      })}
-                      
+                        {fields.map((label) => {
+                            if (label == 'Site Area') return null;
+                            if (label == 'Facing') {
+                                return (
+                                    <FormControl fullWidth key={label} sx={{ mb: 2 }}>
+                                        <InputLabel id={`${label}-label`}>{label}</InputLabel>
+                                        <Select
+                                            labelId={`${label}-label`}
+                                            value={formValues[label] || ''}
+                                            label={label}
+                                            onChange={(e) => handleFieldChange(label, e.target.value)}
+                                        >
+                                            {facingOptions.map(option => (
+                                                <MenuItem key={option} value={option}>{option}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                );
+                            }
+                            return (
+                                <TextField
+                                    key={label}
+                                    fullWidth
+                                    label={label}
+                                    variant="outlined"
+                                    sx={{ mb: 2 }}
+                                    value={formValues[label] || ''}
+                                    onChange={(e) => handleFieldChange(label, e.target.value)}
+                                />
+                            );
+                        })}
 
                         {/* Location Section */}
                     {/* Location Section */}
