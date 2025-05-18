@@ -292,8 +292,6 @@
 
 
 
-
-
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -323,9 +321,9 @@ import {
   Plumbing as PlumbingIcon,
   GridOn as TilesGraniteIcon,
   FormatPaint as PaintIcon,
-    Architecture as FloorPlanIcon,
-  Terrain as ElevationIcon,
-
+  Architecture as FloorPlanIcon,
+  Foundation as FoundationIcon,
+  ThreeDRotation as ThreeDIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
@@ -348,7 +346,7 @@ const ThreedPlansInterior = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [materials, setMaterials] = useState([]);
+  const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -356,74 +354,60 @@ const ThreedPlansInterior = () => {
 
   const drawerWidth = '15%';
 
-  // Default categories with icons (fallback if API fails)
-  const defaultCategories = [
-    { category_id: 1, category: 'Cement' },
-    { category_id: 2, category: 'Steel' },
-    { category_id: 3, category: 'Brick' },
-    { category_id: 4, category: 'Sand' },
-    { category_id: 5, category: 'Stone' },
-    { category_id: 6, category: 'Wood and Windows' },
-    { category_id: 7, category: 'Electrical' },
-    { category_id: 8, category: 'Fabrication Works' },
-    { category_id: 9, category: 'Plumbing Works' },
-    { category_id: 10, category: 'Tiles and Granite' },
-    { category_id: 11, category: 'Paint Work' }
-  ];
-
-  // Fetch categories and materials
- useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-
-      // Fetch categories from the new API
-      const response = await axios.get('https://landnest.net:81/construction-categories/');
-      const allCategories = response.data;
-
-      // Filter categories where category === "2D"
-      const filteredCategories = allCategories.filter(cat => cat.category === "3D");
-
-      // Set the filtered categories in state
-      setCategories(filteredCategories);
-
-      // Set the first matching category as active and fetch its sub_cat
-      if (filteredCategories.length > 0) {
-        setActiveCategory(filteredCategories[0].category_id);
-        await fetchMaterials(filteredCategories[0].sub_cat); // Assuming fetchMaterials handles sub_cat now
-      }
-    } catch (error) {
-      console.error('Error fetching construction categories:', error);
-      setCategories([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchData();
-}, []);
-
-  // Fetch materials when active category changes
+  // Fetch categories and plans
   useEffect(() => {
-    if (activeCategory) {
-      fetchMaterials(activeCategory);
-    }
-  }, [activeCategory]);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-  const fetchMaterials = async (categoryId) => {
+        // Fetch categories from the API
+        const response = await axios.get(`${BASE_URL}/construction-categories/`);
+        const allCategories = response.data;
+
+        // Filter categories where category === "3D"
+        const filteredCategories = allCategories.filter(cat => cat.category === "3D");
+
+        // Set the filtered categories in state
+        setCategories(filteredCategories);
+
+        // Set the first matching category as active and fetch its plans
+        if (filteredCategories.length > 0) {
+          setActiveCategory(filteredCategories[0].category_id);
+          await fetchPlans(filteredCategories[0].category_id);
+        }
+      } catch (error) {
+        console.error('Error fetching construction categories:', error);
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Fetch plans when active category changes
+  const fetchPlans = async (categoryId) => {
     try {
       setLoading(true);
       const response = await axios.get(`${BASE_URL}/construction-content/`);
-      const filteredMaterials = response.data
+      
+      // Filter plans by category_id and enhance with category info
+      const filteredPlans = response.data
         .filter(item => item.category_id == categoryId)
-        .map(item => ({
-          id: item.content_id,
-          title: item.content,
-          imageUrl: `${BASE_URL}${item.image}`
-        }));
-      setMaterials(filteredMaterials);
+        .map(item => {
+          const category = categories.find(cat => cat.category_id === item.category_id);
+          return {
+            id: item.content_id,
+            title: item.content,
+            imageUrl: `${BASE_URL}${item.image}`,
+            categoryName: category ? category.sub_cat : 'Unknown'
+          };
+        });
+      
+      setPlans(filteredPlans);
     } catch (error) {
-      console.error('Error fetching materials:', error);
+      console.error('Error fetching plans:', error);
     } finally {
       setLoading(false);
     }
@@ -431,17 +415,30 @@ const ThreedPlansInterior = () => {
 
   const getCategoryIcon = (categoryName) => {
     switch (categoryName.toLowerCase()) {
-       case 'floor plan':
-      return <FloorPlanIcon />;
-    case 'elevation':
-      return <ElevationIcon />;
-      
-      default:
+      case '3d floor plan':
+        return <FloorPlanIcon />;
+      case '3d elevation':
+        return <ThreeDIcon />;
+      case '3d structural view':
+        return <BrickIcon />;
+      case '3d plumbing':
+        return <PlumbingIcon />;
+      case '3d electrical':
+        return <ElectricalIcon />;
+      case '3d space planning':
+        return <WoodWindowsIcon />;
+      case '3d foundation':
+        return <FoundationIcon />;
+      case '3d interior':
+        return <PaintIcon />;
+      case '3d exterior':
         return <ConstructionIcon />;
+      default:
+        return <ThreeDIcon />;
     }
   };
 
-  const rows = chunkArray(materials, 2);
+  const rows = chunkArray(plans, 2);
 
   return (
     <>
@@ -591,7 +588,7 @@ const ThreedPlansInterior = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden',  }}>
+      <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden' }}>
         <Drawer
           variant="permanent"
           anchor="left"
@@ -612,7 +609,7 @@ const ThreedPlansInterior = () => {
             },
           }}
         >
-          {loading && categories.length == 0 ? (
+          {loading && categories.length === 0 ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
               <CircularProgress />
             </Box>
@@ -626,7 +623,10 @@ const ThreedPlansInterior = () => {
                     <ListItem
                       button
                       selected={isSelected}
-                      onClick={() => setActiveCategory(category.category_id)}
+                      onClick={() => {
+                        setActiveCategory(category.category_id);
+                        fetchPlans(category.category_id);
+                      }}
                       sx={{
                         py: 1.5,
                         flexDirection: 'column',
@@ -685,7 +685,7 @@ const ThreedPlansInterior = () => {
           }}
         >
           <Typography variant="body1" align="center" sx={{ mb: 2, fontWeight: 500 }}>
-            Explore Construction Resources
+            Explore 3D Plans
           </Typography>
 
           {loading ? (
@@ -717,6 +717,10 @@ const ThreedPlansInterior = () => {
                           image={item.imageUrl}
                           alt={item.title}
                           sx={{ height: 100, objectFit: 'cover' }}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = `${BASE_URL}/media/default.jpg`; // fallback image
+                          }}
                         />
                         <CardContent sx={{ padding: 1 }}>
                           <Typography variant="body2" align="center" fontWeight="500">
@@ -729,7 +733,7 @@ const ThreedPlansInterior = () => {
                 ))
               ) : (
                 <Typography variant="body1" align="center" sx={{ mt: 4 }}>
-                  No materials found for this category
+                  No plans found for this category
                 </Typography>
               )}
             </Box>

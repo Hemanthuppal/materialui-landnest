@@ -341,8 +341,8 @@ import {
   Plumbing as PlumbingIcon,
   GridOn as TilesGraniteIcon,
   FormatPaint as PaintIcon,
-   Architecture as FloorPlanIcon,
-   Foundation as FoundationIcon
+  Architecture as FloorPlanIcon,
+  Foundation as FoundationIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
@@ -373,72 +373,57 @@ const TwodPlansInterior = () => {
 
   const drawerWidth = '15%';
 
-  // Default categories with icons (fallback if API fails)
-  const defaultCategories = [
-    { category_id: 1, category: 'Cement' },
-    { category_id: 2, category: 'Steel' },
-    { category_id: 3, category: 'Brick' },
-    { category_id: 4, category: 'Sand' },
-    { category_id: 5, category: 'Stone' },
-    { category_id: 6, category: 'Wood and Windows' },
-    { category_id: 7, category: 'Electrical' },
-    { category_id: 8, category: 'Fabrication Works' },
-    { category_id: 9, category: 'Plumbing Works' },
-    { category_id: 10, category: 'Tiles and Granite' },
-    { category_id: 11, category: 'Paint Work' }
-  ];
-
   // Fetch categories and materials
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setLoading(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-      // Fetch categories from the new API
-      const response = await axios.get('https://landnest.net:81/construction-categories/');
-      const allCategories = response.data;
+        // Fetch categories from the API
+        const response = await axios.get(`${BASE_URL}/construction-categories/`);
+        const allCategories = response.data;
 
-      // Filter categories where category === "2D"
-      const filteredCategories = allCategories.filter(cat => cat.category === "2D");
+        // Filter categories where category === "2D"
+        const filteredCategories = allCategories.filter(cat => cat.category === "2D");
 
-      // Set the filtered categories in state
-      setCategories(filteredCategories);
+        // Set the filtered categories in state
+        setCategories(filteredCategories);
 
-      // Set the first matching category as active and fetch its sub_cat
-      if (filteredCategories.length > 0) {
-        setActiveCategory(filteredCategories[0].category_id);
-        await fetchMaterials(filteredCategories[0].sub_cat); // Assuming fetchMaterials handles sub_cat now
+        // Set the first matching category as active and fetch its materials
+        if (filteredCategories.length > 0) {
+          setActiveCategory(filteredCategories[0].category_id);
+          await fetchMaterials(filteredCategories[0].category_id);
+        }
+      } catch (error) {
+        console.error('Error fetching construction categories:', error);
+        setCategories([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching construction categories:', error);
-      setCategories([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchData();
-}, []);
-
+    fetchData();
+  }, []);
 
   // Fetch materials when active category changes
-  useEffect(() => {
-    if (activeCategory) {
-      fetchMaterials(activeCategory);
-    }
-  }, [activeCategory]);
-
   const fetchMaterials = async (categoryId) => {
     try {
       setLoading(true);
       const response = await axios.get(`${BASE_URL}/construction-content/`);
+      
+      // Filter materials by category_id and enhance with category info
       const filteredMaterials = response.data
         .filter(item => item.category_id == categoryId)
-        .map(item => ({
-          id: item.content_id,
-          title: item.content,
-          imageUrl: `${BASE_URL}${item.image}`
-        }));
+        .map(item => {
+          const category = categories.find(cat => cat.category_id === item.category_id);
+          return {
+            id: item.content_id,
+            title: item.content,
+            imageUrl: `${BASE_URL}${item.image}`,
+            categoryName: category ? category.sub_cat : 'Unknown'
+          };
+        });
+      
       setMaterials(filteredMaterials);
     } catch (error) {
       console.error('Error fetching materials:', error);
@@ -447,27 +432,26 @@ useEffect(() => {
     }
   };
 
-const getCategoryIcon = (categoryName) => {
-  switch (categoryName.toLowerCase()) {
-    case 'floor plan':
-      return <FloorPlanIcon />;
-    case 'elevation':
-      return <SteelIcon />;
-    case 'structural drawing':
-      return <BrickIcon />;
-    case 'plumbing': // fixed typo
-      return <PlumbingIcon />;
-    case 'electrical':
-      return <ElectricalIcon />; // removed the duplicate, keeping the correct icon
-    case 'space planning':
-      return <WoodWindowsIcon />;
-    case 'foundation plans':
-      return <FoundationIcon />;
-    default:
-      return <ConstructionIcon />; // fallback icon
-  }
-};
-
+  const getCategoryIcon = (categoryName) => {
+    switch (categoryName.toLowerCase()) {
+      case 'floor plan':
+        return <FloorPlanIcon />;
+      case 'elevation':
+        return <SteelIcon />;
+      case 'structural drawing':
+        return <BrickIcon />;
+      case 'plumbing':
+        return <PlumbingIcon />;
+      case 'electrical':
+        return <ElectricalIcon />;
+      case 'space planning':
+        return <WoodWindowsIcon />;
+      case 'foundation plans':
+        return <FoundationIcon />;
+      default:
+        return <ConstructionIcon />;
+    }
+  };
 
   const rows = chunkArray(materials, 2);
 
@@ -619,7 +603,7 @@ const getCategoryIcon = (categoryName) => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden',  }}>
+      <Box sx={{ display: 'flex', height: 'calc(100vh - 112px)', overflow: 'hidden' }}>
         <Drawer
           variant="permanent"
           anchor="left"
@@ -640,7 +624,7 @@ const getCategoryIcon = (categoryName) => {
             },
           }}
         >
-          {loading && categories.length == 0 ? (
+          {loading && categories.length === 0 ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
               <CircularProgress />
             </Box>
@@ -654,7 +638,10 @@ const getCategoryIcon = (categoryName) => {
                     <ListItem
                       button
                       selected={isSelected}
-                      onClick={() => setActiveCategory(category.category_id)}
+                      onClick={() => {
+                        setActiveCategory(category.category_id);
+                        fetchMaterials(category.category_id);
+                      }}
                       sx={{
                         py: 1.5,
                         flexDirection: 'column',
@@ -713,7 +700,7 @@ const getCategoryIcon = (categoryName) => {
           }}
         >
           <Typography variant="body1" align="center" sx={{ mb: 2, fontWeight: 500 }}>
-            Explore Construction Resources
+            Explore 2D Plans
           </Typography>
 
           {loading ? (
@@ -745,6 +732,10 @@ const getCategoryIcon = (categoryName) => {
                           image={item.imageUrl}
                           alt={item.title}
                           sx={{ height: 100, objectFit: 'cover' }}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = `${BASE_URL}/media/default.jpg`; // fallback image
+                          }}
                         />
                         <CardContent sx={{ padding: 1 }}>
                           <Typography variant="body2" align="center" fontWeight="500">
@@ -757,7 +748,7 @@ const getCategoryIcon = (categoryName) => {
                 ))
               ) : (
                 <Typography variant="body1" align="center" sx={{ mt: 4 }}>
-                  No materials found for this category
+                  No plans found for this category
                 </Typography>
               )}
             </Box>
