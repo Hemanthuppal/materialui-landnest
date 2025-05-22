@@ -72,7 +72,7 @@ const ConstructionPackages = () => {
   const fetchPackageData = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get("https://landnest.net:81/packages/4/");
+      const response = await axios.get("https://landnest.net:81/packages/6/");
       setPackageData(response.data);
       updateSectionContent(response.data);
       setIsLoading(false);
@@ -156,7 +156,7 @@ const ConstructionPackages = () => {
 
   const handleSavePackageCost = async () => {
     try {
-      await axios.put(`https://landnest.net:81/packages/4/`, {
+      await axios.put(`https://landnest.net:81/packages/6/`, {
         package_cost: parseInt(tempPackageCost) || 0,
       });
 
@@ -418,10 +418,10 @@ const ConstructionPackages = () => {
   const packages = [
     {
       id: "package2300",
-      title: "Construction Package Details",
+      title: "Premium Package Details",
       price: `Rs ${
         packageData.package_cost
-          ? (packageData.package_cost / 1000).toFixed(0) + "K"
+          ? (packageData.package_cost / 1000).toFixed(0) + "/sqft"
           : "Loading..."
       }`,
       color: "",

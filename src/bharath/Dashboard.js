@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+
 import { Link } from 'react-router-dom';
-import { AiOutlineMessage } from 'react-icons/ai'; 
+
 import {
   AppBar,
   Toolbar,
@@ -9,28 +9,21 @@ import {
   Box,
   Typography,
   Grid,
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction,
+  
   Avatar,
   Card,
   CardContent,
-  CardMedia
+
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import StarRateIcon from '@mui/icons-material/StarRate';
-import BoltIcon from '@mui/icons-material/Bolt';
+
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 // import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { FaRegHeart, FaRegBell } from 'react-icons/fa';
 import { RiMessengerLine } from 'react-icons/ri';
-import HomeIcon from '@mui/icons-material/Home';
-import BuildIcon from '@mui/icons-material/Build';
-import AddIcon from '@mui/icons-material/Add';
-import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import image from "./../Images/construction.jpg";
 import image1 from "./../Images/interior.avif";
@@ -67,9 +60,9 @@ import {
 
 
 } from '@mui/icons-material';
-import { href } from 'react-router-dom';
+
 import FormsBottomNavbar from './../maniteja/FormsBottomNavbar';
-import SearchBar from '../maniteja/FormsSearchBar';
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
@@ -104,47 +97,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Sidebar = styled(Box)(({ theme }) => ({
-  width: '50px',
-  backgroundColor: '#f8f9fa',
-  height: '100%',
-  padding: theme.spacing(1, 0),
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: theme.spacing(2),
-  borderRight: '2px solid #e3e3e3',
-}));
 
-const CategoryCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1.5),
-  borderRadius: 12,
-  marginBottom: theme.spacing(1.5),
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-}));
-
-const ImageCard = styled(Paper)(({ theme }) => ({
-  position: 'relative',
-  borderRadius: 12,
-  overflow: 'hidden',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-  '& img': {
-    width: '100%',
-    height: '120px',
-    objectFit: 'cover',
-  },
-  '& .overlay': {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    color: '#fff',
-    padding: theme.spacing(0.8),
-    fontSize: '0.9rem',
-    fontWeight: 500,
-  },
-}));
 
 
 const cards = [
@@ -179,30 +132,8 @@ const cards = [
 function App() {
 
   const navigate = useNavigate();
-  const [value, setValue] = useState('home');
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    // Navigate to the corresponding route
-    switch (newValue) {
-      case 'home':
-        navigate('/');
-        break;
-      case 'construction':
-        navigate('/constructions');
-        break;
-      case 'post':
-        navigate('/post');
-        break;
-      case 'services':
-        navigate('/home-service');
-        break;
-      case 'profile':
-        navigate('/profile');
-        break;
-      default:
-        navigate('/');
-    }
-  };
+  
+  
 
   
 
@@ -278,7 +209,7 @@ function App() {
         <Box
          sx={{
           width: { xs: '14%', sm: '64px' },
-          height: '85vh',
+          height: '80vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -326,9 +257,11 @@ function App() {
     }}
   >
     <Avatar
+    onClick={() => navigate('/work-detail')}
       alt="User"
       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
       sx={{
+        marginTop: '7px',
         width: { xs: 30, sm: 34 },
         height: { xs: 30, sm: 34 },
         border: '3px solid rgba(216,204,186,0.7)',
@@ -791,13 +724,14 @@ function App() {
           borderBottomRightRadius: '24px',
           overflow: 'hidden',
           height: 130,
-          width: 140, // default
+          width: 161, // default
   '@media (max-width:360px)': {
     width: 130
   },
-  '@media (min-width:361px) and (max-width:429px)': {
+  '@media (min-width:361px) and (max-width:420px)': {
     width: 143
   },
+
   '@media (width:430px)': {
     width: 160
   },
@@ -889,7 +823,7 @@ function App() {
         borderBottomRightRadius: '24px',
         overflow: 'hidden',
         height: 130,
-        width: 140, // default
+        width: 161, // default
   '@media (max-width:360px)': {
     width: 130
   },

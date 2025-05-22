@@ -438,7 +438,7 @@ const ConstructionPackages = () => {
       title: "Basic Package Details",
       price: `Rs ${
         packageData.package_cost
-          ? (packageData.package_cost / 1000).toFixed(0) + "K"
+          ? (packageData.package_cost / 1000).toFixed(0) + "/sqft"
           : "Loading..."
       }`,
       color: "",

@@ -201,7 +201,7 @@ const HomeService = () => {
           <Box
             sx={{
               position: 'absolute',
-              bottom: 250,
+              bottom: 150,
               left: 0,
               right: 0,
               px: 2,

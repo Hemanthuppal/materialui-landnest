@@ -85,7 +85,7 @@ useEffect(() => {
     const formData = new FormData();
     formData.append("content", name);
     formData.append("category_id", selectedCategory);
-    formData.append("user_id", userId); // using the actual user ID from context
+    formData.append("user_id", 1); // using the actual user ID from context
     if (image) formData.append("image", image);
 
     try {

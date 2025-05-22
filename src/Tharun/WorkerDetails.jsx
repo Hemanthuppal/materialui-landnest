@@ -6,7 +6,11 @@ import {
   IconButton,
   CircularProgress,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+   CardContent,
+  Card,
+        
+
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -66,12 +70,13 @@ const WorkerDetails = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          bgcolor: 'rgb(239, 231, 221)',
+          bgcolor: 'black',
           px: 2,
           py: 1,
           display: 'flex',
           alignItems: 'center',
           borderBottom: '1px solid #ccc',
+          color: 'white',
         }}
       >
         <IconButton onClick={() => navigate(-1)} sx={{ mr: 1 }}>
@@ -92,6 +97,9 @@ const WorkerDetails = () => {
           flex: 1,
         }}
       >
+         <Card elevation={3} sx={{ p: 2 }}>
+          <CardContent>
+
         {/* Profile Image */}
         <Box display="flex" justifyContent="center" sx={{ mb: 3 }}>
           <Avatar
@@ -168,6 +176,8 @@ const WorkerDetails = () => {
         ) : (
           <Typography>No work photos available</Typography>
         )}
+ </CardContent>
+        </Card>
 
       </Box>
 
